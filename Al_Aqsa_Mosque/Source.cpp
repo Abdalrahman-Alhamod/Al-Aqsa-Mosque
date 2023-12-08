@@ -11,6 +11,11 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 #include <gl\glut.h>		// Header File For The Glut Library
+#include "Point.h"
+#include "Color.h"
+#include "Constants.h"
+#include "PrimitiveDrawer.h"
+#include "Texture.h"
 
 HDC			hDC = NULL;		// Private GDI Device Context
 HGLRC		hRC = NULL;		// Permanent Rendering Context

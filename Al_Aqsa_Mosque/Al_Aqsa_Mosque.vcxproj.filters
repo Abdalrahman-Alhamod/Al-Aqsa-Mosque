@@ -27,6 +27,9 @@
     <ClCompile Include="PrimitiveDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -41,13 +44,8 @@
     <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="mosqueSide.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="mosque.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
