@@ -155,17 +155,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="PrimitiveDrawer.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Planet.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
-    <ClInclude Include="SolarSystem.h" />
-    <ClInclude Include="SolarSystemConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mosque.bmp" />
