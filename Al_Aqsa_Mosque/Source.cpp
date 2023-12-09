@@ -19,6 +19,8 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "Console.h"
+#include "Model_3DS.h"
+#include "3DTexture.h"
 
 
 
@@ -46,6 +48,7 @@ void initLighting();
 void initSkyBox();
 void Draw_Skybox(float x, float y, float z, float width, float height, float length);
 void initTextures();
+void initModels();
 
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
@@ -94,6 +97,15 @@ int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 // More Texture Images Variables
 int wood;
 
+// Tree model pointer
+Model_3DS* treeModel;
+
+// Tank model pointer
+Model_3DS* tankModel;
+
+// Fixing colors bug model pointer
+Model_3DS* someModel;
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -123,6 +135,9 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	// Initialize Texture Images
 	 initTextures();
 
+	 // Initialize Models
+	 initModels();
+
 	return TRUE;										// Initialization Went OK
 }
 
@@ -145,7 +160,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	glPushMatrix();
 	glTranslatef(-2, -2, +2);
-	glColor3f(0, 1, 0);
+	glColor3f(1, 1, 1);
 	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));   // Nedd fixing for lighting
 	auxSolidCube(2);
 	glPopMatrix();
@@ -195,8 +210,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 	
-
-
+	// Testing models
+	treeModel->Draw();
+	tankModel->Draw();
+	someModel->Draw();
+	
 
 	//Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -339,6 +357,32 @@ void initTextures() {
 	wood = LoadTexture((char *)"assets/materials/bark_loo.bmp", 255);
 	// note if you load a image the opengl while on the GL_Texture_2D himself
 	glDisable(GL_TEXTURE_2D);
+}
+
+void initModels() {
+	treeModel = new Model_3DS();
+	treeModel->Load((char*)"assets/models/tree.3DS");
+	treeModel->Materials[0].tex.LoadBMP((char *)"assets/materials/bark_loo.bmp");
+	treeModel->Materials[1].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
+	treeModel->pos.x = 5;
+	treeModel->pos.y = -5;
+	treeModel->pos.z = -5;
+	treeModel->scale = 0.1;
+
+	tankModel = new Model_3DS();
+	tankModel->Load((char*)"assets/models/tank.3DS");
+	tankModel->pos.x = -5;
+	tankModel->pos.y = -5;
+	tankModel->pos.z = -5;
+	tankModel->scale = 1;
+
+	someModel = new Model_3DS();
+	someModel->Load((char*)"assets/models/tree.3DS");
+	someModel->pos.x = 5000;
+	someModel->pos.y = -5000;
+	someModel->pos.z = -5000;
+	someModel->scale = 0.001;
+
 }
 
 /**
