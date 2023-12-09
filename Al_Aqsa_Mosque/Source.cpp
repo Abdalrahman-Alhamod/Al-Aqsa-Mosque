@@ -16,6 +16,7 @@
 #include "Constants.h"
 #include "PrimitiveDrawer.h"
 #include "Texture.h"
+#include "Camera.h"
 
 HDC			hDC = NULL;		// Private GDI Device Context
 HGLRC		hRC = NULL;		// Permanent Rendering Context
@@ -47,6 +48,8 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
 
+Camera MyCamera;
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -55,6 +58,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+	// Initialize Camera
+	MyCamera = Camera();
+	MyCamera.Position.x = 0;
+	MyCamera.Position.y = 0;
+	MyCamera.Position.z = 0;
+
 	return TRUE;										// Initialization Went OK
 }
 
@@ -65,8 +75,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 
+	MyCamera.Render();
+	MyCamera.decodeKeyboard(keys, 1);
+
+	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
+
 	//Rotate and change rotate angle
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	angle++;
 
 	glBegin(GL_TRIANGLES);
@@ -80,7 +95,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3i(1, -1, -6);
 
-	glEnd();
+	glEnd();*/
+
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
@@ -388,14 +404,14 @@ int WINAPI WinMain(HINSTANCE	hInstance,			// Instance
 	}
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("Madhat NeHe Template", 640, 480, 16, fullscreen))
+	if (!CreateGLWindow("Al Aqsa Mosque", 1920, 1080, 16, fullscreen))
 	{
 		return 0;									// Quit If Window Was Not Created
 	}
 
 
-	//Set drawing timer to 20 frame per second
-	UINT timer = SetTimer(hWnd, 0, 50, (TIMERPROC)NULL);
+	//Set drawing timer to 60 frame per second
+	UINT timer = SetTimer(hWnd, 0, 1000/60, (TIMERPROC)NULL);
 
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
