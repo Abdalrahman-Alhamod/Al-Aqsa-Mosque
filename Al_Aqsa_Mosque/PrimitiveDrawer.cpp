@@ -2,7 +2,6 @@
 #include "Constants.h";
 #include <GL/gl.h>
 #include <GL/glu.h>
-long double pi = Constants().pi;
 
 void PrimitiveDrawer::drawPoint(const Point& point) {
 	glColor3f(point.getColor().getRedFloat(), point.getColor().getGreenFloat(), point.getColor().getBlueFloat());
@@ -153,7 +152,7 @@ void PrimitiveDrawer::drawDomeOfRock() {
 	// Draw the dome
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < 360; i++) {
-		float theta = i * pi / 180; // Convert degrees to radians
+		float theta = i * PI / 180; // Convert degrees to radians
 		float x = 1.5 * cos(theta); // Adjust radius as needed
 		float y = 0.5 * sin(theta); // Adjust height as needed
 		glVertex3f(x, y + 2.0, -10); // Offset by the height of the base
@@ -197,7 +196,7 @@ void PrimitiveDrawer::drawPyramid(const Point& top, const Point& baseTL, const P
 }
 void PrimitiveDrawer::drawCircle(const Point& center, const GLfloat rad, const Color& color) {
 	float angle = 0, x = rad, y = 0, z = 0;
-	for (angle = 0.0; angle <= 2 * pi + 0.1; angle += pi / 20) {
+	for (angle = 0.0; angle <= 2 * PI + 0.1; angle += PI / 20) {
 		Point first = Point(x, y, center.z);
 		x = rad * cos(angle);
 		y = rad * sin(angle);
@@ -207,7 +206,7 @@ void PrimitiveDrawer::drawCircle(const Point& center, const GLfloat rad, const C
 }
 void PrimitiveDrawer::drawConeBody(const Point& top, const GLfloat rad, const Color& color) {
 	float angle = 0, x = rad, y = 0, z = 0;
-	for (angle = 0.0; angle <= 2 * pi + 0.1; angle += pi / 20) {
+	for (angle = 0.0; angle <= 2 * PI + 0.1; angle += PI / 20) {
 		Point first = Point(x, y, top.z);
 		x = rad * cos(angle);
 		y = rad * sin(angle);
@@ -223,7 +222,7 @@ void PrimitiveDrawer::drawCone(const Point& base_center, const GLfloat base_rad,
 void PrimitiveDrawer::drawCircleLine(const Point& center, const GLfloat rad, const Color& color) {
 	glColor3f(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat());
 	glBegin(GL_LINE_LOOP);
-	for (GLfloat angle = 0.0f; angle <= (2.0f * pi) * 3.0f; angle += 0.01f) {
+	for (GLfloat angle = 0.0f; angle <= (2.0f * PI) * 3.0f; angle += 0.01f) {
 		GLfloat x = rad * cos(angle);
 		GLfloat y = rad * sin(angle);
 		glVertex3f(x, y, 0.0f);
@@ -238,7 +237,7 @@ void PrimitiveDrawer::drawRing(const Point& center, const float innerRad, const 
 
 	glBegin(GL_QUAD_STRIP);
 	for (int i = 0; i <= numSegments; i++) {
-		float angle = (2 * pi * i / numSegments) + (angleOffset * (pi / 180.0f));  // Apply the rotation angle
+		float angle = (2 * PI * i / numSegments) + (angleOffset * (PI / 180.0f));  // Apply the rotation angle
 		float x = cos(angle);
 		float y = sin(angle);
 
