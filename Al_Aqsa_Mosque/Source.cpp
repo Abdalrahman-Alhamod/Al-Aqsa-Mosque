@@ -45,6 +45,7 @@ bool SwitchToFullScreen();	// Function to switch to full-screen mode
 void initLighting();
 void initSkyBox();
 void Draw_Skybox(float x, float y, float z, float width, float height, float length);
+void initTextures();
 
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
@@ -90,6 +91,9 @@ GLfloat MatShn[] = { 32.0f };                        // Moderate shininess
 // Skybox Texture Variables
 int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 
+// More Texture Images Variables
+int wood;
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -111,10 +115,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	console.print("Hello, Console!");
 	
 	// Initialize Lighting
-	initLighting();
+	//initLighting();
 
 	// Initialize Skybox Texture
-	initSkyBox();
+	//initSkyBox();
+
+	// Initialize Texture Images
+	//initTextures();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -136,40 +143,53 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	// Testing Camera
 
-	/*glPushMatrix();
+	glPushMatrix();
 	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
-	glPopMatrix();*/
+	glPopMatrix();
 
 	// Testing Light
 
 	// Set light position in world coordinates ( fix moving with camera bug)
-	GLfloat WorldLightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };
-	glLightfv(GL_LIGHT0, GL_POSITION, WorldLightPos);
+	//GLfloat WorldLightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };
+	//glLightfv(GL_LIGHT0, GL_POSITION, WorldLightPos);
 
-	// Lighting Destination Test
-	glPushMatrix();
-	glTranslatef(0, 0, -10);
-	glColor3f(1, 0, 0);
-	glutSolidSphere(1, 100, 100);
-	glPopMatrix();
+	//// Lighting Destination Test
+	//glPushMatrix();
+	//glTranslatef(0, 0, -10);
+	//glColor3f(1, 0, 0);
+	//glutSolidSphere(1, 100, 100);
+	//glPopMatrix();
 
-	// Lighting Source
-	glPushMatrix();
-	glTranslatef(1, 1, -5);
-	glColor3f(1, 1, 0);
-	glutSolidSphere(0.1, 100, 100);
-	glPopMatrix();
+	//// Lighting Source
+	//glPushMatrix();
+	//glTranslatef(1, 1, -5);
+	//glColor3f(1, 1, 0);
+	//glutSolidSphere(0.1, 100, 100);
+	//glPopMatrix();
 
-	if (keys['L']) {
-		glEnable(GL_LIGHT0);		// Turn On Light
-	}
-	if (keys['O']) {
-		glDisable(GL_LIGHT0);	// Turn Off Light
-	}
-
+	//if (keys['L']) {
+	//	glEnable(GL_LIGHT0);		// Turn On Light
+	//}
+	//if (keys['O']) {
+	//	glDisable(GL_LIGHT0);	// Turn Off Light
+	//}
 
 	// Test SkyBox
 	// Draw_Skybox(0, 0, 0, 100, 100, 100);
+
+	// Test Texture
+	/*glPushMatrix();
+	glTranslatef(0, 0, -20);
+	glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, wood);
+			glBegin(GL_QUADS);
+				glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
+				glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
+				glTexCoord2f(-1, -1);       glVertex3f(-5, 5, 0);
+				glTexCoord2f(0, -1);       glVertex3f(-5, -5, 0);
+			glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();*/
 	
 
 
@@ -307,6 +327,12 @@ void Draw_Skybox(float x, float y, float z, float width, float height, float len
 	glColor3f(1, 1, 1);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+void initTextures() {
+	glEnable(GL_TEXTURE_2D);
+	wood = LoadTexture((char *)"assets/materials/bark_loo.bmp", 255);
+	// note if you load a image the opengl while on the GL_Texture_2D himself
+	glDisable(GL_TEXTURE_2D);
 }
 
 /**
