@@ -29,6 +29,10 @@ bool	fullscreen = TRUE;	// Fullscreen Flag Set To Fullscreen Mode By Default
 
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
+void ToggleFullscreen();	// Function to toggle between full-screen and windowed mode
+void SwitchToWindowedMode();	// Function to switch to windowed mode
+bool SwitchToFullScreen();	// Function to switch to full-screen mode
+
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
 	if (height == 0)										// Prevent A Divide By Zero By
@@ -101,6 +105,96 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
+}
+
+/**
+* @brief Toggles between full-screen and windowed mode.
+*/
+void ToggleFullscreen()
+{
+	if (fullscreen)
+	{
+		SwitchToWindowedMode();
+	}
+	else
+	{
+		if (SwitchToFullScreen())
+		{
+			fullscreen = true;
+		}
+		else
+		{
+			// Display an error message if switching to full-screen mode failed
+			MessageBox(NULL, "Switching to full-screen mode failed. Running in windowed mode.", "Error", MB_OK | MB_ICONERROR);
+		}
+	}
+
+	// Adjust OpenGL perspective based on the new window size
+	ReSizeGLScene(1920, 1080);  // Set your desired width and height
+}
+
+/**
+* @brief Switches to windowed mode.
+*/
+void SwitchToWindowedMode()
+{
+	ChangeDisplaySettings(NULL, 0);
+	ShowCursor(TRUE);
+
+	// Set window styles for windowed mode
+	SetWindowLong(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+	SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
+
+	// Calculate window size based on client area size
+	RECT windowRect = { 0, 0, 1920, 1080 }; // Set your desired window size
+	AdjustWindowRectEx(&windowRect, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
+
+	// Set the window size and position
+	SetWindowPos(hWnd, HWND_TOP, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_NOMOVE | SWP_NOZORDER);
+
+	// Show the window
+	ShowWindow(hWnd, SW_SHOWNORMAL);
+	SetForegroundWindow(hWnd);
+	SetFocus(hWnd);
+
+	// Update the fullscreen flag
+	fullscreen = false;
+
+	// Adjust OpenGL perspective based on the new window size
+	ReSizeGLScene(windowRect.right - windowRect.left, windowRect.bottom - windowRect.top);
+}
+
+
+/**
+* @brief Switches to full-screen mode.
+*/
+bool SwitchToFullScreen()
+{
+	DEVMODE dmScreenSettings;
+	memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+	dmScreenSettings.dmSize = sizeof(dmScreenSettings);
+	dmScreenSettings.dmPelsWidth = 1920;  // Set your desired width
+	dmScreenSettings.dmPelsHeight = 1080; // Set your desired height
+	dmScreenSettings.dmBitsPerPel = 32;
+	dmScreenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+	// Attempt to change the display settings to enable full-screen mode
+	if (ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL)
+	{
+		// Hide the cursor
+		ShowCursor(FALSE);
+
+		// Set window styles for full-screen mode
+		SetWindowLong(hWnd, GWL_STYLE, WS_POPUP);
+		SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW);
+
+		// Show the window maximized
+		ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+
+		return true;
+	}
+
+	return false;  // Unable to switch to full-screen mode
 }
 
 GLvoid KillGLWindow(GLvoid)								// Properly Kill The Window
@@ -369,6 +463,13 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 	case WM_KEYDOWN:							// Is A Key Being Held Down?
 	{
 		keys[wParam] = TRUE;					// If So, Mark It As TRUE
+
+		// Check if the 'F' key is pressed to toggle full-screen mode
+		if (keys['F'])
+		{
+			ToggleFullscreen();
+		}
+
 		return 0;								// Jump Back
 	}
 
@@ -398,13 +499,13 @@ int WINAPI WinMain(HINSTANCE	hInstance,			// Instance
 	BOOL	done = FALSE;								// Bool Variable To Exit Loop
 
 	// Ask The User Which Screen Mode They Prefer
-	//if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
 	{
-		fullscreen = FALSE;							// Windowed Mode
+		fullscreen = false;							// Windowed Mode
 	}
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("Al Aqsa Mosque", 1920, 1080, 16, fullscreen))
+	if (!CreateGLWindow("Al Aqsa Mosque", 1920, 1080, 32, fullscreen))
 	{
 		return 0;									// Quit If Window Was Not Created
 	}
