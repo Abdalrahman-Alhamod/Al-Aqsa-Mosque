@@ -17,6 +17,9 @@
 #include "PrimitiveDrawer.h"
 #include "Texture.h"
 #include "Camera.h"
+#include <iostream>
+
+using namespace std;
 
 HDC			hDC = NULL;		// Private GDI Device Context
 HGLRC		hRC = NULL;		// Permanent Rendering Context
@@ -26,6 +29,10 @@ HINSTANCE	hInstance;		// Holds The Instance Of The Application
 bool	keys[256];			// Array Used For The Keyboard Routine
 bool	active = TRUE;		// Window Active Flag Set To TRUE By Default
 bool	fullscreen = TRUE;	// Fullscreen Flag Set To Fullscreen Mode By Default
+int mouseX = 0;	// Current mouse X-coordinate
+int mouseY = 0;	// Current mouse Y-coordinate
+bool isClicked = false;	// Flag indicating whether the left mouse button is clicked
+bool isRClicked = false;	// Flag indicating whether the right mouse button is clicked
 
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
@@ -69,6 +76,17 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	MyCamera.Position.y = 0;
 	MyCamera.Position.z = 0;
 
+	// AllocConsole() creates a new console for the process
+	AllocConsole();
+
+	// freopen() redirects standard input/output to the console
+	freopen("CONIN$", "r", stdin);
+	freopen("CONOUT$", "w", stdout);
+	freopen("CONOUT$", "w", stderr);
+
+	//  you can use std::cout and std::cerr to print to the console
+	cout << "Hello, Console!" << std::endl;
+
 	return TRUE;										// Initialization Went OK
 }
 
@@ -81,8 +99,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	MyCamera.Render();
 	MyCamera.decodeKeyboard(keys, 0.1);
+	MyCamera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
+
+
 
 	//Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -446,14 +467,20 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 
 	case WM_MOUSEMOVE:
 	{
-		// Extract mouse coordinates from lParam
-		int mouseX = LOWORD(lParam);
-		int mouseY = HIWORD(lParam);
-
-		MyCamera.decodeMouse(mouseX, mouseY, (wParam & MK_LBUTTON) != 0, (wParam & MK_RBUTTON) != 0);
-
-		return 0;
+		mouseX = (int)LOWORD(lParam);
+		mouseY = (int)HIWORD(lParam);
+		isClicked = (LOWORD(wParam) & MK_LBUTTON) ? true : false;
+		isRClicked = (LOWORD(wParam) & MK_RBUTTON) ? true : false;
+		break;
 	}
+	case WM_LBUTTONUP:
+		isClicked = false; 	 break;
+	case WM_RBUTTONUP:
+		isRClicked = false;   break;
+	case WM_LBUTTONDOWN:
+		isClicked = true; 	break;
+	case WM_RBUTTONDOWN:
+		isRClicked = true;	break;
 
 	case WM_SYSCOMMAND:							// Intercept System Commands
 	{
@@ -511,7 +538,7 @@ int WINAPI WinMain(HINSTANCE	hInstance,			// Instance
 	BOOL	done = FALSE;								// Bool Variable To Exit Loop
 
 	// Ask The User Which Screen Mode They Prefer
-	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	// if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
 	{
 		fullscreen = false;							// Windowed Mode
 	}

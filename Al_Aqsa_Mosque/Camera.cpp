@@ -169,19 +169,6 @@ void Camera::SetRotateX(GLfloat Angle)
 
 void Camera::decodeKeyboard(bool* keys, float speed)
 {
-	// Rotation controls
-	if (keys['S'])
-		Camera::RotateX(-1 * speed); // Rotate camera around X-axis (look down)
-	if (keys['W'])
-		Camera::RotateX(1 * speed);  // Rotate camera around X-axis (look up)
-	if (keys['D'])
-		Camera::RotateY(-1 * speed); // Rotate camera around Y-axis (look right)
-	if (keys['Z'])
-		Camera::RotateZ(1 * speed);  // Rotate camera around Z-axis (roll clockwise)
-	if (keys['X'])
-		Camera::RotateZ(-1 * speed); // Rotate camera around Z-axis (roll counterclockwise)
-	if (keys['A'])
-		Camera::RotateY(1 * speed);  // Rotate camera around Y-axis (look left)
 
 	// Translation controls
 	if (keys['W'])
@@ -206,6 +193,10 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 		Camera::RotateY(1 * speed); // Rotate camera around Y-axis (look left)
 	if (keys[VK_RIGHT])
 		Camera::RotateY(-1 * speed); // Rotate camera around Y-axis (look right)
+	if (keys['Z'])
+		Camera::RotateZ(1 * speed);  // Rotate camera around Z-axis (roll clockwise)
+	if (keys['X'])
+		Camera::RotateZ(-1 * speed); // Rotate camera around Z-axis (roll counterclockwise)
 }
 
 
