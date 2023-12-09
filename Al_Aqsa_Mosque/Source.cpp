@@ -59,7 +59,26 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
 
+// Camera Object
 Camera MyCamera;
+
+// Lighting Variables
+float ch = 0;
+GLfloat LightDir[] = { -0.5f, -0.5f, -1.0f, 0.0f };  // Directional light from the top-left corner
+GLfloat LightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
+
+GLfloat LightAmb[] = { 0.2f, 0.2f, 0.2f, 1.0f };    // Low ambient lighting
+GLfloat LightDiff[] = { 0.8f, 0.8f, 0.8f, 1.0f };    // High diffuse lighting
+GLfloat LightSpec[] = { 1.0f, 1.0f, 1.0f, 1.0f };    // High specular lighting
+
+GLfloat MatAmb[] = { 0.8f, 0.2f, 0.2f, 1.0f };      // Red ambient material
+GLfloat MatDif[] = { 0.8f, 0.8f, 0.8f, 1.0f };      // High diffuse material
+GLfloat MatSpec[] = { 0.5f, 0.5f, 0.5f, 1.0f };     // Moderate specular material
+
+GLfloat MatShn[] = { 32.0f };                        // Moderate shininess
+
+
+
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -87,6 +106,28 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	//  you can use std::cout and std::cerr to print to the console
 	cout << "Hello, Console!" << std::endl;
 
+	// Lighting Variables Initializing
+	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiff);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpec);
+
+	glEnable(GL_LIGHTING);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
+	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
+	glEnable(GL_COLOR_MATERIAL);
+
+	// Add ambient light
+	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
+
+
+
+
 	return TRUE;										// Initialization Went OK
 }
 
@@ -97,11 +138,36 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 
+	// Set modelview matrix to the camera's view
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
 	MyCamera.Render();
 	MyCamera.decodeKeyboard(keys, 0.1);
 	MyCamera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
-	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
+	// Set light position in world coordinates ( fix moving with camera bug)
+	GLfloat WorldLightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };
+	glLightfv(GL_LIGHT0, GL_POSITION, WorldLightPos);
+
+
+	glPushMatrix();
+	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
+	glPopMatrix();
+
+	// Lighting Destination Test
+	glPushMatrix();
+	glTranslatef(0, 0, -10);
+	glColor3f(1, 0, 0);
+	glutSolidSphere(1, 100, 100);
+	glPopMatrix();
+
+	// Lighting Source
+	glPushMatrix();
+	glTranslatef(1, 1, -5);
+	glColor3f(1, 1, 0);
+	glutSolidSphere(0.1, 100, 100);
+	glPopMatrix();
 
 
 
