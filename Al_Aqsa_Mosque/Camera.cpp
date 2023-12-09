@@ -184,40 +184,70 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 		Camera::RotateY(1 * speed);  // Rotate camera around Y-axis (look left)
 
 	// Translation controls
-	if (keys[VK_UP])
+	if (keys['W'])
 		Camera::MoveForward(1 * speed); // Move camera forward
-	if (keys[VK_DOWN])
+	if (keys['S'])
 		Camera::MoveForward(-1 * speed); // Move camera backward
-	if (keys[VK_RIGHT])
+	if (keys['D'])
 		Camera::MoveRight(1 * speed); // Move camera to the right
-	if (keys[VK_LEFT])
+	if (keys['A'])
 		Camera::MoveRight(-1 * speed); // Move camera to the left
-	if (keys['O'])
+	if (keys['E'])
 		Camera::MoveUpward(1 * speed); // Move camera upward
-	if (keys['L'])
+	if (keys['Q'])
 		Camera::MoveUpward(-1 * speed); // Move camera downward
+
+	// Camera orientation adjustment using arrow keys
+	if (keys[VK_DOWN])
+		Camera::RotateX(-1 * speed); // Rotate camera around X-axis (look up)
+	if (keys[VK_UP])
+		Camera::RotateX(1 * speed); // Rotate camera around X-axis (look down)
+	if (keys[VK_LEFT])
+		Camera::RotateY(1 * speed); // Rotate camera around Y-axis (look left)
+	if (keys[VK_RIGHT])
+		Camera::RotateY(-1 * speed); // Rotate camera around Y-axis (look right)
 }
+
 
 void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRightClicked)
 {
-	// Example mouse input handling:
-	// This function can be extended based on the specific requirements of your application.
+	static int prevMouseX = mouseX;
+	static int prevMouseY = mouseY;
 
-	// If left mouse button is clicked, perform some action
+	// Calculate the mouse movement
+	int deltaX = mouseX - prevMouseX;
+	int deltaY = mouseY - prevMouseY;
+
+	// Update the previous mouse position
+	prevMouseX = mouseX;
+	prevMouseY = mouseY;
+
+	// Adjust sensitivity for better control
+	float sensitivity = 0.1f;
+
+	// If the left mouse button is pressed, adjust camera orientation
 	if (isLeftClicked)
 	{
-		// Example: Perform an action when the left mouse button is clicked
-		// This could be camera interaction, object selection, etc.
+		// Rotate around Y-axis based on horizontal mouse movement
+		Camera::RotateY(deltaX * sensitivity);
+
+		// Rotate around X-axis based on vertical mouse movement
+		Camera::RotateX(deltaY * sensitivity);
 	}
 
-	// If right mouse button is clicked, perform some action
+	// If the right mouse button is pressed, reset camera orientation
 	if (isRightClicked)
 	{
-		// Example: Perform an action when the right mouse button is clicked
-		// This could be another camera interaction, context menu, etc.
-	}
+		// Reset orientation to default
+		Camera::SetRotateX(0.0f);
 
-	// Example: Use mouseX and mouseY to perform actions based on mouse position
-	// This could involve moving the camera, interacting with objects, etc.
-	// The specific behavior depends on the requirements of your application.
+		// Optionally, you can also reset other camera properties like position
+		Position = Vector3dCreate(0.0, 0.0, 0.0);
+		View = Vector3dCreate(0.0, 0.0, -1.0);
+		RightVector = Vector3dCreate(1.0, 0.0, 0.0);
+		Up = Vector3dCreate(0.0, 1.0, 0.0);
+		RotatedX = RotatedY = RotatedZ = 0.0;
+
+	}
 }
+

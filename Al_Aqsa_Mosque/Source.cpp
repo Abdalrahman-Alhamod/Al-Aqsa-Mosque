@@ -46,7 +46,7 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Projection Matrix
 
 	// Calculate The Aspect Ratio Of The Window
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 10000.0f);
 
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
@@ -80,7 +80,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 
 	MyCamera.Render();
-	MyCamera.decodeKeyboard(keys, 1);
+	MyCamera.decodeKeyboard(keys, 0.1);
 
 	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
 
@@ -441,6 +441,18 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		}
 
 		return 0;								// Return To The Message Loop
+
+	}
+
+	case WM_MOUSEMOVE:
+	{
+		// Extract mouse coordinates from lParam
+		int mouseX = LOWORD(lParam);
+		int mouseY = HIWORD(lParam);
+
+		MyCamera.decodeMouse(mouseX, mouseY, (wParam & MK_LBUTTON) != 0, (wParam & MK_RBUTTON) != 0);
+
+		return 0;
 	}
 
 	case WM_SYSCOMMAND:							// Intercept System Commands
