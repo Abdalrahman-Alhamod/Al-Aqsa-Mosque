@@ -11,13 +11,16 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 #include <gl\glut.h>		// Header File For The Glut Library
+#include <iostream>
 #include "Point.h"
 #include "Color.h"
 #include "Constants.h"
 #include "PrimitiveDrawer.h"
 #include "Texture.h"
 #include "Camera.h"
-#include <iostream>
+#include "Console.h"
+
+
 
 using namespace std;
 
@@ -39,6 +42,9 @@ LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 void ToggleFullscreen();	// Function to toggle between full-screen and windowed mode
 void SwitchToWindowedMode();	// Function to switch to windowed mode
 bool SwitchToFullScreen();	// Function to switch to full-screen mode
+void initLighting();
+void initSkyBox();
+void Draw_Skybox(float x, float y, float z, float width, float height, float length);
 
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
@@ -60,7 +66,10 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 }
 
 // Camera Object
-Camera MyCamera;
+Camera camera;
+
+// Console Object
+Console console;
 
 // Lighting Variables
 float ch = 0;
@@ -78,7 +87,8 @@ GLfloat MatSpec[] = { 0.5f, 0.5f, 0.5f, 1.0f };     // Moderate specular materia
 GLfloat MatShn[] = { 32.0f };                        // Moderate shininess
 
 
-
+// Skybox Texture Variables
+int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -90,43 +100,21 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
 	// Initialize Camera
-	MyCamera = Camera();
-	MyCamera.Position.x = 0;
-	MyCamera.Position.y = 0;
-	MyCamera.Position.z = 0;
+	camera = Camera();
+	camera.Position.x = 0;
+	camera.Position.y = 0;
+	camera.Position.z = 0;
 
-	// AllocConsole() creates a new console for the process
-	AllocConsole();
+	// Initialize Console
+	console.init();
+	// Print testing message
+	console.print("Hello, Console!");
+	
+	// Initialize Lighting
+	initLighting();
 
-	// freopen() redirects standard input/output to the console
-	freopen("CONIN$", "r", stdin);
-	freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stderr);
-
-	//  you can use std::cout and std::cerr to print to the console
-	cout << "Hello, Console!" << std::endl;
-
-	// Lighting Variables Initializing
-	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiff);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpec);
-
-	glEnable(GL_LIGHTING);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
-	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
-	glEnable(GL_COLOR_MATERIAL);
-
-	// Add ambient light
-	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
-
-
-
+	// Initialize Skybox Texture
+	initSkyBox();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -142,18 +130,21 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	MyCamera.Render();
-	MyCamera.decodeKeyboard(keys, 0.1);
-	MyCamera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+	camera.Render();
+	camera.decodeKeyboard(keys, 0.1);
+	camera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+
+	// Testing Camera
+
+	/*glPushMatrix();
+	PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
+	glPopMatrix();*/
+
+	// Testing Light
 
 	// Set light position in world coordinates ( fix moving with camera bug)
 	GLfloat WorldLightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };
 	glLightfv(GL_LIGHT0, GL_POSITION, WorldLightPos);
-
-
-	glPushMatrix();
-	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));
-	glPopMatrix();
 
 	// Lighting Destination Test
 	glPushMatrix();
@@ -168,6 +159,18 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glColor3f(1, 1, 0);
 	glutSolidSphere(0.1, 100, 100);
 	glPopMatrix();
+
+	if (keys['L']) {
+		glEnable(GL_LIGHT0);		// Turn On Light
+	}
+	if (keys['O']) {
+		glDisable(GL_LIGHT0);	// Turn Off Light
+	}
+
+
+	// Test SkyBox
+	// Draw_Skybox(0, 0, 0, 100, 100, 100);
+	
 
 
 
@@ -192,6 +195,118 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
+}
+
+void initLighting() {
+	// Lighting Variables Initializing
+	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiff);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpec);
+
+	glEnable(GL_LIGHTING);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
+	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
+	glEnable(GL_COLOR_MATERIAL);
+
+	// Add ambient light
+	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
+}
+
+void initSkyBox() {
+	glEnable(GL_TEXTURE_2D);
+	SKYFRONT = LoadTexture((char *)"assets/skybox/front.bmp", 255);
+	SKYBACK = LoadTexture((char*)"assets/skybox/back.bmp", 255);
+	SKYLEFT = LoadTexture((char*)"assets/skybox/left.bmp", 255);
+	SKYRIGHT = LoadTexture((char*)"assets/skybox/right.bmp", 255);
+	SKYUP = LoadTexture((char*)"assets/skybox/up.bmp", 255);
+	SKYDOWN = LoadTexture((char*)"assets/skybox/down.bmp", 255);
+	// note if you load a image the opengl while on the GL_Texture_2D himself
+	glDisable(GL_TEXTURE_2D);
+}
+
+void Draw_Skybox(float x, float y, float z, float width, float height, float length)
+{
+	// Center the Skybox around the given x,y,z position
+	x = x - width / 2;
+	y = y - height / 2;
+	z = z - length / 2;
+	glEnable(GL_TEXTURE_2D);
+
+	// Draw Front side
+	glBindTexture(GL_TEXTURE_2D, SKYFRONT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glEnd();
+
+	// Draw Back side
+	glBindTexture(GL_TEXTURE_2D, SKYBACK);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
+	glEnd();
+
+	// Draw Left side
+	glBindTexture(GL_TEXTURE_2D, SKYLEFT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+	glEnd();
+
+	// Draw Right side
+	glBindTexture(GL_TEXTURE_2D, SKYRIGHT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glEnd();
+
+	// Draw Up side
+	glBindTexture(GL_TEXTURE_2D, SKYUP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glEnd();
+
+	// Draw Down side
+	glBindTexture(GL_TEXTURE_2D, SKYDOWN);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z);
+	glEnd();
+
+	glColor3f(1, 1, 1);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 /**

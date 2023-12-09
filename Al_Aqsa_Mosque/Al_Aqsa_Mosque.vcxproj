@@ -155,17 +155,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="math3d.cpp" />
+    <ClCompile Include="Model_3DS.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PrimitiveDrawer.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="math3d.h" />
+    <ClInclude Include="Model_3DS.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
     <ClInclude Include="Texture.h" />
