@@ -141,21 +141,21 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	console.init();
 	// Print testing message
 	console.print("Hello, Console!");
-	
+
 	// Initialize Lighting
-	 initLighting();
+	initLighting();
 
 	// Initialize Skybox Texture
-	 initSkyBox();
+	initSkyBox();
 
 	// Initialize Texture Images
-	 initTextures();
+	initTextures();
 
-	 // Initialize Models
-	 initModels();
+	// Initialize Models
+	initModels();
 
-	 // Initialize Shadows
-	 initShadows();
+	// Initialize Shadows
+	initShadows();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -170,7 +170,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	// Update Perspective Projection with new zooming value
 	updatePerspective();
-	
+
 	// Set modelview matrix to the camera's view
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -193,7 +193,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	// Set light position in world coordinates ( fix moving with camera bug)
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
 
-	
+
 	// Lighting Destination Test
 	glEnable(GL_LIGHTING);
 	glPushMatrix();
@@ -203,7 +203,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	//	Ground
 	glPushMatrix();
-	glBegin(GL_QUADS); 
+	glBegin(GL_QUADS);
 	glColor3f(0, 0.2, 0);
 	glVertex3f(-30.0f, -2.0f, -20.0f);
 	glVertex3f(-30.0f, -2.0f, 20.0f);
@@ -238,24 +238,24 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	}
 
 	// Test SkyBox
-	  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	  Draw_Skybox(0, 0, 0, 100, 100, 100);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	Draw_Skybox(0, 0, 0, 100, 100, 100);
 
 	// Test Texture
 	glPushMatrix();
 	glTranslatef(0, 2, -20);
 	glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, wood);
-			glNormal3f(0, 0, 1);
-			glBegin(GL_QUADS);
-				glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
-				glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
-				glTexCoord2f(-1, -1);       glVertex3f(-5, 5, 0);
-				glTexCoord2f(0, -1);       glVertex3f(-5, -5, 0);
-			glEnd();
+	glBindTexture(GL_TEXTURE_2D, wood);
+	glNormal3f(0, 0, 1);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
+	glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
+	glTexCoord2f(-1, -1);       glVertex3f(-5, 5, 0);
+	glTexCoord2f(0, -1);       glVertex3f(-5, -5, 0);
+	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-	
+
 	// Testing models
 	treeModel->Draw();
 	tree1Model->Draw();
@@ -341,7 +341,7 @@ void initLighting() {
 
 void initSkyBox() {
 	glEnable(GL_TEXTURE_2D);
-	SKYFRONT = LoadTexture((char *)"assets/skybox/front.bmp", 255);
+	SKYFRONT = LoadTexture((char*)"assets/skybox/front.bmp", 255);
 	SKYBACK = LoadTexture((char*)"assets/skybox/back.bmp", 255);
 	SKYLEFT = LoadTexture((char*)"assets/skybox/left.bmp", 255);
 	SKYRIGHT = LoadTexture((char*)"assets/skybox/right.bmp", 255);
@@ -433,7 +433,7 @@ void Draw_Skybox(float x, float y, float z, float width, float height, float len
 }
 void initTextures() {
 	glEnable(GL_TEXTURE_2D);
-	wood = LoadTexture((char *)"assets/materials/bark_loo.bmp", 255);
+	wood = LoadTexture((char*)"assets/materials/bark_loo.bmp", 255);
 	// note if you load a image the opengl while on the GL_Texture_2D himself
 	glDisable(GL_TEXTURE_2D);
 }
@@ -441,7 +441,7 @@ void initTextures() {
 void initModels() {
 	treeModel = new Model_3DS();
 	treeModel->Load((char*)"assets/models/tree.3DS");
-	treeModel->Materials[0].tex.LoadBMP((char *)"assets/materials/bark_loo.bmp");
+	treeModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
 	treeModel->Materials[1].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
 	treeModel->pos.x = 5;
 	treeModel->pos.y = -2;
@@ -464,7 +464,7 @@ void initModels() {
 	tankModel = new Model_3DS();
 	tankModel->Load((char*)"assets/models/tank.3DS");
 	tankModel->pos.x = -5;
-	tankModel->pos.y =-2;
+	tankModel->pos.y = -2;
 	tankModel->pos.z = -5;
 	tankModel->scale = 1;
 
@@ -503,7 +503,7 @@ void updatePerspective() {
 	gluPerspective(fovY, aspectRatio, nearPlane, farPlane);
 }
 void updateZoomFactor(bool zoom) {
-	if (zoom==ZOOM_INCREASE) {
+	if (zoom == ZOOM_INCREASE) {
 		if (zoomFactor < 7) {
 			zoomFactor += 0.1;
 		}
@@ -868,7 +868,7 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 	case WM_RBUTTONDOWN:
 		isRClicked = true;	break;
 	case WM_MOUSEWHEEL:
-		GET_WHEEL_DELTA_WPARAM(wParam) > 0?updateZoomFactor(ZOOM_INCREASE): updateZoomFactor(ZOOM_DECREASE);
+		GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? updateZoomFactor(ZOOM_INCREASE) : updateZoomFactor(ZOOM_DECREASE);
 		return 0;
 
 	case WM_SYSCOMMAND:							// Intercept System Commands
@@ -940,7 +940,7 @@ int WINAPI WinMain(HINSTANCE	hInstance,			// Instance
 
 
 	//Set drawing timer to 60 frame per second
-	UINT timer = SetTimer(hWnd, 0, 1000/60, (TIMERPROC)NULL);
+	UINT timer = SetTimer(hWnd, 0, 1000 / 60, (TIMERPROC)NULL);
 
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
