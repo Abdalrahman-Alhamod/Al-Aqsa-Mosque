@@ -251,27 +251,27 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	tankModel->Draw();
 	someModel->Draw();
 
-	if (keys['d'])
+	if (keys[VK_NUMPAD4])
 	{
 		LightPos[0] -= 0.1;
 	}
-	if (keys['f'])
+	if (keys[VK_NUMPAD6])
 	{
 		LightPos[0] += 0.1;
 	}
-	if (keys['b'])
+	if (keys[VK_NUMPAD2])
 	{
 		LightPos[1] -= 0.1;
 	}
-	if (keys['h'])
+	if (keys[VK_NUMPAD8])
 	{
 		LightPos[1] += 0.1;
 	}
-	if (keys['i'])
+	if (keys[VK_NUMPAD9])
 	{
 		LightPos[2] -= 0.1;
 	}
-	if (keys['g'])
+	if (keys[VK_NUMPAD7])
 	{
 		LightPos[2] += 0.1;
 	}
