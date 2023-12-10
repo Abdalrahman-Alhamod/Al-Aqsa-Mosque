@@ -100,6 +100,9 @@ int wood;
 // Tree model pointer
 Model_3DS* treeModel;
 
+// Tree model pointer
+Model_3DS* tree1Model;
+
 // Tank model pointer
 Model_3DS* tankModel;
 
@@ -212,6 +215,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	
 	// Testing models
 	treeModel->Draw();
+	tree1Model->Draw();
 	tankModel->Draw();
 	someModel->Draw();
 	
@@ -368,6 +372,19 @@ void initModels() {
 	treeModel->pos.y = -5;
 	treeModel->pos.z = -5;
 	treeModel->scale = 0.1;
+
+	tree1Model = new Model_3DS();
+	tree1Model->Load((char*)"assets/models/tree1.3DS");
+	tree1Model->Materials[0].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
+	tree1Model->Materials[1].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
+	tree1Model->Materials[2].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
+	tree1Model->Materials[3].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
+	tree1Model->Materials[4].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
+	tree1Model->Materials[5].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
+	tree1Model->pos.x = 15;
+	tree1Model->pos.y = -5;
+	tree1Model->pos.z = -5;
+	tree1Model->scale = 0.5;
 
 	tankModel = new Model_3DS();
 	tankModel->Load((char*)"assets/models/tank.3DS");
