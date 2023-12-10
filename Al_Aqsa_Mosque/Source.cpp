@@ -21,6 +21,7 @@
 #include "Console.h"
 #include "Model_3DS.h"
 #include "3DTexture.h"
+#include "math3d.h"
 
 
 
@@ -49,6 +50,7 @@ void initSkyBox();
 void Draw_Skybox(float x, float y, float z, float width, float height, float length);
 void initTextures();
 void initModels();
+void initShadows();
 
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
@@ -77,7 +79,7 @@ Console console;
 
 // Lighting Variables
 float ch = 0;
-GLfloat LightDir[] = { -0.5f, -0.5f, -1.0f, 0.0f };  // Directional light from the top-left corner
+GLfloat LightDir[] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
 GLfloat LightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
 
 GLfloat LightAmb[] = { 0.2f, 0.2f, 0.2f, 1.0f };    // Low ambient lighting
@@ -109,6 +111,10 @@ Model_3DS* tankModel;
 // Fixing colors bug model pointer
 Model_3DS* someModel;
 
+// Shadows Variables
+M3DMatrix44f shadowMat;
+M3DVector4f vPlaneEquation;
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -122,7 +128,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	camera = Camera();
 	camera.Position.x = 0;
 	camera.Position.y = 0;
-	camera.Position.z = 0;
+	camera.Position.z = 20;
 
 	// Initialize Console
 	console.init();
@@ -141,10 +147,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	 // Initialize Models
 	 initModels();
 
+	 // Initialize Shadows
+	 initShadows();
+
 	return TRUE;										// Initialization Went OK
 }
 
-float angle = 0;
+float angle = 90;
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
 
@@ -162,28 +171,50 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	// Testing Camera
 
 	glPushMatrix();
-	glTranslatef(-2, -2, +2);
-	glColor3f(1, 1, 1);
+	glTranslatef(-4, 2, +2);
+	glColor3f(0, 0, 1);
 	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));   // Nedd fixing for lighting
 	auxSolidCube(2);
 	glPopMatrix();
 
-	// Testing Light
+	// Testing Light & Shadows
 
 	// Set light position in world coordinates ( fix moving with camera bug)
-	GLfloat WorldLightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };
-	glLightfv(GL_LIGHT0, GL_POSITION, WorldLightPos);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
 
+	
 	// Lighting Destination Test
+	glEnable(GL_LIGHTING);
 	glPushMatrix();
-	glTranslatef(0, 0, -10);
 	glColor3f(1, 0, 0);
 	glutSolidSphere(1, 100, 100);
 	glPopMatrix();
 
-	// Lighting Source
+	//	Ground
 	glPushMatrix();
-	glTranslatef(1, 1, -5);
+	glBegin(GL_QUADS); 
+	glColor3f(0, 0.2, 0);
+	glVertex3f(-30.0f, -2.0f, -20.0f);
+	glVertex3f(-30.0f, -2.0f, 20.0f);
+	glColor3f(0, 1, 0);
+	glVertex3f(40.0f, -2.0f, 20.0f);
+	glVertex3f(40.0f, -2.0f, -20.0f);
+	glEnd();
+	glPopMatrix();
+
+	// Shadow
+	initShadows();
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glColor3b(0, 0, 0);
+	glMultMatrixf((GLfloat*)shadowMat);
+	glutSolidSphere(1, 100, 100);
+	glPopMatrix();
+
+	// Lighting Source
+	glEnable(GL_LIGHTING);
+	glPushMatrix();
+	glTranslatef(LightPos[0], LightPos[1], LightPos[2]);
 	glColor3f(1, 1, 0);
 	glutSolidSphere(0.1, 100, 100);
 	glPopMatrix();
@@ -201,9 +232,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	// Test Texture
 	glPushMatrix();
-	glTranslatef(0, 0, -20);
+	glTranslatef(0, 2, -20);
 	glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, wood);
+			glNormal3f(0, 0, 1);
 			glBegin(GL_QUADS);
 				glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
 				glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
@@ -218,7 +250,31 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	tree1Model->Draw();
 	tankModel->Draw();
 	someModel->Draw();
-	
+
+	if (keys['d'])
+	{
+		LightPos[0] -= 0.1;
+	}
+	if (keys['f'])
+	{
+		LightPos[0] += 0.1;
+	}
+	if (keys['b'])
+	{
+		LightPos[1] -= 0.1;
+	}
+	if (keys['h'])
+	{
+		LightPos[1] += 0.1;
+	}
+	if (keys['i'])
+	{
+		LightPos[2] -= 0.1;
+	}
+	if (keys['g'])
+	{
+		LightPos[2] += 0.1;
+	}
 
 	//Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -250,6 +306,9 @@ void initLighting() {
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiff);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpec);
+
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, LightDir);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 5.0);
 
 	glEnable(GL_LIGHTING);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
@@ -369,7 +428,7 @@ void initModels() {
 	treeModel->Materials[0].tex.LoadBMP((char *)"assets/materials/bark_loo.bmp");
 	treeModel->Materials[1].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
 	treeModel->pos.x = 5;
-	treeModel->pos.y = -5;
+	treeModel->pos.y = -2;
 	treeModel->pos.z = -5;
 	treeModel->scale = 0.1;
 
@@ -382,14 +441,14 @@ void initModels() {
 	tree1Model->Materials[4].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
 	tree1Model->Materials[5].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
 	tree1Model->pos.x = 15;
-	tree1Model->pos.y = -5;
+	tree1Model->pos.y = -2;
 	tree1Model->pos.z = -5;
 	tree1Model->scale = 0.5;
 
 	tankModel = new Model_3DS();
 	tankModel->Load((char*)"assets/models/tank.3DS");
 	tankModel->pos.x = -5;
-	tankModel->pos.y = -5;
+	tankModel->pos.y =-2;
 	tankModel->pos.z = -5;
 	tankModel->scale = 1;
 
@@ -400,6 +459,18 @@ void initModels() {
 	someModel->pos.z = -5000;
 	someModel->scale = 0.001;
 
+}
+
+void initShadows() {
+
+	M3DVector3f points[3] = { { -30.0f, -2.0f, -20.0f },{ -30.0f, -2.0f, 20.0f },
+		{ 40.0f, -2.0f, 20.0f } };
+
+	m3dGetPlaneEquation(vPlaneEquation, points[0], points[1],
+		points[2]);
+	// Calculate projection matrix to draw shadow on the ground
+	m3dMakePlanarShadowMatrix(shadowMat, vPlaneEquation,
+		LightPos);
 }
 
 /**
@@ -782,6 +853,7 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		{
 			ToggleFullscreen();
 		}
+		cout << (char)wParam << endl;
 
 		return 0;								// Jump Back
 	}
