@@ -496,7 +496,7 @@ void updatePerspective() {
 
 	// Adjust the field of view based on zoom factor
 	GLdouble aspectRatio = screenWidth / static_cast<GLdouble>(screenHeight);
-	GLdouble nearPlane = 1.0;
+	GLdouble nearPlane = 0.1;
 	GLdouble farPlane = 10000.0;
 	GLdouble fovY = 45.0 / zoomFactor; // Adjust the field of view
 
