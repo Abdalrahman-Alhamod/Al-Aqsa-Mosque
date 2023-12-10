@@ -5,6 +5,8 @@
  *		If You've Found This Code Useful, Please Let Me Know.
  *		Visit My Site At nehe.gamedev.net
  */
+#define ZOOM_INCREASE true
+#define ZOOM_DECREASE false
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -22,8 +24,6 @@
 #include "Model_3DS.h"
 #include "3DTexture.h"
 #include "math3d.h"
-
-
 
 using namespace std;
 
@@ -51,9 +51,16 @@ void Draw_Skybox(float x, float y, float z, float width, float height, float len
 void initTextures();
 void initModels();
 void initShadows();
+void updatePerspective();
+void updateZoomFactor(bool zoom);
+
+GLsizei screenWidth, screenHeight;
 
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
 {
+	screenWidth = width;
+	screenHeight = height;
+
 	if (height == 0)										// Prevent A Divide By Zero By
 	{
 		height = 1;										// Making Height Equal One
@@ -154,12 +161,16 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 }
 
 float angle = 90;
+GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 
+	// Update Perspective Projection with new zooming value
+	updatePerspective();
+	
 	// Set modelview matrix to the camera's view
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -275,7 +286,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	{
 		LightPos[2] += 0.1;
 	}
-
+	if (keys[VK_ADD]) {
+		updateZoomFactor(ZOOM_INCREASE);
+	}
+	if (keys[VK_SUBTRACT]) {
+		updateZoomFactor(ZOOM_DECREASE);
+	}
 	//Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	angle++;
@@ -473,6 +489,31 @@ void initShadows() {
 		LightPos);
 }
 
+void updatePerspective() {
+	// Assuming you have a perspective projection set up
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	// Adjust the field of view based on zoom factor
+	GLdouble aspectRatio = screenWidth / static_cast<GLdouble>(screenHeight);
+	GLdouble nearPlane = 1.0;
+	GLdouble farPlane = 10000.0;
+	GLdouble fovY = 45.0 / zoomFactor; // Adjust the field of view
+
+	gluPerspective(fovY, aspectRatio, nearPlane, farPlane);
+}
+void updateZoomFactor(bool zoom) {
+	if (zoom==ZOOM_INCREASE) {
+		if (zoomFactor < 7) {
+			zoomFactor += 0.1;
+		}
+	}
+	else {
+		if (zoomFactor > 1) {
+			zoomFactor -= 0.1;
+		}
+	}
+}
 /**
 * @brief Toggles between full-screen and windowed mode.
 */
@@ -826,6 +867,9 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		isClicked = true; 	break;
 	case WM_RBUTTONDOWN:
 		isRClicked = true;	break;
+	case WM_MOUSEWHEEL:
+		GET_WHEEL_DELTA_WPARAM(wParam) > 0?updateZoomFactor(ZOOM_INCREASE): updateZoomFactor(ZOOM_DECREASE);
+		return 0;
 
 	case WM_SYSCOMMAND:							// Intercept System Commands
 	{
@@ -853,7 +897,6 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		{
 			ToggleFullscreen();
 		}
-		cout << (char)wParam << endl;
 
 		return 0;								// Jump Back
 	}
