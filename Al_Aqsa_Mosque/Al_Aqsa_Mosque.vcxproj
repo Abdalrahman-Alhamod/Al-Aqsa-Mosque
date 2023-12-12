@@ -159,11 +159,16 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Constraints.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="EnvDrawer.cpp" />
     <ClCompile Include="math3d.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
+    <ClCompile Include="MosqueDrawer.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PrimitiveDrawer.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,10 +177,15 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Constraints.h" />
+    <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="EnvDrawer.h" />
     <ClInclude Include="math3d.h" />
     <ClInclude Include="Model_3DS.h" />
+    <ClInclude Include="MosqueDrawer.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

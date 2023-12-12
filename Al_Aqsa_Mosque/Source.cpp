@@ -1,10 +1,3 @@
-/*
- *		This Code Was Created By Jeff Molofee 2000
- *		A HUGE Thanks To Fredric Echols For Cleaning Up
- *		And Optimizing This Code, Making It More Flexible!
- *		If You've Found This Code Useful, Please Let Me Know.
- *		Visit My Site At nehe.gamedev.net
- */
 #define ZOOM_INCREASE true
 #define ZOOM_DECREASE false
 
@@ -24,6 +17,11 @@
 #include "Model_3DS.h"
 #include "3DTexture.h"
 #include "math3d.h"
+#include "Cylinder.h"
+#include "Sphere.h"
+#include "MosqueDrawer.h"
+#include "EnvDrawer.h"
+
 
 using namespace std;
 
@@ -46,10 +44,7 @@ void ToggleFullscreen();	// Function to toggle between full-screen and windowed 
 void SwitchToWindowedMode();	// Function to switch to windowed mode
 bool SwitchToFullScreen();	// Function to switch to full-screen mode
 void initLighting();
-void initSkyBox();
-void Draw_Skybox(float x, float y, float z, float width, float height, float length);
 void initTextures();
-void initModels();
 void initShadows();
 void updatePerspective();
 void updateZoomFactor(bool zoom);
@@ -99,28 +94,18 @@ GLfloat MatSpec[] = { 0.5f, 0.5f, 0.5f, 1.0f };     // Moderate specular materia
 
 GLfloat MatShn[] = { 32.0f };                        // Moderate shininess
 
-
-// Skybox Texture Variables
-int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
-
 // More Texture Images Variables
-int wood;
-
-// Tree model pointer
-Model_3DS* treeModel;
-
-// Tree model pointer
-Model_3DS* tree1Model;
-
-// Tank model pointer
-Model_3DS* tankModel;
-
-// Fixing colors bug model pointer
-Model_3DS* someModel;
+int wood, ground;
 
 // Shadows Variables
 M3DMatrix44f shadowMat;
 M3DVector4f vPlaneEquation;
+
+// Mosque Drawer Object
+MosqueDrawer mosqueDrawer;
+
+// Environment Drawer Object
+EnvDrawer envDrawer;
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -138,47 +123,30 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	camera.Position.z = 20;
 
 	// Initialize Console
-	console.init();
+	 //console.init();
 	// Print testing message
-	console.print("Hello, Console!");
+	// console.print("Hello, Console!");
 
 	// Initialize Lighting
 	initLighting();
 
-	// Initialize Skybox Texture
-	initSkyBox();
-
 	// Initialize Texture Images
 	initTextures();
 
-	// Initialize Models
-	initModels();
-
 	// Initialize Shadows
 	initShadows();
+
+	// Initialize Objects
+	mosqueDrawer = MosqueDrawer();
+	envDrawer = EnvDrawer();
 
 	return TRUE;										// Initialization Went OK
 }
 
 float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
-void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
-{
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
-	glLoadIdentity();									// Reset The Current Modelview Matrix
-
-	// Update Perspective Projection with new zooming value
-	updatePerspective();
-
-	// Set modelview matrix to the camera's view
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	camera.Render();
-	camera.decodeKeyboard(keys, 0.1);
-	camera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
-
+void testEnv() {
 	// Testing Camera
 
 	glPushMatrix();
@@ -201,22 +169,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glutSolidSphere(1, 100, 100);
 	glPopMatrix();
 
-	//	Ground
-	glPushMatrix();
-	glBegin(GL_QUADS);
-	glColor3f(0, 0.2, 0);
-	glVertex3f(-30.0f, -2.0f, -20.0f);
-	glVertex3f(-30.0f, -2.0f, 20.0f);
-	glColor3f(0, 1, 0);
-	glVertex3f(40.0f, -2.0f, 20.0f);
-	glVertex3f(40.0f, -2.0f, -20.0f);
-	glEnd();
-	glPopMatrix();
-
 	// Shadow
 	initShadows();
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
+	glTranslatef(0,0.1,0);
 	glColor3b(0, 0, 0);
 	glMultMatrixf((GLfloat*)shadowMat);
 	glutSolidSphere(1, 100, 100);
@@ -236,12 +193,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (keys['O']) {
 		glDisable(GL_LIGHT0);	// Turn Off Light
 	}
+	
 
-	// Test SkyBox
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	Draw_Skybox(0, 0, 0, 100, 100, 100);
 
 	// Test Texture
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glPushMatrix();
 	glTranslatef(0, 2, -20);
 	glEnable(GL_TEXTURE_2D);
@@ -255,12 +211,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-
-	// Testing models
-	treeModel->Draw();
-	tree1Model->Draw();
-	tankModel->Draw();
-	someModel->Draw();
 
 	if (keys[VK_NUMPAD4])
 	{
@@ -292,6 +242,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (keys[VK_SUBTRACT]) {
 		updateZoomFactor(ZOOM_DECREASE);
 	}
+
+
 	//Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	angle++;
@@ -308,6 +260,45 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glVertex3i(1, -1, -6);
 
 	glEnd();*/
+}
+
+void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+{
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
+	glLoadIdentity();									// Reset The Current Modelview Matrix
+
+	// Update Perspective Projection with new zooming value
+	updatePerspective();
+
+	// Set modelview matrix to the camera's view
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	camera.Render();
+	camera.decodeKeyboard(keys, 0.1);
+	camera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+
+	testEnv();
+
+
+	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
+	envDrawer.drawTiledLand(points, 50);
+	//envDrawer.drawGrassLand(points, 50);
+	//mosqueDrawer.drawPrayerCarbet1(points, 50);
+	//mosqueDrawer.drawPrayerCarbet2(points, 50);
+
+	envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
+	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
+
+	envDrawer.drawSmallTree(Point(5, -2, -5), 1);
+	envDrawer.drawBigTree(Point(15, -2, -5), 1);
+	envDrawer.drawTank(Point(-5, -2, -5), 1);
+
+
+	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
+	// mosqueDrawer.drawDome(Point(-5, -2, 0), 0.5, SILVER_DOME);
+
 
 	glFlush();											// Done Drawing The Quad
 
@@ -339,142 +330,12 @@ void initLighting() {
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
 }
 
-void initSkyBox() {
-	glEnable(GL_TEXTURE_2D);
-	SKYFRONT = LoadTexture((char*)"assets/skybox/front.bmp", 255);
-	SKYBACK = LoadTexture((char*)"assets/skybox/back.bmp", 255);
-	SKYLEFT = LoadTexture((char*)"assets/skybox/left.bmp", 255);
-	SKYRIGHT = LoadTexture((char*)"assets/skybox/right.bmp", 255);
-	SKYUP = LoadTexture((char*)"assets/skybox/up.bmp", 255);
-	SKYDOWN = LoadTexture((char*)"assets/skybox/down.bmp", 255);
-	// note if you load a image the opengl while on the GL_Texture_2D himself
-	glDisable(GL_TEXTURE_2D);
-}
-
-void Draw_Skybox(float x, float y, float z, float width, float height, float length)
-{
-	// Center the Skybox around the given x,y,z position
-	x = x - width / 2;
-	y = y - height / 2;
-	z = z - length / 2;
-	glEnable(GL_TEXTURE_2D);
-
-	// Draw Front side
-	glBindTexture(GL_TEXTURE_2D, SKYFRONT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
-	glEnd();
-
-	// Draw Back side
-	glBindTexture(GL_TEXTURE_2D, SKYBACK);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
-	glEnd();
-
-	// Draw Left side
-	glBindTexture(GL_TEXTURE_2D, SKYLEFT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
-	glEnd();
-
-	// Draw Right side
-	glBindTexture(GL_TEXTURE_2D, SKYRIGHT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
-	glEnd();
-
-	// Draw Up side
-	glBindTexture(GL_TEXTURE_2D, SKYUP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y + height, z + length);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
-	glEnd();
-
-	// Draw Down side
-	glBindTexture(GL_TEXTURE_2D, SKYDOWN);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z);
-	glEnd();
-
-	glColor3f(1, 1, 1);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glDisable(GL_TEXTURE_2D);
-}
 void initTextures() {
 	glEnable(GL_TEXTURE_2D);
-	wood = LoadTexture((char*)"assets/materials/bark_loo.bmp", 255);
+	wood = LoadTexture((char*)"assets/materials/tree1.bmp", 255);
+	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
 	// note if you load a image the opengl while on the GL_Texture_2D himself
 	glDisable(GL_TEXTURE_2D);
-}
-
-void initModels() {
-	treeModel = new Model_3DS();
-	treeModel->Load((char*)"assets/models/tree.3DS");
-	treeModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
-	treeModel->Materials[1].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
-	treeModel->pos.x = 5;
-	treeModel->pos.y = -2;
-	treeModel->pos.z = -5;
-	treeModel->scale = 0.1;
-
-	tree1Model = new Model_3DS();
-	tree1Model->Load((char*)"assets/models/tree1.3DS");
-	tree1Model->Materials[0].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
-	tree1Model->Materials[1].tex.LoadBMP((char*)"assets/materials/bark_loo.bmp");
-	tree1Model->Materials[2].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
-	tree1Model->Materials[3].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
-	tree1Model->Materials[4].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
-	tree1Model->Materials[5].tex.LoadBMP((char*)"assets/materials/leaf2.bmp");
-	tree1Model->pos.x = 15;
-	tree1Model->pos.y = -2;
-	tree1Model->pos.z = -5;
-	tree1Model->scale = 0.5;
-
-	tankModel = new Model_3DS();
-	tankModel->Load((char*)"assets/models/tank.3DS");
-	tankModel->pos.x = -5;
-	tankModel->pos.y = -2;
-	tankModel->pos.z = -5;
-	tankModel->scale = 1;
-
-	someModel = new Model_3DS();
-	someModel->Load((char*)"assets/models/tree.3DS");
-	someModel->pos.x = 5000;
-	someModel->pos.y = -5000;
-	someModel->pos.z = -5000;
-	someModel->scale = 0.001;
-
 }
 
 void initShadows() {
@@ -502,6 +363,7 @@ void updatePerspective() {
 
 	gluPerspective(fovY, aspectRatio, nearPlane, farPlane);
 }
+
 void updateZoomFactor(bool zoom) {
 	if (zoom == ZOOM_INCREASE) {
 		if (zoomFactor < 7) {
@@ -514,6 +376,7 @@ void updateZoomFactor(bool zoom) {
 		}
 	}
 }
+
 /**
 * @brief Toggles between full-screen and windowed mode.
 */
@@ -570,7 +433,6 @@ void SwitchToWindowedMode()
 	// Adjust OpenGL perspective based on the new window size
 	ReSizeGLScene(windowRect.right - windowRect.left, windowRect.bottom - windowRect.top);
 }
-
 
 /**
 * @brief Switches to full-screen mode.
