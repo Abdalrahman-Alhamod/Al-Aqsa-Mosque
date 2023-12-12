@@ -210,7 +210,7 @@ void Sphere::drawLines(const float lineColor[4]) const
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices.data());
 
-    glDrawElements(GL_LINES, isDome ? (unsigned int)lineIndices.size()/2: (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
+    glDrawElements(GL_LINES, isDome ? (unsigned int)lineIndices.size()/2-36: (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_LIGHTING);
