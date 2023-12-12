@@ -135,5 +135,12 @@ public:
      * @brief Blue component in GLfloat range [0, 1].
      */
     GLfloat bluef;
+
+    /**
+    * @brief Check if two Color objects are equal.
+    * @param other The Color object to compare with.
+    * @return True if the two Color objects are equal, false otherwise.
+    */
+    bool equal(const Color& other)const;
 };
 

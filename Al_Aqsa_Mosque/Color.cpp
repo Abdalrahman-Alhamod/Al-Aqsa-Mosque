@@ -146,3 +146,12 @@ void Color::setBlueFloat(GLfloat blue) {
     // Update the corresponding GLubyte attribute.
     blue = static_cast<GLubyte>(blue * 255.0f);
 }
+/**
+ * @brief Check if two Color objects are equal.
+ * @param other The Color object to compare with.
+ * @return True if the two Color objects are equal, false otherwise.
+ */
+bool Color::equal(const Color& other)const {
+    return ((red == other.red && green == other.green && blue == other.blue) ||
+        (redf == other.redf && greenf == other.greenf && bluef == other.bluef));
+}
