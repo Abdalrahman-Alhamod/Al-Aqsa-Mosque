@@ -51,6 +51,17 @@ public:
      */
     void drawPrayerCarbet2(const Point points[4], const int count);
 
+    /**
+    * @brief Draws a window with transparency using OpenGL.
+    *
+    * This method draws a window with a specified size, transparency, and texture.
+    *
+    * @param size The size of the window.
+    * @param alpha The alpha value for transparency (0 to 255).
+    * @param windowNum The index of the window texture to use.
+    */
+    void drawWindow(const int size,const int alpha,const int windowIndex);
+
 private:
     /**
      * @brief Static model for the crescent used in the mosque.
@@ -66,7 +77,10 @@ private:
      * @brief Texture ID for the second type of prayer carpet.
      */
     int carbet2;
-
+    /**
+    * @brief Texture ID Matrix for the windows.
+    */
+    int window[6];
     /**
      * @brief Draws a prayer carpet with a specific texture at the provided vertices.
      *
@@ -75,6 +89,17 @@ private:
      * @param textureID The texture ID for the carpet.
      */
     void drawCarbet(const Point points[4], const int count, const int textureID);
+
+    /**
+     * @brief Draws a rectangular object with transparency using OpenGL.
+     *
+     * This method draws a rectangular object with a specified transparency, texture, and vertices.
+     *
+     * @param points An array of points representing the vertices of the rectangular object.
+     * @param alpha The alpha value for transparency (0 to 255).
+     * @param textureID The texture ID for the rectangular object.
+     */
+    void drawRectWithAlpha(const Point points[4], const int alpha, const int textureID);
 };
 
 #endif // MOSQUE_DRAWER_H

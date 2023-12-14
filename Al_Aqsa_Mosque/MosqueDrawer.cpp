@@ -13,6 +13,12 @@ MosqueDrawer::MosqueDrawer() {
 
 	carbet1 = LoadTexture((char*)"assets/materials/carbet1.bmp", 255);
 	carbet2 = LoadTexture((char*)"assets/materials/carbet2.bmp", 255);
+	window[0] = LoadTexture((char*)"assets/materials/window1.bmp", 255);
+	window[1] = LoadTexture((char*)"assets/materials/window2.bmp", 255);
+	window[2] = LoadTexture((char*)"assets/materials/window3.bmp", 255);
+	window[3] = LoadTexture((char*)"assets/materials/window6.bmp", 255);
+	window[4] = LoadTexture((char*)"assets/materials/window4.bmp", 255);
+	window[5] = LoadTexture((char*)"assets/materials/window5.bmp", 255);
 
 	glDisable(GL_TEXTURE_2D);
 
@@ -93,4 +99,35 @@ void MosqueDrawer::drawPrayerCarbet1(const Point points[4], const int count) {
 
 void MosqueDrawer::drawPrayerCarbet2(const Point points[4], const int count) {
 	drawCarbet(points, count, carbet2);
+}
+
+void MosqueDrawer::drawRectWithAlpha(const Point points[4], const int alpha, const int textureID) {
+	
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glColor4ub(255, 255, 255, alpha);  // Set alpha value for transparency
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glPushMatrix();
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex3f(points[0].x, points[0].y, points[0].z);
+	glTexCoord2f( 1, 0); glVertex3f(points[1].x, points[1].y, points[1].z);
+	glTexCoord2f( 1, 1); glVertex3f(points[2].x, points[2].y, points[2].z);
+	glTexCoord2f(0, 1); glVertex3f(points[3].x, points[3].y, points[3].z);
+	glEnd();
+	glPopMatrix();
+
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+	
+}
+
+void MosqueDrawer::drawWindow(const int size,const int alpha, const int windowNum) {
+	const Point points[4] = { Point(size, -size*2, 0),Point(0, -0-size * 2, 0),Point(0, 0, 0),Point(size, 0, 0) };
+	drawRectWithAlpha(points,alpha,  window[windowNum]);
 }

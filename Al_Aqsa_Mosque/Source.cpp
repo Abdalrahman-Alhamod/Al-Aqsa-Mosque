@@ -283,10 +283,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	testEnv();
 	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
-	envDrawer.drawTiledLand(points, 50);
-	//envDrawer.drawGrassLand(points, 50);
-	//mosqueDrawer.drawPrayerCarbet1(points, 50);
-	//mosqueDrawer.drawPrayerCarbet2(points, 50);
+	envDrawer.drawTiledLand(points, 10);
+	//envDrawer.drawGrassLand(points, 10);
+	//mosqueDrawer.drawPrayerCarbet1(points, 10);
+	//mosqueDrawer.drawPrayerCarbet2(points, 10);
 
 	envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
@@ -302,13 +302,42 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
 	envDrawer.drawStreet(streetPoints, 1);
 
+	// Test Column
 	glPushMatrix();
 	glTranslatef(-20, 10, 0);
 	envDrawer.drawColumn(1);
 	glPopMatrix();
 
+
+	// Test Windows
+	glPushMatrix();
+	int alpha =200;
+	glTranslatef(-10, 10, 0);
+	mosqueDrawer.drawWindow(1,alpha,0);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-5, 10, 0);
+	mosqueDrawer.drawWindow(1, alpha, 1);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, 10, 0);
+	mosqueDrawer.drawWindow(1, alpha, 2);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(5, 10, 0);
+	mosqueDrawer.drawWindow(1, alpha, 3);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(10, 10, 0);
+	mosqueDrawer.drawWindow(1, alpha, 4);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(15, 10, 0);
+	mosqueDrawer.drawWindow(1, alpha, 5);
+	glPopMatrix();
+
 	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
-	// mosqueDrawer.drawDome(Point(-5, -2, 0), 0.5, SILVER_DOME);
+	mosqueDrawer.drawDome(Point(5, -2, 7), 0.5, SILVER_DOME);
 
 
 	glFlush();											// Done Drawing The Quad
