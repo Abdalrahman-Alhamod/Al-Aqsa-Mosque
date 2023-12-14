@@ -1,9 +1,12 @@
 //***************************************************************************
 // Camera based on Vectors
 //***************************************************************************
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include <gl\glut.h>		
 #include "Constants.h"
+#include "Point.h"
 
 /////////////////////////////////
 // Note: All angles in degrees //
@@ -13,6 +16,9 @@ struct Vector3dStruct
 {
     GLfloat x, y, z;
 };
+Vector3dStruct operator+ (Vector3dStruct, Vector3dStruct);
+Vector3dStruct operator* (Vector3dStruct, float);
+Vector3dStruct operator- (Vector3dStruct, Vector3dStruct);
 
 /**
  * @brief Create a 3D vector with the given coordinates.
@@ -42,7 +48,15 @@ Vector3dStruct NormalizeVector3d(Vector3dStruct v);
  */
 class Camera
 {
-public:
+private:
+    static int cameraMode;
+    static Camera* camera[3];
+    /*
+    * 0->free Camera
+    * 1->first Person Camera
+    * 2->third Person Camera
+    */
+
     Vector3dStruct View;        ///< View direction vector.
     Vector3dStruct RightVector; ///< Right vector.
     Vector3dStruct Up;           ///< Up vector.
@@ -50,17 +64,25 @@ public:
 
     GLfloat RotatedX, RotatedY, RotatedZ; ///< Rotation angles around X, Y, and Z axes.
 
-public:
     /**
      * @brief Default constructor. Initializes camera values.
      */
     Camera();
+
+public:
+    static void cameraInit();
+    static Camera* getInstance();
 
     /**
      * @brief Render the camera view by setting up the OpenGL viewing matrix.
      * @note You should call glLoadIdentity before using Render.
      */
     void Render(void);
+
+    /**
+    * @brief
+    */
+    static void changeMode(void);
 
     /**
      * @brief Move the camera in the specified direction.
@@ -125,4 +147,11 @@ public:
     * @param isRightClicked Indicates whether the right mouse button is clicked.
     */
     void decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRightClicked);
+    Point getPosition();
+
+    float getRotatedY();
+
+    int getMode();
 };
+
+#endif
