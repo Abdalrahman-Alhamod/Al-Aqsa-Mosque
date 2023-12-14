@@ -60,11 +60,7 @@
     <ClCompile Include="Constraints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="Box.cpp">
-=======
     <ClCompile Include="PersonDrawer.cpp">
->>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -114,11 +110,7 @@
     <ClInclude Include="Constraints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
-    <ClInclude Include="Box.h">
-=======
     <ClInclude Include="PersonDrawer.h">
->>>>>>> Stashed changes
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

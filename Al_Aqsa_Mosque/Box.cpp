@@ -7,7 +7,7 @@
 #include <gl/glut.h>		// Header File For The Glut Library
 #include <cmath>
 #include "math3d.h"
-#include <texture.h>
+#include "texture.h"
 #define db double
 #define gf GLfloat
 #define pshm glPushMatrix()
