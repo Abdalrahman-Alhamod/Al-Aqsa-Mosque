@@ -4,7 +4,8 @@
 #include "Point.h"
 #include "Constraints.h"
 #include "Color.h"
-#include "Model_3DS.h"  
+#include "Model_3DS.h"
+
 
 /**
  * @class EnvDrawer
@@ -65,6 +66,20 @@ public:
 	 * @param constraints The constraints defining the size of the skybox.
 	 */
 	void drawCloudsSkyBox(const Point& position, const Constraints& constraints);
+	/**
+	 * @brief Draw a garden with grass and trees.
+	 * @param point Position, width, and length of the garden.
+	 * @param grassTilesCount Number of grass tiles.
+	 * @param treeSize Size of the trees.
+	 * @param isSmall Draw small trees if true, big trees if false.
+	 *
+	 * Draws a garden with grass tiles covering the ground and randomly placed trees.
+	 * The number of grass tiles and tree size are specified. Tree size is determined
+	 * by the boolean flag "isSmall". Actual tree arrangement may vary due to randomness.
+	 *
+	 * Example usage: "envDrawer.drawGarden({0, 0, 0}, 100, 100, 500, 0.1, true);"
+	 */
+	void drawGarden(const Point& point, const int width, const int length,const int grassTilesCount,const int treeSize, bool isSmall);
 
 private:
 	static Model_3DS* tree1Model;

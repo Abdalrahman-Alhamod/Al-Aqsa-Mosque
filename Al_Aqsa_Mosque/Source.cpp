@@ -290,11 +290,15 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-
 	envDrawer.drawSmallTree(Point(5, -2, -5), 1);
 	envDrawer.drawBigTree(Point(15, -2, -5), 1);
+	glPushMatrix();
+	glTranslatef(15, -2, -5);
+	auxSolidCube(5.5);
+	glPopMatrix();
 	envDrawer.drawTank(Point(-5, -2, -5), 1);
 
+	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
 
 	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
 	// mosqueDrawer.drawDome(Point(-5, -2, 0), 0.5, SILVER_DOME);

@@ -206,3 +206,33 @@ void EnvDrawer::drawCloudsSkyBox(const Point& position, const Constraints& const
 		SKYDOWN = CloudsSKYDOWN;
 	drawSkyBox(position, constraints);
 }
+
+void EnvDrawer::drawGarden(const Point& point,const int width,const int length, const int grassTilesCount, const int treeSize, bool isSmall) {
+	Point points[4];
+	points[0].x = point.x, points[0].y = point.y, points[0].z = point.z;
+	points[1].x = point.x - width, points[1].y = point.y, points[1].z = point.z;
+	points[2].x = point.x - width, points[2].y = point.y, points[2].z = point.z+length;
+	points[3].x = point.x, points[3].y = point.y, points[3].z = point.z + length;
+	drawGrassLand(points, grassTilesCount);
+	float stepSize;
+	if (isSmall) {
+		// step size is size of small tree
+		stepSize = 4*treeSize;
+	}
+	else {
+		// step size is size of big tree
+		stepSize = 6 * treeSize;
+	}
+	for (float i = point.x-stepSize/4; i >= (point.x - width)+stepSize/4 ; i -= stepSize) {
+		for (float j = point.z+stepSize/4; j <=( point.z+length -stepSize/4); j += stepSize) {
+			float x = i, y = point.y, z = j;
+			Point treePosition = Point(x, y, z);
+			if (isSmall) {
+				drawSmallTree(treePosition, treeSize);
+			}
+			else {
+				drawBigTree(treePosition, treeSize);
+			}
+		}
+	}
+}
