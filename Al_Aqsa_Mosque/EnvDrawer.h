@@ -88,7 +88,7 @@ public:
 	* Draws a textured cylindrical column with decorative elements, including a top and
 	* bottom base. The size parameter determines the overall dimensions of the column.
 	*
-	* Example: "envDrawer.drawColumn(1);"
+	* Example: "envDrawer.drawColumn(3);"
 	* Draws a larger column with a size factor of 3.
 	*/
 	void drawColumn(const int size);
