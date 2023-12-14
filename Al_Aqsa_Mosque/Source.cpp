@@ -1,5 +1,10 @@
 #define ZOOM_INCREASE true
 #define ZOOM_DECREASE false
+#define db double
+#define gf GLfloat
+#define pshm glPushMatrix()
+#define ppm glPopMatrix()
+
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -21,6 +26,7 @@
 #include "Sphere.h"
 #include "MosqueDrawer.h"
 #include "EnvDrawer.h"
+#include "Box.h"
 
 
 using namespace std;
@@ -106,6 +112,7 @@ MosqueDrawer mosqueDrawer;
 
 // Environment Drawer Object
 EnvDrawer envDrawer;
+
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -305,12 +312,31 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	// Test Column
 	glPushMatrix();
 	glTranslatef(-20, 10, 0);
-	envDrawer.drawColumn(1);
+	envDrawer.drawPillar(1);
 	glPopMatrix();
+	
+	pshm;
+	glTranslated(-11, 0, 0);
+	int inside[6];
+	inside[0] = wood;
+	inside[1] = wood;
+	inside[2] = wood;
+	inside[3] = wood;
+	inside[4] = wood;
+	inside[5] = wood;
 
+	int outside[6];
+	outside[0] = ground;
+	outside[1] = ground;
+	outside[2] = ground;
+	outside[3] = ground;
+	outside[4] = ground;
+	outside[5] = ground;
+	Box b(5, 5, 10, inside, outside, shadowMat);
+
+	ppm;
 
 	// Test Windows
-	glPushMatrix();
 	int alpha =200;
 	glTranslatef(-10, 10, 0);
 	mosqueDrawer.drawWindow(1,alpha,0);
@@ -374,7 +400,7 @@ void initTextures() {
 	glEnable(GL_TEXTURE_2D);
 	wood = LoadTexture((char*)"assets/materials/tree1.bmp", 255);
 	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
-	// note if you load a image the opengl while on the GL_Texture_2D himself
+	// note if you load an image the opengl while on the GL_Texture_2D himself
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -416,6 +442,8 @@ void updateZoomFactor(bool zoom) {
 		}
 	}
 }
+
+
 
 /**
 * @brief Toggles between full-screen and windowed mode.

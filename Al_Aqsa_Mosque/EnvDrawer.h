@@ -91,7 +91,7 @@ public:
 	* Example: "envDrawer.drawColumn(3);"
 	* Draws a larger column with a size factor of 3.
 	*/
-	void drawColumn(const int size);
+	void drawPillar(const int size);
 
 	/**
 	 * @brief Draw a tiled passage using the specified points and count.

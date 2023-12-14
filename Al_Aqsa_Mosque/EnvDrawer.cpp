@@ -249,7 +249,7 @@ void EnvDrawer::drawGarden(const Point& point,const int width,const int length, 
 	}
 }
 
-void EnvDrawer::drawColumn(const int size) {
+void EnvDrawer::drawPillar(const int size) {
 	glPushMatrix();
 	glTranslatef(0, 5*size, 0);
 	glRotatef(45, 0, 1, 0);
