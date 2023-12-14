@@ -93,11 +93,25 @@ public:
 	*/
 	void drawColumn(const int size);
 
+	/**
+	 * @brief Draw a tiled passage using the specified points and count.
+	 * @param points An array of points representing the land.
+	 * @param count The number of points in the array.
+	 */
+	void drawPassage(const Point points[4], const int count);
+
+	/**
+	 * @brief Draw a asphalted street using the specified points and count.
+	 * @param points An array of points representing the land.
+	 * @param count The number of points in the array.
+	 */
+	void drawStreet(const Point points[4], const int count);
+
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;
 	static Model_3DS* tankModel;
-	int ground, grass, stone,wall;
+	int ground, grass, stone,wall,passage,street;
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;

@@ -292,13 +292,15 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 	envDrawer.drawSmallTree(Point(5, -2, -5), 1);
 	envDrawer.drawBigTree(Point(15, -2, -5), 1);
-	glPushMatrix();
-	glTranslatef(15, -2, -5);
-	auxSolidCube(5.5);
-	glPopMatrix();
 	envDrawer.drawTank(Point(-5, -2, -5), 1);
 
 	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
+
+	const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
+	envDrawer.drawPassage(passagePoints, 10);
+
+	const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
+	envDrawer.drawStreet(streetPoints, 1);
 
 	glPushMatrix();
 	glTranslatef(-20, 10, 0);

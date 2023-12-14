@@ -19,6 +19,8 @@ EnvDrawer::EnvDrawer() {
 	grass = LoadTexture((char*)"assets/materials/grass.bmp", 255);
 	stone = LoadTexture((char*)"assets/materials/stone1.bmp", 255);
 	wall = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
+	passage = LoadTexture((char*)"assets/materials/street2.bmp", 255);
+	street = LoadTexture((char*)"assets/materials/road1.bmp", 255);
 
 	CitySKYFRONT = LoadTexture((char*)"assets/skybox/CityFront.bmp", 255);
 	CitySKYBACK = LoadTexture((char*)"assets/skybox/CityBack.bmp", 255);
@@ -103,6 +105,14 @@ void EnvDrawer::drawTiledLand(const Point points[4], const int count) {
 
 void EnvDrawer::drawGrassLand(const Point points[4], const int count) {
 	drawLand(points, count, grass);
+}
+
+void EnvDrawer::drawPassage(const Point points[4], const int count) {
+	drawLand(points, count, passage);
+}
+
+void EnvDrawer::drawStreet(const Point points[4], const int count) {
+	drawLand(points, count, street);
 }
 
 void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints) {
