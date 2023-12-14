@@ -212,6 +212,8 @@ void testEnv() {
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
+	
+
 	if (keys[VK_NUMPAD4])
 	{
 		LightPos[0] -= 0.1;
@@ -244,7 +246,7 @@ void testEnv() {
 	}
 
 
-	//Rotate and change rotate angle
+	// Rotate and change rotate angle
 	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	angle++;
 
@@ -280,8 +282,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	testEnv();
-
-
 	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
 	envDrawer.drawTiledLand(points, 50);
 	//envDrawer.drawGrassLand(points, 50);
@@ -299,6 +299,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	envDrawer.drawTank(Point(-5, -2, -5), 1);
 
 	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
+
+	glPushMatrix();
+	glTranslatef(-20, 10, 0);
+	envDrawer.drawColumn(1);
+	glPopMatrix();
 
 	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
 	// mosqueDrawer.drawDome(Point(-5, -2, 0), 0.5, SILVER_DOME);

@@ -81,11 +81,23 @@ public:
 	 */
 	void drawGarden(const Point& point, const int width, const int length,const int grassTilesCount,const int treeSize, bool isSmall);
 
+	/**
+	* @brief Draw a textured cylindrical column with decorative elements.
+	* @param size Size factor determining the dimensions of the column.
+	*
+	* Draws a textured cylindrical column with decorative elements, including a top and
+	* bottom base. The size parameter determines the overall dimensions of the column.
+	*
+	* Example: "envDrawer.drawColumn(1);"
+	* Draws a larger column with a size factor of 3.
+	*/
+	void drawColumn(const int size);
+
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;
 	static Model_3DS* tankModel;
-	int ground, grass, stone;
+	int ground, grass, stone,wall;
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;

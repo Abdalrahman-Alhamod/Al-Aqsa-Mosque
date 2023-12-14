@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Texture.h"
 #include "Model_3DS.h"
+#include "Cylinder.h"
 
 Model_3DS* EnvDrawer::tree1Model = new Model_3DS();
 Model_3DS* EnvDrawer::tree2Model = new Model_3DS();
@@ -17,6 +18,7 @@ EnvDrawer::EnvDrawer() {
 	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
 	grass = LoadTexture((char*)"assets/materials/grass.bmp", 255);
 	stone = LoadTexture((char*)"assets/materials/stone1.bmp", 255);
+	wall = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 
 	CitySKYFRONT = LoadTexture((char*)"assets/skybox/CityFront.bmp", 255);
 	CitySKYBACK = LoadTexture((char*)"assets/skybox/CityBack.bmp", 255);
@@ -235,4 +237,37 @@ void EnvDrawer::drawGarden(const Point& point,const int width,const int length, 
 			}
 		}
 	}
+}
+
+void EnvDrawer::drawColumn(const int size) {
+	glPushMatrix();
+	glTranslatef(0, 5*size, 0);
+	glRotatef(45, 0, 1, 0);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, wall);
+	Cylinder topBase = Cylinder(1 * size, 2 * size, 1 * size, 4);
+	topBase.setUpAxis(2);
+	topBase.draw();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, wall);
+	Cylinder column = Cylinder(1 * size, 1 * size, 10 * size);
+	column.setUpAxis(2);
+	column.draw();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, -5 * size, 0);
+	glRotatef(45, 0, 1, 0);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, wall);
+	Cylinder bottomBase = Cylinder(2 * size, 1 * size, 1 * size, 4);
+	bottomBase.setUpAxis(2);
+	bottomBase.draw();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
