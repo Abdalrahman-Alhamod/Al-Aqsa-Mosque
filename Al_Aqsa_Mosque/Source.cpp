@@ -315,6 +315,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	envDrawer.drawPillar(1);
 	glPopMatrix();
 	
+
+	//added by mohammad yassen
 	pshm;
 	glTranslated(-11, 0, 0);
 	int inside[6];
@@ -332,7 +334,14 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	outside[3] = ground;
 	outside[4] = ground;
 	outside[5] = ground;
-	Box b(5, 5, 10, inside, outside, shadowMat);
+	//shadow won't work because the flag is false in default
+	pshm;
+	glTranslated(-5, 0, 0);
+	Box b1 = Box();
+	b1.drawOutside(1, 1, 1, outside);
+	ppm;
+	ppm;
+	Box b(5, 5, 10, inside, outside, shadowMat,true);
 
 	ppm;
 
@@ -406,8 +415,8 @@ void initTextures() {
 
 void initShadows() {
 
-	M3DVector3f points[3] = { { -30.0f, -2.0f, -20.0f },{ -30.0f, -2.0f, 20.0f },
-		{ 40.0f, -2.0f, 20.0f } };
+	M3DVector3f points[3] = { { -30.0f, -1.9f, -20.0f },{ -30.0f, -1.9f, 20.0f },
+		{ 40.0f, -1.9f, 20.0f } };
 
 	m3dGetPlaneEquation(vPlaneEquation, points[0], points[1],
 		points[2]);

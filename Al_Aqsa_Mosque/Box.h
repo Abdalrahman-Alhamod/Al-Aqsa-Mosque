@@ -63,6 +63,7 @@ public:
 	* texture[4] the left face
 	* texture[5] the right face
 	*/
+	Box();
 	Box(db width, db length, db height, int texture1[], int texture2[], M3DMatrix44f shadowMat, bool shad = false);
 };
 
