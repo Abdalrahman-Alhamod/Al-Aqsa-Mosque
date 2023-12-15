@@ -12,6 +12,7 @@
 #include <gl\glaux.h>		// Header File For The Glaux Library
 #include <gl\glut.h>		// Header File For The Glut Library
 #include <iostream>
+#include <math.h>
 #include "Point.h"
 #include "Color.h"
 #include "Constants.h"
@@ -23,9 +24,11 @@
 #include "3DTexture.h"
 #include "math3d.h"
 #include "Cylinder.h"
+#include "Constants.h"
 #include "Sphere.h"
 #include "MosqueDrawer.h"
 #include "EnvDrawer.h"
+#include "PersonDrawer.h"
 #include "Box.h"
 
 
@@ -80,7 +83,7 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 }
 
 // Camera Object
-Camera camera;
+Camera* camera;
 
 // Console Object
 Console console;
@@ -113,6 +116,8 @@ MosqueDrawer mosqueDrawer;
 // Environment Drawer Object
 EnvDrawer envDrawer;
 
+PersonDrawer personDrawer;
+
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -124,13 +129,10 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
 	// Initialize Camera
-	camera = Camera();
-	camera.Position.x = 0;
-	camera.Position.y = 0;
-	camera.Position.z = 20;
+	Camera::cameraInit();
 
 	// Initialize Console
-	 //console.init();
+	//console.init();
 	// Print testing message
 	// console.print("Hello, Console!");
 
@@ -141,11 +143,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	initTextures();
 
 	// Initialize Shadows
-	initShadows();
+	//initShadows();
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer();
+
+	personDrawer = PersonDrawer();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -167,7 +171,6 @@ void testEnv() {
 
 	// Set light position in world coordinates ( fix moving with camera bug)
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
-
 
 	// Lighting Destination Test
 	glEnable(GL_LIGHTING);
@@ -284,9 +287,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	camera.Render();
-	camera.decodeKeyboard(keys, 0.1);
-	camera.decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+	camera = Camera::getInstance();
+
+	camera->Render();
+	camera->decodeKeyboard(keys, 0.05);
+	//camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	testEnv();
 	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
@@ -297,10 +302,24 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-	envDrawer.drawSmallTree(Point(5, -2, -5), 1);
-	envDrawer.drawBigTree(Point(15, -2, -5), 1);
-	envDrawer.drawTank(Point(-5, -2, -5), 1);
 
+	//envDrawer.drawSmallTree(Point(5, -2, -5), 1);
+	//envDrawer.drawBigTree(Point(15, -2, -5), 1);
+	//envDrawer.drawTank(Point(-5, -2, -5), 1);
+
+	if (camera->getMode() == THIRD_PERSON_CAMERA)
+	{
+		Point p = camera->getPosition();
+		float angel = 180 + camera->getRotatedY(),r = 2.2;
+
+		p.x += r * sin(angel * PIdiv180);
+		p.z += r * cos(angel * PIdiv180);
+		p.y = -0.5 * 0.07 * cos(4 * (p.x + p.z) );
+
+		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
+
+		personDrawer.drawPerson(p, angel, 10);
+	}
 	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
 
 	const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
@@ -373,7 +392,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
 	mosqueDrawer.drawDome(Point(5, -2, 7), 0.5, SILVER_DOME);
-
 
 	glFlush();											// Done Drawing The Quad
 
@@ -835,6 +853,11 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		if (keys['F'])
 		{
 			ToggleFullscreen();
+		}
+
+		if (keys['C'])
+		{
+			Camera::changeMode();
 		}
 
 		return 0;								// Jump Back

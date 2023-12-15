@@ -13,6 +13,10 @@
 
 #define NULL_VECTOR Vector3dCreate(0.0f,0.0f,0.0f)
 
+int Camera::cameraMode = 2;
+
+Camera* Camera::camera[] = {};
+
 Vector3dStruct Vector3dCreate(GLfloat x, GLfloat y, GLfloat z)
 {
 	Vector3dStruct tmp;
@@ -79,21 +83,35 @@ float operator* (Vector3dStruct v, Vector3dStruct u)	//dot product
 	return v.x * u.x + v.y * u.y + v.z * u.z;
 }
 
-
-
-
 /***************************************************************************************/
 
 Camera::Camera()
 {
 
-	Position = Vector3dCreate(0.0, 0.0, 0.0);
-	View = Vector3dCreate(0.0, 0.0, -1.0);
-	RightVector = Vector3dCreate(1.0, 0.0, 0.0);
-	Up = Vector3dCreate(0.0, 1.0, 0.0);
+}
 
+Camera* Camera::getInstance()
+{
+	return Camera::camera[Camera::cameraMode];
+}
 
-	RotatedX = RotatedY = RotatedZ = 0.0;
+void Camera::cameraInit()
+{
+
+	for (int i = 0; i < 3; ++i)
+	{
+		camera[i] = new Camera();
+		camera[i]->Position.z = 0;
+		camera[i]->Position.x = 0;
+		camera[i]->Position.y = 0;
+
+		camera[i]->Position = Vector3dCreate(0.0, 1.5, 0.0);
+		camera[i]->View = Vector3dCreate(0.0, 0.0, -1.0);
+		camera[i]->RightVector = Vector3dCreate(1.0, 0.0, 0.0);
+		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
+
+		camera[i]->RotatedX = camera[i]->RotatedY = camera[i]->RotatedZ = 0.0;
+	}
 }
 
 void Camera::Move(Vector3dStruct Direction)
@@ -103,14 +121,11 @@ void Camera::Move(Vector3dStruct Direction)
 
 void Camera::RotateX(GLfloat Angle)
 {
-
 	RotatedX += Angle;
 	//Rotate viewdir around the right vector:
 	View = NormalizeVector3d(View * cosf(Angle * PIdiv180) + Up * sinf(Angle * PIdiv180));
 	//now compute the new UpVector (by cross product)
-	Up = CrossProduct(&View, &RightVector) * -1;
-
-
+	//Up = CrossProduct(&View, &RightVector) * -1;
 }
 
 void Camera::RotateY(GLfloat Angle)
@@ -128,7 +143,7 @@ void Camera::RotateZ(GLfloat Angle)
 	//Rotate viewdir around the right vector:
 	RightVector = NormalizeVector3d(RightVector * cosf(Angle * PIdiv180) + Up * sinf(Angle * PIdiv180));
 	//now compute the new UpVector (by cross product)
-	Up = CrossProduct(&View, &RightVector) * -1;
+	//Up = CrossProduct(&View, &RightVector) * -1;
 }
 
 void Camera::Render(void)
@@ -140,12 +155,22 @@ void Camera::Render(void)
 	gluLookAt(Position.x, Position.y, Position.z,
 		ViewPoint.x, ViewPoint.y, ViewPoint.z,
 		Up.x, Up.y, Up.z);
+}
 
+void Camera::changeMode(void)
+{
+	Camera::cameraMode = (Camera::cameraMode + 1) % 3;
 }
 
 void Camera::MoveForward(GLfloat Distance)
 {
-	Position = Position + (View * Distance);
+	if (Camera::getMode() == FREE_CAMERA)
+	{
+		Position = Position + (View * Distance);
+		return;
+	}
+	float x = View.x, z = View.z;
+	Position = Position + (Vector3dCreate(x, 0, z) * Distance);
 }
 
 void Camera::MoveRight(GLfloat Distance)
@@ -155,7 +180,8 @@ void Camera::MoveRight(GLfloat Distance)
 
 void Camera::MoveUpward(GLfloat Distance)
 {
-	Position = Position + (Up * Distance);
+	if (Camera::getMode() == FREE_CAMERA)
+		Position = Position + (Up * Distance);
 }
 
 void Camera::SetRotateX(GLfloat Angle)
@@ -186,17 +212,17 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 
 	// Camera orientation adjustment using arrow keys
 	if (keys[VK_DOWN])
-		Camera::RotateX(-1 * speed); // Rotate camera around X-axis (look up)
+		Camera::RotateX(-1 * (speed + 1)); // Rotate camera around X-axis (look up)
 	if (keys[VK_UP])
-		Camera::RotateX(1 * speed); // Rotate camera around X-axis (look down)
+		Camera::RotateX(1 * (speed + 1)); // Rotate camera around X-axis (look down)
 	if (keys[VK_LEFT])
-		Camera::RotateY(1 * speed); // Rotate camera around Y-axis (look left)
+		Camera::RotateY(1 * (speed + 1)); // Rotate camera around Y-axis (look left)
 	if (keys[VK_RIGHT])
-		Camera::RotateY(-1 * speed); // Rotate camera around Y-axis (look right)
+		Camera::RotateY(-1 * (speed + 1)); // Rotate camera around Y-axis (look right)
 	if (keys['Z'])
-		Camera::RotateZ(1 * speed);  // Rotate camera around Z-axis (roll clockwise)
+		Camera::RotateZ(1 * (speed + 1));  // Rotate camera around Z-axis (roll clockwise)
 	if (keys['X'])
-		Camera::RotateZ(-1 * speed); // Rotate camera around Z-axis (roll counterclockwise)
+		Camera::RotateZ(-1 * (speed + 1)); // Rotate camera around Z-axis (roll counterclockwise)
 }
 
 
@@ -240,5 +266,20 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 		RotatedX = RotatedY = RotatedZ = 0.0;
 
 	}
+}
+
+Point Camera::getPosition()
+{
+	return Point(Position.x, Position.y, Position.z);
+}
+
+float Camera::getRotatedY()
+{
+	return RotatedY;
+}
+
+int Camera::getMode()
+{
+	return cameraMode;
 }
 

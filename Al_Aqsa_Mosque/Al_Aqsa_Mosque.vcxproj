@@ -166,6 +166,7 @@
     <ClCompile Include="math3d.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
     <ClCompile Include="MosqueDrawer.cpp" />
+    <ClCompile Include="PersonDrawer.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PrimitiveDrawer.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="math3d.h" />
     <ClInclude Include="Model_3DS.h" />
     <ClInclude Include="MosqueDrawer.h" />
+    <ClInclude Include="PersonDrawer.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
     <ClInclude Include="Sphere.h" />

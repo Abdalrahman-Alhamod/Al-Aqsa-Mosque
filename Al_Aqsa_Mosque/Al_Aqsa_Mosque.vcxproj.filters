@@ -60,7 +60,7 @@
     <ClCompile Include="Constraints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
+    <ClCompile Include="PersonDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,7 +110,7 @@
     <ClInclude Include="Constraints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
+    <ClInclude Include="PersonDrawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
