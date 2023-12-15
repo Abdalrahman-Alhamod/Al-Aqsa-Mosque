@@ -12,7 +12,7 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
-#define shadow glColor3f(0.5,0.5,0.5);glMultMatrixf((gf*)shadowMat)
+#define shadow glColor3f(0.0,0.0,0.0);glMultMatrixf((gf*)shadowMat)
 #define txt(s,t) glTexCoord2d(s,t)
 
 void Box::drawOutside(db width, db length, db height, int texture[]) {
