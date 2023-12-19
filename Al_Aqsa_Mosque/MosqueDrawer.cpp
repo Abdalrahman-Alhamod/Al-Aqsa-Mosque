@@ -24,8 +24,8 @@ MosqueDrawer::MosqueDrawer() {
 
 	crescentModel->Load((char*)"assets/models/crescent.3DS");
 	// remove unused 2 crescent
-	crescentModel->Objects[5].pos.z = 10000;
-	crescentModel->Objects[6].pos.z = 10000;
+	crescentModel->Objects[5].pos.z = 100000000;
+	crescentModel->Objects[6].pos.z = 100000000;
 	// setting initial values
 	crescentModel->pos.x = 5;
 	crescentModel->pos.y = 6.8;
@@ -43,6 +43,7 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
 	sphere.drawWithLines(lineColor);
+	//sphere.draw();
 	glPopMatrix();
 
 	// Top Cone
