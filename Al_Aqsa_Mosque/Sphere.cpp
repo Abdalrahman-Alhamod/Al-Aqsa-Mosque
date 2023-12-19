@@ -185,7 +185,7 @@ void Sphere::draw() const
     glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-    glDrawElements(GL_TRIANGLES, isDome? (unsigned int)indices.size() /2:(unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES, isDome? (unsigned int)indices.size() /2+218:(unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -210,7 +210,7 @@ void Sphere::drawLines(const float lineColor[4]) const
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices.data());
 
-    glDrawElements(GL_LINES, isDome ? (unsigned int)lineIndices.size()/2-36: (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
+    glDrawElements(GL_LINES, isDome ? (unsigned int)lineIndices.size()/2-36+144: (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_LIGHTING);
