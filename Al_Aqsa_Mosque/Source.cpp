@@ -127,6 +127,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
 	// Initialize Camera
 	Camera::cameraInit();
@@ -156,6 +157,99 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
+
+void square(void) {
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, wood);
+	glTranslatef(0, 2.5, 0);
+	glScalef(2, 2, 2);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1, 0);
+	glVertex3f(-1, -1, 0);
+	glTexCoord2f(1, 1);
+	glVertex3f(-1, 1, 0);
+	glTexCoord2f(0, 1);
+	glVertex3f(1, 1, 0);
+	glTexCoord2f(0, 0);
+	glVertex3f(1, -1, 0);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
+void bench(void) {
+	glPushMatrix();
+	glColor4f(1, 1, 1, 0.4);
+	glTranslatef(0, -2.5, 0);
+	glScalef(4, 2, 4);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1, 0);
+	glVertex3f(-1, -1, 1);
+	glTexCoord2f(1, 1);
+	glVertex3f(-1, 1, -0.5);
+	glTexCoord2f(0, 1);
+	glVertex3f(1, 1, -0.5);
+	glTexCoord2f(0, 0);
+	glVertex3f(1, -1, 1);
+	glEnd();
+	glPopMatrix();
+}
+void testReflection() {
+	// Disable the color mask and depth mask
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_FALSE);
+
+	// Enable stencil testing
+	glEnable(GL_STENCIL_TEST);
+
+	// Set the stencil buffer to replace the next lot of data
+	glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
+	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+	// Set the data plane to be replaced (assuming `bench` is a function to set the data plane)
+	bench();
+
+	// Enable the color mask and depth mask
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+
+	// Set the stencil buffer to keep the next lot of data
+	glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+	// Disable depth testing of the reflection
+	glDisable(GL_DEPTH_TEST);
+
+	// Apply transformations to draw the reflection
+	glPushMatrix();
+	glScalef(1.0f, -1.0f, 1.0f);  // Flip the reflection vertically
+	glTranslatef(0, 2, 0);        // Translate the reflection onto the drawing plane
+	glRotatef(angle, 0, 1, 0);     // Rotate the reflection
+	square();                      // Draw the square as our reflection
+	glPopMatrix();
+
+	// Enable depth testing
+	glEnable(GL_DEPTH_TEST);
+
+	// Disable stencil testing
+	glDisable(GL_STENCIL_TEST);
+
+	// Enable alpha blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Draw the bench with alpha blending
+	bench();
+
+	// Disable alpha blending
+	glDisable(GL_BLEND);
+
+	// Rotate the square and draw it
+	glRotatef(angle, 0, 1, 0);
+	square();
+
+}
 
 void testEnv() {
 	// Testing Camera
@@ -222,6 +316,11 @@ void testEnv() {
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
+	glPushMatrix();
+	glTranslated(30, 10, 10);
+	testReflection();
+	glPopMatrix();
+
 	
 
 	if (keys[VK_NUMPAD4])
@@ -279,6 +378,9 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
+	glClearStencil(0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 
 	// Update Perspective Projection with new zooming value
 	updatePerspective();
@@ -290,8 +392,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera = Camera::getInstance();
 
 	camera->Render();
-	camera->decodeKeyboard(keys, 0.05);
-	//camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+	camera->decodeKeyboard(keys, 0.5);
+	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	testEnv();
 	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
@@ -390,8 +492,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	mosqueDrawer.drawWindow(1, alpha, 5);
 	glPopMatrix();
 
-	mosqueDrawer.drawDome(Point(5, -2, 0), 0.5, GOLDEN_DOME);
-	mosqueDrawer.drawDome(Point(5, -2, 7), 0.5, SILVER_DOME);
+	mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
+	mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);
 
 	glFlush();											// Done Drawing The Quad
 
