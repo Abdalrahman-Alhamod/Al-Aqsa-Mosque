@@ -132,7 +132,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::cameraInit();
 
 	// Initialize Console
-	//console.init();
+	console.init();
 	// Print testing message
 	// console.print("Hello, Console!");
 
@@ -310,16 +310,21 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
 		Point p = camera->getPosition();
-		float angel = 180 + camera->getRotatedY(),r = 2.2;
+		float angel = 180 + camera->getRotatedY(),r = 1.8;
 
+		/* trying to fix weird movement while pressing movement letters
+		p.x *= 0.95;
+		p.z *= 0.95;
+		*/
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.5 * 0.07 * cos(4 * (p.x + p.z) );
+		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)) );
 
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
-
+		//console.print(personDrawer.v());
 		personDrawer.drawPerson(p, angel, 10);
 	}
+		//personDrawer.drawPerson(Point(0,0,-5), 0, 10);
 	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
 
 	const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
