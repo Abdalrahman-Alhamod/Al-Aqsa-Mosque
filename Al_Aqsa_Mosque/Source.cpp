@@ -22,9 +22,9 @@
 #include "Console.h"
 #include "Model_3DS.h"
 #include "3DTexture.h"
+#include "Constraints.h"
 #include "math3d.h"
 #include "Cylinder.h"
-#include "Constants.h"
 #include "Sphere.h"
 #include "MosqueDrawer.h"
 #include "EnvDrawer.h"
@@ -357,10 +357,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslated(-5, 0, 0);
 	Box b1 = Box();
-	b1.drawOutside(1, 1, 1, outside);
+	b1.drawOutside(Constraints(1,1,1), outside);
 	ppm;
 	ppm;
-	Box b(5, 5, 10, inside, outside, shadowMat,true);
+	Box b(Constraints(5.0f,10.0f,5.0f), inside, outside, shadowMat, true);
 
 	ppm;
 
