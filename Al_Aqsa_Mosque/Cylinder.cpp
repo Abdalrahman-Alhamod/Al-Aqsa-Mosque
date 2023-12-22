@@ -43,10 +43,10 @@ const int MIN_STACK_COUNT = 1;
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
-Cylinder::Cylinder(float baseRadius, float topRadius, float height, int sectors,
+Cylinder::Cylinder(float baseRadius, float topRadius, float height,bool isHalf, int sectors,
     int stacks, bool smooth, int up) : interleavedStride(32)
 {
-    set(baseRadius, topRadius, height, sectors, stacks, smooth, up);
+    set(baseRadius, topRadius, height,isHalf, sectors, stacks, smooth, up);
 }
 
 
@@ -54,7 +54,7 @@ Cylinder::Cylinder(float baseRadius, float topRadius, float height, int sectors,
 ///////////////////////////////////////////////////////////////////////////////
 // setters
 ///////////////////////////////////////////////////////////////////////////////
-void Cylinder::set(float baseRadius, float topRadius, float height, int sectors,
+void Cylinder::set(float baseRadius, float topRadius, float height,bool isHalf, int sectors,
     int stacks, bool smooth, int up)
 {
     if (baseRadius > 0)
@@ -70,6 +70,7 @@ void Cylinder::set(float baseRadius, float topRadius, float height, int sectors,
     if (stacks < MIN_STACK_COUNT)
         this->stackCount = MIN_STACK_COUNT;
     this->smooth = smooth;
+    this->isHalf = isHalf;
     this->upAxis = up;
     if (up < 1 || up > 3)
         this->upAxis = 3;
@@ -123,6 +124,15 @@ void Cylinder::setSmooth(bool smooth)
         buildVerticesSmooth();
     else
         buildVerticesFlat();
+}
+
+void Cylinder::setIsHalf(bool isHalf)
+{
+    if (this->isHalf == isHalf)
+        return;
+
+    this->isHalf = isHalf;
+
 }
 
 void Cylinder::setUpAxis(int up)
@@ -194,7 +204,7 @@ void Cylinder::drawSide() const
     glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-    glDrawElements(GL_TRIANGLES, baseIndex, GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES, isHalf ?baseIndex/2: baseIndex, GL_UNSIGNED_INT, indices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);

@@ -133,7 +133,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::cameraInit();
 
 	// Initialize Console
-	console.init();
+	//console.init();
 	// Print testing message
 	// console.print("Hello, Console!");
 
