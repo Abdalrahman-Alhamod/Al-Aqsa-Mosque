@@ -1,5 +1,6 @@
 #pragma once
 #include "math3d.h"
+#include "Constraints.h"
 #define db double 
 class Box
 {
@@ -21,12 +22,10 @@ public:
 	* texture[4] the left face
 	* texture[5] the right face
 	*/
-	void drawOutside(db width, db length, db height, int texture[]);
+	void drawOutside(const Constraints& c, int texture[]);
 	/**
 	* @brief draw the box from the inside
-	* @param width the width of the box
-	* @param length the length of the box
-	* @param height the height of the box
+	* @param constraints is an object of width height length
 	* @param texture array for the 6 faces of the box. 
 	*
 	* the six of faces of the textures go as follow
@@ -37,20 +36,16 @@ public:
 	* texture[4] the left face
 	* texture[5] the right face
 	*/
-	void drawInside(db width, db length, db height, int texture[]);
+	void drawInside(const Constraints& c, int texture[]);
 	/**
 	* @brief draw the shadow of the box
-	* @param width the width of the box
-	* @param length the length of the box
-	* @param height the height of the box
+	* @param constraints is an object of width height length
 	* @param shadowMat takes the matrix of shadows
 	*/
-	void drawShadow(db width, db length, db height, M3DMatrix44f shadowMat);
+	void drawShadow(const Constraints& c, M3DMatrix44f shadowMat);
 	/**
 	* @brief draws the box from inside and outside
-	* @param width the width of the box
-	* @param length the length of the box
-	* @param height the height of the box
+	* @param constraints is an object of width height length
 	* @param texture1 array for the 6 faces of the box from outside
 	* @param texture2 array for the 6 faces of the box from inside.            
 	* 
@@ -64,6 +59,6 @@ public:
 	* texture[5] the right face
 	*/
 	Box();
-	Box(db width, db length, db height, int texture1[], int texture2[], M3DMatrix44f shadowMat, bool shad = false);
+	Box( const Constraints& c, int texture1[], int texture2[], M3DMatrix44f shadowMat, bool shad = false);
 };
 
