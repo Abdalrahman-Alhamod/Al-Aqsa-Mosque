@@ -25,8 +25,8 @@ class Cylinder
 {
 public:
     // ctor/dtor
-    Cylinder(float baseRadius = 1.0f, float topRadius = 1.0f, float height = 1.0f,bool isHalf=false,
-        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3);
+    Cylinder(float baseRadius = 1.0f, float topRadius = 1.0f, float height = 1.0f,
+        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3, bool isHalf = false );
     ~Cylinder() {}
 
     // getters/setters
@@ -35,8 +35,8 @@ public:
     float getHeight() const { return height; }
     int getSectorCount() const { return sectorCount; }
     int getStackCount() const { return stackCount; }
-    void set(float baseRadius, float topRadius, float height,bool isHalf,
-        int sectorCount, int stackCount, bool smooth = true, int up = 3);
+    void set(float baseRadius, float topRadius, float height,
+        int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isHalf=false);
     void setBaseRadius(float radius);
     void setTopRadius(float radius);
     void setHeight(float radius);
@@ -85,6 +85,8 @@ public:
     void drawSide() const;      // draw side only
     void drawLines(const float lineColor[4]) const;     // draw lines only
     void drawWithLines(const float lineColor[4]) const; // draw surface and lines
+
+    void reverseNormals();
 
     // debug
     void printSelf() const;

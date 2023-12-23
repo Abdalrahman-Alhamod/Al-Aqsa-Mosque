@@ -43,10 +43,10 @@ const int MIN_STACK_COUNT = 1;
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
-Cylinder::Cylinder(float baseRadius, float topRadius, float height,bool isHalf, int sectors,
-    int stacks, bool smooth, int up) : interleavedStride(32)
+Cylinder::Cylinder(float baseRadius, float topRadius, float height, int sectors,
+    int stacks, bool smooth, int up, bool isHalf) : interleavedStride(32)
 {
-    set(baseRadius, topRadius, height,isHalf, sectors, stacks, smooth, up);
+    set(baseRadius, topRadius, height, sectors, stacks, smooth, up, isHalf);
 }
 
 
@@ -54,8 +54,8 @@ Cylinder::Cylinder(float baseRadius, float topRadius, float height,bool isHalf, 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
 ///////////////////////////////////////////////////////////////////////////////
-void Cylinder::set(float baseRadius, float topRadius, float height,bool isHalf, int sectors,
-    int stacks, bool smooth, int up)
+void Cylinder::set(float baseRadius, float topRadius, float height, int sectors,
+    int stacks, bool smooth, int up, bool isHalf)
 {
     if (baseRadius > 0)
         this->baseRadius = baseRadius;
@@ -861,4 +861,33 @@ std::vector<float> Cylinder::computeFaceNormal(float x1, float y1, float z1,  //
     }
 
     return normal;
+}
+///////////////////////////////////////////////////////////////////////////////
+// flip the face normals to opposite directions
+///////////////////////////////////////////////////////////////////////////////
+void Cylinder::reverseNormals()
+{
+    std::size_t i, j;
+    std::size_t count = normals.size();
+    for (i = 0, j = 3; i < count; i += 3, j += 8)
+    {
+        normals[i] *= -1;
+        normals[i + 1] *= -1;
+        normals[i + 2] *= -1;
+
+        // update interleaved array
+        interleavedVertices[j] = normals[i];
+        interleavedVertices[j + 1] = normals[i + 1];
+        interleavedVertices[j + 2] = normals[i + 2];
+    }
+
+    // also reverse triangle windings
+    unsigned int tmp;
+    count = indices.size();
+    for (i = 0; i < count; i += 3)
+    {
+        tmp = indices[i];
+        indices[i] = indices[i + 2];
+        indices[i + 2] = tmp;
+    }
 }
