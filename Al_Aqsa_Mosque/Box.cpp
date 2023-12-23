@@ -63,13 +63,13 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glBegin(GL_QUADS);
 	glNormal3f(0, 0, -1);
 	txt(0, 0);
-	glVertex3d(0, 0, 0);
-	txt(1, 0);
-	glVertex3d(0, height, 0);
-	txt(1, 1);
-	glVertex3d(width, height, 0);
-	txt(0, 1);
 	glVertex3d(width, 0, 0);
+	txt(1, 0);
+	glVertex3d(0, 0, 0);
+	txt(1, 1);
+	glVertex3d(0, height, 0);
+	txt(0, 1);
+	glVertex3d(width, height, 0);
 	glEnd();
 	ppm;
 	
@@ -113,13 +113,13 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glBegin(GL_QUADS);
 	glNormal3f(0, 0, 1);
 	txt(0, 0);
-	glVertex3d(width, 0, 0);
-	txt(1, 0);
-	glVertex3d(width, height, 0);
-	txt(1, 1);
-	glVertex3d(width, height, length);
-	txt(0, 1);
 	glVertex3d(width, 0, length);
+	txt(1, 0);
+	glVertex3d(width, 0, 0);
+	txt(1, 1);
+	glVertex3d(width, height, 0);
+	txt(0, 1);
+	glVertex3d(width, height, length);
 	glEnd();
 	ppm;
 	glDisable(GL_TEXTURE_2D);
@@ -127,6 +127,15 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	ppm;
 
 
+}
+void Box::drawOutside(const Constraints& c,const int texture) {
+	int textures[6] = { texture,texture, texture, texture, texture, texture };
+	Box::drawOutside(c, textures);
+}
+
+void Box::drawOutside(const Constraints& c, const int sourroundTexture, const int baseTexture) {
+	int textures[6] = { baseTexture,baseTexture, sourroundTexture, sourroundTexture,sourroundTexture,sourroundTexture };
+	Box::drawOutside(c, textures);
 }
 
 void Box::drawInside(const Constraints& c, int texture[]) {

@@ -24,6 +24,24 @@ public:
 	*/
 	void drawOutside(const Constraints& c, int texture[]);
 	/**
+	* @brief draw the box from the outside
+	* @param width the width of the box
+	* @param length the length of the box
+	* @param height the height of the box
+	* @param texture for the 6 faces of the box.
+	*/
+	void drawOutside(const Constraints& c,const int texture);
+	/**
+	* @brief draw the box from the outside
+	* @param width the width of the box
+	* @param length the length of the box
+	* @param height the height of the box
+	* @param texture for the 6 faces of the box.
+	* texture[0] the sourrounding faces
+	* texture[1] the bases faces
+	*/
+	void drawOutside(const Constraints& c, const int sourroundTexture,const int baseTexture);
+	/**
 	* @brief draw the box from the inside
 	* @param constraints is an object of width height length
 	* @param texture array for the 6 faces of the box. 
