@@ -52,7 +52,6 @@ LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 void ToggleFullscreen();	// Function to toggle between full-screen and windowed mode
 void SwitchToWindowedMode();	// Function to switch to windowed mode
 bool SwitchToFullScreen();	// Function to switch to full-screen mode
-void initLighting();
 void initTextures();
 void initShadows();
 void updatePerspective();
@@ -88,21 +87,6 @@ Camera* camera;
 // Console Object
 Console console;
 
-// Lighting Variables
-float ch = 0;
-GLfloat LightDir[] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
-GLfloat LightPos[] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
-
-GLfloat LightAmb[] = { 0.2f, 0.2f, 0.2f, 1.0f };    // Low ambient lighting
-GLfloat LightDiff[] = { 0.8f, 0.8f, 0.8f, 1.0f };    // High diffuse lighting
-GLfloat LightSpec[] = { 1.0f, 1.0f, 1.0f, 1.0f };    // High specular lighting
-
-GLfloat MatAmb[] = { 0.8f, 0.2f, 0.2f, 1.0f };      // Red ambient material
-GLfloat MatDif[] = { 0.8f, 0.8f, 0.8f, 1.0f };      // High diffuse material
-GLfloat MatSpec[] = { 0.5f, 0.5f, 0.5f, 1.0f };     // Moderate specular material
-
-GLfloat MatShn[] = { 32.0f };                        // Moderate shininess
-
 // More Texture Images Variables
 int wood, ground;
 
@@ -131,14 +115,12 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Camera
 	Camera::cameraInit();
+	Camera::changeMode();
 
 	// Initialize Console
 	//console.init();
 	// Print testing message
-	// console.print("Hello, Console!");
-
-	// Initialize Lighting
-	initLighting();
+	//console.print("Hello, Console!");
 
 	// Initialize Texture Images
 	initTextures();
@@ -264,10 +246,10 @@ void testEnv() {
 	// Testing Light & Shadows
 
 	// Set light position in world coordinates ( fix moving with camera bug)
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
+	glLightfv(GL_LIGHT0, GL_POSITION, envDrawer.LightPos);
 
 	// Lighting Destination Test
-	glEnable(GL_LIGHTING);
+	
 	glPushMatrix();
 	glColor3f(1, 0, 0);
 	glutSolidSphere(1, 100, 100);
@@ -277,27 +259,12 @@ void testEnv() {
 	initShadows();
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
-	glTranslatef(0,0.1,0);
+	glTranslatef(0, 0.1, 0);
 	glColor3b(0, 0, 0);
 	glMultMatrixf((GLfloat*)shadowMat);
 	glutSolidSphere(1, 100, 100);
 	glPopMatrix();
-
-	// Lighting Source
 	glEnable(GL_LIGHTING);
-	glPushMatrix();
-	glTranslatef(LightPos[0], LightPos[1], LightPos[2]);
-	glColor3f(1, 1, 0);
-	glutSolidSphere(0.1, 100, 100);
-	glPopMatrix();
-
-	if (keys['L']) {
-		glEnable(GL_LIGHT0);		// Turn On Light
-	}
-	if (keys['O']) {
-		glDisable(GL_LIGHT0);	// Turn Off Light
-	}
-	
 
 
 	// Test Texture
@@ -321,32 +288,6 @@ void testEnv() {
 	testReflection();
 	glPopMatrix();
 
-	
-
-	if (keys[VK_NUMPAD4])
-	{
-		LightPos[0] -= 0.1;
-	}
-	if (keys[VK_NUMPAD6])
-	{
-		LightPos[0] += 0.1;
-	}
-	if (keys[VK_NUMPAD2])
-	{
-		LightPos[1] -= 0.1;
-	}
-	if (keys[VK_NUMPAD8])
-	{
-		LightPos[1] += 0.1;
-	}
-	if (keys[VK_NUMPAD9])
-	{
-		LightPos[2] -= 0.1;
-	}
-	if (keys[VK_NUMPAD7])
-	{
-		LightPos[2] += 0.1;
-	}
 	if (keys[VK_ADD]) {
 		updateZoomFactor(ZOOM_INCREASE);
 	}
@@ -395,6 +336,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera->decodeKeyboard(keys, 0.5);
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
+	//envDrawer.controlLightSourcePosition(keys);
+
+	envDrawer.simulateSun(60,10,THREE_HOURS_PER_SECOND);
+
+	//envDrawer.simulateSun(60,10 HOUR_PER_SECOND);
+	//envDrawer.simulateSun(60,10 MINUTE_PER_SECOND);
+
 	testEnv();
 	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
 	envDrawer.drawTiledLand(points, 10);
@@ -402,7 +350,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//mosqueDrawer.drawPrayerCarbet1(points, 10);
 	//mosqueDrawer.drawPrayerCarbet2(points, 10);
 
-	envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
+	//envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
 
 	//envDrawer.drawSmallTree(Point(5, -2, -5), 1);
@@ -412,7 +360,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
 		Point p = camera->getPosition();
-		float angel = 180 + camera->getRotatedY(),r = 1.8;
+		float angel = 180 + camera->getRotatedY(), r = 1.8;
 
 		/* trying to fix weird movement while pressing movement letters
 		p.x *= 0.95;
@@ -420,14 +368,14 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		*/
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)) );
+		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
 
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
 		//console.print(personDrawer.v());
 		personDrawer.drawPerson(p, angel, 10);
 	}
-		//personDrawer.drawPerson(Point(0,0,-5), 0, 10);
-	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10,1,true);
+	//personDrawer.drawPerson(Point(0,0,-5), 0, 10);
+	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10, 1, true);
 
 	const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
 	envDrawer.drawPassage(passagePoints, 10);
@@ -436,11 +384,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	envDrawer.drawStreet(streetPoints, 1);
 
 	// Test Column
-	glPushMatrix();
+	/*glPushMatrix();
 	glTranslatef(-20, 10, 0);
-	envDrawer.drawPillar(1);
-	glPopMatrix();
-	
+	envDrawer.drawPillar(1,wood);
+	glPopMatrix();*/
+
 
 	//added by mohammad yassen
 	pshm;
@@ -464,17 +412,17 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslated(-5, 0, 0);
 	Box b1 = Box();
-	b1.drawOutside(Constraints(1,1,1), outside);
+	b1.drawOutside(Constraints(1, 1, 1), outside);
 	ppm;
 	ppm;
-	Box b(Constraints(5.0f,10.0f,5.0f), inside, outside, shadowMat, true);
+	Box b(Constraints(5.0f, 10.0f, 5.0f), inside, outside, shadowMat, true);
 
 	ppm;
 
 	// Test Windows
-	int alpha =200;
+	int alpha = 200;
 	glTranslatef(-10, 10, 0);
-	mosqueDrawer.drawWindow(1,alpha,0);
+	mosqueDrawer.drawWindow(1, alpha, 0);
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef(-5, 10, 0);
@@ -500,34 +448,29 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
 	mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);
 
+	/*glPushMatrix();
+	glTranslatef(0, 10, 0);
+	envDrawer.drawHallway(2, 8, 4, 10, 6);
+	envDrawer.drawArchway(1, 3, 3, 6);
+	glPopMatrix();*/
+
+	// envDrawer.drawFountain(Point(0, 15, 0), 1);
+
+	/*for (int i = 0; i < 6; i++) {
+		glPushMatrix();
+		glTranslatef(20 * i, 20, 0);
+		envDrawer.drawBuidling(1, i);
+		glPopMatrix();
+	}*/
+
+	// envDrawer.drawLightingPillar(Point(0, 0, 0), 1);
+	
+
+
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
-}
-
-void initLighting() {
-	// Lighting Variables Initializing
-	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiff);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpec);
-
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, LightDir);
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 5.0);
-
-	glEnable(GL_LIGHTING);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
-	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
-	glEnable(GL_COLOR_MATERIAL);
-
-	// Add ambient light
-	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
 }
 
 void initTextures() {
@@ -547,7 +490,7 @@ void initShadows() {
 		points[2]);
 	// Calculate projection matrix to draw shadow on the ground
 	m3dMakePlanarShadowMatrix(shadowMat, vPlaneEquation,
-		LightPos);
+		envDrawer.LightPos);
 }
 
 void updatePerspective() {
