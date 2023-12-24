@@ -182,7 +182,7 @@ void Cylinder::draw() const
     glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-    glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES, isHalf ? (unsigned int)indices.size() / 2 : (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -227,7 +227,7 @@ void Cylinder::drawBase() const
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
     unsigned int indexCount = ((unsigned int)indices.size() - baseIndex) / 2;
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, &indices[baseIndex]);
+    glDrawElements(GL_TRIANGLES, isHalf ? indexCount / 2 : indexCount, GL_UNSIGNED_INT, &indices[baseIndex]);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -245,7 +245,7 @@ void Cylinder::drawTop() const
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
     unsigned int indexCount = ((unsigned int)indices.size() - baseIndex) / 2;
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, &indices[topIndex]);
+    glDrawElements(GL_TRIANGLES, isHalf ? indexCount / 2 : indexCount ,GL_UNSIGNED_INT, &indices[topIndex]);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -270,7 +270,7 @@ void Cylinder::drawLines(const float lineColor[4]) const
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices.data());
 
-    glDrawElements(GL_LINES, (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
+    glDrawElements(GL_LINES, isHalf ? (unsigned int)lineIndices.size() / 2 : (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_LIGHTING);

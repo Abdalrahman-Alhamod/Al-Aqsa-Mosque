@@ -4,7 +4,10 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
+#define txt(s,t) glTexCoord2d(s,t)
+#define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
+
 
 
 #include <windows.h>		// Header File For Windows
@@ -103,7 +106,7 @@ EnvDrawer envDrawer;
 
 PersonDrawer personDrawer;
 
-
+int art;
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -113,6 +116,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
+	art = LoadTexture((char*)"assets/materials/art9.bmp");
 
 	// Initialize Camera
 	Camera::cameraInit();
@@ -131,59 +135,322 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
-
-
-void bench(void) {
-	glPushMatrix();
-	glColor4f(1, 1, 1, 0.4);
-	glTranslatef(0, -2.5, 0);
-	glScalef(4, 2, 4);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1, 0);
-	glVertex3f(-1, -1, 1);
-	glTexCoord2f(1, 1);
-	glVertex3f(-1, 1, -0.5);
-	glTexCoord2f(0, 1);
-	glVertex3f(1, 1, -0.5);
-	glTexCoord2f(0, 0);
-	glVertex3f(1, -1, 1);
-	glEnd();
-	glPopMatrix();
-}
-
-
-void testEnv() {
-	// Testing Camera
-
-	
-	// Testing Light & Shadows
-
-	// Set light position in world coordinates ( fix moving with camera bug)
-	glLightfv(GL_LIGHT0, GL_POSITION, envDrawer.LightPos);
-
-	// Lighting Destination Test
-	
-	glPushMatrix();
-	glColor3f(1, 0, 0);
-	glutSolidSphere(1, 100, 100);
-	glPopMatrix();
-
-	// Test Texture
-
-	glPushMatrix();
-	glTranslated(30, 10, 10);
-	glPopMatrix();
-
-	if (keys[VK_ADD]) {
-		updateZoomFactor(ZOOM_INCREASE);
-	}
-	if (keys[VK_SUBTRACT]) {
-		updateZoomFactor(ZOOM_DECREASE);
-	}
-
-}
-
 db openTheDoor = 0;
+void arch() {
+	glEnable(GL_TEXTURE_2D);
+
+	db length = 10; db sectorCount = 20; db radius = 5;
+	glPushMatrix();
+	glTranslatef(0, 0, -length / 2);
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0, 0, 1);
+
+	for (int i = 0; i <= sectorCount; ++i) {
+		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
+		GLfloat x = radius * cos(angle);
+		GLfloat y = radius * sin(angle);
+
+		if (angle <= PI / 2) {
+			glTexCoord2d(1, 1);
+			glVertex3d(radius, radius, length);
+			glTexCoord2d(x / radius, y / radius);
+			glVertex3f(x, y, length);
+		}
+		else {
+			glTexCoord2d(1, 1);
+			glVertex3d(-radius, radius, length);
+			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
+			glVertex3f(x, y, length);
+		}
+
+	}
+}
+
+void DORdrawsides() {
+
+	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
+	//the second param maybe the angle of door openeing
+
+	Constraints c = Constraints(60, 37, 1.5);
+	int textures[] = { 0,0,0,0,0,0 };
+	Box wall, door;
+	db a = 60;
+	db p = a / srt;
+	if (keys[VK_F1]) {
+		if (openTheDoor < 90) openTheDoor += 1;
+	}
+	if (keys[VK_F2]) {
+		if (openTheDoor > 0) openTheDoor -= 1;
+	}
+	///the front face
+	pshm;
+	glTranslated(p, 0, 0);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	glRotated(openTheDoor, 0, 1, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(35, 0, 0);
+	glRotated(-openTheDoor, 0, 1, 0);
+	glTranslated(-5, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+
+	ppm;
+
+	///the left wing of the front 
+	pshm;
+	glTranslated(p, 0.01, c.length);
+	glRotated(135, 0, 1, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the left side
+	pshm;
+	glTranslated(0, 0, -p + c.length);
+	glRotated(90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	glRotated(-openTheDoor, 0, 1, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(35, 0, 0);
+	glRotated(openTheDoor, 0, 1, 0);
+	glTranslated(-5, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+
+	///the left wing of the  back
+	pshm;
+	glTranslated(0, 0, -p - a + c.length);
+	glRotated(45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the back face
+	pshm;
+	glTranslated(p, 0, -2 * p - a + c.length);
+	glColor3f(1, 1, 1);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	glRotated(-openTheDoor, 0, 1, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(35, 0, 0);
+	glRotated(openTheDoor, 0, 1, 0);
+	glTranslated(-5, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+
+	///the right wing of the back
+	pshm;
+	glTranslated(p + a, 0, -2 * p - a + c.length);
+	glRotated(-45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the right side
+	pshm;
+	glTranslated(2 * p + a, 0, -p - a + c.length);
+	glRotated(-90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	glRotated(-openTheDoor, 0, 1, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(35, 0, 0);
+	glRotated(openTheDoor, 0, 1, 0);
+	glTranslated(-5, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+
+	///the right wing of the front 
+	pshm;
+	glTranslated(2 * p + a, 0, -p + c.length);
+	glRotated(-135, 0, 1, 0);
+	glColor3f(0.1, 0.1, 0.1);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	glColor3ub(173, 3, 23);
+	glBegin(GL_POLYGON);
+	glNormal3f(0, 1, 0);
+	glVertex3d(p, 0.1, 0);
+	glVertex3d(p + a, 0.1, 0);
+	glVertex3d(2 * p + a, 0.1, -p);
+	glVertex3d(2 * p + a, 0.1, -p - a+c.length);
+	glVertex3d(p + a, 0.1, -2 * p - a+c.length);
+	glVertex3d(p, 0.1, -2 * p - a+c.length);
+	glVertex3d(0, 0.1, -p - a + c.length);
+	glVertex3d(0, 0.1, -p);
+	glEnd();
+
+
+}
+
+void drawRing(db innerR, db outerR,db height, int sectorCnt, int t1, int t2, int isHalf) {
+
+	glEnable(GL_TEXTURE_2D);
+	pshm;
+	white;
+	db x1, x2, x3, x4, y1, y2, y3, y4, angle; db mult = 2;
+	if (isHalf) mult /= 2;
+	for (float i = 0; i <= mult * sectorCnt; i++) {
+		glBegin(GL_QUADS);
+		angle = 2 * (i / sectorCnt) * PI;
+		x1 = innerR * cos(angle);
+		y1 = innerR * sin(angle);
+		x2 = outerR * cos(angle);
+		y2 = outerR * sin(angle);
+		angle = 2 * (++i / sectorCnt) * PI;
+		x3 = innerR * cos(angle);
+		y3 = innerR * sin(angle);
+		x4 = outerR * cos(angle);
+		y4 = outerR * sin(angle);
+		glBindTexture(GL_TEXTURE_2D, t1);
+		txt(0, 0);
+		glVertex3d(x1, y1,height/ 2.0);
+		txt(0, 1);
+		glVertex3d(x2, y2, height/ 2.0);
+		txt(1, 1);
+		glVertex3d(x4, y4, height/ 2.0);
+		txt(1, 0);
+		glVertex3d(x3, y3, height/ 2);
+		glEnd();
+
+		angle = 2 * (++i / sectorCnt) * PI;
+		x1 = innerR * cos(angle);
+		y1 = innerR * sin(angle);
+		x2 = outerR * cos(angle);
+		y2 = outerR * sin(angle);
+
+		glBindTexture(GL_TEXTURE_2D, t2);
+		glBegin(GL_QUADS);
+		txt(0, 0);
+		glVertex3d(x3, y3, height/ 2);
+		txt(0, 1);
+		glVertex3d(x4, y4, height/ 2);
+		txt(1, 1);
+		glVertex3d(x2, y2, height/ 2);
+		txt(1, 0);
+		glVertex3d(x1, y1, height/ 2);
+		glEnd();
+		i--;
+	}
+	ppm;
+	glDisable(GL_TEXTURE_2D);
+}
+
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -231,219 +498,42 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//the width of the dome of the rock is 18m and the height is 11m the width of the door is 2.75m and the height is 4.5m 
 	//the virtual width and heights are 60 * 37 and the door is 15 * 10
 
-	Constraints c = Constraints(60, 37, 1.5);
-	int textures[] = { 0,0,0,0,0,0 };
-	Box wall,door;
-	db a = 60; 
-	db p = a / srt;
-	if (keys[VK_F1]) {
-		if(openTheDoor<90) openTheDoor += 1;
-	}
-	if (keys[VK_F2]) {
-		if (openTheDoor > 0) openTheDoor -= 1;
-	}
-	
+	Box wall; int textures[] = { 0,0,0,0,0,0 };
 	pshm;
 	wall.drawOutside(Constraints(1,1,1), textures);
 	ppm;
 
+
+	DORdrawsides();
+
+	db a = 60;
+	db p = a / srt;
+
+	int sectorCnt = 30; int radius = 4; int radius2 = 5;
 	
-	///the front face
-	pshm;
-	glTranslated(p, 0, 0);
-
-	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60,22,1.5), textures);
-	ppm;
-
-	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
+	drawRing(radius, radius2, 15, sectorCnt, art, art, false);
+	Cylinder entrance = Cylinder(5, 5, 15,sectorCnt,sectorCnt);
+	entrance.drawSide();
+	Cylinder entrance1 = Cylinder(4, 4, 15, sectorCnt, sectorCnt);
+	entrance1.drawSide();
 
 
-	//the left door
-	pshm;
-	glColor3ub(158, 69, 5);
-	glTranslated(25, 0, 0);
-	glRotated(openTheDoor, 0, 1, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
 
-	//the right door
-	pshm;
-	glColor3ub(128, 45, 1);
-	glTranslated(30, 0, 0);
-	glTranslated(5, 0, 0);
-	glRotated(-openTheDoor, 0, 1, 0);
-	glTranslated(-5, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-
-	ppm;
-
-	///the left wing of the front 
-	pshm;
-	glTranslated(p, 0.01, c.length);
-	glRotated(135, 0, 1, 0);
-	glColor3f(0.5, 0.5, 0.5);
-	wall.drawOutside(c, textures);
-	ppm;
-
-	///the left side
-	pshm;
-	glTranslated(0, 0, -p  + c.length);
-	glRotated(90, 0, 1, 0);
-	glColor3f(1, 1, 1);
-
-	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
-	ppm;
-
-	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(0, 0, c.length);
-	//the left door
-	pshm;
-	glColor3ub(158, 69, 5);
-	glTranslated(25, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	//the right door
-	pshm;
-	glColor3ub(128, 45, 1);
-	glTranslated(30, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	ppm;
-
-	ppm;
-
-	///the left wing of the  back
-	pshm;
-	glTranslated(0, 0, -p - a + c.length);
-	glRotated(45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
-	wall.drawOutside(c, textures);
-	ppm;
-
-	///the back face
-	pshm;
-	glTranslated(p, 0, -2 * p - a + c.length);
-	glColor3f(1, 1, 1);
-
-	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
-	ppm;
-
-	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;	
-
-
-	pshm;
-	glTranslated(0, 0, c.length);
-	//the left door
-	pshm;
-	glColor3ub(158, 69, 5);
-	glTranslated(25, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	//the right door
-	pshm;
-	glColor3ub(128, 45, 1);
-	glTranslated(30, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	ppm;
-
-	ppm;
-	
-	///the right wing of the back
-	pshm;
-	glTranslated(p + a, 0, -2 * p - a  + c.length);
-	glRotated(-45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
-	wall.drawOutside(c, textures);
-	ppm;
-
-	///the right side
-	pshm;
-	glTranslated(2 * p + a, 0, -p - a + c.length);
-	glRotated(-90, 0, 1, 0);
-	glColor3f(1, 1, 1);
-
-	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
-	ppm;
-
-	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
-	ppm;
-
-	pshm;
-	glTranslated(0, 0, c.length);
-	//the left door
-	pshm;
-	glColor3ub(158, 69, 5);
-	glTranslated(25, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	//the right door
-	pshm;
-	glColor3ub(128, 45, 1);
-	glTranslated(30, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
-	ppm;
-
-	ppm;
-
-	ppm;
-
-	///the right wing of the front 
-	pshm;
-	glTranslated(2 * p + a, 0, -p +c.length);
-	glRotated(-135, 0, 1, 0);
-	glColor3f(1, 1, 1);
-	wall.drawOutside(c, textures);
-	ppm;
-	
-
+	//glEnd();
+	//glPopMatrix();
+	//glTranslated(p, 15, 9);
+	//glTranslated(25, 0, 0);
+	//glTranslated(5, 0, 0);
+	////glRotated(90, 0, 0, 0);
+	//glColor3f(0, 0, 1);
+	//entrance.setIsHalf(true);
+	//gf colors[] = { 0,0,0,1 };
+	//entrance.drawSide();
 
 	
-
+	
+	
+	
 
 	glFlush();											// Done Drawing The Quad
 
