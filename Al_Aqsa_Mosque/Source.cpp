@@ -4,6 +4,7 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
+const db srt = 1.414213562373095;
 
 
 #include <windows.h>		// Header File For Windows
@@ -117,18 +118,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::cameraInit();
 	Camera::changeMode();
 
-	// Initialize Console
-	//console.init();
-	// Print testing message
-	//console.print("Hello, Console!");
-
-	// Initialize Texture Images
 	initTextures();
 
-	// Initialize Shadows
-	//initShadows();
-
-	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer();
 
@@ -140,25 +131,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
-void square(void) {
-	glPushMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, wood);
-	glTranslatef(0, 2.5, 0);
-	glScalef(2, 2, 2);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1, 0);
-	glVertex3f(-1, -1, 0);
-	glTexCoord2f(1, 1);
-	glVertex3f(-1, 1, 0);
-	glTexCoord2f(0, 1);
-	glVertex3f(1, 1, 0);
-	glTexCoord2f(0, 0);
-	glVertex3f(1, -1, 0);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-}
+
 
 void bench(void) {
 	glPushMatrix();
@@ -177,72 +150,12 @@ void bench(void) {
 	glEnd();
 	glPopMatrix();
 }
-void testReflection() {
-	// Disable the color mask and depth mask
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glDepthMask(GL_FALSE);
 
-	// Enable stencil testing
-	glEnable(GL_STENCIL_TEST);
-
-	// Set the stencil buffer to replace the next lot of data
-	glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
-	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-
-	// Set the data plane to be replaced (assuming `bench` is a function to set the data plane)
-	bench();
-
-	// Enable the color mask and depth mask
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-
-	// Set the stencil buffer to keep the next lot of data
-	glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-	// Disable depth testing of the reflection
-	glDisable(GL_DEPTH_TEST);
-
-	// Apply transformations to draw the reflection
-	glPushMatrix();
-	glScalef(1.0f, -1.0f, 1.0f);  // Flip the reflection vertically
-	glTranslatef(0, 2, 0);        // Translate the reflection onto the drawing plane
-	glRotatef(angle, 0, 1, 0);     // Rotate the reflection
-	square();                      // Draw the square as our reflection
-	glPopMatrix();
-
-	// Enable depth testing
-	glEnable(GL_DEPTH_TEST);
-
-	// Disable stencil testing
-	glDisable(GL_STENCIL_TEST);
-
-	// Enable alpha blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// Draw the bench with alpha blending
-	bench();
-
-	// Disable alpha blending
-	glDisable(GL_BLEND);
-
-	// Rotate the square and draw it
-	glRotatef(angle, 0, 1, 0);
-	square();
-
-}
 
 void testEnv() {
 	// Testing Camera
 
-	glPushMatrix();
-	glTranslatef(-4, 2, +2);
-	glColor3f(0, 0, 1);
-	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));   // Nedd fixing for lighting
-	auxSolidCube(2);
-	glPopMatrix();
-
+	
 	// Testing Light & Shadows
 
 	// Set light position in world coordinates ( fix moving with camera bug)
@@ -255,37 +168,10 @@ void testEnv() {
 	glutSolidSphere(1, 100, 100);
 	glPopMatrix();
 
-	// Shadow
-	initShadows();
-	glDisable(GL_LIGHTING);
-	glPushMatrix();
-	glTranslatef(0, 0.1, 0);
-	glColor3b(0, 0, 0);
-	glMultMatrixf((GLfloat*)shadowMat);
-	glutSolidSphere(1, 100, 100);
-	glPopMatrix();
-	glEnable(GL_LIGHTING);
-
-
 	// Test Texture
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glPushMatrix();
-	glTranslatef(0, 2, -20);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, wood);
-	glNormal3f(0, 0, 1);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
-	glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
-	glTexCoord2f(-1, -1);       glVertex3f(-5, 5, 0);
-	glTexCoord2f(0, -1);       glVertex3f(-5, -5, 0);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(30, 10, 10);
-	testReflection();
 	glPopMatrix();
 
 	if (keys[VK_ADD]) {
@@ -295,24 +181,9 @@ void testEnv() {
 		updateZoomFactor(ZOOM_DECREASE);
 	}
 
-
-	// Rotate and change rotate angle
-	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	angle++;
-
-	glBegin(GL_TRIANGLES);
-
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3i(0, 1, -6);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3i(-1, -1, -6);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3i(1, -1, -6);
-
-	glEnd();*/
 }
+
+db openTheDoor = 0;
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -333,137 +204,244 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera = Camera::getInstance();
 
 	camera->Render();
-	camera->decodeKeyboard(keys, 0.5);
+	camera->decodeKeyboard(keys, 0.7);
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
-	//envDrawer.controlLightSourcePosition(keys);
 
-	envDrawer.simulateSun(60,10,THREE_HOURS_PER_SECOND);
-
-	//envDrawer.simulateSun(60,10 HOUR_PER_SECOND);
-	//envDrawer.simulateSun(60,10 MINUTE_PER_SECOND);
-
-	testEnv();
-	const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
-	envDrawer.drawTiledLand(points, 10);
-	//envDrawer.drawGrassLand(points, 10);
-	//mosqueDrawer.drawPrayerCarbet1(points, 10);
-	//mosqueDrawer.drawPrayerCarbet2(points, 10);
-
-	//envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-
-	//envDrawer.drawSmallTree(Point(5, -2, -5), 1);
-	//envDrawer.drawBigTree(Point(15, -2, -5), 1);
-	//envDrawer.drawTank(Point(-5, -2, -5), 1);
+	//testEnv();
+	const Point points[4] = { Point(-1000.0f, -2.0f, -1000.0f),Point(-1000.0f, -2.0f, 1000.0f),Point(1000.0f, -2.0f, 1000.0f),Point(1000.0f,-2.0f, -1000.0f) };
+	envDrawer.drawTiledLand(points, 30);
+	
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
 		Point p = camera->getPosition();
 		float angel = 180 + camera->getRotatedY(), r = 1.8;
-
-		/* trying to fix weird movement while pressing movement letters
-		p.x *= 0.95;
-		p.z *= 0.95;
-		*/
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
 		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
 
-		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
-		//console.print(personDrawer.v());
+
 		personDrawer.drawPerson(p, angel, 10);
 	}
-	//personDrawer.drawPerson(Point(0,0,-5), 0, 10);
-	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10, 1, true);
+	glTranslated(-2, -2, -30);
 
-	const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
-	envDrawer.drawPassage(passagePoints, 10);
+	//drawing the ocatgon shape 
 
-	const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
-	envDrawer.drawStreet(streetPoints, 1);
+	//the width of the dome of the rock is 18m and the height is 11m the width of the door is 2.75m and the height is 4.5m 
+	//the virtual width and heights are 60 * 37 and the door is 15 * 10
 
-	// Test Column
-	/*glPushMatrix();
-	glTranslatef(-20, 10, 0);
-	envDrawer.drawPillar(1,wood);
-	glPopMatrix();*/
-
-
-	//added by mohammad yassen
+	Constraints c = Constraints(60, 37, 1.5);
+	int textures[] = { 0,0,0,0,0,0 };
+	Box wall,door;
+	db a = 60; 
+	db p = a / srt;
+	if (keys[VK_F1]) {
+		if(openTheDoor<90) openTheDoor += 1;
+	}
+	if (keys[VK_F2]) {
+		if (openTheDoor > 0) openTheDoor -= 1;
+	}
+	
 	pshm;
-	glTranslated(-11, 0, 0);
-	int inside[6];
-	inside[0] = wood;
-	inside[1] = wood;
-	inside[2] = wood;
-	inside[3] = wood;
-	inside[4] = wood;
-	inside[5] = wood;
+	wall.drawOutside(Constraints(1,1,1), textures);
+	ppm;
 
-	int outside[6];
-	outside[0] = ground;
-	outside[1] = ground;
-	outside[2] = ground;
-	outside[3] = ground;
-	outside[4] = ground;
-	outside[5] = ground;
-	//shadow won't work because the flag is false in default
+	
+	///the front face
 	pshm;
+	glTranslated(p, 0, 0);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60,22,1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	glRotated(openTheDoor, 0, 1, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(30, 0, 0);
+	glTranslated(5, 0, 0);
+	glRotated(-openTheDoor, 0, 1, 0);
 	glTranslated(-5, 0, 0);
-	Box b1 = Box();
-	b1.drawOutside(Constraints(1, 1, 1), outside);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
 	ppm;
-	ppm;
-	Box b(Constraints(5.0f, 10.0f, 5.0f), inside, outside, shadowMat, true);
+
 
 	ppm;
 
-	// Test Windows
-	int alpha = 200;
-	glTranslatef(-10, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 0);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(-5, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 1);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(0, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 2);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(5, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 3);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(10, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 4);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(15, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 5);
-	glPopMatrix();
+	///the left wing of the front 
+	pshm;
+	glTranslated(p, 0.01, c.length);
+	glRotated(135, 0, 1, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	wall.drawOutside(c, textures);
+	ppm;
 
-	mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
-	mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);
+	///the left side
+	pshm;
+	glTranslated(0, 0, -p  + c.length);
+	glRotated(90, 0, 1, 0);
+	glColor3f(1, 1, 1);
 
-	/*glPushMatrix();
-	glTranslatef(0, 10, 0);
-	envDrawer.drawHallway(2, 8, 4, 10, 6);
-	envDrawer.drawArchway(1, 3, 3, 6);
-	glPopMatrix();*/
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
 
-	// envDrawer.drawFountain(Point(0, 15, 0), 1);
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
 
-	/*for (int i = 0; i < 6; i++) {
-		glPushMatrix();
-		glTranslatef(20 * i, 20, 0);
-		envDrawer.drawBuidling(1, i);
-		glPopMatrix();
-	}*/
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
 
-	// envDrawer.drawLightingPillar(Point(0, 0, 0), 1);
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(30, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+
+	///the left wing of the  back
+	pshm;
+	glTranslated(0, 0, -p - a + c.length);
+	glRotated(45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the back face
+	pshm;
+	glTranslated(p, 0, -2 * p - a + c.length);
+	glColor3f(1, 1, 1);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;	
+
+
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(30, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+	
+	///the right wing of the back
+	pshm;
+	glTranslated(p + a, 0, -2 * p - a  + c.length);
+	glRotated(-45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the right side
+	pshm;
+	glTranslated(2 * p + a, 0, -p - a + c.length);
+	glRotated(-90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+
+	pshm;
+	glTranslated(0, 15, 0);
+	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	ppm;
+
+	pshm;
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(35, 0, 0);
+	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, c.length);
+	//the left door
+	pshm;
+	glColor3ub(158, 69, 5);
+	glTranslated(25, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	//the right door
+	pshm;
+	glColor3ub(128, 45, 1);
+	glTranslated(30, 0, 0);
+	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	ppm;
+
+	ppm;
+
+	ppm;
+
+	///the right wing of the front 
+	pshm;
+	glTranslated(2 * p + a, 0, -p +c.length);
+	glRotated(-135, 0, 1, 0);
+	glColor3f(1, 1, 1);
+	wall.drawOutside(c, textures);
+	ppm;
+	
+
+
 	
 
 
@@ -472,6 +450,9 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
 }
+
+
+
 
 void initTextures() {
 	glEnable(GL_TEXTURE_2D);
