@@ -65,7 +65,7 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
 		glPushMatrix();
 		glTranslatef(position.x, position.y + (5 + yOffset) * size, position.z);
-		Sphere topSphere = Sphere((0.12 - (yOffset * 0.1) + 0.02) * size,9,18); // Adjust size based on yOffset
+		Sphere topSphere = Sphere((0.12 - (yOffset * 0.1) + 0.02) * size,9,9); // Adjust size based on yOffset
 		topSphere.draw();
 		glPopMatrix();
 	}

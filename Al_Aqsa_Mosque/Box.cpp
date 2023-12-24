@@ -125,8 +125,6 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glDisable(GL_TEXTURE_2D);
 
 	ppm;
-
-
 }
 void Box::drawOutside(const Constraints& c,const int texture) {
 	int textures[6] = { texture,texture, texture, texture, texture, texture };

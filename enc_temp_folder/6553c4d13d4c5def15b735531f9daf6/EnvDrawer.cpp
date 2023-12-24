@@ -327,12 +327,12 @@ void EnvDrawer::drawCubedMinaret(const float size, const int texture)
 		glRotatef(i * 360 / 4, 0, 1, 0);
 		glPushMatrix();
 		glTranslatef(0, hight - 4,1.4);
-		drawHalfCylinderInRectangularPrism(0.35, Constraints(2.8, 0.6, 0.07), 6, texture);
+		drawHalfCylinderInRectangularPrism(0.35, Constraints(2.7, 0.8, 0.07), 6, texture);
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(45, 0, 1, 0);
-		glTranslatef(0, hight - 4.8, 1.9);
-		Box().drawOutside(Constraints(0.10, .8, 0.05), texture);
+		glTranslatef(0, hight - 4.8, 1.7);
+		Box().drawOutside(Constraints(0.10, 1, 0.05), texture);
 		glPopMatrix();
 	}
 

@@ -331,7 +331,7 @@ void EnvDrawer::drawCubedMinaret(const float size, const int texture)
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(45, 0, 1, 0);
-		glTranslatef(0, hight - 4.8, 1.9);
+		glTranslatef(0, hight - 4.8, 1.7);
 		Box().drawOutside(Constraints(0.10, .8, 0.05), texture);
 		glPopMatrix();
 	}

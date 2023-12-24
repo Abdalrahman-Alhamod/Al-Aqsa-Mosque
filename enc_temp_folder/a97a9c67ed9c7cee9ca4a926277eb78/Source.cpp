@@ -343,9 +343,9 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//envDrawer.drawPillar(2, 10, 1);
 	//envDrawer.drawHalfCylinderInRectangularPrism(1, Constraints(1,3,3), 2);
 	glPushMatrix();
-	glTranslated(0, 3.2, +7);
+	glTranslated(0,0.51,0);
 	envDrawer.drawCubedMinaret(1,1);
-	glTranslated(0,+3.2,0);
+	glTranslated(0, 3.3, +7);
 	envDrawer.drawCylindricMinaret(1,1);
 	glPopMatrix();
 	//envDrawer.drawGrassLand(points, 10);
