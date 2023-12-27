@@ -4,6 +4,8 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
+#define beg(word) glBegin(word)
+#define endf glEnd()
 #define txt(s,t) glTexCoord2d(s,t)
 #define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
@@ -136,6 +138,99 @@ float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
+void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
+
+	glEnable(GL_TEXTURE_2D);
+	pshm;
+	db x1, x2, x3, x4, y1, y2, y3, y4, angle; int div = 1;
+	if (isHalf) div =2;
+	for (float i = 0; i <sectorCnt/div ; i++) {
+		angle = 2 * (i / sectorCnt) * PI;
+		x1 = innerR * cos(angle);
+		y1 = innerR * sin(angle);
+		x2 = outerR * cos(angle);
+		y2 = outerR * sin(angle);
+		angle = 2 * (++i / sectorCnt) * PI;
+		x3 = innerR * cos(angle);
+		y3 = innerR * sin(angle);
+		x4 = outerR * cos(angle);
+		y4 = outerR * sin(angle);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glBegin(GL_QUADS);
+		txt(0, 0);
+		glVertex3d(x1, y1,height/ 2.0);
+		txt(0, 1);
+		glVertex3d(x2, y2, height/ 2.0);
+		txt(1, 1);
+		glVertex3d(x4, y4, height/ 2.0);
+		txt(1, 0);
+		glVertex3d(x3, y3, height/ 2.0);
+		glEnd();
+
+		angle = 2 * (++i / sectorCnt) * PI;
+		x1 = innerR * cos(angle);
+		y1 = innerR * sin(angle);
+		x2 = outerR * cos(angle);
+		y2 = outerR * sin(angle);
+
+		glBindTexture(GL_TEXTURE_2D, texture2);
+		glBegin(GL_QUADS);
+		txt(0, 0);
+		glVertex3d(x3, y3, height/ 2);
+		txt(0, 1);
+		glVertex3d(x4, y4, height/ 2);
+		txt(1, 1);
+		glVertex3d(x2, y2, height/ 2);
+		txt(1, 0);
+		glVertex3d(x1, y1, height/ 2);
+		glEnd();
+		i--;
+	}
+	ppm;
+	glDisable(GL_TEXTURE_2D);
+}
+
+void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf) {
+	pshm;
+	glNormal3f(0, 0, -1);
+	drawRing(innerR, outerR, -height, sectorCnt, textures[0], textures[1], isHalf);
+	ppm;
+	glEnable(GL_TEXTURE_2D);
+	pshm;
+	glBindTexture(GL_TEXTURE_2D, textures[2]);
+	Cylinder outerC = Cylinder(outerR, outerR,height, sectorCnt);
+	outerC.setIsHalf(isHalf);
+	outerC.drawSide();
+	ppm;
+	pshm;
+	glBindTexture(GL_TEXTURE_2D, textures[3]);
+	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
+	innerC.setIsHalf(isHalf);
+	innerC.drawSide();
+	ppm;
+	glDisable(GL_TEXTURE_2D);
+	pshm;
+	glNormal3f(0, 0, 1);
+	drawRing(innerR, outerR, height, sectorCnt, textures[0], textures[1], isHalf);
+	ppm;
+	
+	if (isHalf) {
+		glNormal3f(0, -1, 0);
+		beg(GL_QUADS);
+		glVertex3d(outerR,0,height/2.0);
+		glVertex3d(innerR, 0, height / 2.0);
+		glVertex3d(innerR, 0, -height / 2.0);
+		glVertex3d(outerR, 0, -height / 2.0);
+		endf;
+
+		beg(GL_QUADS);
+		glVertex3d(-outerR, 0, height / 2.0);
+		glVertex3d(-innerR, 0, height / 2.0);
+		glVertex3d(-innerR, 0, -height / 2.0);
+		glVertex3d(-outerR, 0, -height / 2.0);
+		endf;
+	}
+}
 void arch() {
 	glEnable(GL_TEXTURE_2D);
 
@@ -173,7 +268,7 @@ void DORdrawsides() {
 
 	Constraints c = Constraints(60, 37, 1.5);
 	int textures[] = { 0,0,0,0,0,0 };
-	Box wall, door;
+	Box wall, door, arch, marbleGround;
 	db a = 60;
 	db p = a / srt;
 	if (keys[VK_F1]) {
@@ -200,6 +295,57 @@ void DORdrawsides() {
 	wall.drawOutside(Constraints(25, 15, 1.5), textures);
 	ppm;
 
+	//entracne ////////////////////////////////////////////
+	db doorWidth = 10; db doorHeight = 15;
+	db archbaseHeight = 1; db outerR = 5, innerR = 4, archHeight = 15;
+	
+	pshm;
+
+	//marble ground
+	pshm;
+	glTranslated(0, 0.01, 0);
+	marbleGround.drawOutside(Constraints(60, 0.2, archHeight), textures);
+	ppm;
+
+	glTranslated(0, archbaseHeight, 0);
+
+	//bases
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(24-0.6/2, doorHeight- archbaseHeight, c.length);
+	
+	arch.drawOutside(Constraints(outerR - innerR + 0.6,archbaseHeight,archHeight+0.5), textures);
+	ppm;
+
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archHeight + 0.5), textures);
+	ppm;
+
+	//umberella 
+	pshm;
+	glColor3f(0, 0, 1);
+	glTranslated(5, doorHeight-archbaseHeight, c.length);
+	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6/2, archbaseHeight / 2.0, archHeight),textures);
+	ppm;
+
+	pshm;
+	glColor3f(0, 0, 1);
+	glTranslated(60 - 5 - (20 - outerR + innerR - 0.6 / 2), doorHeight - archbaseHeight, c.length);
+	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6 / 2, archbaseHeight / 2.0, archHeight), textures);
+	ppm;
+
+	
+	//the arch 
+	glColor3f(0, 1, 1);
+	//moving the arch to it's position
+	glTranslated(30,15, 7.5 + c.length + 0.1);
+	drawPipe(innerR+1, outerR+1, archHeight, 24, textures, true);
+	
+	ppm;
+
+	/////////////////////////////////////////////////
 
 	//the left door
 	pshm;
@@ -398,57 +544,83 @@ void DORdrawsides() {
 
 }
 
-void drawRing(db innerR, db outerR,db height, int sectorCnt, int t1, int t2, int isHalf) {
 
-	glEnable(GL_TEXTURE_2D);
+void drawOctagon(Constraints c,int textures[]) {
+	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
+	//the second param maybe the angle of door openeing
+
+	Box wall, door;
+	db a = c.width;
+	db p = a / srt;
+
+	///the front face
 	pshm;
-	white;
-	db x1, x2, x3, x4, y1, y2, y3, y4, angle; db mult = 2;
-	if (isHalf) mult /= 2;
-	for (float i = 0; i <= mult * sectorCnt; i++) {
-		glBegin(GL_QUADS);
-		angle = 2 * (i / sectorCnt) * PI;
-		x1 = innerR * cos(angle);
-		y1 = innerR * sin(angle);
-		x2 = outerR * cos(angle);
-		y2 = outerR * sin(angle);
-		angle = 2 * (++i / sectorCnt) * PI;
-		x3 = innerR * cos(angle);
-		y3 = innerR * sin(angle);
-		x4 = outerR * cos(angle);
-		y4 = outerR * sin(angle);
-		glBindTexture(GL_TEXTURE_2D, t1);
-		txt(0, 0);
-		glVertex3d(x1, y1,height/ 2.0);
-		txt(0, 1);
-		glVertex3d(x2, y2, height/ 2.0);
-		txt(1, 1);
-		glVertex3d(x4, y4, height/ 2.0);
-		txt(1, 0);
-		glVertex3d(x3, y3, height/ 2);
-		glEnd();
-
-		angle = 2 * (++i / sectorCnt) * PI;
-		x1 = innerR * cos(angle);
-		y1 = innerR * sin(angle);
-		x2 = outerR * cos(angle);
-		y2 = outerR * sin(angle);
-
-		glBindTexture(GL_TEXTURE_2D, t2);
-		glBegin(GL_QUADS);
-		txt(0, 0);
-		glVertex3d(x3, y3, height/ 2);
-		txt(0, 1);
-		glVertex3d(x4, y4, height/ 2);
-		txt(1, 1);
-		glVertex3d(x2, y2, height/ 2);
-		txt(1, 0);
-		glVertex3d(x1, y1, height/ 2);
-		glEnd();
-		i--;
-	}
+	glTranslated(p, 0.1, 0);
+	wall.drawOutside(c, textures);
 	ppm;
-	glDisable(GL_TEXTURE_2D);
+
+	///the left wing of the front 
+	pshm;
+	glTranslated(p, 0, c.length);
+	glRotated(135, 0, 1, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the left side
+
+	pshm;
+
+	glTranslated(0, 0.1, -p + c.length);
+	glRotated(90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+	wall.drawOutside(c, textures);
+
+	ppm;
+
+	///the left wing of the  back
+	pshm;
+
+	glTranslated(0, 0, -p - a + c.length);
+	glRotated(45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+
+	ppm;
+
+	///the back face
+	pshm;
+	glTranslated(p, 0.1, -2 * p - a + c.length);
+	glColor3f(1, 1, 1);
+	wall.drawOutside(c, textures);
+
+	ppm;
+
+	///the right wing of the back
+	pshm;
+	glTranslated(p + a, 0, -2 * p - a + c.length);
+	glRotated(-45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	wall.drawOutside(c, textures);
+	ppm;
+
+	///the right side
+	pshm;
+	glTranslated(2 * p + a, 0.1, -p - a + c.length);
+	glRotated(-90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+	wall.drawOutside(c, textures);
+
+	ppm;
+
+	///the right wing of the front 
+	pshm;
+	glTranslated(2 * p + a, 0, -p + c.length);
+	glRotated(-135, 0, 1, 0);
+	glColor3f(0.1, 0.1, 0.1);
+	wall.drawOutside(c, textures);
+	ppm;
+
 }
 
 
@@ -508,28 +680,83 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	db a = 60;
 	db p = a / srt;
-
-	int sectorCnt = 30; int radius = 4; int radius2 = 5;
+	int sectorCnt = 36; int radius = 4; int radius2 = 5;
+	white;
 	
-	drawRing(radius, radius2, 15, sectorCnt, art, art, false);
-	Cylinder entrance = Cylinder(5, 5, 15,sectorCnt,sectorCnt);
-	entrance.drawSide();
-	Cylinder entrance1 = Cylinder(4, 4, 15, sectorCnt, sectorCnt);
-	entrance1.drawSide();
+	//z is the thickness of the inner, x is arbitrary
+	
+	pshm;
 
+	//drawing pillar 
+	glTranslated(10, 8, 0);
 
+	db pillarR = 0.5, pillarH = 12 , archbaseWidth = 1.6;
+	//main part
+	
+	glColor3f(1, 0.5, 0.5);
+	Cylinder c = Cylinder(pillarR, pillarR, pillarH,20);
+	c.setUpAxis(2);
+	c.drawSide();
 
-	//glEnd();
-	//glPopMatrix();
-	//glTranslated(p, 15, 9);
-	//glTranslated(25, 0, 0);
-	//glTranslated(5, 0, 0);
-	////glRotated(90, 0, 0, 0);
-	//glColor3f(0, 0, 1);
-	//entrance.setIsHalf(true);
-	//gf colors[] = { 0,0,0,1 };
-	//entrance.drawSide();
+	//bracelets//////////////////
+	pshm;
+	glTranslated(0, -pillarH/2.0 + pillarR/2.0, 0);
+	glColor3f(1, 1, 1);
+	Cylinder bracelet = Cylinder(pillarR + 0.01, pillarR + 0.01,0.5,20);
+	bracelet.setUpAxis(2);
+	bracelet.drawSide();
+	ppm;
 
+	pshm;
+	glTranslated(0, pillarH/2.0 - pillarR/2.0, 0);
+	glColor3f(1, 1, 1);
+	bracelet.setUpAxis(2);
+	bracelet.drawSide();
+	ppm;
+	///////////////////////////
+
+	//base //////////////////////////////////
+	pshm;
+
+	glTranslated( - 3 * pillarR/2.0, -pillarH/2.0 - 0.2, - 3 * pillarR/2.0);
+	Box base;
+	pshm;
+	base.drawOutside(Constraints(archbaseWidth,0.2, archbaseWidth), textures);
+	ppm;
+	pshm;
+	glTranslated(0.1, -1, 0.1);
+	base.drawOutside(Constraints(archbaseWidth-0.2, 1, archbaseWidth - 0.2), textures);
+	ppm;
+	pshm;
+	glTranslated(0, -1.2, 0);
+	base.drawOutside(Constraints(archbaseWidth, 0.2, archbaseWidth), textures);
+	ppm;
+	
+	ppm;
+
+	/////////////////////////////
+
+	//top///////////////////////////
+
+	pshm; 
+	glTranslated(0, pillarH / 2.0, 0);
+	glRotated(45, 0, 1, 0);
+	Cylinder top = Cylinder(pillarR - 0.1, archbaseWidth-0.5, 1.4, 4);
+	top.setUpAxis(2);
+	top.drawSide();
+	ppm;
+
+	///////////////////////////////////////////
+
+	ppm;
+
+	glTranslated(8, 25, - 5);
+
+	//x is outer length - inner
+	//z is the outer radius - inner radius / 2
+	glTranslated(5, 0,  - (30 +   60 /srt) + (25 + 50/srt ));
+	drawOctagon(Constraints(50,2,5),textures);
+	
 	
 	
 	
