@@ -86,14 +86,13 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
-void arch() {
+void arch(db sectorCount , db radius, db thickness = 0) {
 	glEnable(GL_TEXTURE_2D);
 
-	db length = 10; db sectorCount = 20; db radius = 5;
-	glPushMatrix();
+	db length = 0;
+	pshm;
 	glTranslatef(0, 0, -length / 2);
 	glBegin(GL_TRIANGLE_STRIP);
-	glNormal3f(0, 0, 1);
 
 	for (int i = 0; i <= sectorCount; ++i) {
 		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
@@ -102,18 +101,20 @@ void arch() {
 
 		if (angle <= PI / 2) {
 			glTexCoord2d(1, 1);
-			glVertex3d(radius, radius, length);
+			glVertex3d(radius, radius + thickness, length);
 			glTexCoord2d(x / radius, y / radius);
 			glVertex3f(x, y, length);
 		}
 		else {
 			glTexCoord2d(1, 1);
-			glVertex3d(-radius, radius, length);
+			glVertex3d(-radius, radius + thickness, length);
 			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
 			glVertex3f(x, y, length);
 		}
 
 	}
+	endf;
+	ppm;
 }
 
 // Camera Object
@@ -221,7 +222,7 @@ void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int t
 	glDisable(GL_TEXTURE_2D);
 }
 
-void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf) {
+void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf, bool isArch = false) {
 
 #pragma region front ring
 	pshm;
@@ -230,15 +231,17 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	ppm;
 #pragma endregion
 
+		if (!isArch) {
 #pragma region outer cylinder
-	glEnable(GL_TEXTURE_2D);
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, textures[2]);
-	Cylinder outerC = Cylinder(outerR, outerR,height, sectorCnt);
-	outerC.setIsHalf(isHalf);
-	outerC.drawSide();
-	ppm;
+		pshm;
+		glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, textures[2]);
+			Cylinder outerC = Cylinder(outerR, outerR, height, sectorCnt);
+			outerC.setIsHalf(isHalf);
+			outerC.drawSide();
+		ppm;
 #pragma endregion
+		}
 
 #pragma region inner cylinder
 	pshm;
@@ -257,7 +260,7 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	ppm;
 #pragma endregion
 	
-	if (isHalf) {
+	if (isHalf && !isArch) {
 		glNormal3f(0, -1, 0);
 		beg(GL_QUADS);
 		glVertex3d(outerR,0,height/2.0);
@@ -275,16 +278,11 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	}
 }
 
-
-void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
-
-
-	pshm;
-	glTranslated(5, pillarHeight/2.0 + 1.401, 0);
+void drawColumn(db pillarRadius, db pillarHeight) {
 #pragma region main body
 	pshm;
 	glColor3f(1, 0.5, 0.5);
-	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 20);
+	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 8);
 	c.setUpAxis(2);
 	c.drawSide();
 	ppm;
@@ -292,19 +290,29 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 
 #pragma region bracelets
 	pshm;
-	glTranslated(0, -pillarHeight / 2.0 + pillarRadius / 2.0, 0);
-	glColor3f(1, 1, 1);
-	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 20);
+	glTranslated(0, -pillarHeight / 2.0 + 0.25, 0);
+	white;
+	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 8);
 	bracelet.setUpAxis(2);
 	bracelet.drawSide();
 	ppm;
 
 	pshm;
-	glTranslated(0, pillarHeight / 2.0 - pillarRadius / 2.0, 0);
-	glColor3f(1, 1, 1);
+	glTranslated(0, pillarHeight / 2.0 - 0.25, 0);
+	white;
 	bracelet.setUpAxis(2);
 	bracelet.drawSide();
 	ppm;
+#pragma endregion
+}
+
+void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+
+
+	pshm;
+	glTranslated(5, pillarHeight/2.0 + 1.401, 0);
+#pragma region column
+	drawColumn(pillarRadius, pillarHeight);
 #pragma endregion
 
 #pragma region base
@@ -339,6 +347,43 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	top.drawSide();
 	ppm;
 #pragma endregion
+	ppm;
+}
+
+void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + basesWidth + 0.1, 0);
+#pragma region body
+	pshm;
+	drawColumn(1.2, pillarHeight);
+	ppm;
+#pragma endregion
+
+#pragma region top
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
+
+	pshm;
+	glTranslated(-1.5, 0.7, -1.5);
+	Box base;
+	base.drawOutside(Constraints(3, 1.5, 3), textures);
+	ppm;
+	glRotated(45, 0, 1, 0);
+	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
+	top.setUpAxis(2);
+	top.drawSide();
+	ppm;
+
+#pragma endregion
+
+#pragma region base
+	pshm;
+	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - basesWidth, -3 * pillarRadius / 2.0);
+	base.drawOutside(Constraints(basesWidth, basesWidth, basesWidth), textures);
+	ppm;
+#pragma endregion
+
 	ppm;
 }
 
@@ -811,6 +856,241 @@ void DORdrawsides() {
 
 }
 
+void DORdrawInnerOctagonSide() {
+
+	int textures[6] = { 0,0,0,0,0,0 }; db h = 20;
+	db pillarH = h + 3 + 2.5;
+
+	pshm;
+#pragma region bridge
+	Box bridge;
+	pshm;
+	glTranslated(0, pillarH, 0);
+	bridge.drawOutside(Constraints(48, 1.5, 3), textures);
+	ppm;
+#pragma endregion
+
+#pragma region archs
+
+	db sectorCnt = 16;
+	pshm;
+	pshm;
+	glTranslated(24, pillarH + 1.5, 1.5);
+	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
+
+	pshm;
+	glTranslated(0, 0, 1.5);
+	glNormal3f(0, 0, 1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, -1.5);
+	glNormal3f(0, 0, -1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	ppm;
+	/////////////////////////////////////////////////
+	pshm;
+	glTranslated(8, pillarH + 1.5, 1.5);
+	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
+	pshm;
+	glTranslated(0, 0, 1.5);
+	glNormal3f(0, 0, 1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, -1.5);
+	glNormal3f(0, 0, -1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	ppm;
+	/////////////////////////////////////////////
+	pshm;
+	glTranslated(40, pillarH + 1.5, 1.5);
+	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
+
+	pshm;
+	glTranslated(0, 0, 1.5);
+	glNormal3f(0, 0, 1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, -1.5);
+	glNormal3f(0, 0, -1);
+	arch(sectorCnt / 2.0, 8);
+	ppm;
+
+	ppm;
+	ppm;
+#pragma endregion
+
+#pragma region pillars
+	pshm;
+	glTranslated(16, 0, 1.5);
+	drawInnerPillar(1, h, 3, textures);
+	ppm;
+
+	pshm;
+	glTranslated(32, 0, 1.5);
+	drawInnerPillar(1, h, 3, textures);
+	ppm;
+#pragma endregion
+
+	ppm;
+}
+
+void DORdrawInnerOctagon() {
+
+	int textures[6] = { 0,0,0,0,0,0 };
+	Constraints c = Constraints(48, 1.5, 3);
+	db a = c.width;
+	db p = a / srt;
+	Box tier;
+
+
+	pshm;
+	glTranslated(2 * p + a  , 0, -p + c.length);
+	glRotated(-135, 0, 1, 0);
+	
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glTranslated(a, 0, 0);
+	glRotated(-22.5, 0, 1, 0);
+	glTranslated(-2.5, 0,0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	ppm;
+
+	///the front face
+	pshm;
+	glTranslated(p, 0.1, 0);
+	DORdrawInnerOctagonSide();
+	ppm;
+
+	///the left wing of the front 
+	pshm;
+	glTranslated(p, 0, c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(157.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(135, 0, 1, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	DORdrawInnerOctagonSide();
+	ppm;
+
+	///the left side
+
+	pshm;
+
+	glTranslated(0, 0.1, -p + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(112.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+	DORdrawInnerOctagonSide();
+
+	ppm;
+
+	///the left wing of the  back
+	pshm;
+
+	glTranslated(0, 0, -p - a + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(67.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	DORdrawInnerOctagonSide();
+
+	ppm;
+
+	///the back face
+	pshm;
+	glTranslated(p, 0.1, -2 * p - a + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(22.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glColor3f(1, 1, 1);
+	DORdrawInnerOctagonSide();
+
+	ppm;
+
+	///the right wing of the back
+	pshm;
+	glTranslated(p + a, 0, -2 * p - a + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(-22.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(-45, 0, 1, 0);
+	glColor3f(0.3, 0.3, 0.3);
+	DORdrawInnerOctagonSide();
+	ppm;
+
+	///the right side
+	pshm;
+	glTranslated(2 * p + a, 0.1, -p - a + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(-67.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(-90, 0, 1, 0);
+	glColor3f(1, 1, 1);
+	DORdrawInnerOctagonSide();
+
+	ppm;
+
+	///the right wing of the front 
+	pshm;
+	glTranslated(2 * p + a, 0, -p + c.length);
+
+	pshm;
+	glColor3f(0.3, 0.2, 0.7);
+	glRotated(-112.5, 0, 1, 0);
+	glTranslated(-2.5, 0, 0);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	ppm;
+
+	glRotated(-135, 0, 1, 0);
+	glColor3f(0.1, 0.1, 0.1);
+	DORdrawInnerOctagonSide();
+	ppm;
+}
 
 void drawOctagon(Constraints c,int textures[]) {
 	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
@@ -943,28 +1223,64 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	ppm;
 
 
-	DORdrawsides();
-
-	db a = 60;
-	db p = a / srt;
+	Constraints outer = Constraints(60, 37, 1.5);
+	Constraints inner = Constraints(48, 1.5, 3);
+	db a = outer.width, b = inner.width;
+	db p = a / srt, p2 = b / srt; 
+	db dia = a + 2 * p, dia2 = b + 2 * p2;
 	int sectorCnt = 36; int radius = 4; int radius2 = 5;
 	white;
+
+#pragma region design
+	Box bridge;
+	///the front face
+	pshm;
+	pshm;
+	glTranslated(-100, 10, 0);
+	glTranslated(p2, 0.1, 0);
+	bridge.drawOutside(Constraints(48, 3, 3), textures);
+	ppm;
+
+	pshm;
+	glTranslated(-100, 0, 0);
+	glTranslated(p2, 0, 3);
+	glRotated(157.5, 0, 1, 0);
+	glTranslated(-5, 0, 0);
+	bridge.drawOutside(Constraints(10, 20, 5), textures);
+	ppm;
+
+	///the left wing of the front 
+	pshm;
+	glTranslated(-100, 10, 0);
+	glTranslated(p2, 0, 3);
+	glRotated(135, 0, 1, 0);
+
+	bridge.drawOutside(Constraints(48, 3, 3), textures);
+	ppm;
+
+	ppm;
+#pragma endregion
+
+
+
+	pshm;
+	glTranslated(0, 0.1, 0);
+	DORdrawsides();
+	ppm;
 	
 	
-
-	//drawing pillar 
-	//glTranslated(10, 8, 0);
-
-
-	//drawOuterPillar(0.5, 12, 1.6, textures);
-
-	glTranslated(8, 25, - 5);
-
-	//x is outer length - inner
-	//z is the outer radius - inner radius / 2
-	glTranslated(5, 0,  - (30 +   60 /srt) + (25 + 50/srt ));
-	drawOctagon(Constraints(50,2,5),textures);
+	//drawOuterPillar(0.5, 10, 1.5, textures);
 	
+
+	//moving the outer octagon to the base of the outer octagon 
+	glTranslated(p - p2, 0, -inner.length);
+
+	//move to the middle of the outer oct depending on the diameters of the oct
+	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
+	//DORdrawInnerOctagon();
+
+	DORdrawInnerOctagon();
+
 	
 	
 	
