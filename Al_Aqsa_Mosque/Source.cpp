@@ -86,6 +86,35 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
+void arch() {
+	glEnable(GL_TEXTURE_2D);
+
+	db length = 10; db sectorCount = 20; db radius = 5;
+	glPushMatrix();
+	glTranslatef(0, 0, -length / 2);
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0, 0, 1);
+
+	for (int i = 0; i <= sectorCount; ++i) {
+		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
+		GLfloat x = radius * cos(angle);
+		GLfloat y = radius * sin(angle);
+
+		if (angle <= PI / 2) {
+			glTexCoord2d(1, 1);
+			glVertex3d(radius, radius, length);
+			glTexCoord2d(x / radius, y / radius);
+			glVertex3f(x, y, length);
+		}
+		else {
+			glTexCoord2d(1, 1);
+			glVertex3d(-radius, radius, length);
+			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
+			glVertex3f(x, y, length);
+		}
+
+	}
+}
 
 // Camera Object
 Camera* camera;
@@ -138,6 +167,8 @@ float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
+
+
 void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
 
 	glEnable(GL_TEXTURE_2D);
@@ -191,10 +222,15 @@ void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int t
 }
 
 void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf) {
+
+#pragma region front ring
 	pshm;
 	glNormal3f(0, 0, -1);
 	drawRing(innerR, outerR, -height, sectorCnt, textures[0], textures[1], isHalf);
 	ppm;
+#pragma endregion
+
+#pragma region outer cylinder
 	glEnable(GL_TEXTURE_2D);
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, textures[2]);
@@ -202,6 +238,9 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	outerC.setIsHalf(isHalf);
 	outerC.drawSide();
 	ppm;
+#pragma endregion
+
+#pragma region inner cylinder
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
@@ -209,10 +248,14 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	innerC.drawSide();
 	ppm;
 	glDisable(GL_TEXTURE_2D);
+#pragma endregion
+
+#pragma region back ring 
 	pshm;
 	glNormal3f(0, 0, 1);
 	drawRing(innerR, outerR, height, sectorCnt, textures[0], textures[1], isHalf);
 	ppm;
+#pragma endregion
 	
 	if (isHalf) {
 		glNormal3f(0, -1, 0);
@@ -231,35 +274,74 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 		endf;
 	}
 }
-void arch() {
-	glEnable(GL_TEXTURE_2D);
 
-	db length = 10; db sectorCount = 20; db radius = 5;
-	glPushMatrix();
-	glTranslatef(0, 0, -length / 2);
-	glBegin(GL_TRIANGLE_STRIP);
-	glNormal3f(0, 0, 1);
 
-	for (int i = 0; i <= sectorCount; ++i) {
-		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
-		GLfloat x = radius * cos(angle);
-		GLfloat y = radius * sin(angle);
+void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
 
-		if (angle <= PI / 2) {
-			glTexCoord2d(1, 1);
-			glVertex3d(radius, radius, length);
-			glTexCoord2d(x / radius, y / radius);
-			glVertex3f(x, y, length);
-		}
-		else {
-			glTexCoord2d(1, 1);
-			glVertex3d(-radius, radius, length);
-			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
-			glVertex3f(x, y, length);
-		}
 
-	}
+	pshm;
+	glTranslated(5, pillarHeight/2.0 + 1.401, 0);
+#pragma region main body
+	pshm;
+	glColor3f(1, 0.5, 0.5);
+	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 20);
+	c.setUpAxis(2);
+	c.drawSide();
+	ppm;
+#pragma endregion
+
+#pragma region bracelets
+	pshm;
+	glTranslated(0, -pillarHeight / 2.0 + pillarRadius / 2.0, 0);
+	glColor3f(1, 1, 1);
+	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 20);
+	bracelet.setUpAxis(2);
+	bracelet.drawSide();
+	ppm;
+
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 - pillarRadius / 2.0, 0);
+	glColor3f(1, 1, 1);
+	bracelet.setUpAxis(2);
+	bracelet.drawSide();
+	ppm;
+#pragma endregion
+
+#pragma region base
+	pshm;
+
+	Box base;
+
+	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.2, -3 * pillarRadius / 2.0);
+	pshm;
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0.1, -1, 0.1);
+	base.drawOutside(Constraints(basesWidth - 0.2, 1, basesWidth - 0.2), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0, -1.2, 0);
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures);
+	ppm;
+
+	ppm;
+#pragma endregion
+
+#pragma region top
+	pshm;
+	glTranslated(0, pillarHeight / 2.0, 0);
+	glRotated(45, 0, 1, 0);
+	Cylinder top = Cylinder(pillarRadius - 0.1, basesWidth - 0.5, 1.4, 4);
+	top.setUpAxis(2);
+	top.drawSide();
+	ppm;
+#pragma endregion
+	ppm;
 }
+
 
 void DORdrawsides() {
 
@@ -277,7 +359,8 @@ void DORdrawsides() {
 	if (keys[VK_F2]) {
 		if (openTheDoor > 0) openTheDoor -= 1;
 	}
-	///the front face
+
+#pragma region front side
 	pshm;
 	glTranslated(p, 0, 0);
 
@@ -295,57 +378,121 @@ void DORdrawsides() {
 	wall.drawOutside(Constraints(25, 15, 1.5), textures);
 	ppm;
 
-	//entracne ////////////////////////////////////////////
+#pragma region entrance
+
+
 	db doorWidth = 10; db doorHeight = 15;
-	db archbaseHeight = 1; db outerR = 5, innerR = 4, archHeight = 15;
+	db archbaseHeight = 1; db outerR = 5, innerR = 4, archLength = 15;
 	
+	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
+	db overflownEdgesForTheBaseOfArch = 0.6;*/
+
+	//db umberellaWidth = 20;
+
+
 	pshm;
 
-	//marble ground
+#pragma region marble ground
 	pshm;
+	glColor3f(0.9, 0.9, 0.9);
 	glTranslated(0, 0.01, 0);
-	marbleGround.drawOutside(Constraints(60, 0.2, archHeight), textures);
+	marbleGround.drawOutside(Constraints(60, 0.2, archLength+1), textures);
 	ppm;
+#pragma endregion
+
+#pragma region pillars
+
+	pshm;
+	glTranslated(20-0.5, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(20 - 0.5 + doorWidth + 1 , 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(25 - 0.5 + doorWidth + 1, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(33.7 - 0.5 + doorWidth + 1, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(38.7 - 0.5 + doorWidth + 1, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(15 - 0.5, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(6.3 - 0.5, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(1.3 - 0.5, 0.2, archLength);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+
+#pragma endregion
+
 
 	glTranslated(0, archbaseHeight, 0);
 
-	//bases
+#pragma region bases of the arch 
 	pshm;
 	glColor3f(1, 1, 0);
 	glTranslated(24-0.6/2, doorHeight- archbaseHeight, c.length);
 	
-	arch.drawOutside(Constraints(outerR - innerR + 0.6,archbaseHeight,archHeight+0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6,archbaseHeight,archLength+0.5), textures);
 	ppm;
 
 	pshm;
 	glColor3f(1, 1, 0);
 	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archHeight + 0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
 	ppm;
+#pragma endregion
 
-	//umberella 
+#pragma region umbrellas
 	pshm;
 	glColor3f(0, 0, 1);
 	glTranslated(5, doorHeight-archbaseHeight, c.length);
-	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6/2, archbaseHeight / 2.0, archHeight),textures);
+	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6/2, archbaseHeight / 2.0, archLength),textures);
 	ppm;
 
 	pshm;
 	glColor3f(0, 0, 1);
 	glTranslated(60 - 5 - (20 - outerR + innerR - 0.6 / 2), doorHeight - archbaseHeight, c.length);
-	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6 / 2, archbaseHeight / 2.0, archHeight), textures);
+	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6 / 2, archbaseHeight / 2.0, archLength), textures);
 	ppm;
+#pragma endregion
 
-	
-	//the arch 
+#pragma region the arch
 	glColor3f(0, 1, 1);
 	//moving the arch to it's position
 	glTranslated(30,15, 7.5 + c.length + 0.1);
-	drawPipe(innerR+1, outerR+1, archHeight, 24, textures, true);
+	drawPipe(innerR+1, outerR+1, archLength, 24, textures, true);
+#pragma endregion
+
+
+
 	
 	ppm;
 
-	/////////////////////////////////////////////////
+#pragma endregion
+
+
+#pragma region doors
 
 	//the left door
 	pshm;
@@ -363,19 +510,22 @@ void DORdrawsides() {
 	glTranslated(-5, 0, 0);
 	door.drawOutside(Constraints(5, 15, 0.5), textures);
 	ppm;
+#pragma endregion
 
 
 	ppm;
+#pragma endregion
 
-	///the left wing of the front 
+#pragma region left wing of the front side
 	pshm;
 	glTranslated(p, 0.01, c.length);
 	glRotated(135, 0, 1, 0);
 	glColor3f(0.5, 0.5, 0.5);
 	wall.drawOutside(c, textures);
 	ppm;
+#pragma endregion
 
-	///the left side
+#pragma region left side
 	pshm;
 	glTranslated(0, 0, -p + c.length);
 	glRotated(90, 0, 1, 0);
@@ -395,6 +545,77 @@ void DORdrawsides() {
 	wall.drawOutside(Constraints(25, 15, 1.5), textures);
 	ppm;
 
+
+#pragma region entrance
+
+
+	//db doorWidth = 10; db doorHeight = 15;
+	//db archbaseHeight = 1; db outerR = 5, innerR = 4, archHeight = 15;
+	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
+	db overflownEdgesForTheBaseOfArch = 0.6;*/
+	//db umberellaWidth = 20;
+
+	archLength = 8.5;
+
+	pshm;
+	glRotated(180, 0, 1, 0);
+	glTranslated(-60, 0, -2);
+#pragma region marble ground
+	pshm;
+	glColor3f(0.9, 0.9, 0.9);
+	glTranslated(22.5, 0.01, 0);
+	marbleGround.drawOutside(Constraints(15, 0.2, archLength+2), textures);
+	ppm;
+#pragma endregion
+
+#pragma region pillars
+	white;
+	pshm;
+	glTranslated(20 - 0.5, 0.2, archLength + 0.5);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(20 - 0.5 + doorWidth + 1, 0.2, archLength +0.5 );
+	drawOuterPillar(0.5, 12.7, 1.7, textures);
+	ppm;
+#pragma endregion
+
+
+	glTranslated(0, archbaseHeight, 0);
+
+#pragma region bases of the arch 
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(24 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+#pragma endregion
+
+#pragma region the arch
+	pshm;
+	glColor3f(0, 1, 1);
+	//moving the arch to it's position
+	glTranslated(30, 15, archLength/2.0 + c.length + 0.1);
+	drawPipe(innerR + 1, outerR + 1, archLength, 24, textures, true);
+	ppm;
+#pragma endregion
+
+
+
+
+	ppm;
+
+#pragma endregion
+
+#pragma region doors
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
@@ -415,18 +636,23 @@ void DORdrawsides() {
 	ppm;
 
 	ppm;
+#pragma endregion
 
 	ppm;
+#pragma endregion
 
-	///the left wing of the  back
+#pragma region left wing of the back side
 	pshm;
 	glTranslated(0, 0, -p - a + c.length);
 	glRotated(45, 0, 1, 0);
 	glColor3f(0.3, 0.3, 0.3);
 	wall.drawOutside(c, textures);
 	ppm;
+#pragma endregion
 
-	///the back face
+#pragma region back side
+
+
 	pshm;
 	glTranslated(p, 0, -2 * p - a + c.length);
 	glColor3f(1, 1, 1);
@@ -445,7 +671,76 @@ void DORdrawsides() {
 	wall.drawOutside(Constraints(25, 15, 1.5), textures);
 	ppm;
 
+#pragma region entrance
 
+
+	//db doorWidth = 10; db doorHeight = 15;
+	//db archbaseHeight = 1; db outerR = 5, innerR = 4, archHeight = 15;
+	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
+	db overflownEdgesForTheBaseOfArch = 0.6;*/
+	//db umberellaWidth = 20;
+
+	archLength = 8.5;
+
+	pshm;
+	glRotated(180, 0, 1, 0);
+	glTranslated(-60, 0, -2);
+#pragma region marble ground
+	pshm;
+	glColor3f(0.9, 0.9, 0.9);
+	glTranslated(22.5, 0.01, 0);
+	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures);
+	ppm;
+#pragma endregion
+
+#pragma region pillars
+	white;
+	pshm;
+	glTranslated(20 - 0.5, 0.2, archLength + 0.5);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(20 - 0.5 + doorWidth + 1, 0.2, archLength + 0.5);
+	drawOuterPillar(0.5, 12.7, 1.7, textures);
+	ppm;
+#pragma endregion
+
+
+	glTranslated(0, archbaseHeight, 0);
+
+#pragma region bases of the arch 
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(24 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+#pragma endregion
+
+#pragma region the arch
+	pshm;
+	glColor3f(0, 1, 1);
+	//moving the arch to it's position
+	glTranslated(30, 15, archLength / 2.0 + c.length + 0.1);
+	drawPipe(innerR + 1, outerR + 1, archLength, 24, textures, true);
+	ppm;
+#pragma endregion
+
+
+
+
+	ppm;
+
+#pragma endregion
+
+#pragma region doors
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
@@ -466,18 +761,21 @@ void DORdrawsides() {
 	ppm;
 
 	ppm;
+#pragma endregion
 
 	ppm;
+#pragma endregion
 
-	///the right wing of the back
+#pragma region right wing of the back side
 	pshm;
 	glTranslated(p + a, 0, -2 * p - a + c.length);
 	glRotated(-45, 0, 1, 0);
 	glColor3f(0.3, 0.3, 0.3);
 	wall.drawOutside(c, textures);
 	ppm;
+#pragma endregion
 
-	///the right side
+#pragma region right side
 	pshm;
 	glTranslated(2 * p + a, 0, -p - a + c.length);
 	glRotated(-90, 0, 1, 0);
@@ -497,6 +795,77 @@ void DORdrawsides() {
 	wall.drawOutside(Constraints(25, 15, 1.5), textures);
 	ppm;
 
+#pragma region entrance
+
+
+	//db doorWidth = 10; db doorHeight = 15;
+	//db archbaseHeight = 1; db outerR = 5, innerR = 4, archHeight = 15;
+	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
+	db overflownEdgesForTheBaseOfArch = 0.6;*/
+	//db umberellaWidth = 20;
+
+	archLength = 8.5;
+
+	pshm;
+	glRotated(180, 0, 1, 0);
+	glTranslated(-60, 0, -2);
+#pragma region marble ground
+	pshm;
+	glColor3f(0.9, 0.9, 0.9);
+	glTranslated(22.5, 0.01, 0);
+	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures);
+	ppm;
+#pragma endregion
+
+#pragma region pillars
+	white;
+	pshm;
+	glTranslated(20 - 0.5, 0.2, archLength +0.5);
+	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	ppm;
+
+	pshm;
+	glTranslated(20 - 0.5 + doorWidth + 1, 0.2, archLength + 0.5);
+	drawOuterPillar(0.5, 12.7, 1.7, textures);
+	ppm;
+#pragma endregion
+
+
+	glTranslated(0, archbaseHeight, 0);
+
+#pragma region bases of the arch 
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(24 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+
+	pshm;
+	glColor3f(1, 1, 0);
+	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	ppm;
+#pragma endregion
+
+#pragma region the arch
+	pshm;
+	glColor3f(0, 1, 1);
+	//moving the arch to it's position
+	glTranslated(30, 15, archLength / 2.0 + c.length + 0.1);
+	drawPipe(innerR + 1, outerR + 1, archLength, 24, textures, true);
+	ppm;
+#pragma endregion
+
+
+
+
+	ppm;
+
+#pragma endregion
+
+#pragma region doors
+
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
@@ -517,17 +886,22 @@ void DORdrawsides() {
 	ppm;
 
 	ppm;
+#pragma endregion
 
 	ppm;
 
-	///the right wing of the front 
+#pragma endregion
+
+#pragma region right wing of the front side
 	pshm;
 	glTranslated(2 * p + a, 0, -p + c.length);
 	glRotated(-135, 0, 1, 0);
 	glColor3f(0.1, 0.1, 0.1);
 	wall.drawOutside(c, textures);
 	ppm;
+#pragma endregion
 
+#pragma region carpet
 	glColor3ub(173, 3, 23);
 	glBegin(GL_POLYGON);
 	glNormal3f(0, 1, 0);
@@ -540,6 +914,7 @@ void DORdrawsides() {
 	glVertex3d(0, 0.1, -p - a + c.length);
 	glVertex3d(0, 0.1, -p);
 	glEnd();
+#pragma endregion
 
 
 }
@@ -683,72 +1058,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	int sectorCnt = 36; int radius = 4; int radius2 = 5;
 	white;
 	
-	//z is the thickness of the inner, x is arbitrary
 	
-	pshm;
 
 	//drawing pillar 
-	glTranslated(10, 8, 0);
+	//glTranslated(10, 8, 0);
 
-	db pillarR = 0.5, pillarH = 12 , archbaseWidth = 1.6;
-	//main part
-	
-	glColor3f(1, 0.5, 0.5);
-	Cylinder c = Cylinder(pillarR, pillarR, pillarH,20);
-	c.setUpAxis(2);
-	c.drawSide();
 
-	//bracelets//////////////////
-	pshm;
-	glTranslated(0, -pillarH/2.0 + pillarR/2.0, 0);
-	glColor3f(1, 1, 1);
-	Cylinder bracelet = Cylinder(pillarR + 0.01, pillarR + 0.01,0.5,20);
-	bracelet.setUpAxis(2);
-	bracelet.drawSide();
-	ppm;
-
-	pshm;
-	glTranslated(0, pillarH/2.0 - pillarR/2.0, 0);
-	glColor3f(1, 1, 1);
-	bracelet.setUpAxis(2);
-	bracelet.drawSide();
-	ppm;
-	///////////////////////////
-
-	//base //////////////////////////////////
-	pshm;
-
-	glTranslated( - 3 * pillarR/2.0, -pillarH/2.0 - 0.2, - 3 * pillarR/2.0);
-	Box base;
-	pshm;
-	base.drawOutside(Constraints(archbaseWidth,0.2, archbaseWidth), textures);
-	ppm;
-	pshm;
-	glTranslated(0.1, -1, 0.1);
-	base.drawOutside(Constraints(archbaseWidth-0.2, 1, archbaseWidth - 0.2), textures);
-	ppm;
-	pshm;
-	glTranslated(0, -1.2, 0);
-	base.drawOutside(Constraints(archbaseWidth, 0.2, archbaseWidth), textures);
-	ppm;
-	
-	ppm;
-
-	/////////////////////////////
-
-	//top///////////////////////////
-
-	pshm; 
-	glTranslated(0, pillarH / 2.0, 0);
-	glRotated(45, 0, 1, 0);
-	Cylinder top = Cylinder(pillarR - 0.1, archbaseWidth-0.5, 1.4, 4);
-	top.setUpAxis(2);
-	top.drawSide();
-	ppm;
-
-	///////////////////////////////////////////
-
-	ppm;
+	//drawOuterPillar(0.5, 12, 1.6, textures);
 
 	glTranslated(8, 25, - 5);
 
