@@ -10,8 +10,6 @@
 #define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
 
-
-
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library
@@ -86,36 +84,6 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
-void arch(db sectorCount , db radius, db thickness = 0) {
-	glEnable(GL_TEXTURE_2D);
-
-	db length = 0;
-	pshm;
-	glTranslatef(0, 0, -length / 2);
-	glBegin(GL_TRIANGLE_STRIP);
-
-	for (int i = 0; i <= sectorCount; ++i) {
-		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
-		GLfloat x = radius * cos(angle);
-		GLfloat y = radius * sin(angle);
-
-		if (angle <= PI / 2) {
-			glTexCoord2d(1, 1);
-			glVertex3d(radius, radius + thickness, length);
-			glTexCoord2d(x / radius, y / radius);
-			glVertex3f(x, y, length);
-		}
-		else {
-			glTexCoord2d(1, 1);
-			glVertex3d(-radius, radius + thickness, length);
-			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
-			glVertex3f(x, y, length);
-		}
-
-	}
-	endf;
-	ppm;
-}
 
 // Camera Object
 Camera* camera;
@@ -169,6 +137,36 @@ GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
 
+void arch(db sectorCount , db radius, db thickness = 0) {
+	glEnable(GL_TEXTURE_2D);
+
+	db length = 0;
+	pshm;
+	glTranslatef(0, 0, -length / 2);
+	glBegin(GL_TRIANGLE_STRIP);
+
+	for (int i = 0; i <= sectorCount; ++i) {
+		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
+		GLfloat x = radius * cos(angle);
+		GLfloat y = radius * sin(angle);
+
+		if (angle <= PI / 2) {
+			glTexCoord2d(1, 1);
+			glVertex3d(radius, radius + thickness, length);
+			glTexCoord2d(x / radius, y / radius);
+			glVertex3f(x, y, length);
+		}
+		else {
+			glTexCoord2d(1, 1);
+			glVertex3d(-radius, radius + thickness, length);
+			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
+			glVertex3f(x, y, length);
+		}
+
+	}
+	endf;
+	ppm;
+}
 
 void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
 
@@ -856,7 +854,7 @@ void DORdrawsides() {
 
 }
 
-void DORdrawInnerOctagonSide() {
+void DORdrawArcadeSide() {
 
 	int textures[6] = { 0,0,0,0,0,0 }; db h = 20;
 	db pillarH = h + 3 + 2.5;
@@ -876,8 +874,9 @@ void DORdrawInnerOctagonSide() {
 	pshm;
 	pshm;
 	glTranslated(24, pillarH + 1.5, 1.5);
+	glColor3f(1, 0, 1);
 	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
-
+	white;
 	pshm;
 	glTranslated(0, 0, 1.5);
 	glNormal3f(0, 0, 1);
@@ -893,8 +892,10 @@ void DORdrawInnerOctagonSide() {
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
+	glColor3f(1, 0, 1);
 	glTranslated(8, pillarH + 1.5, 1.5);
 	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
+	white;
 	pshm;
 	glTranslated(0, 0, 1.5);
 	glNormal3f(0, 0, 1);
@@ -910,9 +911,10 @@ void DORdrawInnerOctagonSide() {
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
+	glColor3f(1, 0, 1);
 	glTranslated(40, pillarH + 1.5, 1.5);
 	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
-
+	white;
 	pshm;
 	glTranslated(0, 0, 1.5);
 	glNormal3f(0, 0, 1);
@@ -944,7 +946,7 @@ void DORdrawInnerOctagonSide() {
 	ppm;
 }
 
-void DORdrawInnerOctagon() {
+void DORdrawArcade() {
 
 	int textures[6] = { 0,0,0,0,0,0 };
 	Constraints c = Constraints(48, 1.5, 3);
@@ -970,7 +972,7 @@ void DORdrawInnerOctagon() {
 	///the front face
 	pshm;
 	glTranslated(p, 0.1, 0);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 	ppm;
 
 	///the left wing of the front 
@@ -986,7 +988,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(135, 0, 1, 0);
 	glColor3f(0.5, 0.5, 0.5);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 	ppm;
 
 	///the left side
@@ -1004,7 +1006,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(90, 0, 1, 0);
 	glColor3f(1, 1, 1);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 
 	ppm;
 
@@ -1022,7 +1024,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(45, 0, 1, 0);
 	glColor3f(0.3, 0.3, 0.3);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 
 	ppm;
 
@@ -1038,7 +1040,7 @@ void DORdrawInnerOctagon() {
 	ppm;
 
 	glColor3f(1, 1, 1);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 
 	ppm;
 
@@ -1055,7 +1057,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(-45, 0, 1, 0);
 	glColor3f(0.3, 0.3, 0.3);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 	ppm;
 
 	///the right side
@@ -1071,7 +1073,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(-90, 0, 1, 0);
 	glColor3f(1, 1, 1);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 
 	ppm;
 
@@ -1088,7 +1090,7 @@ void DORdrawInnerOctagon() {
 
 	glRotated(-135, 0, 1, 0);
 	glColor3f(0.1, 0.1, 0.1);
-	DORdrawInnerOctagonSide();
+	DORdrawArcadeSide();
 	ppm;
 }
 
@@ -1232,54 +1234,56 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	white;
 
 #pragma region design
-	Box bridge;
-	///the front face
 	pshm;
+	//glTranslated( p + a / 2, 30,-p - a/2);
+	glTranslated(-60, 20, 0);
+	Cylinder drum = Cylinder(33, 33, 5, 16,1,false);
+	drum.setUpAxis(2);
+	drum.drawSide();
+	drum.set(36, 36, 5, 16, 1, false,2);
+	drum.drawSide();
+	ppm;
+
+
+	pshm; 
+
 	pshm;
-	glTranslated(-100, 10, 0);
-	glTranslated(p2, 0.1, 0);
-	bridge.drawOutside(Constraints(48, 3, 3), textures);
+	glNormal3f(0, 0, 1);
+	glTranslated(0, 0, 1.49);
+	arch(8, 7);
 	ppm;
 
 	pshm;
-	glTranslated(-100, 0, 0);
-	glTranslated(p2, 0, 3);
-	glRotated(157.5, 0, 1, 0);
-	glTranslated(-5, 0, 0);
-	bridge.drawOutside(Constraints(10, 20, 5), textures);
+	glNormal3f(0, 0, -1);
+	glTranslated(0, 0, -1.49);
+	arch(8, 7);
 	ppm;
 
-	///the left wing of the front 
-	pshm;
-	glTranslated(-100, 10, 0);
-	glTranslated(p2, 0, 3);
-	glRotated(135, 0, 1, 0);
-
-	bridge.drawOutside(Constraints(48, 3, 3), textures);
+	glColor3f(0, 0.123, 0.21);
+	drawPipe(5, 7, 3, 16, textures,true, true);
 	ppm;
 
-	ppm;
+
 #pragma endregion
 
 
 
+
+
+#pragma region domeOfTheRock
 	pshm;
 	glTranslated(0, 0.1, 0);
 	DORdrawsides();
 	ppm;
-	
-	
-	//drawOuterPillar(0.5, 10, 1.5, textures);
-	
+		
 
 	//moving the outer octagon to the base of the outer octagon 
 	glTranslated(p - p2, 0, -inner.length);
-
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
 	//DORdrawInnerOctagon();
-
-	DORdrawInnerOctagon();
+	DORdrawArcade();
+#pragma endregion
 
 	
 	
