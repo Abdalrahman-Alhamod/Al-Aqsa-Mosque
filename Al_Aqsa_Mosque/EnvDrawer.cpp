@@ -261,15 +261,15 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	//TODO: fix hight parameter
 	float hight = 10;
 	glPushMatrix();
-	glScalef(size,size,size);
-	EnvDrawer::drawPillar(1, hight, texture, 0.4,10,10);
+	glScalef(size, size, size);
+	EnvDrawer::drawPillar(1, hight, texture, 0.4, 10, 10);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	Cylinder cyl = Cylinder(2.5, 2.5, 0.1);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
-	glTranslated(0,0,-6.6);
+	glTranslated(0, 0, -6.6);
 	cyl.draw();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
@@ -279,7 +279,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 		glRotatef(i * 360 / 8, 0, 1, 0);
 		glPushMatrix();
 		glTranslatef(0, hight - 3.8, 1.8);
-		drawHalfCylinderInRectangularPrism(0.35, Constraints(1.5, 0.4, 0.07), 6,texture);
+		drawHalfCylinderInRectangularPrism(0.35, Constraints(1.5, 0.4, 0.07), 6, texture);
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(21, 0, 1, 0);
@@ -326,7 +326,7 @@ void EnvDrawer::drawCubedMinaret(const float size, const int texture)
 	{
 		glRotatef(i * 360 / 4, 0, 1, 0);
 		glPushMatrix();
-		glTranslatef(0, hight - 4,1.4);
+		glTranslatef(0, hight - 4, 1.4);
 		drawHalfCylinderInRectangularPrism(0.35, Constraints(2.8, 0.6, 0.07), 6, texture);
 		glPopMatrix();
 		glPushMatrix();
@@ -337,11 +337,11 @@ void EnvDrawer::drawCubedMinaret(const float size, const int texture)
 	}
 
 
-	glTranslated(0, hight -3.8, 0);
+	glTranslated(0, hight - 3.8, 0);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	Cylinder cyl = Cylinder(0.7,0.9,2.5,18);
+	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 18);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	cyl.draw();
@@ -355,6 +355,83 @@ void EnvDrawer::drawCubedMinaret(const float size, const int texture)
 	sphere.drawWithLines(lineColor);
 	glColor3ub(100, 100, 100);
 	glPopMatrix();
+	glPopMatrix();
+}
+
+void EnvDrawer::drawWallWithDoor(const float length,const float wallHeight, const int texture)
+{
+	glPushMatrix();
+
+	int i = 0;
+	for (; 2*(i+1) < length; ++i)
+	{
+		glPushMatrix();
+		glTranslated(2*i - (length - 2.5) / 2, wallHeight-4, -0.5);
+		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		glPopMatrix();
+	}
+	glPushMatrix();
+	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+	Box().drawOutside(Constraints(length-(2*i), 1, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(0,wallHeight-5,0);
+	glPushMatrix();
+	glTranslatef(-(length - 2.5) / 2, -wallHeight+1, -0.5);
+	Box().drawOutside(Constraints((length-2.5)/2, wallHeight , 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(0, -wallHeight+1, 0);
+
+	glPushMatrix();
+	glTranslatef(0,0, -1 * 0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(2.25,0, -0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(1.25, -1, 0);
+	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5,2, 1), 36, texture);
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(2.5, -wallHeight+1, -0.5);
+	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
+	glPopMatrix();
+	glPopMatrix();
+	glPopMatrix();
+}
+
+void EnvDrawer::drawWall(const float length, const float wallHeight, const int texture)
+{
+	glPushMatrix();
+
+	int i = 0;
+	for (; 2 * (i + 1) < length; ++i)
+	{
+		glPushMatrix();
+		glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		glPopMatrix();
+	}
+	glPushMatrix();
+	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+	Box().drawOutside(Constraints(length - (2 * i), 1, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-(length - 2.5)/2,-wallHeight,-0.5);
+	Box().drawOutside(Constraints(length,wallHeight,1), texture);
+	glPopMatrix();
+
 	glPopMatrix();
 }
 
@@ -409,16 +486,19 @@ void EnvDrawer::drawGarden(const Point& point, const int width, const int length
 }
 
 void EnvDrawer::drawPillar(const float radius, const float height, int texture, const float baseHeight, const int cylinderSector, const int baseSector) {
-	glPushMatrix();
-	glTranslatef(0, height * 0.5, 0);
-	glRotatef(45, 0, 1, 0);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	Cylinder topBase = Cylinder(radius, 2 * radius, baseHeight, baseSector);
-	topBase.setUpAxis(2);
-	topBase.draw();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+	if (baseHeight)
+	{
+		glPushMatrix();
+		glTranslatef(0, height * 0.5, 0);
+		glRotatef(45, 0, 1, 0);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		Cylinder topBase = Cylinder(radius, 2 * radius, baseHeight, baseSector);
+		topBase.setUpAxis(2);
+		topBase.draw();
+		glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
+	}
 
 	glPushMatrix();
 	glRotatef(45, 0, 1, 0);
@@ -443,7 +523,7 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 }
 
 
-void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors,const int texture) {
+void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
 
 	float width = 60, height = 30, length = 30;
 	length = constraints.length;
@@ -676,7 +756,7 @@ void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int 
 	for (int i = 0; i < count; i++) {
 		glPushMatrix();
 		glTranslatef(i * size * 3, 0, 0);
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), 36 ,texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), 36, texture);
 		glPushMatrix();
 		glTranslatef(-size * 1.5, (-pillarHeight - 0.2 * size) * 0.50, 0);
 		EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
@@ -717,7 +797,7 @@ void EnvDrawer::drawHallway(const int size, const int wallHeight, const int coun
 		Box().drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
 		glPopMatrix();
 
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length),36, texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), 36, texture);
 
 		glPopMatrix();
 	}

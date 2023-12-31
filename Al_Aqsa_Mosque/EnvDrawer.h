@@ -178,6 +178,8 @@ public:
 	
 	void drawCylindricMinaret(const float size, const int texture);
 	void drawCubedMinaret(const float size, const int texture);
+	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
+	void drawWall(const float length, const float wallHeight, const int texture);
 
 	GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
 	GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)

@@ -343,10 +343,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//envDrawer.drawPillar(2, 10, 1);
 	//envDrawer.drawHalfCylinderInRectangularPrism(1, Constraints(1,3,3), 2);
 	glPushMatrix();
-	glTranslated(0, 3.2, +7);
-	envDrawer.drawCubedMinaret(1,1);
-	glTranslated(0,+3.2,0);
-	envDrawer.drawCylindricMinaret(1,1);
+	glTranslated(0, 2, 0);
+	envDrawer.drawWallWithDoor(7, 4,1);
+	glTranslated(0, 0, +7);
+	envDrawer.drawWall(7, 4, 4);
 	glPopMatrix();
 	//envDrawer.drawGrassLand(points, 10);
 	//mosqueDrawer.drawPrayerCarbet1(points, 10);
@@ -370,7 +370,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.9 * 0.02 * cos(4 * (abs(p.x) + abs(p.z)) );
+		p.y = -1.8 + 0.02 * cos(4 * (abs(p.x) + abs(p.z)) );
 
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
 		//console.print(personDrawer.v());
