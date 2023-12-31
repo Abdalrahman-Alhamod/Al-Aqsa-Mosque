@@ -138,8 +138,6 @@ GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
 
-//innerR, outerR, height of pipe, sector count
-
 
 void arch(db sectorCount , db radius, db thickness = 0) {
 	glEnable(GL_TEXTURE_2D);
@@ -225,8 +223,8 @@ void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int t
 }
 
 void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf, bool isArch = false) {
-
 #pragma region front ring
+	
 	pshm;
 	glNormal3f(0, 0, -1);
 	drawRing(innerR, outerR, -height, sectorCnt, textures[0], textures[1], isHalf);
@@ -261,8 +259,7 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	drawRing(innerR, outerR, height, sectorCnt, textures[0], textures[1], isHalf);
 	ppm;
 #pragma endregion
-	
-	if (isHalf && !isArch) {
+	if (isHalf) {
 		glNormal3f(0, -1, 0);
 		beg(GL_QUADS);
 		glVertex3d(outerR,0,height/2.0);
@@ -281,10 +278,11 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 }
 
 void drawColumn(db pillarRadius, db pillarHeight) {
+	glEnable(GL_CULL_FACE);
 #pragma region main body
 	pshm;
 	glColor3f(1, 0.5, 0.5);
-	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 8);
+	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 6);
 	c.setUpAxis(2);
 	c.drawSide();
 	ppm;
@@ -294,7 +292,7 @@ void drawColumn(db pillarRadius, db pillarHeight) {
 	pshm;
 	glTranslated(0, -pillarHeight / 2.0 + 0.25, 0);
 	white;
-	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 8);
+	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 6);
 	bracelet.setUpAxis(2);
 	bracelet.drawSide();
 	ppm;
@@ -305,6 +303,7 @@ void drawColumn(db pillarRadius, db pillarHeight) {
 	bracelet.setUpAxis(2);
 	bracelet.drawSide();
 	ppm;
+	glDisable(GL_CULL_FACE);
 #pragma endregion
 }
 
@@ -383,6 +382,45 @@ void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - basesWidth, -3 * pillarRadius / 2.0);
 	base.drawOutside(Constraints(basesWidth, basesWidth, basesWidth), textures);
+	ppm;
+#pragma endregion
+
+	ppm;
+}
+
+void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + basesWidth + 0.1, 0);
+#pragma region body
+	pshm;
+	drawColumn(1.2, pillarHeight);
+	ppm;
+#pragma endregion
+
+#pragma region top
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
+
+	pshm;
+	glTranslated(-1.5, 0.7, -1.5);
+	Box base;
+	base.drawOutside(Constraints(3, 1.5, 3), textures);
+	ppm;
+	glRotated(45, 0, 1, 0);
+	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
+	top.setUpAxis(2);
+	top.drawSide();
+	ppm;
+
+#pragma endregion
+
+#pragma region base
+	pshm;
+	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 1, -3 * pillarRadius / 2.0);
+	base.drawOutside(Constraints(basesWidth, 1,basesWidth), textures);
+	glTranslated(-0.25,-2,-0.25);
+	base.drawOutside(Constraints(basesWidth + 0.5, 2, basesWidth + 0.5), textures);
+
 	ppm;
 #pragma endregion
 
@@ -894,7 +932,7 @@ void DORdrawArcadeSide() {
 
 #pragma region archs
 
-	db sectorCnt = 24;
+	db sectorCnt = 16;
 	pshm;
 	glTranslated(24, pillarH + 1.5, 1.5);
 	arch(6, 8, 3, sectorCnt, textures);
@@ -1075,6 +1113,55 @@ void DORdrawArcade() {
 	ppm;
 }
 
+void DORdrawDrum() {
+	db innerR = 33, outerR = 36, Outerheight = 3;
+	int textures[6] = { 0,0,0,0,0,0 };
+	glTranslated(0, 28, 0);
+	glColor3f(0, 0.23, 0.123);
+	pshm;
+	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
+	pshm;
+	glTranslated(0, 8.6 * 30 / 20.0, 0);
+	Cylinder drum = Cylinder(33, 33, 30, 20, 1);
+	drum.setUpAxis(2);
+	drum.drawSide();
+	ppm;
+	drum.set(36, 36, 3, 20, 1, true, 2);
+	drum.drawSide();
+	ppm;
+	Box tier;
+	int i = 0;
+	for (db angle = 9; angle <= 360; angle += 18) {
+		i++;
+		if (i % 5) {
+			pshm;
+			glRotated(angle, 0, 1, 0);
+			glTranslated(0, 0, -innerR * sin(11.25) + 2.13);
+			arch(3.65, 5.65, 3, 16, textures);
+			ppm;
+		}
+		else {
+			pshm;
+			glRotated(angle, 0, 1, 0);
+			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.3);
+			tier.drawOutside(Constraints(13, 35, 3.5), textures);
+			ppm;
+		}
+	}
+	i = 0;
+	for (db angle = 18; angle <= 360; angle += 18) {
+		i++;
+		if (i % 5 != 0 && i % 5 != 4)
+		{
+			pshm;
+			glRotated(angle, 0, 1, 0);
+			glTranslated(outerR - 1.5, -28, 0);
+			drawDrumPillar(1, 22.5, 3, textures);
+			ppm;
+		}
+	}
+}
+
 void drawOctagon(Constraints c,int textures[]) {
 	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
 	//the second param maybe the angle of door openeing
@@ -1214,38 +1301,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	int sectorCnt = 36; int radius = 4; int radius2 = 5;
 	white;
 
-#pragma region design
 	pshm;
-	//glTranslated( p + a / 2, 30,-p - a/2);
-
-	db innerR = 33, outerR = 36, height = 10;
-	glTranslated(-60, 30, 0);
-	glColor3f(1, 0.23, 0.123);
-	Cylinder drum = Cylinder(33 , 33 , 10 , 16 , 1);
-	drum.setUpAxis(2);
-	drum.drawSide();
-	drum.set(36, 36, 10, 16, 1, true,2);
-	drum.drawSide();
-	Box tier;
-	int i = 0;
-	for (db angle = 11.25; angle <= 360; angle += 22.5) {
-		i++;
-		if (i % 4) {
-			pshm;
-			glRotated(angle, 0, 1, 0);
-			glTranslated(0, -height / 2.0 - 7, -innerR * sin(11.25) + 1.9);
-			arch(5, 7.1, 3, 16, textures);
-			ppm;
-		}
-		else {
-			pshm;
-			glRotated(angle, 0, 1, 0);
-			glTranslated(-7.1, -height / 2.0 - 8, -innerR * sin(11.25) + 0.5);
-			tier.drawOutside(Constraints(14.2, 10, 3.5), textures);
-			ppm;
-		}
-	}
+	glTranslated(10, 0, 0);
 	ppm;
+
+#pragma region design
+	
 
 
 
@@ -1261,13 +1322,18 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	DORdrawsides();
 	ppm;
 		
-
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(55, 0, 1, 0);
+	DORdrawDrum();
+	ppm;
 	//moving the outer octagon to the base of the outer octagon 
 	glTranslated(p - p2, 0, -inner.length);
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
 	//DORdrawInnerOctagon();
 	DORdrawArcade();
+
 #pragma endregion
 
 	

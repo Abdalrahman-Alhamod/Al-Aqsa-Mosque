@@ -21,7 +21,7 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	db height = c.height;
 	db length = c.length;
 	glEnable(GL_TEXTURE_2D);
-
+	glEnable(GL_CULL_FACE);
 	pshm;
 
 	pshm;
@@ -123,7 +123,7 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glEnd();
 	ppm;
 	glDisable(GL_TEXTURE_2D);
-
+	glDisable(GL_CULL_FACE);
 	ppm;
 
 
