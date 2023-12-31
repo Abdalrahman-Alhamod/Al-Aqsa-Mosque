@@ -9,6 +9,7 @@
 #define txt(s,t) glTexCoord2d(s,t)
 #define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
+const db pi = 3.141592653589793238462643383279502884197;
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -136,6 +137,9 @@ float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
+
+//innerR, outerR, height of pipe, sector count
+
 
 void arch(db sectorCount , db radius, db thickness = 0) {
 	glEnable(GL_TEXTURE_2D);
@@ -451,6 +455,26 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	ppm;
 
 }
+
+void arch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
+	white;
+	pshm;
+	glNormal3f(0, 0, 1);
+	glTranslated(0, 0, height/2.0 - 0.01);
+	arch(sectorCnt/2.0, outerR);
+	ppm;
+
+	pshm;
+	glNormal3f(0, 0, -1);
+	glTranslated(0, 0, -height/2.0 + 0.01);
+	arch(sectorCnt/2.0, outerR);
+	ppm;
+
+	glColor3f(0, 0.123, 0.21);
+	drawPipe(innerR, outerR, height, sectorCnt, textures, true, true);
+
+}
+
 
 void DORdrawsides() {
 
@@ -870,63 +894,20 @@ void DORdrawArcadeSide() {
 
 #pragma region archs
 
-	db sectorCnt = 16;
-	pshm;
+	db sectorCnt = 24;
 	pshm;
 	glTranslated(24, pillarH + 1.5, 1.5);
-	glColor3f(1, 0, 1);
-	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
-	white;
-	pshm;
-	glTranslated(0, 0, 1.5);
-	glNormal3f(0, 0, 1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
-	pshm;
-	glTranslated(0, 0, -1.5);
-	glNormal3f(0, 0, -1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
+	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
-	glColor3f(1, 0, 1);
 	glTranslated(8, pillarH + 1.5, 1.5);
-	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
-	white;
-	pshm;
-	glTranslated(0, 0, 1.5);
-	glNormal3f(0, 0, 1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
-	pshm;
-	glTranslated(0, 0, -1.5);
-	glNormal3f(0, 0, -1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
+	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
-	glColor3f(1, 0, 1);
 	glTranslated(40, pillarH + 1.5, 1.5);
-	drawPipe(6, 8, 3, sectorCnt, textures, true, true);
-	white;
-	pshm;
-	glTranslated(0, 0, 1.5);
-	glNormal3f(0, 0, 1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
-	pshm;
-	glTranslated(0, 0, -1.5);
-	glNormal3f(0, 0, -1);
-	arch(sectorCnt / 2.0, 8);
-	ppm;
-
+	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	ppm;
 #pragma endregion
@@ -1236,32 +1217,36 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 #pragma region design
 	pshm;
 	//glTranslated( p + a / 2, 30,-p - a/2);
-	glTranslated(-60, 20, 0);
-	Cylinder drum = Cylinder(33, 33, 5, 16,1,false);
+
+	db innerR = 33, outerR = 36, height = 10;
+	glTranslated(-60, 30, 0);
+	glColor3f(1, 0.23, 0.123);
+	Cylinder drum = Cylinder(33 , 33 , 10 , 16 , 1);
 	drum.setUpAxis(2);
 	drum.drawSide();
-	drum.set(36, 36, 5, 16, 1, false,2);
+	drum.set(36, 36, 10, 16, 1, true,2);
 	drum.drawSide();
+	Box tier;
+	int i = 0;
+	for (db angle = 11.25; angle <= 360; angle += 22.5) {
+		i++;
+		if (i % 4) {
+			pshm;
+			glRotated(angle, 0, 1, 0);
+			glTranslated(0, -height / 2.0 - 7, -innerR * sin(11.25) + 1.9);
+			arch(5, 7.1, 3, 16, textures);
+			ppm;
+		}
+		else {
+			pshm;
+			glRotated(angle, 0, 1, 0);
+			glTranslated(-7.1, -height / 2.0 - 8, -innerR * sin(11.25) + 0.5);
+			tier.drawOutside(Constraints(14.2, 10, 3.5), textures);
+			ppm;
+		}
+	}
 	ppm;
 
-
-	pshm; 
-
-	pshm;
-	glNormal3f(0, 0, 1);
-	glTranslated(0, 0, 1.49);
-	arch(8, 7);
-	ppm;
-
-	pshm;
-	glNormal3f(0, 0, -1);
-	glTranslated(0, 0, -1.49);
-	arch(8, 7);
-	ppm;
-
-	glColor3f(0, 0.123, 0.21);
-	drawPipe(5, 7, 3, 16, textures,true, true);
-	ppm;
 
 
 #pragma endregion
