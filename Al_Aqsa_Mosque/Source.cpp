@@ -282,7 +282,7 @@ void innerRoof() {
 
 	ppm;
 
-
+	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
 	pshm;
 	glNormal3f(0, 1, 0);
@@ -385,6 +385,117 @@ void innerRoof() {
 	ppm;
 }
 
+void outerRoof() {
+
+
+	Constraints outer = Constraints(60, 37, 1.5);
+	Constraints inner = Constraints(48, 1.5, 3);
+	db a = outer.width, b = inner.width;
+	db p = a / srt, p2 = b / srt;
+	db dia = a + 2 * p, dia2 = b + 2 * p2;
+	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+
+	pshm;
+	glNormal3f(0, 1, 0);
+	glTranslated(0, 35.1, 0);
+	glColor3f(0, 0.230, 0.23);
+	pshm;
+	beg(GL_QUADS);
+	glVertex3d(p + 0.6, 0.5, 0);
+	glVertex3d(p + a - 0.5, 0.5, 0);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(0, -0.1, 0);
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(45, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 0.6, 0.5, 0);
+	glVertex3d(p + a - 1.5, 0.5, 0);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(90, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 1.6, 0.5, 0);
+	glVertex3d(p + a - 1.5, 0.5, 0);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(135, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 0.6, 0, -2);
+	glVertex3d(p + a - 1.5, 0, -2);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(180, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p, 0, -2);
+	glVertex3d(p + a - 0.1, 0, -2);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(225, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p, 0, -2);
+	glVertex3d(p + a + 0.7, 0, -2);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(270, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + 2, 0, -1.5);
+	glVertex3d(p + a + 1, 0, -1.5);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(315, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + 1, 0, 0);
+	glVertex3d(p + a + 1, 0, 0);
+	glVertex3d(p + a - 15, 5, -dist - 22);
+	glVertex3d(p + 15, 5, -dist - 22);
+	endf;
+	ppm;
+
+	ppm;
+}
+
 void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
 
 	glEnable(GL_TEXTURE_2D);
@@ -470,10 +581,9 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
 	innerC.setIsHalf(isHalf);
+	innerC.reverseNormals();
 	cull;
-	frontf;
 	innerC.drawSide();
-	backf;
 	nocull;
 	glDisable(GL_TEXTURE_2D);
 	ppm;
@@ -1179,17 +1289,17 @@ void DORdrawArcadeSide() {
 	db sectorCnt = 16;
 	pshm;
 	glTranslated(24, 1.5, 1.5);
-	arch(6, 8, 3, sectorCnt, textures);
+	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
 	glTranslated(8, 1.5 , 1.5);
-	arch(6, 8, 3, sectorCnt, textures);
+	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
 	glTranslated(40, 1.5 , 1.5);
-	arch(6, 8, 3, sectorCnt, textures);
+	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	ppm;
 #pragma endregion
@@ -1359,25 +1469,43 @@ void DORdrawArcade() {
 }
 
 void DORdrawDrum() {
+
+
 	db innerR = 33, outerR = 36, Outerheight = 3;
 	int textures[6] = { 0,0,0,0,0,0 };
 	bool flag[6] = { 1,1,0,0,0,0 };
 	glTranslated(0, 28, 0);
 	glColor3f(1,1, 0.1);
+
+
+
 	pshm;
+	cull;
 	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
 	pshm;
-	glTranslated(0, 8.6 * 30 / 20.0, 0);
-	Cylinder drum = Cylinder(33, 33, 30, 20, 1);
+	glTranslated(0, 8.6 * 22 / 20.0, 0);
+	Cylinder drum = Cylinder(33, 33, 22, 20, 1);
 	drum.setUpAxis(2);
+	drum.reverseNormals();
 	drum.drawSide();
 	ppm;
 	pshm;
+	drum.reverseNormals();
 	glTranslated(0, 1, 0);
 	drum.set(36, 36, 5, 20, 1, true, 2);
 	drum.drawSide();
 	ppm;
+	pshm;
+	glColor3ub(0, 119, 182);
+	glTranslated(0, 13, 0);
+	drum.set(36, 36, 17, 28, 1, true, 2);
+	drum.drawSide();
 	ppm;
+	nocull;
+	ppm;
+
+
+
 	Box tier;
 	int i = 0;
 	for (db angle = 9; angle <= 360; angle += 18) {
@@ -1386,7 +1514,7 @@ void DORdrawDrum() {
 			pshm;
 			glRotated(angle, 0, 1, 0);
 			glTranslated(0, 0, -innerR * sin(11.25) + 2.13);
-			arch(4, 5.65, 3, 16, textures);
+			arch(4.65, 5.65, 3, 16, textures);
 			ppm;
 		}
 		else {
@@ -1394,9 +1522,15 @@ void DORdrawDrum() {
 			glRotated(angle, 0, 1, 0);
 			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.3);
 			tier.drawOutside(Constraints(13, 35, 3.5), textures,flag);
+
+			glColor3ub(0, 119, 182);
+			glTranslated(0, 40,2);
+			tier.drawOutside(Constraints(15, 16.5, 3), textures);
 			ppm;
 		}
 	}
+
+
 	i = 0;
 	for (db angle = 18; angle <= 360; angle += 18) {
 		i++;
@@ -1617,7 +1751,7 @@ void DORdrawFence(db heightOfWall) {
 	pshm;
 	glTranslated(1.5, 11.46, 1.5);
 	cull;
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0));
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0),false,false);
 	nocull;
 	ppm;
 
@@ -1709,6 +1843,31 @@ void DORdrawFence(db heightOfWall) {
 
 }
 
+void DORdrawDomes() {
+	int textures[] = { 0,0,0,0,0,0 };
+	Constraints outer = Constraints(60, 37, 1.5);
+	Constraints inner = Constraints(48, 1.5, 3);
+	db a = outer.width, b = inner.width;
+	db p = a / srt, p2 = b / srt;
+
+	pshm;
+	cull;
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13));
+	nocull;
+	ppm;
+
+	pshm;
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.7, Color(254, 203, 13), true, false);
+	ppm;
+
+	pshm;
+	glColor3ub(254, 203, 13);
+	glTranslated(p + a / 2.0, 57, -p - a / 2.0);
+	glRotated(90, 1, 0, 0);
+	drawPipe(35.5, 38, 1, 40, textures, false);
+	ppm;
+}
+
 void drawOctagon(Constraints c,int textures[]) {
 	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
 	//the second param maybe the angle of door openeing
@@ -1787,6 +1946,44 @@ void drawOctagon(Constraints c,int textures[]) {
 
 }
 
+void DomeOfTheRock() {
+
+
+	Constraints outer = Constraints(60, 37, 1.5);
+	Constraints inner = Constraints(48, 1.5, 3);
+	db a = outer.width, b = inner.width;
+	db p = a / srt, p2 = b / srt;
+	db dia = a + 2 * p, dia2 = b + 2 * p2;
+	int sectorCnt = 36; int radius = 4; int radius2 = 5;
+	white;
+
+
+	pshm;
+	innerRoof();
+	outerRoof();
+	DORdrawDomes();
+	glTranslated(0, 0.1, 0);
+	white;
+	DORdrawsides();
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0 + 1, 0.2, -p - a / 2.0 - 2);
+	db heightOfWall = 4;
+	DORdrawFence(heightOfWall);
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(55, 0, 1, 0);
+	DORdrawDrum();
+	ppm;
+	//moving the outer octagon to the base of the outer octagon 
+	glTranslated(p - p2, 0, -inner.length);
+	//move to the middle of the outer oct depending on the diameters of the oct
+	glTranslated((a - b) / 2.0, 0, -(dia - dia2) / 2.0);
+	DORdrawArcade();
+}
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -1812,8 +2009,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 
 	//testEnv();
-	const Point points[4] = { Point(-1000.0f, -2.0f, -1000.0f),Point(-1000.0f, -2.0f, 1000.0f),Point(1000.0f, -2.0f, 1000.0f),Point(1000.0f,-2.0f, -1000.0f) };
-	envDrawer.drawTiledLand(points, 30);
+	const Point points[4] = { Point(-200.0f, -2.0f, -200.0f),Point(-200.0f, -2.0f, 200.0f),Point(200.0f, -2.0f, 200.0f),Point(200.0f,-2.0f, -200.0f) };
+	envDrawer.drawTiledLand(points, 10);
 	
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
@@ -1827,7 +2024,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		personDrawer.drawPerson(p, angel, 10);
 	}
-	glTranslated(-2, -2, -30);
+	glTranslated(-50, -2, 20);
 
 	//drawing the ocatgon shape 
 
@@ -1835,6 +2032,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//the virtual width and heights are 60 * 37 and the door is 15 * 10
 
 	Box wall; int textures[] = { 0,0,0,0,0,0 };
+	db texturess[] = { 0,0,0,0,0,0 };
 	pshm;
 	wall.drawOutside(Constraints(1,1,1), textures);
 	ppm;
@@ -1848,47 +2046,24 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	int sectorCnt = 36; int radius = 4; int radius2 = 5;
 	white;
 
-
+	
 
 #pragma region design
 	
 
-	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
 	
 	
-	white;
 
 #pragma endregion
 
 
+	white;
 
 
 
 #pragma region domeOfTheRock
 
-	pshm;
-	innerRoof();
-	glTranslated(0, 0.1, 0);
-	white;
-	DORdrawsides();
-	ppm;
-
-	pshm;
-	glTranslated(p + a / 2.0 + 1 , 0.2, -p - a / 2.0 - 2);
-	db heightOfWall = 4;
-	DORdrawFence(heightOfWall);
-	ppm;
-		
-	pshm;
-	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
-	glRotated(55, 0, 1, 0);
-	DORdrawDrum();
-	ppm;
-	//moving the outer octagon to the base of the outer octagon 
-	glTranslated(p - p2, 0, -inner.length);
-	//move to the middle of the outer oct depending on the diameters of the oct
-	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
-	//DORdrawArcade();
+	DomeOfTheRock();
 
 #pragma endregion
 

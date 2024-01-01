@@ -35,14 +35,16 @@ MosqueDrawer::MosqueDrawer() {
 	crescentModel->scale = 0.01;
 }
 
-void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color) {
+void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, bool inside, bool lines) {
 	// Dome
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	Sphere sphere = Sphere(5 * size, 36, 18, true, 2, true);
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
-	sphere.drawWithLines(lineColor);
+	if (inside) sphere.reverseNormals();
+	if(lines) sphere.drawWithLines(lineColor);
+	if (!lines) sphere.draw();
 	//sphere.draw();
 	glPopMatrix();
 
@@ -58,6 +60,7 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	else {
 		glColor3f(color.redf, color.greenf, color.bluef);
 	}
+
 	domeTop.draw();
 	glPopMatrix();
 
@@ -75,8 +78,10 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	crescentModel->pos.y = position.y + 5.8 * size;
 	crescentModel->pos.z = position.z;
 	crescentModel->scale = 0.01 * size;
-	crescentModel->Draw();
+	if(!inside) crescentModel->Draw();
 }
+
+
 void MosqueDrawer::drawCarbet(const Point points[4], const int count, const int textureID) {
 	glPushMatrix();
 	glEnable(GL_TEXTURE_2D);
