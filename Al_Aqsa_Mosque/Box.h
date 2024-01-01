@@ -22,7 +22,7 @@ public:
 	* texture[4] the left face
 	* texture[5] the right face
 	*/
-	void drawOutside(const Constraints& c, int texture[]);
+	void drawOutside(const Constraints& c, int texture[],float textureCount=1);
 	/**
 	* @brief draw the box from the outside
 	* @param width the width of the box

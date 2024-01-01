@@ -16,7 +16,7 @@
 #define shadow glColor3f(0.0,0.0,0.0);glMultMatrixf((gf*)shadowMat)
 #define txt(s,t) glTexCoord2d(s,t)
 
-void Box::drawOutside(const Constraints& c, int texture[]) {
+void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	db width = c.width;
 	db height = c.height;
 	db length = c.length;
@@ -30,11 +30,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(0, -1, 0);
 	txt(0, 0);
 	glVertex3d(0, 0, 0);
-	txt(1, 0);
+	txt(1*textureCount, 0);
 	glVertex3d(width, 0, 0);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(width, 0, length);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(0, 0, length);
 	glEnd();
 	ppm;
@@ -47,11 +47,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(0, 1, 0);
 	txt(0, 0);
 	glVertex3d(0, height, 0);
-	txt(1, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(0, height, length);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(width, height, length);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(width, height, 0);
 	glEnd();
 	ppm;
@@ -64,11 +64,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(0, 0, -1);
 	txt(0, 0);
 	glVertex3d(width, 0, 0);
-	txt(1, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(0, 0, 0);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(0, height, 0);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(width, height, 0);
 	glEnd();
 	ppm;
@@ -81,11 +81,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(0, 0, 1);
 	txt(0, 0);
 	glVertex3d(0, 0, length);
-	txt(1, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(width, 0, length);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(width, height, length);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(0, height, length);
 	glEnd();
 	ppm;
@@ -98,11 +98,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(-1, 0, 0);
 	txt(0, 0);
 	glVertex3d(0, 0, 0);
-	txt(1, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(0, 0, length);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(0, height, length);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(0, height, 0);
 	glEnd();
 	ppm;
@@ -114,11 +114,11 @@ void Box::drawOutside(const Constraints& c, int texture[]) {
 	glNormal3f(0, 0, 1);
 	txt(0, 0);
 	glVertex3d(width, 0, length);
-	txt(1, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(width, 0, 0);
-	txt(1, 1);
+	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(width, height, 0);
-	txt(0, 1);
+	txt(0, 1 * textureCount);
 	glVertex3d(width, height, length);
 	glEnd();
 	ppm;
