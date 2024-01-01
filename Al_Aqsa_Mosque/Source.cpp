@@ -174,6 +174,217 @@ void arch(db sectorCount , db radius, db thickness = 0) {
 	ppm;
 }
 
+void innerRoof() {
+	Constraints outer = Constraints(60, 37, 1.5);
+	Constraints inner = Constraints(48, 1.5, 3);
+	db a = outer.width, b = inner.width;
+	db p = a / srt, p2 = b / srt;
+	db dia = a + 2 * p, dia2 = b + 2 * p2;
+	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+	glColor3f(0.23, 1, 0.23);
+	pshm;
+	glNormal3f(0, 1, 0);
+	glTranslated(0, 35.1, 0);
+
+	pshm;
+	beg(GL_QUADS);
+	glVertex3d(p + 0.6, 0, 0);
+	glVertex3d(p + a - 0.5, 0, 0);
+	glVertex3d(p + a - 7.1, 0, -dist);
+	glVertex3d(p + 7.1, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(0, -0.1, 0);
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(45, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 0.6, 0, 0);
+	glVertex3d(p + a - 1.5, 0, 0);
+	glVertex3d(p + a - 7.2, 0, -dist);
+	glVertex3d(p + 7.4, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(90, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 1.6, 0, 0);
+	glVertex3d(p + a - 1.5, 0, 0);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.3, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(135, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p - 0.6, 0, -2);
+	glVertex3d(p + a - 1.5, 0, -2);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(180, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p, 0, -2);
+	glVertex3d(p + a - 0.1, 0, -2);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(225, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p, 0, -2);
+	glVertex3d(p + a + 0.7, 0, -2);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(270, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + 2, 0, -1.5);
+	glVertex3d(p + a + 1, 0, -1.5);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(315, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + 1, 0, 0);
+	glVertex3d(p + a + 1, 0, 0);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	ppm;
+
+	ppm;
+
+
+	glColor3f(0.3, 0.5, 0.2);
+	pshm;
+	glNormal3f(0, 1, 0);
+	glTranslated(0, 35.1, 0);
+
+	pshm;
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.1, 0, -dist);
+	glVertex3d(p + 7.1, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(0, -0.1, 0);
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(45, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.2, 0, -dist);
+	glVertex3d(p + 7.4, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(90, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.3, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(135, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(180, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(225, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(270, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glRotated(315, 0, 1, 0);
+	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	beg(GL_QUADS);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	glVertex3d(p + 7.2, 0, -dist);
+	glVertex3d(p + 16, 3.5, -dist - 22);
+	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	endf;
+	ppm;
+
+	ppm;
+}
+
 void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
 
 	glEnable(GL_TEXTURE_2D);
@@ -569,7 +780,6 @@ void DORdrawsides() {
 #pragma region walls
 	pshm;
 	glTranslated(p, 0, 0);
-
 	pshm;
 	glTranslated(0, 15, 0);
 	wall.drawOutside(Constraints(60, 22, 1.5), textures);
@@ -1162,8 +1372,11 @@ void DORdrawDrum() {
 	drum.setUpAxis(2);
 	drum.drawSide();
 	ppm;
-	drum.set(36, 36, 3, 20, 1, true, 2);
+	pshm;
+	glTranslated(0, 1, 0);
+	drum.set(36, 36, 5, 20, 1, true, 2);
 	drum.drawSide();
+	ppm;
 	ppm;
 	Box tier;
 	int i = 0;
@@ -1640,6 +1853,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 #pragma region design
 	
 
+	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+	
+	
+	white;
+
 #pragma endregion
 
 
@@ -1647,8 +1865,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 
 #pragma region domeOfTheRock
+
 	pshm;
+	innerRoof();
 	glTranslated(0, 0.1, 0);
+	white;
 	DORdrawsides();
 	ppm;
 
@@ -1667,7 +1888,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslated(p - p2, 0, -inner.length);
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
-	DORdrawArcade();
+	//DORdrawArcade();
 
 #pragma endregion
 
