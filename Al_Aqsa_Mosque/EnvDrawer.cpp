@@ -257,6 +257,185 @@ void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints
 
 }
 
+void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
+{
+	//TODO: fix hight parameter
+	float hight = 10;
+	glPushMatrix();
+	glScalef(size, size, size);
+	EnvDrawer::drawPillar(1, hight, texture, 0.4, 10, 10);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	Cylinder cyl = Cylinder(2.5, 2.5, 0.1);
+	glPushMatrix();
+	glRotated(90, 1, 0, 0);
+	glTranslated(0, 0, -6.6);
+	cyl.draw();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+
+	for (int i = 0; i <= 8; ++i)
+	{
+		glRotatef(i * 360 / 8, 0, 1, 0);
+		glPushMatrix();
+		glTranslatef(0, hight - 3.8, 1.8);
+		drawHalfCylinderInRectangularPrism(0.35, Constraints(1.5, 0.4, 0.07), 6, texture);
+		glPopMatrix();
+		glPushMatrix();
+		glRotatef(21, 0, 1, 0);
+		glTranslatef(0, hight - 4.8, 1.86);
+		Box().drawOutside(Constraints(0.10, 1.0, 0.05), texture);
+		glPopMatrix();
+	}
+
+	glTranslated(0, hight - 3.6, 0);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	cyl = Cylinder(0.7, 0.9, 2.5, 18);
+	glPushMatrix();
+	glRotated(90, 1, 0, 0);
+	cyl.draw();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+
+	glTranslated(0, 1.5, 0);
+	glColor3ub(0, 100, 0);
+	Sphere sphere = Sphere(0.75, 18, 18, true, 2, true);
+	const float lineColor[4] = { 0,0,0,0 };
+	sphere.drawWithLines(lineColor);
+	glColor3ub(100, 100, 100);
+	glPopMatrix();
+	glPopMatrix();
+}
+
+void EnvDrawer::drawCubedMinaret(const float size, const int texture)
+{
+	//TODO: fix hight param
+	float hight = 10;
+	glPushMatrix();
+	//glTranslatef(0,-2.5,0);
+	glScalef(size, size, size);
+	EnvDrawer::drawPillar(1, hight, texture, 0.4, 4, 4);
+	//Box().drawOutside(Constraints(2,hight,2),texture);
+	glPushMatrix();
+	glTranslated(-2, 6.6, -2);
+	Box().drawOutside(Constraints(4, 0.1, 4), texture);
+	glPopMatrix();
+
+	for (int i = 0; i <= 3; ++i)
+	{
+		glRotatef(i * 360 / 4, 0, 1, 0);
+		glPushMatrix();
+		glTranslatef(0, hight - 4, 1.4);
+		drawHalfCylinderInRectangularPrism(0.35, Constraints(2.8, 0.6, 0.07), 6, texture);
+		glPopMatrix();
+		glPushMatrix();
+		glRotatef(45, 0, 1, 0);
+		glTranslatef(0, hight - 4.8, 1.9);
+		Box().drawOutside(Constraints(0.10, .8, 0.05), texture);
+		glPopMatrix();
+	}
+
+
+	glTranslated(0, hight - 3.8, 0);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 18);
+	glPushMatrix();
+	glRotated(90, 1, 0, 0);
+	cyl.draw();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+
+	glTranslated(0, 1.5, 0);
+	glColor3ub(0, 100, 0);
+	Sphere sphere = Sphere(0.75, 18, 18, true, 2, true);
+	const float lineColor[4] = { 0,0,0,0 };
+	sphere.drawWithLines(lineColor);
+	glColor3ub(100, 100, 100);
+	glPopMatrix();
+	glPopMatrix();
+}
+
+void EnvDrawer::drawWallWithDoor(const float length,const float wallHeight, const int texture)
+{
+	glPushMatrix();
+
+	int i = 0;
+	for (; 2*(i+1) < length; ++i)
+	{
+		glPushMatrix();
+		glTranslated(2*i - (length - 2.5) / 2, wallHeight-4, -0.5);
+		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		glPopMatrix();
+	}
+	glPushMatrix();
+	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+	Box().drawOutside(Constraints(length-(2*i), 1, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(0,wallHeight-5,0);
+	glPushMatrix();
+	glTranslatef(-(length - 2.5) / 2, -wallHeight+1, -0.5);
+	Box().drawOutside(Constraints((length-2.5)/2, wallHeight , 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(0, -wallHeight+1, 0);
+
+	glPushMatrix();
+	glTranslatef(0,0, -1 * 0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(2.25,0, -0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(1.25, -1, 0);
+	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5,2, 1), 36, texture);
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(2.5, -wallHeight+1, -0.5);
+	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
+	glPopMatrix();
+	glPopMatrix();
+	glPopMatrix();
+}
+
+void EnvDrawer::drawWall(const float length, const float wallHeight, const int texture)
+{
+	glPushMatrix();
+
+	int i = 0;
+	for (; 2 * (i + 1) < length; ++i)
+	{
+		glPushMatrix();
+		glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		glPopMatrix();
+	}
+	glPushMatrix();
+	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
+	Box().drawOutside(Constraints(length - (2 * i), 1, 1), texture);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-(length - 2.5)/2,-wallHeight,-0.5);
+	Box().drawOutside(Constraints(length,wallHeight,1), texture);
+	glPopMatrix();
+
+	glPopMatrix();
+}
+
 void EnvDrawer::drawCitySkyBox(const Point& position, const Constraints& constraints) {
 	SKYFRONT = CitySKYFRONT,
 		SKYBACK = CitySKYBACK,
@@ -308,16 +487,19 @@ void EnvDrawer::drawGarden(const Point& point, const int width, const int length
 }
 
 void EnvDrawer::drawPillar(const float radius, const float height, int texture, const float baseHeight, const int cylinderSector, const int baseSector) {
-	glPushMatrix();
-	glTranslatef(0, height * 0.5, 0);
-	glRotatef(45, 0, 1, 0);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	Cylinder topBase = Cylinder(radius, 2 * radius, baseHeight, baseSector);
-	topBase.setUpAxis(2);
-	topBase.draw();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+	if (baseHeight)
+	{
+		glPushMatrix();
+		glTranslatef(0, height * 0.5, 0);
+		glRotatef(45, 0, 1, 0);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		Cylinder topBase = Cylinder(radius, 2 * radius, baseHeight, baseSector);
+		topBase.setUpAxis(2);
+		topBase.draw();
+		glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
+	}
 
 	glPushMatrix();
 	glRotatef(45, 0, 1, 0);
@@ -342,39 +524,41 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 }
 
 
-void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int texture) {
+void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
 
 	float width = 60, height = 30, length = 30;
 	length = constraints.length;
-	if (constraints.width >= radius * 2) {
+	width = max(constraints.width, radius * 2);
+	/*if (constraints.width >= radius * 2) {
 		width = constraints.width;
 	}
 	else {
 		width = radius * 2;
-	}
+	}*/
 
-	if (constraints.height >= radius) {
-		height = constraints.height;
-	}
-	else {
-		height = radius;
-	}
+	height = max(constraints.height, radius);
+	//if (constraints.height >= radius) {
+	//	height = constraints.height;
+	//}
+	//else {
+	//	height = radius;
+	//}
 
-	int sectorCount = 36; // for dividing cylinder and circle ( increase for more quality )
+	int sectorCount = sectors; // for dividing cylinder and circle ( increase for more quality )
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	// Fill the bottom gab
-	glPushMatrix();
-	glTranslatef(radius, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-width / 2, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(radius, 0, -length / 2);
+	//Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
+	//glPopMatrix();
+	//
+	//glPushMatrix();
+	//glTranslatef(-width / 2, 0, -length / 2);
+	//Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
+	//glPopMatrix();
 
 
 	//the front face
@@ -382,22 +566,22 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	// Fill the gab
 
 	// top
-	glPushMatrix();
-	glTranslatef(-width / 2, radius, length / 2 - 1);
-	Box().drawOutside(Constraints(width, height - radius, 1), texture);
-	glPopMatrix();
-
-	// right
-	glPushMatrix();
-	glTranslatef(radius, 0, length / 2 - 1);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
-	glPopMatrix();
-
-	// left
-	glPushMatrix();
-	glTranslatef(-width / 2, 0, length / 2 - 1);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(-width / 2, radius, length / 2 - 1);
+	////Box().drawOutside(Constraints(width, height - radius, 1), texture);
+	//glPopMatrix();
+	//
+	//// right
+	//glPushMatrix();
+	//glTranslatef(radius, 0, length / 2 - 1);
+	////Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	//glPopMatrix();
+	//
+	//// left
+	//glPushMatrix();
+	//glTranslatef(-width / 2, 0, length / 2 - 1);
+	////Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	//glPopMatrix();
 
 	// Start drawing cylinder
 	glEnable(GL_TEXTURE_2D);
@@ -408,22 +592,20 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glNormal3f(0, 0, 1);
 
 	for (int i = 0; i <= sectorCount; ++i) {
-		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
+		GLfloat angle = (float(i) / sectorCount) * PI;
 		GLfloat x = radius * cos(angle);
 		GLfloat y = radius * sin(angle);
 
+		glTexCoord2d(1, 1);
 		if (angle <= PI / 2) {
-			glTexCoord2d(1, 1);
 			glVertex3d(radius, radius, length);
 			glTexCoord2d(x / radius, y / radius);
-			glVertex3f(x, y, length);
 		}
 		else {
-			glTexCoord2d(1, 1);
 			glVertex3d(-radius, radius, length);
 			glTexCoord2d(fabs(x) / radius, fabs(y) / radius);
-			glVertex3f(x, y, length);
 		}
+		glVertex3f(x, y, length);
 
 	}
 
@@ -437,19 +619,19 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	//top
 	glPushMatrix();
 	glTranslatef(-width / 2, radius, -length / 2);
-	Box().drawOutside(Constraints(width, height - radius, 1), texture);
+	Box().drawOutside(Constraints(width, height - radius, length), texture);
 	glPopMatrix();
 
 	//right
 	glPushMatrix();
 	glTranslatef(radius, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	Box().drawOutside(Constraints(width / 2 - radius, radius, length), texture);
 	glPopMatrix();
 
 	// left
 	glPushMatrix();
 	glTranslatef(-width / 2, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	Box().drawOutside(Constraints(width / 2 - radius, radius, length), texture);
 	glPopMatrix();
 
 	// Start drawing cylinder
@@ -461,7 +643,7 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glNormal3f(0, 0, -1);
 
 	for (int i = 0; i <= sectorCount; ++i) {
-		GLfloat angle = (static_cast<float>(i) / sectorCount) * PI;
+		GLfloat angle = (float(i) / sectorCount) * PI;
 		GLfloat x = radius * cos(angle);
 		GLfloat y = radius * sin(angle);
 
@@ -558,12 +740,12 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glDisable(GL_TEXTURE_2D);
 }
 
-void EnvDrawer::drawArchway(const int size, const int pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector) {
+void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector) {
 	int texture = stonesTexture[textureIndex];
-	glPushMatrix();
-	glTranslatef(-size * 1.5, -pillarHeight * 0.5 - 0.1, 0);
-	EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(-size * 1.5, -pillarHeight * 0.5 - 0.1, 0);
+	//EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
+	//glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-size * 2, 0, -size * 0.5);
@@ -575,16 +757,16 @@ void EnvDrawer::drawArchway(const int size, const int pillarHeight, const int co
 	for (int i = 0; i < count; i++) {
 		glPushMatrix();
 		glTranslatef(i * size * 3, 0, 0);
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), 36, texture);
 		glPushMatrix();
-		glTranslatef(-size * 1.5, -pillarHeight * 0.5 - 0.1, 0);
+		glTranslatef(-size * 1.5, (-pillarHeight - 0.2 * size) * 0.50, 0);
 		EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
 		glPopMatrix();
 		glPopMatrix();
 	}
 
 	glPushMatrix();
-	glTranslatef(size * 1.5 + (count - 1) * size * 3, -pillarHeight * 0.5 - 0.1, 0);
+	glTranslatef(size * 1.5 + (count - 1) * size * 3, (-pillarHeight - 0.2 * size) * 0.50, 0);
 	EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
 	glPopMatrix();
 
@@ -616,7 +798,7 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 		Box().drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
 		glPopMatrix();
 
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), 36, texture);
 
 		glPopMatrix();
 	}
@@ -695,7 +877,7 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	GLenum light = GL_LIGHT0 + lightIndex;
 
 	glEnable(light);
-	float lightpos[4] = { position.x, position.y + pillarHeight * 0.5, position.z,1};
+	float lightpos[4] = { position.x, position.y + pillarHeight * 0.5, position.z,1 };
 	glLightfv(light, GL_POSITION, lightpos);
 	glLightfv(light, GL_AMBIENT, LightAmb);
 	glLightfv(light, GL_DIFFUSE, LightDiff);
@@ -709,23 +891,23 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	glEnable(GL_TEXTURE_2D);
 
 	glPushMatrix();
-	glTranslatef(position.x, position.y-pillarHeight/2, position.z);
-	Cylinder pillar = Cylinder(0.1*size, 0.1 * size, pillarHeight);
+	glTranslatef(position.x, position.y - pillarHeight / 2, position.z);
+	Cylinder pillar = Cylinder(0.1 * size, 0.1 * size, pillarHeight);
 	pillar.setUpAxis(2);
 	glBindTexture(GL_TEXTURE_2D, wall);
 	pillar.draw();
 	glPopMatrix();
-	
+
 	glDisable(GL_TEXTURE_2D);
 
 	glEnable(GL_TEXTURE_2D);
-	
+
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	Sphere bulp = Sphere(0.4 * size, 10,3);
+	Sphere bulp = Sphere(0.4 * size, 10, 3);
 	bulp.reverseNormals();
 	bulp.setUpAxis(2);
-	const float linesColor[4] = {0.0f,0.0f,0.0f,0.0f};
+	const float linesColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 	glBindTexture(GL_TEXTURE_2D, lightTexture);
 	bulp.drawWithLines(linesColor);
 	glPopMatrix();

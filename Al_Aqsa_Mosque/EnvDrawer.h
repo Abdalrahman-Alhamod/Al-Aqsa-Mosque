@@ -5,6 +5,7 @@
 #include "Constraints.h"
 #include "Color.h"
 #include "Model_3DS.h"
+#include "MosqueDrawer.h"
 #define HOUR_PER_SECOND (1.f/24.f)
 #define THREE_HOURS_PER_SECOND (3.f/24.f)
 #define MINUTE_PER_SECOND (1.f/24.f)*(1.f/60.f)
@@ -121,7 +122,7 @@ public:
 	 * @param constraints The constraints defining the size of the rectangular prism.
 	 * @param texture The texture ID to be applied to the surfaces.
 	 */
-	void drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints,const  int texture);
+	void drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints,const int sectors,const  int texture);
 
 	/**
 	* @brief Draw an archway composed of pillars and a curved structure.
@@ -132,7 +133,7 @@ public:
 	* @param pillarCylinderSector The number of sectors in the pillar cylinders.
 	* @param pillarBaseSector The number of sectors in the pillar bases.
 	*/
-	void drawArchway(const int size,const int pillarHeight,const int count,const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18);
+	void drawArchway(const float size,const int pillarHeight,const int count,const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18);
 	
 	/**
 	* @brief Draw a hallway with alternating rectangular and curved sections.
@@ -173,6 +174,12 @@ public:
 	* @param pillarHeight The height of the lighting pillar.
 	*/
 	void drawLightingPillar(const Point& position,const int lightIndex,const float size=1,const float pillarHeight=4);
+	
+	
+	void drawCylindricMinaret(const float size, const int texture);
+	void drawCubedMinaret(const float size, const int texture);
+	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
+	void drawWall(const float length, const float wallHeight, const int texture);
 
 	GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
 	GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
