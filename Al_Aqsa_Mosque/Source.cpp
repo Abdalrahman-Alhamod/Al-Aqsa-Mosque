@@ -6,6 +6,10 @@
 #define ppm glPopMatrix()
 #define beg(word) glBegin(word)
 #define endf glEnd()
+#define cull glEnable(GL_CULL_FACE)
+#define nocull glDisable(GL_CULL_FACE)
+#define frontf glCullFace(GL_FRONT)
+#define backf glCullFace(GL_BACK)
 #define txt(s,t) glTexCoord2d(s,t)
 #define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
@@ -223,11 +227,16 @@ void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int t
 }
 
 void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf, bool isArch = false) {
+
 #pragma region front ring
 	
 	pshm;
 	glNormal3f(0, 0, -1);
+	cull;
+	frontf;
 	drawRing(innerR, outerR, -height, sectorCnt, textures[0], textures[1], isHalf);
+	backf;
+	nocull;
 	ppm;
 #pragma endregion
 
@@ -235,10 +244,12 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 #pragma region outer cylinder
 		pshm;
 		glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, textures[2]);
-			Cylinder outerC = Cylinder(outerR, outerR, height, sectorCnt);
-			outerC.setIsHalf(isHalf);
-			outerC.drawSide();
+		glBindTexture(GL_TEXTURE_2D, textures[2]);
+		Cylinder outerC = Cylinder(outerR, outerR, height, sectorCnt);
+		outerC.setIsHalf(isHalf);
+		cull;
+		outerC.drawSide();
+		nocull;
 		ppm;
 #pragma endregion
 		}
@@ -248,37 +259,46 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
 	innerC.setIsHalf(isHalf);
+	cull;
+	frontf;
 	innerC.drawSide();
-	ppm;
+	backf;
+	nocull;
 	glDisable(GL_TEXTURE_2D);
+	ppm;
 #pragma endregion
 
 #pragma region back ring 
 	pshm;
 	glNormal3f(0, 0, 1);
+	cull;
 	drawRing(innerR, outerR, height, sectorCnt, textures[0], textures[1], isHalf);
+	nocull;
 	ppm;
 #pragma endregion
 	if (isHalf) {
 		glNormal3f(0, -1, 0);
+		cull;
 		beg(GL_QUADS);
 		glVertex3d(outerR,0,height/2.0);
 		glVertex3d(innerR, 0, height / 2.0);
 		glVertex3d(innerR, 0, -height / 2.0);
 		glVertex3d(outerR, 0, -height / 2.0);
 		endf;
-
+		frontf;
 		beg(GL_QUADS);
 		glVertex3d(-outerR, 0, height / 2.0);
 		glVertex3d(-innerR, 0, height / 2.0);
 		glVertex3d(-innerR, 0, -height / 2.0);
 		glVertex3d(-outerR, 0, -height / 2.0);
 		endf;
+		backf;
+		nocull;
 	}
 }
 
 void drawColumn(db pillarRadius, db pillarHeight) {
-	glEnable(GL_CULL_FACE);
+	cull;
 #pragma region main body
 	pshm;
 	glColor3f(1, 0.5, 0.5);
@@ -303,8 +323,8 @@ void drawColumn(db pillarRadius, db pillarHeight) {
 	bracelet.setUpAxis(2);
 	bracelet.drawSide();
 	ppm;
-	glDisable(GL_CULL_FACE);
 #pragma endregion
+	nocull;
 }
 
 void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
@@ -318,22 +338,22 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 
 #pragma region base
 	pshm;
-
+	bool flag[6] = { 1,0,0,0,0,0 };
 	Box base;
 
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.2, -3 * pillarRadius / 2.0);
 	pshm;
-	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures);
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures,flag);
 	ppm;
 
 	pshm;
 	glTranslated(0.1, -1, 0.1);
-	base.drawOutside(Constraints(basesWidth - 0.2, 1, basesWidth - 0.2), textures);
+	base.drawOutside(Constraints(basesWidth - 0.2, 1, basesWidth - 0.2), textures,flag);
 	ppm;
 
 	pshm;
 	glTranslated(0, -1.2, 0);
-	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures);
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures,flag);
 	ppm;
 
 	ppm;
@@ -345,7 +365,9 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	glRotated(45, 0, 1, 0);
 	Cylinder top = Cylinder(pillarRadius - 0.1, basesWidth - 0.5, 1.4, 4);
 	top.setUpAxis(2);
+	cull;
 	top.drawSide();
+	nocull;
 	ppm;
 #pragma endregion
 	ppm;
@@ -364,16 +386,18 @@ void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 #pragma region top
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
-
+	bool flag[6] = { 1,1,0,0,0,0 };
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
-	base.drawOutside(Constraints(3, 1.5, 3), textures);
+	base.drawOutside(Constraints(3, 1.5, 3), textures,flag);
 	ppm;
 	glRotated(45, 0, 1, 0);
 	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
 	top.setUpAxis(2);
+	cull;
 	top.drawSide();
+	nocull;
 	ppm;
 
 #pragma endregion
@@ -381,7 +405,8 @@ void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 #pragma region base
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 2, -3 * pillarRadius / 2.0);
-	base.drawOutside(Constraints(basesWidth, 2, basesWidth), textures);
+	flag[1] = 0;
+	base.drawOutside(Constraints(basesWidth, 2, basesWidth), textures,flag);
 	ppm;
 #pragma endregion
 
@@ -397,6 +422,7 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 	ppm;
 #pragma endregion
 
+	bool flag[6] = { 1,0,0,0,0,0 };
 #pragma region top
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
@@ -404,12 +430,14 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
-	base.drawOutside(Constraints(3, 1.5, 3), textures);
+	base.drawOutside(Constraints(3, 1.5, 3), textures,flag);
 	ppm;
 	glRotated(45, 0, 1, 0);
 	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
 	top.setUpAxis(2);
+	cull;
 	top.drawSide();
+	nocull;
 	ppm;
 
 #pragma endregion
@@ -417,9 +445,9 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 #pragma region base
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.5, -3 * pillarRadius / 2.0);
-	base.drawOutside(Constraints(basesWidth, 0.5,basesWidth), textures);
+	base.drawOutside(Constraints(basesWidth, 0.5,basesWidth), textures,flag);
 	glTranslated(-0.25,-1.5,-0.25);
-	base.drawOutside(Constraints(basesWidth + 0.5, 1.5, basesWidth + 0.5), textures);
+	base.drawOutside(Constraints(basesWidth + 0.5, 1.5, basesWidth + 0.5), textures,flag);
 
 	ppm;
 #pragma endregion
@@ -436,14 +464,14 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	db archbaseHeight = 1; db outerR = 5, innerR = 4, archLength = 8.5;
 	Constraints c(0, 0, 1.5);
 	Box marbleGround, arch;
-
+	bool flag[6] = {1,0,0,0,0,0};
 
 	pshm;
 #pragma region marble ground
 	pshm;
 	glColor3f(0.9, 0.9, 0.9);
 	glTranslated(22.5, 0.01, 0);
-	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures);
+	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures,flag);
 	ppm;
 #pragma endregion
 
@@ -462,19 +490,19 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 
 
 	glTranslated(0, archbaseHeight, 0);
-
+	flag[0] = 0; flag[2] = 1;
 #pragma region bases of the arch 
 	pshm;
 	glColor3f(1, 1, 0);
 	glTranslated(24 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
 
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures,flag);
 	ppm;
 
 	pshm;
 	glColor3f(1, 1, 0);
 	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures,flag);
 	ppm;
 #pragma endregion
 
@@ -499,20 +527,25 @@ void arch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
 	pshm;
 	glNormal3f(0, 0, 1);
 	glTranslated(0, 0, height/2.0 - 0.01);
+	cull;
+	frontf;
 	arch(sectorCnt/2.0, outerR);
+	backf;
+	nocull;
 	ppm;
 
 	pshm;
 	glNormal3f(0, 0, -1);
 	glTranslated(0, 0, -height/2.0 + 0.01);
+	cull;
 	arch(sectorCnt/2.0, outerR);
+	nocull;
 	ppm;
 
 	glColor3f(0, 0.123, 0.21);
 	drawPipe(innerR, outerR, height, sectorCnt, textures, true, true);
 
 }
-
 
 void DORdrawsides() {
 
@@ -926,7 +959,8 @@ void DORdrawArcadeSide() {
 	Box bridge;
 	pshm;
 	glTranslated(0, pillarH, 0);
-	bridge.drawOutside(Constraints(48, 1.5, 3), textures);
+	bool flag[6] = { 0,0,0,0,1,1 };
+	bridge.drawOutside(Constraints(48, 1.5, 3), textures,flag);
 	ppm;
 #pragma endregion
 
@@ -934,17 +968,17 @@ void DORdrawArcadeSide() {
 
 	db sectorCnt = 16;
 	pshm;
-	glTranslated(24, pillarH + 1.5, 1.5);
+	glTranslated(24, 1.5, 1.5);
 	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
-	glTranslated(8, pillarH + 1.5, 1.5);
+	glTranslated(8, 1.5 , 1.5);
 	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
-	glTranslated(40, pillarH + 1.5, 1.5);
+	glTranslated(40, 1.5 , 1.5);
 	arch(6, 8, 3, sectorCnt, textures);
 	ppm;
 	ppm;
@@ -973,7 +1007,7 @@ void DORdrawArcade() {
 	db a = c.width;
 	db p = a / srt;
 	Box tier;
-
+	bool flag[6] = { 1,1,0,0,0,0 };
 
 	pshm;
 	glTranslated(2 * p + a  , 0, -p + c.length);
@@ -984,7 +1018,7 @@ void DORdrawArcade() {
 	glTranslated(a, 0, 0);
 	glRotated(-22.5, 0, 1, 0);
 	glTranslated(-2.5, 0,0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	ppm;
@@ -1003,7 +1037,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(157.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(135, 0, 1, 0);
@@ -1021,7 +1055,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(112.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(90, 0, 1, 0);
@@ -1039,7 +1073,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(67.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(45, 0, 1, 0);
@@ -1056,7 +1090,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(22.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glColor3f(1, 1, 1);
@@ -1072,7 +1106,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-22.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-45, 0, 1, 0);
@@ -1088,7 +1122,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-67.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-90, 0, 1, 0);
@@ -1105,7 +1139,7 @@ void DORdrawArcade() {
 	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-112.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
-	tier.drawOutside(Constraints(5, 35.1, 5), textures);
+	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-135, 0, 1, 0);
@@ -1117,6 +1151,7 @@ void DORdrawArcade() {
 void DORdrawDrum() {
 	db innerR = 33, outerR = 36, Outerheight = 3;
 	int textures[6] = { 0,0,0,0,0,0 };
+	bool flag[6] = { 1,1,0,0,0,0 };
 	glTranslated(0, 28, 0);
 	glColor3f(1,1, 0.1);
 	pshm;
@@ -1145,7 +1180,7 @@ void DORdrawDrum() {
 			pshm;
 			glRotated(angle, 0, 1, 0);
 			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.3);
-			tier.drawOutside(Constraints(13, 35, 3.5), textures);
+			tier.drawOutside(Constraints(13, 35, 3.5), textures,flag);
 			ppm;
 		}
 	}
@@ -1165,6 +1200,187 @@ void DORdrawDrum() {
 
 void DORdrawFence(db heightOfWall) {
 	int textures[6] = { 0,0,0,0,0,0 };
+	bool flag[6] = { 1,0,0,0,0,0 };
+
+	glColor3f(0.5, 0.5, 0.5);
+	//first topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(-5, 0, 27);
+	glVertex3d(-2, 2, 23);
+	glVertex3d(0, 0, 27);
+	glVertex3d(1, 2, 23);
+	glVertex3d(7, 0, 25.5);
+	glVertex3d(5, 2, 22);
+	glVertex3d(14, 0, 20);
+	glVertex3d(12, 2, 18);
+	glVertex3d(20, 0, 12);
+	glVertex3d(18, 2, 10);
+	glVertex3d(22, 0, 7);
+	glVertex3d(20, 2, 4);
+	glVertex3d(18, 0, -10);
+	glVertex3d(11, 2, -10);
+	glVertex3d(7, 0, -22);
+	glVertex3d(4, 2, -18);
+	glVertex3d(-14, 0, -24);
+	glVertex3d(-10, 2, -15);
+	glVertex3d(-17, 0, 20);
+	glVertex3d(-14, 2, 16);
+	glVertex3d(-5, 0, 20);
+	glVertex3d(-2, 2, 17);
+	glVertex3d(-5, 0, 27);
+	glVertex3d(-2, 2, 23);
+	endf;
+
+	glColor3f(0.4, 0.4, 0.4);
+	//second topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(-2, 2, 23);
+	glVertex3d(1, 2.5, 20);
+	glVertex3d(1, 2, 23);
+	glVertex3d(3, 2.5, 20);
+	glVertex3d(5, 2, 22);
+	glVertex3d(5, 2.5, 18);
+	glVertex3d(12, 2, 18);
+	glVertex3d(8, 2.5, 15);
+	glVertex3d(18, 2, 10);
+	glVertex3d(12, 2.5, 10);
+	glVertex3d(20, 2, 4);
+	glVertex3d(12, 2.5, 4);
+	glVertex3d(11, 2, -10);
+	glVertex3d(8, 2.5, -3);
+	glVertex3d(4, 2, -18);
+	glVertex3d(4, 2.5, -13);
+	glVertex3d(-10, 2, -15);
+	glVertex3d(-7, 2.5, -10);
+	glVertex3d(-14, 2, 16);
+	glVertex3d(-12, 2.5, 12);
+	glVertex3d(-2, 2, 17);
+	glVertex3d(0, 2.5, 14);
+	glVertex3d(-2, 2, 23);
+	glVertex3d(1, 2.5, 20);
+	endf;
+
+	glColor3f(0.3, 0.3, 0.3);
+	//third topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(1, 2.5, 20);
+	glVertex3d(2, 3, 15);
+	glVertex3d(3, 2.5, 20);
+	glVertex3d(3, 3, 16);
+	glVertex3d(5, 2.5, 18);
+	glVertex3d(5, 3, 14);
+	glVertex3d(8, 2.5, 15);
+	glVertex3d(8, 3, 10);
+	glVertex3d(12, 2.5, 10);
+	glVertex3d(10, 3, 7);
+	glVertex3d(12, 2.5, 4);
+	glVertex3d(10, 3, 3);
+	glVertex3d(8, 2.5, -3);
+	glVertex3d(6, 3, 0);
+	glVertex3d(4, 2.5, -13);
+	glVertex3d(4, 3, -7);
+	glVertex3d(-7, 2.5, -10);
+	glVertex3d(-4, 3, -2);
+	glVertex3d(-12, 2.5, 12);
+	glVertex3d(-6, 3, 9);
+	glVertex3d(0, 2.5, 14);
+	glVertex3d(1, 3, 12);
+	glVertex3d(1, 2.5, 20);
+	glVertex3d(2, 3, 15);
+	endf;
+
+	glColor3f(0.2, 0.2, 0.2);
+	//fourth topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(5, 3, 14);
+	glVertex3d(5, 3.5, 11);
+	glVertex3d(8, 3, 10);
+	glVertex3d(5, 3.5, 10);
+	glVertex3d(10, 3, 7);
+	glVertex3d(6, 3.5, 7);
+	glVertex3d(10, 3, 3);
+	glVertex3d(7, 3.5, 3);
+	glVertex3d(6, 3, 0);
+	glVertex3d(6, 3.5, 2);
+	glVertex3d(4, 3, -7);
+	glVertex3d(4, 3.5, 0);
+	glVertex3d(-4, 3, -2);
+	glVertex3d(1, 3.5, 2);
+	glVertex3d(-4, 3, -2);
+	glVertex3d(-2, 3.5, 3);
+	glVertex3d(-6, 3, 9);
+	glVertex3d(1, 3.5, 8);
+	glVertex3d(1, 3, 12);
+	glVertex3d(2, 3.5, 10);
+	glVertex3d(2, 3, 15);
+	glVertex3d(3, 3.5, 11);
+	glVertex3d(3, 3, 16);
+	glVertex3d(5, 3.5, 11);
+	glVertex3d(5, 3, 14);
+	endf;
+
+	glColor3f(0.1, 0.1, 0.1);
+	//fifth topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(-2, 3.5, 3);
+	glVertex3d(2, 4, 5);
+	glVertex3d(1, 3.5, 8);
+	glVertex3d(2, 4, 7);
+	glVertex3d(2, 3.5, 10);
+	glVertex3d(3, 4, 10.5);
+	glVertex3d(3, 3.5, 11);
+	glVertex3d(3.5, 4, 10);
+	glVertex3d(3, 3.5, 11);
+	glVertex3d(4, 4, 10.5);
+	glVertex3d(5, 3.5, 11);
+	glVertex3d(4, 4, 10.5);
+	glVertex3d(5, 3.5, 10);
+	glVertex3d(5, 4, 8);
+	glVertex3d(6, 3.5, 7);
+	glVertex3d(5, 4, 7);
+	glVertex3d(7, 3.5, 3);
+	glVertex3d(5, 4, 3);
+	glVertex3d(6, 3.5, 2);
+	glVertex3d(4, 4, 3);
+	glVertex3d(4, 3.5, 0);
+	glVertex3d(3, 4, 5);
+	glVertex3d(1, 3.5, 2);
+	glVertex3d(2, 4, 5);
+	glVertex3d(-2, 3.5, 3);
+	glVertex3d(2, 4, 7);
+	endf;
+
+	glColor3f(0, 0, 0);
+	//sixth topological tier
+	beg(GL_TRIANGLE_STRIP);
+	glVertex3d(4, 4, 3);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(3, 4, 5);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(2, 4, 5);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(2, 4, 7);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(3, 4, 10.5);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(3.5, 4, 10);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(4, 4, 10.5);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(5, 4, 8);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(5, 4, 7);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(5, 4, 3);
+	glVertex3d(4, 4.3, 7);
+	glVertex3d(4, 4, 3);
+	endf;
+
+	//////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
+
 	white;
 	beg(GL_QUADS);
 	glVertex3d(-14, 0, -24);
@@ -1177,15 +1393,19 @@ void DORdrawFence(db heightOfWall) {
 	white;
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
-	feet.drawOutside(Constraints(3, 10, 3), textures);
+	feet.drawOutside(Constraints(3, 10, 3), textures,flag);
 	Cylinder top = Cylinder(1.2, 1.2, 1.5, 8, 1, false, 2);
 	pshm;
 	glTranslated(1.5, 10.5, 1.5);
+	cull;
 	top.drawSide();
+	nocull;
 	ppm;
 	pshm;
 	glTranslated(1.5, 11.46, 1.5);
+	cull;
 	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0));
+	nocull;
 	ppm;
 
 	ppm;
@@ -1272,17 +1492,7 @@ void DORdrawFence(db heightOfWall) {
 	glVertex3d(7, heightOfWall, -22);
 	endf;
 
-	/*(-14, 0, -24)
-	(-17, 0, 20)
-	(-5, 0, 20)
-	(-5, 0, 27)
-	(0, 0, 27)
-	(7, 0, 25.5)
-	(14, 0, 20)
-	(20, 0, 12)
-	(22, 0, 7)
-	(18, 0, -10)
-	(7, 0, -22)*/
+	
 
 }
 
@@ -1425,139 +1635,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	int sectorCnt = 36; int radius = 4; int radius2 = 5;
 	white;
 
-	pshm;
-	glTranslated(10, 0, 0);
-	ppm;
+
 
 #pragma region design
 	
-	pshm;
-	glTranslated(-10, 0, 0);
-	//glTranslated(p + a / 2.0 + 1 , 0, -p - a / 2.0 - 2);
-	db heightOfWall = 4;
-	glColor3f(0.5, 0.5, 0.5);
-	//first topological tier
-	beg(GL_TRIANGLE_STRIP);
-	glVertex3d(-5,0,27);
-	glVertex3d(-2,1.5,23);
-	glVertex3d(0,0,27);
-	glVertex3d(1,1.5,23);
-	glVertex3d(7,0,25.5);
-	glVertex3d(5,1.5,22);
-	glVertex3d(14,0,20);
-	glVertex3d(12,1.5,18);
-	glVertex3d(20, 0, 12);
-	glVertex3d(18, 1.5, 10);
-	glVertex3d(22, 0, 7);
-	glVertex3d(20, 1.5, 4);
-	glVertex3d(18, 0, -10);
-	glVertex3d(11, 1.5, -10);
-	glVertex3d(7, 0, -22);
-	glVertex3d(4, 1.5, -18);
-	glVertex3d(-14, 0, -24);
-	glVertex3d(-10, 1.5, -15);
-	glVertex3d(-17, 0, 20);
-	glVertex3d(-14, 1.5, 16);
-	glVertex3d(-5, 0, 20);
-	glVertex3d(-2, 1.5, 17);
-	glVertex3d(-5, 0, 27);
-	glVertex3d(-2, 1.5, 23);
-	endf;
-
-	glColor3f(0.4, 0.4, 0.4);
-
-	beg(GL_TRIANGLE_STRIP);
-	glVertex3d(-2, 1.5, 23);
-	glVertex3d(1, 2, 20);
-	glVertex3d(1, 1.5, 23);
-	glVertex3d(3, 2, 20);
-	glVertex3d(5, 1.5, 22);
-	glVertex3d(5, 2, 18);
-	glVertex3d(12, 1.5, 18);
-	glVertex3d(8, 2, 15);
-	glVertex3d(18, 1.5, 10);
-	glVertex3d(12, 2, 10);
-	glVertex3d(20, 1.5, 4);
-	glVertex3d(12, 2, 4);
-	glVertex3d(11, 1.5, -10);
-	glVertex3d(8, 2, -3);
-	glVertex3d(4, 1.5, -18);
-	glVertex3d(4, 2, -13);
-	glVertex3d(-10, 1.5, -15);
-	glVertex3d(-7, 2, -10);
-	glVertex3d(-14, 1.5, 16);
-	glVertex3d(-12, 2,12);
-	glVertex3d(-2, 1.5, 17);
-	glVertex3d(0, 2, 14);
-	glVertex3d(-2, 1.5, 23);
-	glVertex3d(1, 2, 20);
-	endf;
-
-	glColor3f(0.3, 0.3, 0.3);
-	beg(GL_TRIANGLE_STRIP);
-	glVertex3d(1, 2,20 );
-	glVertex3d(2, 2.5,15 );
-	glVertex3d(3, 2,20 );
-	glVertex3d(3, 2.5,16 );
-	glVertex3d(5, 2, 18);
-	glVertex3d(5, 2.5,14 );
-	glVertex3d(8, 2, 15);
-	glVertex3d(8, 2.5,10 );
-	glVertex3d(12, 2,10 );
-	glVertex3d(10, 2.5,7 );
-	glVertex3d(12, 2,4 );
-	glVertex3d(10, 2.5, 3);
-	glVertex3d(8, 2,-3 );
-	glVertex3d(6, 2.5,0 );
-	glVertex3d(4, 2,-13 );
-	glVertex3d(4, 2.5,-7 );
-	glVertex3d(-7, 2,-10 );
-	glVertex3d(-4, 2.5,-2 );
-	glVertex3d(-12, 2, 12);
-	glVertex3d(-6, 2.5,9 );
-	glVertex3d(0, 2,14 );
-	glVertex3d(1, 2.5, 12);
-	glVertex3d(1, 2,20 );
-	glVertex3d(2, 2.5, 15);
-	endf;
-
-	glColor3f(0.2, 0.2, 0.2);
-
-	beg(GL_TRIANGLE_STRIP);
-	glVertex3d(5, 2.5,14 );
-	glVertex3d(5, 3.5,11 );
-	glVertex3d(8, 2.5,10 );
-	glVertex3d(5, 3.5,10 );
-	glVertex3d(10, 2.5, 7);
-	glVertex3d(6, 3.5,7 );
-	glVertex3d(10, 2.5,3 );
-	glVertex3d(7, 3.5,3 );
-	glVertex3d(6, 2.5,0 );
-	glVertex3d(6, 3.5, 2);
-	glVertex3d(4, 2.5,-7 );
-	glVertex3d(4, 3.5,0 );
-	glVertex3d(-4, 2.5,-2 );
-	glVertex3d(1, 3.5, 2);
-	glVertex3d(-4, 2.5, -2);
-
-	glVertex3d(-2, 3.5,3 );
-	glVertex3d(-6, 2.5, 9);
-	glVertex3d(1, 3.5,8 );
-	glVertex3d(1, 2.5,12 );
-	glVertex3d(2, 3.5,10 );
-	glVertex3d(2, 2.5,15 );
-	glVertex3d(3, 3.5,11 );
-	glVertex3d(3, 2.5,16 );
-	glVertex3d(5, 3.5, 11);
-	glVertex3d(5, 2.5, 14);
-	endf;
-
-
-
-	
-	DORdrawFence(heightOfWall);
-
-	ppm;
 
 #pragma endregion
 
@@ -1570,18 +1651,23 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslated(0, 0.1, 0);
 	DORdrawsides();
 	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0 + 1 , 0.2, -p - a / 2.0 - 2);
+	db heightOfWall = 4;
+	DORdrawFence(heightOfWall);
+	ppm;
 		
 	pshm;
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(55, 0, 1, 0);
-	//DORdrawDrum();
+	DORdrawDrum();
 	ppm;
 	//moving the outer octagon to the base of the outer octagon 
 	glTranslated(p - p2, 0, -inner.length);
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b)/2.0 , 0 , -(dia - dia2)/2.0);
-	//DORdrawInnerOctagon();
-	//DORdrawArcade();
+	DORdrawArcade();
 
 #pragma endregion
 

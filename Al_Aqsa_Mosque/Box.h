@@ -54,6 +54,10 @@ public:
 	* texture[5] the right face
 	*/
 	void drawInside(const Constraints& c, int texture[]);
+
+	void drawOutside(const Constraints& c, int textures[], bool flag[]);
+
+
 	/**
 	* @brief draw the shadow of the box
 	* @param constraints is an object of width height length
