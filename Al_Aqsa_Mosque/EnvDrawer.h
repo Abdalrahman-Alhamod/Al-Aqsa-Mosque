@@ -142,7 +142,7 @@ public:
 	* @param length The overall length of the hallway.
 	* @param textureIndex The index of the texture to be applied, between 0 and 9.
 	*/
-	void drawHallway(const int size, const int wallHeight, const int count,const int length, const int textureIndex);
+	void drawHallway(const float size, const float wallHeight, const int count,const float length, const int textureIndex);
 
 	/**
 	* @brief Draw a building with the specified size and building texture.
@@ -186,7 +186,7 @@ private:
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;
-	int stonesTexture[10];
+	int stonesTexture[15];
 	int buildingTexture[6];
 
 	// Lighting Variables

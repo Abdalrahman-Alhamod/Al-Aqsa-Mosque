@@ -38,6 +38,7 @@ EnvDrawer::EnvDrawer() {
 	stonesTexture[7] = LoadTexture((char*)"assets/materials/stones8.bmp", 255);
 	stonesTexture[8] = LoadTexture((char*)"assets/materials/stone3.bmp", 255);
 	stonesTexture[9] = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
+	stonesTexture[10] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -594,7 +595,7 @@ void EnvDrawer::drawArchway(const int size, const int pillarHeight, const int co
 
 }
 
-void EnvDrawer::drawHallway(const int size, const int wallHeight, const int count, const int length, const int textureIndex) {
+void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex) {
 	int texture = stonesTexture[textureIndex];
 	glPushMatrix();
 	glTranslatef(-size * 1.75, -wallHeight, -length * 0.5);
