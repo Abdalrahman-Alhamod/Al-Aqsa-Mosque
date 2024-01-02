@@ -1,3 +1,7 @@
+#define cull glEnable(GL_CULL_FACE)
+#define nocull glDisable(GL_CULL_FACE)
+#define Front glCullFace(GL_FRONT)
+#define Back glCullFace(GL_BACK)
 #include "EnvDrawer.h"
 #include <GL/glut.h>  
 #include "Point.h"
@@ -39,6 +43,7 @@ EnvDrawer::EnvDrawer() {
 	stonesTexture[8] = LoadTexture((char*)"assets/materials/stone3.bmp", 255);
 	stonesTexture[9] = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 	stonesTexture[10] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
+	stonesTexture[11] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -525,7 +530,7 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 
 
 void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
-
+	
 	float width = 60, height = 30, length = 30;
 	length = constraints.length;
 	width = max(constraints.width, radius * 2);
@@ -585,8 +590,10 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 
 	// Start drawing cylinder
 	glEnable(GL_TEXTURE_2D);
-
+	
 	glPushMatrix();
+	cull;
+	Front;
 	glTranslatef(0, 0, -length / 2);
 	glBegin(GL_TRIANGLE_STRIP);
 	glNormal3f(0, 0, 1);
@@ -610,6 +617,8 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	}
 
 	glEnd();
+	Back;
+	nocull;
 	glPopMatrix();
 
 	//the back face
@@ -638,6 +647,7 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glEnable(GL_TEXTURE_2D);
 
 	glPushMatrix();
+	cull;
 	glTranslatef(0, 0, -length * 1.5);
 	glBegin(GL_TRIANGLE_STRIP);
 	glNormal3f(0, 0, -1);
@@ -663,10 +673,12 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	}
 
 	glEnd();
+	nocull;
 	glPopMatrix();
 
 	//the left side
 	glPushMatrix();
+	cull;
 	glTranslatef(0, 0, -length / 2);
 	glBegin(GL_QUADS);
 	glNormal3f(-1, 0, 0);
@@ -731,10 +743,13 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 
 
 	glPushMatrix();
+	
 	Cylinder cylinder = Cylinder(radius, radius, length, sectorCount * 2);
 	cylinder.setIsHalf(true);
 	cylinder.reverseNormals();
 	cylinder.drawSide();
+	
+	nocull;
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
@@ -777,7 +792,7 @@ void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int 
 
 }
 
-void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex) {
+void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex,const int sectorCount) {
 	int texture = stonesTexture[textureIndex];
 	glPushMatrix();
 	glTranslatef(-size * 1.75, -wallHeight, -length * 0.5);
@@ -798,7 +813,7 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 		Box().drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
 		glPopMatrix();
 
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), 36, texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), sectorCount, texture);
 
 		glPopMatrix();
 	}

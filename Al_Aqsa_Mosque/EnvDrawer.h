@@ -143,7 +143,7 @@ public:
 	* @param length The overall length of the hallway.
 	* @param textureIndex The index of the texture to be applied, between 0 and 9.
 	*/
-	void drawHallway(const float size, const float wallHeight, const int count,const float length, const int textureIndex);
+	void drawHallway(const float size, const float wallHeight, const int count,const float length, const int textureIndex,const int sectorCount=18);
 
 	/**
 	* @brief Draw a building with the specified size and building texture.
