@@ -20,14 +20,15 @@ public :
 	void drawAlQibliMosque();
 	
 private :
-	int side[20],block[10],roof[10],carpet;
-	double size = 1;
+	int side[30],block[10],roof[10],carpet;
+	float size = 1;
 	void drawSideUnit(int type);
 	void drawNormalWall(const Constraints& constraints, float textureCount=1);
 	void drawLeftNormalWall(const Constraints& constraints, float textureCount);
 	void drawRightWall();
 	void drawRoof(const Constraints& constraints, float textureCount=1);
 	void drawLineOfCylinders(int count, GLuint texture);
+	void drawSmallColumnSideUnit(int count);
 	void drawFront();
 	void drawDoorFront();
 	void drawFrontMainDoor();
@@ -40,7 +41,7 @@ private :
 	void drawTransparentWindow(int count);
 	void drawRoof();
 	void drawCarpet();
-	bool drawInside = true;
+	bool drawInside = false;
 	Box boxDrawer;
 	EnvDrawer envDrawer;
 };

@@ -28,6 +28,11 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 	side[12] = LoadTexture((char*)"assets/materials/AlQibli/side12.bmp", 255);
 	side[13] = LoadTexture((char*)"assets/materials/AlQibli/side13.bmp", 255);
 	side[14] = LoadTexture((char*)"assets/materials/AlQibli/side14.bmp", 255);
+	side[15] = LoadTexture((char*)"assets/materials/AlQibli/side15.bmp", 255);
+	side[16] = LoadTexture((char*)"assets/materials/AlQibli/side16.bmp", 255);
+	side[17] = LoadTexture((char*)"assets/materials/AlQibli/side17.bmp", 255);
+	side[18] = LoadTexture((char*)"assets/materials/AlQibli/side18.bmp", 255);
+	side[19] = LoadTexture((char*)"assets/materials/AlQibli/side19.bmp", 255);
 
 	block[0] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
 	block[1] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
@@ -114,20 +119,21 @@ void AlQibliMosqueDrawer::drawTransparentWindow(int count) {
 
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		float height = 1.2 * size, width = 0.8 * size;
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glBindTexture(GL_TEXTURE_2D, side[14]);
+
 		glColor4ub(255, 255, 255, 200);  // Set alpha value for transparency
 
-		glBindTexture(GL_TEXTURE_2D, side[14]);
+
 		glPushMatrix();
+
 		tr(11 * size, 0.2 * size, 4.75 * size);
 		rt(90, 0, 1, 0);
-		glBegin(GL_QUADS);
 
+		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
 		glTexCoord2f(1, 0); glVertex3f(width, 0, 0);
 		glTexCoord2f(1, 1); glVertex3f(width, height, 0);
@@ -136,6 +142,7 @@ void AlQibliMosqueDrawer::drawTransparentWindow(int count) {
 
 		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
+
 		tr(0.80 * size, -0.3 * size, -0.05 * size);
 		drawLeftNormalWall(Constraints(1 * size, 1.7 * size, 0.05 * size), 1);
 
@@ -172,7 +179,7 @@ void AlQibliMosqueDrawer::drawMultiHallway(int count) {
 	for (int i = 0; i < count; i++) {
 		pshm;
 		rt(90, 0, 1, 0);
-		tr(24.8 * size+2 * size *i, 2.2 * size, (3.99 ) * size);
+		tr(24.8 * size + 2 * size * i, 2.2 * size, (3.99) * size);
 		envDrawer.drawHallway(0.66 * size,
 			2.2 * size, 1, 0.4 * size, 10, 5);
 		ppm;
@@ -245,15 +252,15 @@ void AlQibliMosqueDrawer::drawRightWall() {
 	pshm;
 	tr(25 * size, 0, -8 * size);
 	rt(90, 0, 1, 0);
-	drawNormalWall(Constraints(8 * size, 3.76 * size, 0.5 * size));
+	drawNormalWall(Constraints(12 * size, 3.76 * size, 0.5 * size));
 	ppm;
 
 	ppm;
 
 	// roof
 	pshm;
-	tr(22.5 * size, 3 * size, -16 * size);
-	drawRoof(Constraints(3 * size, 0.7 * size, 21.8 * size), 9);
+	tr(22.5 * size, 3 * size, -20 * size);
+	drawRoof(Constraints(3 * size, 0.7 * size, 25.8 * size), 9);
 	ppm;
 
 	if (drawInside)
@@ -292,7 +299,7 @@ void AlQibliMosqueDrawer::drawLineOfCylinders(int count, GLuint texture) {
 void AlQibliMosqueDrawer::drawSideShortWall() {
 	int texture[6] = { block[1],
 		block[0], block[0], block[0], block[1], block[0] };
-	boxDrawer.drawOutside(Constraints(0.5 * size, 2 * size, 21.8 * size)
+	boxDrawer.drawOutside(Constraints(0.5 * size, 2 * size, 25.8 * size)
 		, texture, 3.0f);
 }
 
@@ -328,6 +335,20 @@ void AlQibliMosqueDrawer::drawLeftMultiBigWindowUnit(int count) {
 			block[0], side[13], side[11], block[0], block[0] };
 		boxDrawer.drawOutside(Constraints(2.74 * size, 2.1 * size, 0.05 * size)
 			, texture);
+		ppm;
+	}
+}
+
+void AlQibliMosqueDrawer::drawSmallColumnSideUnit(int count) {
+	for (int i = 0; i < count; i++) {
+		pshm;
+		tr(0, 0, -2.06 * i * size);
+		boxDrawer.drawOutside(Constraints(0.25 * size, 0.7 * size, 0.25 * size), block[0]);
+		tr(0.125 * size, 0.85 * size, 0.125 * size);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, block[0]);
+		Cylinder(0.12 * size, 0.001 * size, 0.3 * size, 5, 1, true, 2).drawSide();
+		glDisable(GL_TEXTURE_2D);
 		ppm;
 	}
 }
@@ -520,21 +541,21 @@ void AlQibliMosqueDrawer::drawFront() {
 
 void AlQibliMosqueDrawer::drawRoof() {
 	pshm;
-	tr(22 * size, 3 * size, -16 * size);
+	tr(22 * size, 3 * size, -20 * size);
 	drawSideShortWall();
 	ppm;
 
 
 	// right
 	pshm;
-	tr(20 * size, 4.8 * size, -16 * size);
-	drawRoof(Constraints(2 * size, 0.2 * size, 21.8 * size), 9);
+	tr(20 * size, 4.8 * size, -20 * size);
+	drawRoof(Constraints(2 * size, 0.2 * size, 25.8 * size), 9);
 	ppm;
 
 	// left
 	pshm;
-	tr(11 * size, 4.8 * size, -16 * size);
-	drawRoof(Constraints(5 * size, 0.2 * size, 21.8 * size), 9);
+	tr(11 * size, 4.8 * size, -20 * size);
+	drawRoof(Constraints(5 * size, 0.2 * size, 25.8 * size), 9);
 	ppm;
 
 	// front right 
@@ -553,21 +574,21 @@ void AlQibliMosqueDrawer::drawRoof() {
 	pshm;
 	tr(19.95 * size, 5 * size, 5.75 * size);
 	rt(90, 0, 1, 0);
-	drawMultiSmallWindowUnit(14);
+	drawMultiSmallWindowUnit(20);
 	ppm;
 
 	// left down
 	pshm;
-	tr(11 * size, 3.7 * size, -16.2 * size);
+	tr(11 * size, 3.7 * size, -20.2 * size);
 	rt(-90, 0, 1, 0);
-	drawMultiSmallWindowUnit(22);
+	drawMultiSmallWindowUnit(26);
 	ppm;
 
 	// left up
 	pshm;
-	tr(16.05 * size, 5 * size, -8.2 * size);
+	tr(16.05 * size, 5 * size, -14.2 * size);
 	rt(-90, 0, 1, 0);
-	drawMultiSmallWindowUnit(14);
+	drawMultiSmallWindowUnit(20);
 	ppm;
 
 	// front big windows
@@ -587,16 +608,33 @@ void AlQibliMosqueDrawer::drawRoof() {
 
 	// left triangle side
 	pshm;
-	tr(15.8 * size, 6.2 * size, -8.2 * size);
+	tr(15.8 * size, 6.2 * size, -14.2 * size);
 	rt(15, 0, 0, 1);
-	boxDrawer.drawOutside(Constraints(2.3 * size, 0.05 * size, 14.1 * size), roof[0], 9.0f);
+	boxDrawer.drawOutside(Constraints(2.3 * size,
+		0.05 * size, 20.1 * size), roof[0], 9.0f);
 	ppm;
 
 	// right triangle side
 	pshm;
-	tr(18 * size, 6.8 * size, -8.2 * size);
+	tr(18 * size, 6.8 * size, -14.2 * size);
 	rt(-15, 0, 0, 1);
-	boxDrawer.drawOutside(Constraints(2.3 * size, 0.05 * size, 14.1 * size), roof[0], 9.0f);
+	boxDrawer.drawOutside(Constraints(2.3 * size,
+		0.05 * size, 20.1 * size), roof[0], 9.0f);
+	ppm;
+
+	// back wall
+	pshm;
+	tr(16.05 * size, 5 * size, -14.25 * size);
+	int textures[6] = { block[0],block[0] ,block[0] ,block[1],block[0] ,block[0] };
+	boxDrawer.drawOutside(Constraints(3.9 * size, 1.3 * size, 0.05 * size), textures);
+	ppm;
+
+	// back triangle
+	pshm;
+	tr(15.72 * size, 6.23 * size, -14.28 * size);
+	rt(15, 1, 0, 0);
+	boxDrawer.drawTrangleOutside(Constraints(4.6 * size, 0.6 * size, 0.05 * size)
+		, roof[0], 4.0f);
 	ppm;
 }
 
@@ -607,7 +645,7 @@ void AlQibliMosqueDrawer::drawCarpet() {
 	rt(180, 0, 1, 0);
 
 
-	float width = 14.9 * size, length = 22 * size;
+	float width = 14.9 * size, length = 26 * size;
 	int textureCount = 20;
 
 	glEnable(GL_TEXTURE_2D);
@@ -635,17 +673,59 @@ void AlQibliMosqueDrawer::drawAlQibliMosque() {
 
 	drawRightWall();
 
-	drawRoof();
-
 	drawCarpet();
 
+	// up windows
 	pshm;
 	tr(11 * size, 1.6 * size, -8 * size);
 	rt(-90, 0, 1, 0);
 	drawLeftMultiBigWindowUnit(5);
 	ppm;
 
-	drawTransparentWindow(5);
+	//  side small wall
+	pshm;
+	tr(9.7 * size, -0.1, 8.5 * size);
+	rt(180, 0, 1, 0);
+	boxDrawer.drawOutside(Constraints(0.1 * size,
+		0.5 * size, 16.4 * size)
+		, block[0], 3.0f);
+	ppm;
 
+	//  side small columns
+	pshm;
+	tr(9.525 * size, -0.1, 8.5 * size);
+	drawSmallColumnSideUnit(9);
+	ppm;
+
+	// from small door
+	pshm;
+	tr(9.78 * size, -0.1, 8.65 * size);
+	boxDrawer.drawOutside(Constraints(0.7 * size, 1 * size, 0.02 * size), side[15]);
+	ppm;
+
+	// side door
+	pshm;
+	tr(10.95 * size, -0.1 * size, -11 * size);
+	int textures[6] = { block[3],block[3] ,block[3] ,block[3] ,side[16],side[17] };
+	boxDrawer.drawOutside(Constraints(0.05 * size, 3.8 * size, 3 * size), textures);
+	ppm;
+
+	// front side door small column
+	pshm;
+	tr(9.525 * size, -0.1, -10.95 * size);
+	drawSmallColumnSideUnit(1);
+	ppm;
+
+	// side additional door unit
+	pshm;
+	int textures2[6] = { block[3],roof[0] ,
+		block[3] ,side[19] ,side[18],block[1] };
+	tr(9 * size, -0.1, -13.95 * size);
+	boxDrawer.drawOutside(Constraints(2 * size, 5.1 * size, 3 * size), textures2);
+	ppm;
+
+	drawRoof();
+
+	drawTransparentWindow(5);
 }
 
