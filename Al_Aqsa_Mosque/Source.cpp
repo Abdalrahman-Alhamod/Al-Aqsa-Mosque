@@ -340,7 +340,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	camera->Render();
 	camera->decodeKeyboard(keys, 0.1);
-	//camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	{//envDrawer.controlLightSourcePosition(keys);
 
@@ -372,114 +372,114 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		p.x *= 0.95;
 		p.z *= 0.95;
 		*/
-		p.x += r * sin(angel * PIdiv180);
-		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
+		//	p.x += r * sin(angel * PIdiv180);
+		//	p.z += r * cos(angel * PIdiv180);
+		//	p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
 
-		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
-		//console.print(personDrawer.v());
-		personDrawer.drawPerson(p, angel, 10);
-	}
-	//personDrawer.drawPerson(Point(0,0,-5), 0, 10);
-	envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10, 1, true);
+		//	//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
+		//	//console.print(personDrawer.v());
+		//	personDrawer.drawPerson(p, angel, 10);
+		//}
+		////personDrawer.drawPerson(Point(0,0,-5), 0, 10);
+		//envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10, 1, true);
 
-	//const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
-	//envDrawer.drawPassage(passagePoints, 10);
+		//const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
+		//envDrawer.drawPassage(passagePoints, 10);
 
-	//const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
-	//envDrawer.drawStreet(streetPoints, 1);
+		//const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
+		//envDrawer.drawStreet(streetPoints, 1);
 
-	// Test Column
-	/*glPushMatrix();
-	glTranslatef(-20, 10, 0);
-	envDrawer.drawPillar(1,wood);
-	glPopMatrix();*/
+		// Test Column
+		/*glPushMatrix();
+		glTranslatef(-20, 10, 0);
+		envDrawer.drawPillar(1,wood);
+		glPopMatrix();*/
 
-	////added by mohammad yassen
-	//pshm;
-	//glTranslated(-11, 0, 0);
-	//int inside[6];
-	//inside[0] = wood;
-	//inside[1] = wood;
-	//inside[2] = wood;
-	//inside[3] = wood;
-	//inside[4] = wood;
-	//inside[5] = wood;
+		////added by mohammad yassen
+		//pshm;
+		//glTranslated(-11, 0, 0);
+		//int inside[6];
+		//inside[0] = wood;
+		//inside[1] = wood;
+		//inside[2] = wood;
+		//inside[3] = wood;
+		//inside[4] = wood;
+		//inside[5] = wood;
 
-	//added by mohammad yassen
-	pshm;
-	glTranslated(-11, 0, 0);
-	int inside[6];
-	inside[0] = wood;
-	inside[1] = wood;
-	inside[2] = wood;
-	inside[3] = wood;
-	inside[4] = wood;
-	inside[5] = wood;
+		//added by mohammad yassen
+		//pshm;
+		//glTranslated(-11, 0, 0);
+		//int inside[6];
+		//inside[0] = wood;
+		//inside[1] = wood;
+		//inside[2] = wood;
+		//inside[3] = wood;
+		//inside[4] = wood;
+		//inside[5] = wood;
 
-	int outside[6];
-	outside[0] = ground;
-	outside[1] = ground;
-	outside[2] = ground;
-	outside[3] = ground;
-	outside[4] = ground;
-	outside[5] = ground;
-	//shadow won't work because the flag is false in default
-	pshm;
-	glTranslated(-5, 0, 0);
-	Box b1 = Box();
-	b1.drawOutside(Constraints(1, 1, 1), outside);
-	ppm;
-	ppm;
-	Box b(Constraints(5.0f, 10.0f, 5.0f), inside, outside, shadowMat, true);
+		//int outside[6];
+		//outside[0] = ground;
+		//outside[1] = ground;
+		//outside[2] = ground;
+		//outside[3] = ground;
+		//outside[4] = ground;
+		//outside[5] = ground;
+		////shadow won't work because the flag is false in default
+		//pshm;
+		//glTranslated(-5, 0, 0);
+		//Box b1 = Box();
+		//b1.drawOutside(Constraints(1, 1, 1), outside);
+		//ppm;
+		//ppm;
+		//Box b(Constraints(5.0f, 10.0f, 5.0f), inside, outside, shadowMat, true);
 
-	//ppm;
+		//ppm;
 
-	// Test Windows
-	int alpha = 200;
-	glTranslatef(-10, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 0);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(-5, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 1);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(0, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 2);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(5, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 3);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(10, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 4);
-	glPopMatrix();
-	glPushMatrix();
-	glTranslatef(15, 10, 0);
-	mosqueDrawer.drawWindow(1, alpha, 5);
-	glPopMatrix();
-
-	mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
-	mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);
-
-	/*glPushMatrix();
-	glTranslatef(0, 10, 0);
-	envDrawer.drawHallway(2, 8, 4, 10, 6);
-	envDrawer.drawArchway(1, 3, 3, 6);
-	glPopMatrix();*/
-
-	// envDrawer.drawFountain(Point(0, 15, 0), 1);
-
-	/*for (int i = 0; i < 6; i++) {
-		glPushMatrix();
-		glTranslatef(20 * i, 20, 0);
-		envDrawer.drawBuidling(1, i);
+		// Test Windows
+		/*int alpha = 200;
+		glTranslatef(-10, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 0);
 		glPopMatrix();
-	}*/
+		glPushMatrix();
+		glTranslatef(-5, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 1);
+		glPopMatrix();
+		glPushMatrix();
+		glTranslatef(0, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 2);
+		glPopMatrix();
+		glPushMatrix();
+		glTranslatef(5, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 3);
+		glPopMatrix();
+		glPushMatrix();
+		glTranslatef(10, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 4);
+		glPopMatrix();
+		glPushMatrix();
+		glTranslatef(15, 10, 0);
+		mosqueDrawer.drawWindow(1, alpha, 5);
+		glPopMatrix();
 
-	// envDrawer.	drawLightingPillar(Point(0, 0, 0), 1);
+		mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
+		mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);*/
+
+		/*glPushMatrix();
+		glTranslatef(0, 10, 0);
+		envDrawer.drawHallway(2, 8, 4, 10, 6);
+		envDrawer.drawArchway(1, 3, 3, 6);
+		glPopMatrix();*/
+
+		// envDrawer.drawFountain(Point(0, 15, 0), 1);
+
+		/*for (int i = 0; i < 6; i++) {
+			glPushMatrix();
+			glTranslatef(20 * i, 20, 0);
+			envDrawer.drawBuidling(1, i);
+			glPopMatrix();
+		}*/
+
+		// envDrawer.	drawLightingPillar(Point(0, 0, 0), 1);
 	}
 
 

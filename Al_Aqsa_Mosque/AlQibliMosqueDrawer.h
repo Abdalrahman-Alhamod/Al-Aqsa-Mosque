@@ -4,6 +4,7 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
+#define txt(s,t) glTexCoord2d(s,t)
 #include "Point.h"
 #include "Color.h"
 #include "Sphere.h"
@@ -17,15 +18,30 @@ class AlQibliMosqueDrawer
 public :
 	AlQibliMosqueDrawer();
 	void drawAlQibliMosque();
-	void drawSideUnit(int type);
+	
 private :
-	int side[10],block[10],roof[10];
+	int side[20],block[10],roof[10],carpet;
 	double size = 1;
-	void drawNormalWall(const Constraints& constraints);
+	void drawSideUnit(int type);
+	void drawNormalWall(const Constraints& constraints, float textureCount=1);
+	void drawLeftNormalWall(const Constraints& constraints, float textureCount);
 	void drawRightWall();
-	void drawRoof(const Constraints& constraints, int textureCount = 1);
+	void drawRoof(const Constraints& constraints, float textureCount=1);
 	void drawLineOfCylinders(int count, GLuint texture);
 	void drawFront();
+	void drawDoorFront();
+	void drawFrontMainDoor();
+	void drawSideShortWall();
+	void drawMultiSmallWindowUnit(int count);
+	void drawMultiBigWindowUnit(int count);
+	void drawMultiHallway(int count);
+	void drawMultiHalfCylinders(int count);
+	void drawLeftMultiBigWindowUnit(int count);
+	void drawTransparentWindow(int count);
+	void drawRoof();
+	void drawCarpet();
+	bool drawInside = true;
+	Box boxDrawer;
 	EnvDrawer envDrawer;
 };
 
