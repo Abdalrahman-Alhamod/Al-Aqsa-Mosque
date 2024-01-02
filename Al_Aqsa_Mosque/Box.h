@@ -30,7 +30,33 @@ public:
 	* @param height the height of the box
 	* @param texture for the 6 faces of the box.
 	*/
-	void drawOutside(const Constraints& c,const int texture);
+	void drawOutside(const Constraints& c,const int texture, float textureCount=1);
+
+	/**
+	* @brief draw the box from the outside
+	* @param width the width of the box
+	* @param length the length of the box
+	* @param height the height of the box
+	* @param texture array for the 6 faces of the box.
+	*
+	* the six of faces of the textures go as follow
+	* texture[0] the base face
+	* texture[1] the top face
+	* texture[2] the back face
+	* texture[3] the front face
+	* texture[4] the left face
+	* texture[5] the right face
+	*/
+	void drawTriangleOutside(const Constraints& c, int texture[], float textureCount = 1);
+	/**
+	* @brief draw the box from the outside
+	* @param width the width of the box
+	* @param length the length of the box
+	* @param height the height of the box
+	* @param texture for the 6 faces of the box.
+	*/
+	void drawTrangleOutside(const Constraints& c, const int texture, float textureCount = 1);
+
 	/**
 	* @brief draw the box from the outside
 	* @param width the width of the box
