@@ -111,6 +111,21 @@ EnvDrawer envDrawer;
 
 PersonDrawer personDrawer;
 
+
+
+GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
+GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
+
+GLfloat LightAmb[4] = { 0.2f, 0.2f, 0.2f, 1.0f };    // Low ambient lighting
+GLfloat LightDiff[4] = { 0.6f, 0.6f, 0.6f, 1.0f };    // High diffuse lighting
+GLfloat LightSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };    // High specular lighting
+
+GLfloat MatAmb[4] = { 0.2f, 0.2f, 0.2f, 1.0f };      // Red ambient material
+GLfloat MatDif[4] = { 0.6f, 0.6f, 0.6f, 1.0f };      // High diffuse material
+GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular material
+
+GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
+
 int art;
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -133,6 +148,23 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	envDrawer = EnvDrawer();
 
 	personDrawer = PersonDrawer();
+
+	glDisable(GL_LIGHT0);
+	// Lighting Variables Initializing
+	glEnable(GL_LIGHT1);
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmb);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiff);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpec);
+
+	/*glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDir);
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 5.0);*/
+
+	glEnable(GL_LIGHTING);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
+	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
 
 	return TRUE;										// Initialization Went OK
 }
@@ -751,7 +783,7 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
-	base.drawOutside(Constraints(3, 1.5, 3), textures,flag);
+	base.drawOutside(Constraints(3, 1.5, 3), textures);
 	ppm;
 	glRotated(45, 0, 1, 0);
 	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
@@ -1850,13 +1882,12 @@ void DORdrawDomes() {
 	db a = outer.width, b = inner.width;
 	db p = a / srt, p2 = b / srt;
 
-	pshm;
 	cull;
 	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13));
 	nocull;
-	ppm;
-
+	
 	pshm;
+	glTranslated(0, -0.35, 0);
 	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.7, Color(254, 203, 13), true, false);
 	ppm;
 
@@ -2050,27 +2081,19 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 #pragma region design
 	
-
-	
-	
-
 #pragma endregion
 
 
 	white;
 
 
-
 #pragma region domeOfTheRock
 
+	glScaled(0.75, 0.75, 0.75);
 	DomeOfTheRock();
 
 #pragma endregion
 
-	
-	
-	
-	
 
 	glFlush();											// Done Drawing The Quad
 

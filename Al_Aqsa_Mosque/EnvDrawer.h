@@ -177,6 +177,12 @@ public:
 	GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
 	GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
 
+	void setLightAmb(GLfloat ambx, GLfloat amby, GLfloat ambz);
+	void setLightDiff(GLfloat diffx, GLfloat diffy, GLfloat diffz);
+	void setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz);
+
+
+
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;

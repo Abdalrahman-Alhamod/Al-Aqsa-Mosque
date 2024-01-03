@@ -732,3 +732,29 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	glDisable(GL_TEXTURE_2D);
 
 }
+
+
+void EnvDrawer::setLightAmb(GLfloat ambx, GLfloat amby, GLfloat ambz) {
+	this->LightAmb[0] = ambx;
+	this->LightAmb[1] = amby;
+	this->LightAmb[2] = ambz;
+	glLightfv(GL_LIGHT0, GL_AMBIENT, this->LightAmb);
+
+	return;
+}
+
+void EnvDrawer::setLightDiff(GLfloat diffx, GLfloat diffy, GLfloat diffz) {
+	this->LightDiff[0] = diffx;
+	this->LightDiff[1] = diffy;
+	this->LightDiff[2] = diffz;
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, this->LightDiff);
+	return;
+}
+
+void EnvDrawer::setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz) {
+	this->LightSpec[0] = specx;
+	this->LightSpec[1] = specy;
+	this->LightSpec[2] = specz;
+	glLightfv(GL_LIGHT0, GL_SPECULAR, this->LightSpec);
+	return;
+}
