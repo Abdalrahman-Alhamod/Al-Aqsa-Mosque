@@ -20,7 +20,7 @@ class Sphere
 {
 public:
     // ctor/dtor
-    Sphere(float radius = 1.0f, int sectorCount = 36, int stackCount = 18, bool smooth = true, int up = 3,bool isDome=false);
+    Sphere(float radius = 1.0f, int sectorCount = 36, int stackCount = 18, bool smooth = true, int up = 3, bool isDome = false, float sectorTextureCount = 1);
     ~Sphere() {}
 
     // getters/setters
@@ -28,12 +28,13 @@ public:
     int getSectorCount() const { return sectorCount; }
     int getStackCount() const { return stackCount; }
     int getUpAxis() const { return upAxis; }
-    void set(float radius, int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isDome = false);
+    void set(float radius, int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isDome = false, float sectorTextureCount = 1);
     void setRadius(float radius);
     void setSectorCount(int sectorCount);
     void setStackCount(int stackCount);
     void setSmooth(bool smooth);
     void setIsDome(bool isDome);
+    void setSectorTextureCount(float sectorTextureCount);
     void setUpAxis(int up);
     void reverseNormals();
 
@@ -93,6 +94,8 @@ private:
     bool smooth;
     int upAxis;                             // +X=1, +Y=2, +z=3 (default)
     bool isDome;
+    float sectorTextureCount;
+
     std::vector<float> vertices;
     std::vector<float> normals;
     std::vector<float> texCoords;
