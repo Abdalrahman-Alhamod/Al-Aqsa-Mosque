@@ -133,7 +133,7 @@ public:
 	* @param pillarCylinderSector The number of sectors in the pillar cylinders.
 	* @param pillarBaseSector The number of sectors in the pillar bases.
 	*/
-	void drawArchway(const float size,const int pillarHeight,const int count,const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18);
+	void drawArchway(const float size,const float pillarHeight,const int count,const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18,const int innerSectorCount=18);
 	
 	/**
 	* @brief Draw a hallway with alternating rectangular and curved sections.

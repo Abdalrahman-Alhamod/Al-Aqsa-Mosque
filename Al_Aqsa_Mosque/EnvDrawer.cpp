@@ -528,7 +528,6 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 	glPopMatrix();
 }
 
-
 void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
 	
 	float width = 60, height = 30, length = 30;
@@ -755,7 +754,7 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glDisable(GL_TEXTURE_2D);
 }
 
-void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector) {
+void EnvDrawer::drawArchway(const float size, const float pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector, const int innerSectorCount) {
 	int texture = stonesTexture[textureIndex];
 	//glPushMatrix();
 	//glTranslatef(-size * 1.5, -pillarHeight * 0.5 - 0.1, 0);
@@ -772,7 +771,7 @@ void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int 
 	for (int i = 0; i < count; i++) {
 		glPushMatrix();
 		glTranslatef(i * size * 3, 0, 0);
-		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), 36, texture);
+		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 3, (size) * 1.5, 1 * size), innerSectorCount, texture);
 		glPushMatrix();
 		glTranslatef(-size * 1.5, (-pillarHeight - 0.2 * size) * 0.50, 0);
 		EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
@@ -780,10 +779,12 @@ void EnvDrawer::drawArchway(const float size, const int pillarHeight, const int 
 		glPopMatrix();
 	}
 
+	cull;
 	glPushMatrix();
 	glTranslatef(size * 1.5 + (count - 1) * size * 3, (-pillarHeight - 0.2 * size) * 0.50, 0);
 	EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
 	glPopMatrix();
+	nocull;
 
 	glPushMatrix();
 	glTranslatef(size * 1.5 + (count - 1) * size * 3, 0, -size * 0.5);
