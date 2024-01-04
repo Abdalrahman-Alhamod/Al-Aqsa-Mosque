@@ -12,6 +12,7 @@
 #include "Model_3DS.h"
 #include "Box.h"
 #include "Constraints.h"
+#include "Constants.h"
 #include "EnvDrawer.h";
 class AlQibliMosqueDrawer
 {
@@ -41,7 +42,11 @@ private :
 	void drawTransparentWindow(int count);
 	void drawRoof();
 	void drawCarpet();
-	bool drawInside = false;
+	void drawLeft();
+	void drawBack();
+	void drawDome();
+	void drawInner();
+	bool drawInside = true;
 	Box boxDrawer;
 	EnvDrawer envDrawer;
 };
