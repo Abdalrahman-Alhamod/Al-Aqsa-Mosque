@@ -134,7 +134,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
-	envDrawer = EnvDrawer();
+	//envDrawer = EnvDrawer();
 
 	personDrawer = PersonDrawer();
 
