@@ -26,7 +26,7 @@ class Cylinder
 public:
     // ctor/dtor
     Cylinder(float baseRadius = 1.0f, float topRadius = 1.0f, float height = 1.0f,
-        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3, bool isHalf = false );
+        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3, bool isHalf = false,bool onSectorTexture=false );
     ~Cylinder() {}
 
     // getters/setters
@@ -36,7 +36,7 @@ public:
     int getSectorCount() const { return sectorCount; }
     int getStackCount() const { return stackCount; }
     void set(float baseRadius, float topRadius, float height,
-        int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isHalf=false);
+        int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isHalf=false, bool onSectorTexture = false);
     void setBaseRadius(float radius);
     void setTopRadius(float radius);
     void setHeight(float radius);
@@ -45,6 +45,7 @@ public:
     void setSmooth(bool smooth);
     void setIsHalf(bool isHalf);
     void setUpAxis(int up);
+    void setOnSectorTexture(bool onSectorTexture);
 
     // for vertex data
     unsigned int getVertexCount() const { return (unsigned int)vertices.size() / 3; }
@@ -121,6 +122,7 @@ private:
     bool smooth;                            // smooth(true) or flat(false)
     bool isHalf;
     int upAxis;                             // X=1, Y=2, Z=3(default)
+    bool onSectorTexture;
 
     std::vector<float> unitCircleVertices;
     std::vector<float> vertices;
