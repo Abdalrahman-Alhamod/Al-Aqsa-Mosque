@@ -134,7 +134,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
-	//envDrawer = EnvDrawer();
+	envDrawer = EnvDrawer();
 
 	personDrawer = PersonDrawer();
 
@@ -252,7 +252,7 @@ void testEnv() {
 	// Testing Light & Shadows
 
 	// Set light position in world coordinates ( fix moving with camera bug)
-	glLightfv(GL_LIGHT0, GL_POSITION, envDrawer.LightPos);
+
 
 	// Lighting Destination Test
 
@@ -336,15 +336,47 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+
 	camera = Camera::getInstance();
 
 	camera->Render();
-	camera->decodeKeyboard(keys, 0.1);
+	//camera->decodeKeyboard(keys, 0.01);
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
+	pshm;
+	glTranslatef(envDrawer.LightPos[0], envDrawer.LightPos[1], envDrawer.LightPos[2]);
+	Sphere(1, 5, 5).draw();
+	ppm;
+	glLightfv(GL_LIGHT0, GL_POSITION, envDrawer.LightPos);
+	if (envDrawer.drawSun) {
+		envDrawer.simulateSun(100, 10, THREE_HOURS_PER_SECOND);
+	}
+	else {
+		envDrawer.controlLightSourcePosition(keys);
+	}
+
+	if (camera->getMode() == THIRD_PERSON_CAMERA)
+	{
+		camera->decodeKeyboard(keys, 0.01);
+		Point p = camera->getPosition();
+		float angel = 180 + camera->getRotatedY(), r = 0.25;
+
+
+		
+		p.x += r * sin(angel * PIdiv180);
+		p.z += r * cos(angel * PIdiv180);
+		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z)))-9.8;
+
+		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
+		//console.print(personDrawer.v());
+		personDrawer.drawPerson(p, angel, 2);
+	}
+	else {
+		camera->decodeKeyboard(keys, 1);
+	}
 
 	{//envDrawer.controlLightSourcePosition(keys);
 
-	//envDrawer.simulateSun(60, 10, THREE_HOURS_PER_SECOND);
+
 
 	////envDrawer.simulateSun(60,10 HOUR_PER_SECOND);
 	////envDrawer.simulateSun(60,10 MINUTE_PER_SECOND);
@@ -482,8 +514,376 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		// envDrawer.	drawLightingPillar(Point(0, 0, 0), 1);
 	}
 
+	float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
+	envDrawer.drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
 
+	float tiledLandLength = 83, tiledLandWidth = 55;
+	Point tiledLandPoints[4] = { Point(-tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
+		Point(tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
+		Point(tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2),
+		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
+
+	envDrawer.drawTiledLand(tiledLandPoints, 100);
+
+	if (envDrawer.drawRoads) {
+
+		float road1Length = 83, road1Width = 8;
+
+		Point road1Points[4] = { Point(-road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
+			Point(road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
+			Point(road1Width / 2,-skyboxHeight / 10,road1Length / 2),
+			Point(-road1Width / 2,-skyboxHeight / 10,road1Length / 2), };
+
+		pshm;
+		glTranslatef(31.5, 0, 0);
+		envDrawer.drawStreet(road1Points, 50);
+		ppm;
+
+		pshm;
+		glTranslatef(-31.5, 0, 0);
+		envDrawer.drawStreet(road1Points, 50);
+		ppm;
+
+		float road2Length = 70, road2Width = 8;
+
+		Point road2Points[4] = { Point(-road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
+			Point(road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
+			Point(road2Width / 2,-skyboxHeight / 10,road2Length / 2),
+			Point(-road2Width / 2,-skyboxHeight / 10,road2Length / 2), };
+
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-45.5, 0, 0);
+		envDrawer.drawStreet(road2Points, 40);
+		ppm;
+
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(45.5, 0, 0);
+		envDrawer.drawStreet(road2Points, 40);
+		ppm;
+	}
+
+	if (envDrawer.drawMinarts) {
+		pshm;
+		glTranslatef(-26.9, -7, 10);
+		envDrawer.drawCubedMinaret(0.6);
+		ppm;
+
+		pshm;
+		glTranslatef(-26.9, -7, -41);
+		envDrawer.drawCubedMinaret(0.6);
+		ppm;
+
+		pshm;
+		glTranslatef(-26.5, -7, 40);
+		envDrawer.drawCubedMinaret(0.6);
+		ppm;
+
+		pshm;
+		glTranslatef(15, -8, -41.2);
+		glScalef(1, 1.2, 1);
+		envDrawer.drawCylindricMinaret(0.4, envDrawer.stonesTexture[10]);
+		ppm;
+	}
+
+	pshm;
+	glTranslatef(-26.9, -8, 25.2);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, 9);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWall(60, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, -7);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, -24);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWall(65, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-1, -8, -41.2);
+	glScalef(1, 0.5, 0.5);
+	envDrawer.drawWall(54, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, -7);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, -24);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWall(65, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, 18);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	envDrawer.drawWall(96, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(13.2, -8, 41.2);
+	glScalef(1, 0.5, 0.5);
+	envDrawer.drawWall(25, 4, envDrawer.stonesTexture[10]);
+	ppm;
+
+	if (envDrawer.drawGradens) {
+
+		pshm;
+		envDrawer.drawGarden(Point(-16, -9.98, 0), 10, 20,
+			1, 0.9, true);
+		ppm;
+
+		pshm;
+		envDrawer.drawGarden(Point(26, -9.98, 0), 10, 20,
+			1, 0.9, true);
+		ppm;
+
+		pshm;
+		envDrawer.drawGarden(Point(-16, -9.98, -35), 10, 20,
+			1, 0.9, true);
+		ppm;
+
+		pshm;
+		envDrawer.drawGarden(Point(26, -9.98, -35), 10, 20,
+			1, 0.9, true);
+		ppm;
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
+				Point(-6 + i * 10, -9.98, -35) ,
+				Point(-6 + i * 10, -9.98, -27) ,
+				Point(-14 + i * 10, -9.98, -27) };
+			envDrawer.drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
+				Point(-6 + i * 10, -9.98, -25) ,
+				Point(-6 + i * 10, -9.98, -17) ,
+				Point(-14 + i * 10, -9.98, -17) };
+			envDrawer.drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
+				Point(-6 + i * 10, -9.98, 2) ,
+				Point(-6 + i * 10, -9.98, 10) ,
+				Point(-14 + i * 10, -9.98, 10) };
+			envDrawer.drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 12) ,
+				Point(-6 + i * 10, -9.98, 12) ,
+				Point(-6 + i * 10, -9.98, 20) ,
+				Point(-14 + i * 10, -9.98, 20) };
+			envDrawer.drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
+					Point(-14 + i * 10 , -9.98, 2) ,
+					Point(-14 + i * 10 , -9.98, 20) ,
+					Point(-16 + i * 10, -9.98, 20) };
+			envDrawer.drawPassage(passagePoints1, 5);
+			ppm;
+		}
+
+
+		for (int i = 0; i < 4; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
+					Point(-14 + i * 10 , -9.98, -35) ,
+					Point(-14 + i * 10 , -9.98, -17) ,
+					Point(-16 + i * 10, -9.98, -17) };
+			envDrawer.drawPassage(passagePoints1, 5);
+			ppm;
+		}
+
+		pshm;
+		Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
+				Point(16  , -9.98, 0) ,
+				Point(16  , -9.98, 2) ,
+				Point(-16 , -9.98, 2) };
+		envDrawer.drawPassage(passagePoints1, 4);
+		ppm;
+
+		pshm;
+		Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
+				Point(16  , -9.98, -17) ,
+				Point(16  , -9.98, -15) ,
+				Point(-16 , -9.98, -15) };
+		envDrawer.drawPassage(passagePoints2, 4);
+		ppm;
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
+					Point(-6 + i * 10  , -9.98,10) ,
+					Point(-6 + i * 10  , -9.98, 12) ,
+					Point(-14 + i * 10 , -9.98, 12) };
+			envDrawer.drawPassage(passagePoints1, 3);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
+					Point(-6 + i * 10  , -9.98,-27) ,
+					Point(-6 + i * 10  , -9.98, -25) ,
+					Point(-14 + i * 10 , -9.98, -25) };
+			envDrawer.drawPassage(passagePoints1, 3);
+			ppm;
+		}
+	}
+
+	if (envDrawer.drawFountains) {
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				pshm;
+				envDrawer.drawFountain(Point(-21 + j * 3, -9.4, 27 + i * 5), 0.3);
+				ppm;
+			}
+		}
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				pshm;
+				envDrawer.drawFountain(Point(2 + j * 3, -9.4, 27 + i * 5), 0.3);
+				ppm;
+			}
+		}
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				pshm;
+				envDrawer.drawFountain(Point(16 + j * 3, -9.4, 27 + i * 5), 0.3);
+				ppm;
+			}
+		}
+	}
+
+	if (envDrawer.drawTanks) {
+		pshm;
+		envDrawer.drawTank(Point(12, -10, 32), 0.5);
+		ppm;
+	}
+
+	if (envDrawer.drawBuildings) {
+
+		for (int i = 0; i < 14; i++) {
+			pshm;
+			glTranslatef(-40, -10, 44 - i * 7);
+			envDrawer.drawBuidling(0.5, i % 6);
+			ppm;
+
+
+			pshm;
+			Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
+					Point(-35   , -9.98,42 - i * 7) ,
+					Point(-35   , -9.98, 44 - i * 7) ,
+					Point(-40 , -9.98, 44 - i * 7) };
+			envDrawer.drawPassage(passagePoints3, 3);
+			ppm;
+		}
+
+		pshm;
+		glTranslatef(75, 0, 0);
+		for (int i = 0; i < 14; i++) {
+			pshm;
+			glTranslatef(-40, -10, 44 - i * 7);
+			envDrawer.drawBuidling(0.5, i % 6);
+			ppm;
+
+
+			pshm;
+			Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
+					Point(-35   , -9.98,42 - i * 7) ,
+					Point(-35   , -9.98, 44 - i * 7) ,
+					Point(-40 , -9.98, 44 - i * 7) };
+			envDrawer.drawPassage(passagePoints3, 3);
+			ppm;
+		}
+		ppm;
+
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		for (int i = 0; i < 10; i++) {
+			pshm;
+			glTranslatef(-54, -10, 29 - i * 7);
+			envDrawer.drawBuidling(0.5, i % 6);
+			ppm;
+
+
+			pshm;
+			Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
+					Point(-49  , -9.98,27 - i * 7) ,
+					Point(-49   , -9.98, 29 - i * 7) ,
+					Point(-54, -9.98, 29 - i * 7) };
+			envDrawer.drawPassage(passagePoints3, 3);
+			ppm;
+		}
+		ppm;
+
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(103, 0, 0);
+		for (int i = 0; i < 10; i++) {
+			pshm;
+			glTranslatef(-54, -10, 29 - i * 7);
+			envDrawer.drawBuidling(0.5, i % 6);
+			ppm;
+
+
+			pshm;
+			Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
+					Point(-49  , -9.98,27 - i * 7) ,
+					Point(-49   , -9.98, 29 - i * 7) ,
+					Point(-54, -9.98, 29 - i * 7) };
+			envDrawer.drawPassage(passagePoints3, 3);
+			ppm;
+		}
+		ppm;
+	}
+
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(-5, -9.98, -29.3);
+	alQibliMosqueDrawer.size = 0.6;
 	alQibliMosqueDrawer.drawAlQibliMosque();
+	ppm;
 
 	glFlush();											// Done Drawing The Quad
 
@@ -927,6 +1327,11 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		{
 			Camera::changeMode();
 		}
+
+		if (keys[VK_CONTROL] && keys['S']) {
+			envDrawer.changeSkyBoxTexture();
+		}
+		envDrawer.decodeEnables(keys);
 
 		return 0;								// Jump Back
 	}
