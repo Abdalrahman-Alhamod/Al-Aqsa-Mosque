@@ -11,6 +11,8 @@
 #define frontf glCullFace(GL_FRONT)
 #define backf glCullFace(GL_BACK)
 #define txt(s,t) glTexCoord2d(s,t)
+#define entxt 	glEnable(GL_TEXTURE_2D)
+#define distxt glDisable(GL_TEXTURE_2D)
 #define white glColor3f(1,1,1)
 const db srt = 1.414213562373095;
 const db pi = 3.141592653589793238462643383279502884197;
@@ -90,10 +92,10 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
 
-// Camera Object
+// Camera Objec
 Camera* camera;
 
-// Console Object
+// Console Objec
 Console console;
 
 // More Texture Images Variables
@@ -126,7 +128,9 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int art;
+int roof1;
+
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -136,7 +140,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
-	art = LoadTexture((char*)"assets/materials/art9.bmp");
+
+	roof1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 
 	// Initialize Camera
 	Camera::cameraInit();
@@ -213,21 +218,43 @@ void innerRoof() {
 	db p = a / srt, p2 = b / srt;
 	db dia = a + 2 * p, dia2 = b + 2 * p2;
 	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
-	glColor3f(0.23, 1, 0.23);
+
 	pshm;
-	glNormal3f(0, 1, 0);
+
+	cull;
+	frontf;
+	glNormal3f(0, -1, 0);
 	glTranslated(0, 35.1, 0);
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	beg(GL_QUADS);
 	glVertex3d(p + 0.6, 0, 0);
 	glVertex3d(p + a - 0.5, 0, 0);
 	glVertex3d(p + a - 7.1, 0, -dist);
 	glVertex3d(p + 7.1, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p + 0.6 + 7.1, 0, 0);
+	txt(1, 0);
+	glVertex3d(p + a - 0.5 - 7.1, 0, 0);
+	txt(1, 1);
+	glVertex3d(p + a - 7.1, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.1, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
+
+
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(0, -0.1, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(45, 0, 1, 0);
@@ -238,9 +265,25 @@ void innerRoof() {
 	glVertex3d(p + a - 7.2, 0, -dist);
 	glVertex3d(p + 7.4, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p - 0.6 + 7.4, 0, 0);
+	txt(1, 0);
+	glVertex3d(p + a - 1.5 - 7.2, 0, 0);
+	txt(1, 1);
+	glVertex3d(p + a - 7.2, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.4, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(90, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -250,9 +293,25 @@ void innerRoof() {
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.3, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p - 1.6 + 7.3, 0, 0);
+	txt(1, 0);
+	glVertex3d(p + a - 1.5 - 7.3, 0, 0);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.3, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(135, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -262,9 +321,25 @@ void innerRoof() {
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p - 0.6 + 7.2, 0, -2);
+	txt(1, 0);
+	glVertex3d(p + a - 1.5 - 7.3, 0, -2);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(180, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -274,21 +349,53 @@ void innerRoof() {
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p + 7.2, 0, -2);
+	txt(1, 0);
+	glVertex3d(p + a - 0.1 - 7.3, 0, -2);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(225, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
-	glVertex3d(p, 0, -2);
+	glVertex3d(p , 0, -2);
 	glVertex3d(p + a + 0.7, 0, -2);
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p+7.2, 0, -2);
+	txt(1, 0);
+	glVertex3d(p + a + 0.7 - 7.3, 0, -2);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(270, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -298,9 +405,25 @@ void innerRoof() {
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p + 2 + 7.2, 0, -1.5);
+	txt(1, 0);
+	glVertex3d(p + a + 1 - 7.3, 0, -1.5);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
 	pshm;
+	glColor3ub(48, 8, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(315, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -310,9 +433,30 @@ void innerRoof() {
 	glVertex3d(p + a - 7.3, 0, -dist);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
+	white;
+	entxt;
+	glTranslated(0, -0.1, 0);
+	glBindTexture(GL_TEXTURE_2D, roof1);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p + 1 + 7.2, 0, 0);
+	txt(1, 0);
+	glVertex3d(p + a + 1 - 7.3, 0, 0);
+	txt(1, 1);
+	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
+	glVertex3d(p + 7.2, 0, -dist);
+	endf;
+	distxt;
 	ppm;
 
+
+	backf;
+	nocull;
 	ppm;
+
+
+
 
 	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
@@ -2081,6 +2225,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 #pragma region design
 	
+
+	
+	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+
+
 #pragma endregion
 
 

@@ -44,9 +44,9 @@ const int MIN_STACK_COUNT = 1;
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
 Cylinder::Cylinder(float baseRadius, float topRadius, float height, int sectors,
-    int stacks, bool smooth, int up, bool isHalf) : interleavedStride(32)
+    int stacks, bool smooth, int up, bool isHalf, bool onSectorTexture) : interleavedStride(32)
 {
-    set(baseRadius, topRadius, height, sectors, stacks, smooth, up, isHalf);
+    set(baseRadius, topRadius, height, sectors, stacks, smooth, up, isHalf, onSectorTexture);
 }
 
 
@@ -55,7 +55,7 @@ Cylinder::Cylinder(float baseRadius, float topRadius, float height, int sectors,
 // setters
 ///////////////////////////////////////////////////////////////////////////////
 void Cylinder::set(float baseRadius, float topRadius, float height, int sectors,
-    int stacks, bool smooth, int up, bool isHalf)
+    int stacks, bool smooth, int up, bool isHalf, bool onSectorTexture)
 {
     if (baseRadius > 0)
         this->baseRadius = baseRadius;
@@ -71,6 +71,7 @@ void Cylinder::set(float baseRadius, float topRadius, float height, int sectors,
         this->stackCount = MIN_STACK_COUNT;
     this->smooth = smooth;
     this->isHalf = isHalf;
+    this->onSectorTexture = onSectorTexture;
     this->upAxis = up;
     if (up < 1 || up > 3)
         this->upAxis = 3;
@@ -135,6 +136,16 @@ void Cylinder::setIsHalf(bool isHalf)
 
 }
 
+
+void Cylinder::setOnSectorTexture(bool onSectorTexture)
+{
+    if (this->onSectorTexture == onSectorTexture)
+        return;
+
+    this->onSectorTexture = onSectorTexture;
+
+}
+
 void Cylinder::setUpAxis(int up)
 {
     if (this->upAxis == up || up < 1 || up > 3)
@@ -182,7 +193,7 @@ void Cylinder::draw() const
     glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-    glDrawElements(GL_TRIANGLES,(unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -227,7 +238,7 @@ void Cylinder::drawBase() const
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
     unsigned int indexCount = ((unsigned int)indices.size() - baseIndex) / 2;
-    glDrawElements(GL_TRIANGLES,isHalf? indexCount: indexCount, GL_UNSIGNED_INT, &indices[baseIndex]);
+    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, &indices[baseIndex]);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -245,7 +256,7 @@ void Cylinder::drawTop() const
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
     unsigned int indexCount = ((unsigned int)indices.size() - baseIndex) / 2;
-    glDrawElements(GL_TRIANGLES, isHalf? indexCount: indexCount, GL_UNSIGNED_INT, &indices[topIndex]);
+    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, &indices[topIndex]);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -270,7 +281,7 @@ void Cylinder::drawLines(const float lineColor[4]) const
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices.data());
 
-    glDrawElements(GL_LINES, isHalf?(unsigned int)lineIndices.size(): (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
+    glDrawElements(GL_LINES, (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_LIGHTING);
@@ -339,7 +350,11 @@ void Cylinder::buildVerticesSmooth()
             y = unitCircleVertices[k + 1];
             addVertex(x * radius, y * radius, z);   // position
             addNormal(sideNormals[k], sideNormals[k + 1], sideNormals[k + 2]); // normal
-            addTexCoord((float)j / sectorCount, t); // tex coord
+            float s = (float)j / sectorCount;
+            if (onSectorTexture) {
+                s *= sectorCount;
+            }
+            addTexCoord(s, t); // tex coord
         }
     }
 

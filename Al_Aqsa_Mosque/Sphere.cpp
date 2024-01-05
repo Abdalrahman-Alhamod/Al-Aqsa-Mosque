@@ -37,9 +37,10 @@ const int MIN_STACK_COUNT = 2;
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up,bool isDome) : interleavedStride(32)
+Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up, bool isDome, float sectorTextureCount) : interleavedStride(32)
 {
-    set(radius, sectors, stacks, smooth, up,isDome);
+
+    set(radius, sectors, stacks, smooth, up, isDome, sectorTextureCount);
 }
 
 
@@ -47,7 +48,7 @@ Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up,bool i
 ///////////////////////////////////////////////////////////////////////////////
 // setters
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up,bool isDome)
+void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up, bool isDome, float sectorTextureCount)
 {
     if (radius > 0)
         this->radius = radius;
@@ -62,12 +63,16 @@ void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up,bool
     if (up < 1 || up > 3)
         this->upAxis = 3;
 
+    this->isDome = isDome;
+    this->sectorTextureCount = sectorTextureCount;
+
     if (smooth)
         buildVerticesSmooth();
     else
         buildVerticesFlat();
 
-    this->isDome = isDome;
+
+
 }
 
 void Sphere::setRadius(float radius)
@@ -106,6 +111,14 @@ void Sphere::setIsDome(bool isDome)
         return;
 
     this->isDome = isDome;
+}
+
+void Sphere::setSectorTextureCount(float sectorTextureCount)
+{
+    if (this->sectorTextureCount == sectorTextureCount)
+        return;
+
+    this->sectorTextureCount = sectorTextureCount;
 }
 
 void Sphere::setUpAxis(int up)
@@ -185,7 +198,11 @@ void Sphere::draw() const
     glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
     glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-    glDrawElements(GL_TRIANGLES, isDome? (unsigned int)indices.size() /2+218:(unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES,
+        isDome ?
+        (unsigned int)indices.size() * (3.09f / 5.0f) :
+        (unsigned int)indices.size(),
+        GL_UNSIGNED_INT, indices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -210,7 +227,9 @@ void Sphere::drawLines(const float lineColor[4]) const
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices.data());
 
-    glDrawElements(GL_LINES, isDome ? (unsigned int)lineIndices.size()/2-36+144: (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
+    glDrawElements(GL_LINES, isDome ?
+        (unsigned int)lineIndices.size() * (3.0f / 5.0f) :
+        (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_LIGHTING);
@@ -287,7 +306,6 @@ void Sphere::clearArrays()
 void Sphere::buildVerticesSmooth()
 {
     const float PI = acos(-1.0f);
-
     // clear memory of prev arrays
     clearArrays();
 
@@ -324,6 +342,7 @@ void Sphere::buildVerticesSmooth()
 
             // vertex tex coord between [0, 1]
             s = (float)j / sectorCount;
+            s *= sectorTextureCount;
             t = (float)i / stackCount;
             addTexCoord(s, t);
         }
