@@ -14,7 +14,16 @@
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
 #define shadow glColor3f(0.0,0.0,0.0);glMultMatrixf((gf*)shadowMat)
+#define beg(word) glBegin(word)
+#define endf glEnd()
+#define cull glEnable(GL_CULL_FACE)
+#define nocull glDisable(GL_CULL_FACE)
+#define frontf glCullFace(GL_FRONT)
+#define backf glCullFace(GL_BACK)
 #define txt(s,t) glTexCoord2d(s,t)
+#define entxt 	glEnable(GL_TEXTURE_2D)
+#define distxt glDisable(GL_TEXTURE_2D)
+#define white glColor3f(1,1,1)
 
 void Box::drawOutside(const Constraints& c, int texture[]) {
 	db width = c.width;
@@ -172,17 +181,19 @@ if(!flag[1])
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, texture[1]);
 	//glColor3ub(12, 213, 122);
-	glBegin(GL_QUADS);
 	glNormal3f(0, 1, 0);
+	frontf;
+	glBegin(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(0, height, 0);
 	txt(1, 0);
-	glVertex3d(0, height, length);
+	glVertex3d(width, height, 0);
 	txt(1, 1);
 	glVertex3d(width, height, length);
 	txt(0, 1);
-	glVertex3d(width, height, 0);
+	glVertex3d(0, height, length);
 	glEnd();
+	backf;
 	ppm;
 }
 
@@ -263,10 +274,10 @@ if(!flag[5])
 	glVertex3d(width, height, length);
 	glEnd();
 	ppm;
+}
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_CULL_FACE);
 	ppm;
-}
 }
 
 void Box::drawInside(const Constraints& c, int texture[]) {

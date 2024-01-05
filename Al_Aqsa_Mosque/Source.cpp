@@ -128,7 +128,7 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int roof1 , roof2;
+int roof1 , roof2 , bridge1, bridge2;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -143,6 +143,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	roof1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	roof2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
+	bridge1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
+	bridge2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
 
 
 	// Initialize Camera
@@ -1494,25 +1496,30 @@ void DORdrawArcadeSide() {
 	pshm;
 	glTranslated(0, pillarH, 0);
 	bool flag[6] = { 0,0,0,0,1,1 };
+	textures[0] = bridge2;
+	textures[2]  = textures[3] = bridge1;
+	textures[1] = bridge2;
+	white;
 	bridge.drawOutside(Constraints(48, 1.5, 3), textures,flag);
 	ppm;
 #pragma endregion
-
+	textures[0] = textures[1] = 0;
+	textures[2] = textures[3] = 0;
 #pragma region archs
 
 	db sectorCnt = 16;
 	pshm;
-	glTranslated(24, 1.5, 1.5);
+	glTranslated(24, 1.5 + pillarH, 1.5);
 	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
-	glTranslated(8, 1.5 , 1.5);
+	glTranslated(8, 1.5 + pillarH , 1.5);
 	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
-	glTranslated(40, 1.5 , 1.5);
+	glTranslated(40, 1.5 + pillarH, 1.5);
 	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
 	ppm;
@@ -2267,21 +2274,15 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	
 
 	
-	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+	Box bridge;
 	pshm;
-	glTranslated(-100, 10, 0);
-	entxt;
-	glBindTexture(GL_TEXTURE_2D, roof2);
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(p + a - 7.1, 0, -dist);
-	txt(1, 0);
-	glVertex3d(p + 7.1, 0, -dist);
-	txt(1, 1);
-	glVertex3d(p + 16 - 7.1, 3.5, -dist - 22);
-	txt(0, 1);
-	glVertex3d(p + a - 16 +7.1, 3.5, -dist - 22);
-	endf;
+	glTranslated(-20, 10, 0);
+	bool flag[6] = { 0,0,0,0,1,1 };
+	textures[0] = bridge2;
+	textures[2] = textures[3] = bridge1;
+	textures[1] = bridge2;
+	white;
+	bridge.drawOutside(Constraints(48, 1.5, 3), textures, flag);
 	ppm;
 
 #pragma endregion
