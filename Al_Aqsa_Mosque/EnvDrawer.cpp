@@ -44,6 +44,8 @@ EnvDrawer::EnvDrawer() {
 	stonesTexture[9] = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 	stonesTexture[10] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
 	stonesTexture[11] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
+	stonesTexture[12] = LoadTexture((char*)"assets/materials/AlQibli/block3.bmp", 255);
+	stonesTexture[13] = LoadTexture((char*)"assets/materials/AlQibli/roof0.bmp", 255);
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -51,6 +53,27 @@ EnvDrawer::EnvDrawer() {
 	buildingTexture[3] = LoadTexture((char*)"assets/materials/building4.bmp", 255);
 	buildingTexture[4] = LoadTexture((char*)"assets/materials/building5.bmp", 255);
 	buildingTexture[5] = LoadTexture((char*)"assets/materials/building6.bmp", 255);
+
+	skyBoxTextures[0][0]= LoadTexture((char*)"assets/skybox/SkyBox0Bottom.bmp", 255);
+	skyBoxTextures[0][1] = LoadTexture((char*)"assets/skybox/SkyBox0Up.bmp", 255);
+	skyBoxTextures[0][2] = LoadTexture((char*)"assets/skybox/SkyBox0Back.bmp", 255);
+	skyBoxTextures[0][3] = LoadTexture((char*)"assets/skybox/SkyBox0Front.bmp", 255);
+	skyBoxTextures[0][4] = LoadTexture((char*)"assets/skybox/SkyBox0Left.bmp", 255);
+	skyBoxTextures[0][5] = LoadTexture((char*)"assets/skybox/SkyBox0Right.bmp", 255);
+
+	skyBoxTextures[1][0] = LoadTexture((char*)"assets/skybox/SkyBox1Bottom.bmp", 255);
+	skyBoxTextures[1][1] = LoadTexture((char*)"assets/skybox/SkyBox1Up.bmp", 255);
+	skyBoxTextures[1][2] = LoadTexture((char*)"assets/skybox/SkyBox1Back.bmp", 255);
+	skyBoxTextures[1][3] = LoadTexture((char*)"assets/skybox/SkyBox1Front.bmp", 255);
+	skyBoxTextures[1][4] = LoadTexture((char*)"assets/skybox/SkyBox1Left.bmp", 255);
+	skyBoxTextures[1][5] = LoadTexture((char*)"assets/skybox/SkyBox1Right.bmp", 255);
+
+	skyBoxTextures[2][0] = LoadTexture((char*)"assets/skybox/SkyBox2Bottom.bmp", 255);
+	skyBoxTextures[2][1] = LoadTexture((char*)"assets/skybox/SkyBox2Up.bmp", 255);
+	skyBoxTextures[2][2] = LoadTexture((char*)"assets/skybox/SkyBox2Back.bmp", 255);
+	skyBoxTextures[2][3] = LoadTexture((char*)"assets/skybox/SkyBox2Front.bmp", 255);
+	skyBoxTextures[2][4] = LoadTexture((char*)"assets/skybox/SkyBox2Left.bmp", 255);
+	skyBoxTextures[2][5] = LoadTexture((char*)"assets/skybox/SkyBox2Right.bmp", 255);
 
 	CitySKYFRONT = LoadTexture((char*)"assets/skybox/CityFront.bmp", 255);
 	CitySKYBACK = LoadTexture((char*)"assets/skybox/CityBack.bmp", 255);
@@ -111,10 +134,10 @@ EnvDrawer::EnvDrawer() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
 	glEnable(GL_COLOR_MATERIAL);
 
-	// Add ambient light
-	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
+	//// Add ambient light
+	//GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
+	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+	//glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
 
 }
 
@@ -146,19 +169,27 @@ void EnvDrawer::drawFountain(const Point& position, const float size) {
 
 void EnvDrawer::drawLand(const Point points[4], const int count, const int textureID) {
 	glPushMatrix();
+	
+	
 	glEnable(GL_TEXTURE_2D);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glColor3f(1, 1, 1);
 	glBindTexture(GL_TEXTURE_2D, textureID);
+	
 	glNormal3f(0, 1, 0);
+	cull;
+	Front;
+	
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(points[0].x, points[0].y, points[0].z);
 	glTexCoord2f(count, 0); glVertex3f(points[1].x, points[1].y, points[1].z);
 	glTexCoord2f(count, count); glVertex3f(points[2].x, points[2].y, points[2].z);
 	glTexCoord2f(0, count); glVertex3f(points[3].x, points[3].y, points[3].z);
-	glDisable(GL_TEXTURE_2D);
 	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+	Back;
+	nocull;
 	glPopMatrix();
 }
 
@@ -175,7 +206,28 @@ void EnvDrawer::drawPassage(const Point points[4], const int count) {
 }
 
 void EnvDrawer::drawStreet(const Point points[4], const int count) {
-	drawLand(points, count, street);
+	//drawLand(points, count, street);
+
+	glPushMatrix();
+	cull;
+	Front;
+	glEnable(GL_TEXTURE_2D);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, street);
+	glNormal3f(0, 1, 0);
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex3f(points[0].x, points[0].y, points[0].z);
+	glTexCoord2f(1, 0); glVertex3f(points[1].x, points[1].y, points[1].z);
+	glTexCoord2f(1, count); glVertex3f(points[2].x, points[2].y, points[2].z);
+	glTexCoord2f(0, count); glVertex3f(points[3].x, points[3].y, points[3].z);
+	glEnd();
+	Back;
+	nocull;
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
 
 void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints) {
@@ -187,6 +239,7 @@ void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints
 	y = y - height / 2;
 	z = z - length / 2;
 	glEnable(GL_TEXTURE_2D);
+	cull;
 
 	// Draw Front side
 	glBindTexture(GL_TEXTURE_2D, SKYFRONT);
@@ -258,8 +311,23 @@ void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+	nocull;
 	glDisable(GL_TEXTURE_2D);
 
+}
+
+void EnvDrawer::drawSkyBox(const Constraints& constraints) {
+	SKYFRONT = skyBoxTextures[currentSkyBoxIndex][3],
+		SKYBACK = skyBoxTextures[currentSkyBoxIndex][2],
+		SKYLEFT = skyBoxTextures[currentSkyBoxIndex][4],
+		SKYRIGHT = skyBoxTextures[currentSkyBoxIndex][5],
+		SKYUP = skyBoxTextures[currentSkyBoxIndex][1],
+		SKYDOWN = skyBoxTextures[currentSkyBoxIndex][0];
+	drawSkyBox(Point(0, 0, 0), constraints);
+}
+
+void EnvDrawer::changeSkyBoxTexture() {
+	currentSkyBoxIndex = (currentSkyBoxIndex + 1) % 3;
 }
 
 void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
@@ -268,11 +336,12 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	float hight = 10;
 	glPushMatrix();
 	glScalef(size, size, size);
-	EnvDrawer::drawPillar(1, hight, texture, 0.4, 10, 10);
+	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4,9,9);
 
+	cull;
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	Cylinder cyl = Cylinder(2.5, 2.5, 0.1);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
+	Cylinder cyl = Cylinder(2.5, 2.5, 0.1,9);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	glTranslated(0, 0, -6.6);
@@ -280,12 +349,24 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
+	Cylinder cyl2 = Cylinder(2, 2, 0.1, 9);
+	glPushMatrix();
+	glRotated(90, 1, 0, 0);
+	glTranslated(0, 0, -5.2);
+	cyl2.draw();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	nocull;
+
 	for (int i = 0; i <= 8; ++i)
 	{
 		glRotatef(i * 360 / 8, 0, 1, 0);
 		glPushMatrix();
 		glTranslatef(0, hight - 3.8, 1.8);
-		drawHalfCylinderInRectangularPrism(0.35, Constraints(1.5, 0.4, 0.07), 6, texture);
+		drawHalfCylinderInRectangularPrism(0.35,
+			Constraints(1.5, 0.4, 0.07), 5, texture);
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(21, 0, 1, 0);
@@ -294,73 +375,124 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 		glPopMatrix();
 	}
 
+	cull;
 	glTranslated(0, hight - 3.6, 0);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	cyl = Cylinder(0.7, 0.9, 2.5, 18);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[12]);
+	cyl = Cylinder(0.7, 0.9, 2.5, 5);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
-	cyl.draw();
+	cyl.drawSide();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
 	glTranslated(0, 1.5, 0);
-	glColor3ub(0, 100, 0);
-	Sphere sphere = Sphere(0.75, 18, 18, true, 2, true);
-	const float lineColor[4] = { 0,0,0,0 };
-	sphere.drawWithLines(lineColor);
-	glColor3ub(100, 100, 100);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
+	Sphere sphere = Sphere(0.75, 10, 18, true, 2, true,2);
+	sphere.draw();
+	glDisable(GL_TEXTURE_2D);
+	nocull;
+
+	// Top Cone
+	glPushMatrix();
+	cull;
+	glTranslatef(0, 1, 0);
+	glColor3b(74, 74, 74);
+	Cylinder(0.07, 0.01, 0.7, 5, 1, true, 2).drawSide();
 	glPopMatrix();
+
+	// Top Spheres
+	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
+		glPushMatrix();
+		glTranslatef(0, 0.6 + yOffset, 0);
+		Sphere((0.1 - (yOffset * 0.1) + 0.02), 5, 5).draw();
+		glPopMatrix();
+	}
+	nocull;
+	glColor4f(1, 1, 1, 1);
+
 	glPopMatrix();
 }
 
-void EnvDrawer::drawCubedMinaret(const float size, const int texture)
+void EnvDrawer::drawCubedMinaret(const float size)
 {
 	//TODO: fix hight param
-	float hight = 10;
+	float height = 10;
 	glPushMatrix();
-	//glTranslatef(0,-2.5,0);
+
 	glScalef(size, size, size);
-	EnvDrawer::drawPillar(1, hight, texture, 0.4, 4, 4);
-	//Box().drawOutside(Constraints(2,hight,2),texture);
+	EnvDrawer::drawPillar(1, height,
+		stonesTexture[10], 0.4, 4, 4);
+
 	glPushMatrix();
 	glTranslated(-2, 6.6, -2);
-	Box().drawOutside(Constraints(4, 0.1, 4), texture);
+	Box().drawOutside(Constraints(4, 0.1, 4), stonesTexture[13]);
 	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-1.5, 5.2, -1.42);
+	Box().drawOutside(Constraints(3, 0.1, 3), stonesTexture[13]);
+	glPopMatrix();
+
+	
 
 	for (int i = 0; i <= 3; ++i)
 	{
 		glRotatef(i * 360 / 4, 0, 1, 0);
 		glPushMatrix();
-		glTranslatef(0, hight - 4, 1.4);
-		drawHalfCylinderInRectangularPrism(0.35, Constraints(2.8, 0.6, 0.07), 6, texture);
+		glTranslatef(0, height - 4, 1.4);
+		drawHalfCylinderInRectangularPrism(0.35,
+			Constraints(2.8, 0.6, 0.07), 6, stonesTexture[10]);
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(45, 0, 1, 0);
-		glTranslatef(0, hight - 4.8, 1.9);
-		Box().drawOutside(Constraints(0.10, .8, 0.05), texture);
+		glTranslatef(0, height - 4.8, 1.9);
+		Box().drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[10]);
 		glPopMatrix();
 	}
 
+	
 
-	glTranslated(0, hight - 3.8, 0);
 
+	glTranslated(0, height - 3.8, 0);
+
+	cull;
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 18);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[12]);
+	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 5,1,true,3,false,true);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
-	cyl.draw();
+	cyl.drawSide();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
 	glTranslated(0, 1.5, 0);
-	glColor3ub(0, 100, 0);
-	Sphere sphere = Sphere(0.75, 18, 18, true, 2, true);
-	const float lineColor[4] = { 0,0,0,0 };
-	sphere.drawWithLines(lineColor);
-	glColor3ub(100, 100, 100);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
+	Sphere sphere = Sphere(0.75, 5, 18, true, 2, true);
+	sphere.draw();
+	glDisable(GL_TEXTURE_2D);
+	nocull;
+
+	// Top Cone
+	glPushMatrix();
+	cull;
+	glTranslatef(0, 1, 0);
+	glColor3b(74, 74, 74);
+	Cylinder(0.07, 0.01, 0.7, 3, 1, true, 2).drawSide();
 	glPopMatrix();
+
+	// Top Spheres
+	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
+		glPushMatrix();
+		glTranslatef(0 , 0.6 + yOffset, 0 );
+		Sphere((0.1 - (yOffset * 0.1) + 0.02), 3, 3).draw();
+		glPopMatrix();
+	}
+	nocull;
+	glColor4f(1, 1, 1, 1);
+
 	glPopMatrix();
 }
 
@@ -404,7 +536,7 @@ void EnvDrawer::drawWallWithDoor(const float length,const float wallHeight, cons
 
 	glPushMatrix();
 	glTranslated(1.25, -1, 0);
-	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5,2, 1), 36, texture);
+	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5,2, 1), 5, texture);
 	glPopMatrix();
 
 
@@ -435,7 +567,7 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 
 	glPushMatrix();
 	glTranslated(-(length - 2.5)/2,-wallHeight,-0.5);
-	Box().drawOutside(Constraints(length,wallHeight,1), texture);
+	Box().drawOutside(Constraints(length,wallHeight,1), texture,5.0f);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -461,12 +593,12 @@ void EnvDrawer::drawCloudsSkyBox(const Point& position, const Constraints& const
 	drawSkyBox(position, constraints);
 }
 
-void EnvDrawer::drawGarden(const Point& point, const int width, const int length, const int grassTilesCount, const int treeSize, bool isSmall) {
+void EnvDrawer::drawGarden(const Point& point, const float width, const float length, const int grassTilesCount, const float treeSize, bool isSmall) {
 	Point points[4];
-	points[0].x = point.x, points[0].y = point.y, points[0].z = point.z;
-	points[1].x = point.x - width, points[1].y = point.y, points[1].z = point.z;
-	points[2].x = point.x - width, points[2].y = point.y, points[2].z = point.z + length;
-	points[3].x = point.x, points[3].y = point.y, points[3].z = point.z + length;
+	points[2].x = point.x, points[0].y = point.y, points[0].z = point.z;
+	points[3].x = point.x - width, points[1].y = point.y, points[1].z = point.z;
+	points[0].x = point.x - width, points[2].y = point.y, points[2].z = point.z + length;
+	points[1].x = point.x, points[3].y = point.y, points[3].z = point.z + length;
 	drawGrassLand(points, grassTilesCount);
 	float stepSize;
 	if (isSmall) {
@@ -492,6 +624,7 @@ void EnvDrawer::drawGarden(const Point& point, const int width, const int length
 }
 
 void EnvDrawer::drawPillar(const float radius, const float height, int texture, const float baseHeight, const int cylinderSector, const int baseSector) {
+	cull;
 	if (baseHeight)
 	{
 		glPushMatrix();
@@ -526,6 +659,7 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 	bottomBase.draw();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+	nocull;
 }
 
 void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
@@ -825,34 +959,34 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 
 }
 
-void EnvDrawer::drawBuidling(const int size, const int buildingTextureIndex) {
-	Box().drawOutside(Constraints(10, 20, 10), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
+void EnvDrawer::drawBuidling(const float size, const int buildingTextureIndex) {
+	Box().drawOutside(Constraints(10*size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
 }
 
 void EnvDrawer::controlLightSourcePosition(bool* keys) {
 	if (keys[VK_NUMPAD4])
 	{
-		LightPos[0] -= 0.1;
+		LightPos[0] -= 1;
 	}
 	if (keys[VK_NUMPAD6])
 	{
-		LightPos[0] += 0.1;
+		LightPos[0] += 1;
 	}
 	if (keys[VK_NUMPAD2])
 	{
-		LightPos[1] -= 0.1;
+		LightPos[1] -= 1;
 	}
 	if (keys[VK_NUMPAD8])
 	{
-		LightPos[1] += 0.1;
+		LightPos[1] += 1;
 	}
 	if (keys[VK_NUMPAD9])
 	{
-		LightPos[2] -= 0.1;
+		LightPos[2] -= 1;
 	}
 	if (keys[VK_NUMPAD7])
 	{
-		LightPos[2] += 0.1;
+		LightPos[2] += 1;
 	}
 	if (keys['L']) {
 		glEnable(GL_LIGHT0);		// Turn On Light
@@ -861,6 +995,7 @@ void EnvDrawer::controlLightSourcePosition(bool* keys) {
 		glDisable(GL_LIGHT0);	// Turn Off Light
 	}
 }
+
 float sunAngle = 0;
 void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, const float speed) {
 
@@ -872,9 +1007,17 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	if (sunAngle >= PI * 1.5 || sunAngle <= PI * 0.5) {
 		glEnable(GL_LIGHT0);
+		if (sunAngle <= PI * 1.75&& sunAngle >= PI * 1.5 || 
+			sunAngle >= PI * 0.25&& sunAngle <= PI * 0.5) {
+			currentSkyBoxIndex = 1;
+		}
+		else {
+			currentSkyBoxIndex = 0;
+		}
 	}
 	else {
 		glDisable(GL_LIGHT0);
+		currentSkyBoxIndex = 2;
 	}
 	//std::cout << sunAngle << std::endl;
 	LightPos[0] = rotatioRadius * sinf(sunAngle);
@@ -930,4 +1073,34 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 
 	glDisable(GL_TEXTURE_2D);
 
+}
+void EnvDrawer::decodeEnables(bool* keys) {
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD1])
+	{
+		drawFountains = !drawFountains;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
+	{
+		drawRoads = !drawRoads;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD3])
+	{
+		drawGradens = !drawGradens;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD4])
+	{
+		drawTanks = !drawTanks;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD5])
+	{
+		drawBuildings = !drawBuildings;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD6])
+	{
+		drawMinarts = !drawMinarts;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD7])
+	{
+		drawSun = !drawSun;
+	}
 }

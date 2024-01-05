@@ -75,6 +75,14 @@ public:
 	 * @param constraints The constraints defining the size of the skybox.
 	 */
 	void drawCloudsSkyBox(const Point& position, const Constraints& constraints);
+
+	/**
+	 * @brief Draw a skybox at the specified position and constraints.
+	 * @param constraints The constraints defining the size of the skybox.
+	 */
+	void drawSkyBox(const Constraints& constraints);
+
+	void changeSkyBoxTexture();
 	/**
 	 * @brief Draw a garden with grass and trees.
 	 * @param point Position, width, and length of the garden.
@@ -88,7 +96,7 @@ public:
 	 *
 	 * Example usage: "envDrawer.drawGarden({0, 0, 0}, 100, 100, 500, 0.1, true);"
 	 */
-	void drawGarden(const Point& point, const int width, const int length,const int grassTilesCount,const int treeSize, bool isSmall);
+	void drawGarden(const Point& point, const float width, const float length,const int grassTilesCount,const float treeSize, bool isSmall);
 
 	/**
 	* @brief Draw a textured cylindrical column with decorative elements.
@@ -150,7 +158,7 @@ public:
 	* @param size The size factor determining the dimensions of the building.
 	* @param buildingTextureIndex The index of the building texture to be applied.
 	*/
-	void drawBuidling(const int size, const int buildingTextureIndex);
+	void drawBuidling(const float size, const int buildingTextureIndex);
 
 	/**
 	* @brief Control the position of the light source based on user input.
@@ -175,14 +183,18 @@ public:
 	*/
 	void drawLightingPillar(const Point& position,const int lightIndex,const float size=1,const float pillarHeight=4);
 	
+	void decodeEnables(bool* keys);
 	
 	void drawCylindricMinaret(const float size, const int texture);
-	void drawCubedMinaret(const float size, const int texture);
+	void drawCubedMinaret(const float size);
 	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
 	void drawWall(const float length, const float wallHeight, const int texture);
 
-	GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
-	GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
+	GLfloat LightDir[4] = { 0.0f, 0.0f, 0.0f, 1.0f };  // Directional light from the top-left corner
+	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };    // Positional light at (1, 1, -5)
+	int stonesTexture[15];
+
+	bool drawFountains = false,drawRoads=false, drawGradens = false, drawTanks = false, drawBuildings = false, drawMinarts = false,drawSun=false;
 
 private:
 	static Model_3DS* tree1Model;
@@ -193,8 +205,10 @@ private:
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;
-	int stonesTexture[15];
+	
 	int buildingTexture[6];
+	int skyBoxTextures[3][6];
+	int currentSkyBoxIndex = 0;
 
 	// Lighting Variables
 	float ch = 0;
