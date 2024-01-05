@@ -128,7 +128,7 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int roof1;
+int roof1 , roof2;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -142,6 +142,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
 	roof1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
+	roof2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
+
 
 	// Initialize Camera
 	Camera::cameraInit();
@@ -218,6 +220,8 @@ void innerRoof() {
 	db p = a / srt, p2 = b / srt;
 	db dia = a + 2 * p, dia2 = b + 2 * p2;
 	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
+
+#pragma region ocrRoof
 
 	pshm;
 
@@ -454,22 +458,28 @@ void innerRoof() {
 	backf;
 	nocull;
 	ppm;
+#pragma endregion
 
-
-
-
+	
 	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
 	pshm;
-	glNormal3f(0, 1, 0);
+	glNormal3f(0, -1, 0);
 	glTranslated(0, 35.1, 0);
 
+	white;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, roof2);
 	pshm;
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.1, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.1, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.1, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.1, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -479,10 +489,14 @@ void innerRoof() {
 	glRotated(45, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.2, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.4, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.4, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.2, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -491,10 +505,14 @@ void innerRoof() {
 	glRotated(90, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.3, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.3, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -503,10 +521,14 @@ void innerRoof() {
 	glRotated(135, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.2, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.2, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -515,10 +537,14 @@ void innerRoof() {
 	glRotated(180, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.2, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.2, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -527,10 +553,14 @@ void innerRoof() {
 	glRotated(225, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.2, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.2, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -539,10 +569,14 @@ void innerRoof() {
 	glRotated(270, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.2, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.2, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -551,10 +585,14 @@ void innerRoof() {
 	glRotated(315, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(1, 1);
 	glVertex3d(p + 7.2, 0, -dist);
-	glVertex3d(p + 16, 3.5, -dist - 22);
-	glVertex3d(p + a - 16, 3.5, -dist - 22);
+	txt(1, 0);
+	glVertex3d(p + 16 - 7.2, 3.5, -dist - 22);
+	txt(0, 0);
+	glVertex3d(p + a - 16 + 7.3, 3.5, -dist - 22);
 	endf;
 	ppm;
 
@@ -1659,8 +1697,8 @@ void DORdrawDrum() {
 	cull;
 	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
 	pshm;
-	glTranslated(0, 8.6 * 22 / 20.0, 0);
-	Cylinder drum = Cylinder(33, 33, 22, 20, 1);
+	glTranslated(0, 8.6 * 20  / 20.0 - 1, 0);
+	Cylinder drum = Cylinder(33, 33, 20, 20, 1);
 	drum.setUpAxis(2);
 	drum.reverseNormals();
 	drum.drawSide();
@@ -2026,13 +2064,15 @@ void DORdrawDomes() {
 	db a = outer.width, b = inner.width;
 	db p = a / srt, p2 = b / srt;
 
+	distxt;
 	cull;
 	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13));
 	nocull;
 	
 	pshm;
-	glTranslated(0, -0.35, 0);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.7, Color(254, 203, 13), true, false);
+	distxt;
+	glTranslated(0, -0.32, 0);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.75, Color(254, 203, 13), true, false);
 	ppm;
 
 	pshm;
@@ -2228,7 +2268,21 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	
 	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
-
+	pshm;
+	glTranslated(-100, 10, 0);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, roof2);
+	beg(GL_QUADS);
+	txt(0, 0);
+	glVertex3d(p + a - 7.1, 0, -dist);
+	txt(1, 0);
+	glVertex3d(p + 7.1, 0, -dist);
+	txt(1, 1);
+	glVertex3d(p + 16 - 7.1, 3.5, -dist - 22);
+	txt(0, 1);
+	glVertex3d(p + a - 16 +7.1, 3.5, -dist - 22);
+	endf;
+	ppm;
 
 #pragma endregion
 

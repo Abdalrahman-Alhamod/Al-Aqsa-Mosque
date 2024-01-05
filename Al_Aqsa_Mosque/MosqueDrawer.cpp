@@ -39,7 +39,7 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	// Dome
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	Sphere sphere = Sphere(5 * size, 36, 18, true, 2, true);
+	Sphere sphere = Sphere(5 * size, 50, 18, true, 2, true);
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
 	if (inside) sphere.reverseNormals();
