@@ -102,7 +102,7 @@ void Camera::cameraInit()
 	{
 		camera[i] = new Camera();
 
-		camera[i]->Position = Vector3dCreate(0.0, -1.0, 0.0);
+		camera[i]->Position = Vector3dCreate(0.0, -9.5, 0.0);
 		camera[i]->View = Vector3dCreate(0.0, 0.0, -1.0);
 		camera[i]->RightVector = Vector3dCreate(1.0, 0.0, 0.0);
 		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
