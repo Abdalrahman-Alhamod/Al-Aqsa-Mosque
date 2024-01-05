@@ -18,8 +18,10 @@ Model_3DS* EnvDrawer::tree1Model = new Model_3DS();
 Model_3DS* EnvDrawer::tree2Model = new Model_3DS();
 Model_3DS* EnvDrawer::tankModel = new Model_3DS();
 Model_3DS* EnvDrawer::fountainModel = new Model_3DS();
-
 EnvDrawer::EnvDrawer() {
+
+}
+EnvDrawer::EnvDrawer(HWND hWnd) {
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -138,6 +140,93 @@ EnvDrawer::EnvDrawer() {
 	//GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };  // Color (0.3, 0.3, 0.3)
 	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 	//glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, true);  // Enable local viewer for more accurate lighting calculations
+
+	SoundManager.Initialize(hWnd);
+	// Tank sound
+	SoundManager.CreateSound((char*)"assets/sounds/tankEngine.wav", sounds[0]);
+	soundsData[0][0] = 12;	 // x
+	soundsData[0][1] = -9;	// y
+	soundsData[0][2] = 32;	// z
+	soundsData[0][3] = 8;	// r
+	// Bab Almgharebah Minart Sound
+	SoundManager.CreateSound((char*)"assets/sounds/azan1.wav", sounds[1]);
+	soundsData[1][0] = -22.5;	 // x
+	soundsData[1][1] = -9;	// y
+	soundsData[1][2] = 37;	// z
+	soundsData[1][3] = 15;	// r
+	// Bab Alsilselah Minart Sound
+	SoundManager.CreateSound((char*)"assets/sounds/azan1.wav", sounds[2]);
+	soundsData[2][0] = -22.9;	 // x
+	soundsData[2][1] = -9;	// y
+	soundsData[2][2] = 10;	// z
+	soundsData[2][3] = 15;	// r
+	// Bab Ghuanimah Minart Sound
+	SoundManager.CreateSound((char*)"assets/sounds/azan1.wav", sounds[3]);
+	soundsData[3][0] = -22.9;	 // x
+	soundsData[3][1] = -9;	// y
+	soundsData[3][2] = -38;	// z
+	soundsData[3][3] = 15;	// r
+	// Bab Alasbat Minart Sound
+	SoundManager.CreateSound((char*)"assets/sounds/azan1.wav", sounds[4]);
+	soundsData[4][0] = 15;	 // x
+	soundsData[4][1] = -9;	// y
+	soundsData[4][2] = -38;	// z
+	soundsData[4][3] = 15;	// r
+	// City Sound
+	SoundManager.CreateSound((char*)"assets/sounds/city.wav", sounds[5]);
+	soundsData[5][0] = 35;	 // x
+	soundsData[5][1] = -10;	// y
+	soundsData[5][2] = -7.5;	// z
+	soundsData[5][3] = 10;	// r
+
+	// City Sound
+	SoundManager.CreateSound((char*)"assets/sounds/city.wav", sounds[6]);
+	soundsData[6][0] = -35;	 // x
+	soundsData[6][1] = -10;	// y
+	soundsData[6][2] = -7.5;	// z
+	soundsData[6][3] = 10;	// r
+
+	// City Sound
+	SoundManager.CreateSound((char*)"assets/sounds/city.wav", sounds[7]);
+	soundsData[7][0] = -35;	 // x
+	soundsData[7][1] = -10;	// y
+	soundsData[7][2] = 25;	// z
+	soundsData[7][3] = 10;	// r
+
+	// Garden Sound
+	SoundManager.CreateSound((char*)"assets/sounds/garden.wav", sounds[8]);
+	soundsData[8][0] = -21;	 // x
+	soundsData[8][1] = -8;	// y
+	soundsData[8][2] = 10;	// z
+	soundsData[8][3] = 15;	// r
+
+	// Garden Sound
+	SoundManager.CreateSound((char*)"assets/sounds/garden.wav", sounds[9]);
+	soundsData[9][0] = 21;	 // x
+	soundsData[9][1] = -8;	// y
+	soundsData[9][2] = 10;	// z
+	soundsData[9][3] = 15;	// r
+
+	// Garden Sound
+	SoundManager.CreateSound((char*)"assets/sounds/garden.wav", sounds[10]);
+	soundsData[10][0] = -21;	 // x
+	soundsData[10][1] = -8;	// y
+	soundsData[10][2] = -25;	// z
+	soundsData[10][3] = 15;	// r
+
+	// Garden Sound
+	SoundManager.CreateSound((char*)"assets/sounds/garden.wav", sounds[11]);
+	soundsData[11][0] = 21;	 // x
+	soundsData[11][1] = -8;	// y
+	soundsData[11][2] = -25;	// z
+	soundsData[11][3] = 15;	// r
+
+	// AlQibli Mosque Sound
+	SoundManager.CreateSound((char*)"assets/sounds/telawah.wav", sounds[12]);
+	soundsData[12][0] = -6;	 // x
+	soundsData[12][1] = -5;	// y
+	soundsData[12][2] = 34.3;	// z
+	soundsData[12][3] = 12;	// r
 
 }
 
@@ -995,6 +1084,7 @@ void EnvDrawer::controlLightSourcePosition(bool* keys) {
 }
 
 float sunAngle = 0;
+
 void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, const float speed) {
 
 	glEnable(GL_TEXTURE_2D);
@@ -1021,7 +1111,6 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	LightPos[0] = rotatioRadius * sinf(sunAngle);
 	LightPos[1] = rotatioRadius * cosf(sunAngle);
 	glTranslatef(LightPos[0], LightPos[1], LightPos[2]);
-	glColor3f(1, 1, 0);
 	Sphere sun = Sphere(sunRadius);
 	glBindTexture(GL_TEXTURE_2D, sunTexture);
 	sun.draw();
@@ -1079,26 +1168,90 @@ void EnvDrawer::decodeEnables(bool* keys) {
 	}
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
 	{
-		drawRoads = !drawRoads;
+		drawCity = !drawCity;
+		if (drawCity) {
+			sounds[5].Play(true);
+		}
+		else {
+			sounds[5].Stop();
+		}
 	}
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD3])
 	{
-		drawGradens = !drawGradens;
+		drawGardens = !drawGardens;
+		if (drawGardens) {
+			sounds[6].Play(true);
+		}
+		else {
+			sounds[6].Stop();
+		}
 	}
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD4])
 	{
 		drawTanks = !drawTanks;
+		if (drawTanks) {
+			sounds[0].Play(true);
+		}
+		else {
+			sounds[0].Stop();
+		}
 	}
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD5])
 	{
-		drawBuildings = !drawBuildings;
+		drawMinarts = !drawMinarts;
+		if (drawMinarts) {
+			sounds[1].Play(true);
+			sounds[2].Play(true);
+			sounds[3].Play(true);
+			sounds[4].Play(true);
+		}
+		else {
+			sounds[1].Stop();
+			sounds[2].Stop();
+			sounds[3].Stop();
+			sounds[4].Stop();
+		}
 	}
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD6])
 	{
-		drawMinarts = !drawMinarts;
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD7])
-	{
 		drawSun = !drawSun;
+	}
+	if (keys['M']) {
+		enableSounds = !enableSounds;
+	}
+}
+
+void EnvDrawer::handleSounds(const Point& cameraPosition) {
+	if (enableSounds) {
+		for (int i = 0; i < 13; i++) {
+			float x = soundsData[i][0], y = soundsData[i][1], z = soundsData[i][2];
+			float radius = soundsData[i][3];
+			/*glPushMatrix();
+			glTranslatef(x, y, z);
+			GLubyte red = (i * 30) % 256;
+			GLubyte green = (i * 70) % 256;
+			GLubyte blue = (i * 110) % 256;
+			glColor3ub(red, green, blue);
+			Sphere(radius, 5, 5).draw();
+			glColor3ub(255, 255, 255);
+			glPopMatrix();*/
+			float distance = sqrtf(
+				powf(cameraPosition.x - x, 2.0f) +
+				powf(cameraPosition.y - y, 2.0f) +
+				powf(cameraPosition.z - z, 2.0f)
+			);
+			if (distance > radius) {
+				sounds[i].Stop();
+			}
+			else {
+				sounds[i].Play(true);
+				sounds[i].SetVolume((radius - distance) * 1.2 / radius);
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < 13; i++) {
+			sounds[i].Stop();
+		}
 	}
 }

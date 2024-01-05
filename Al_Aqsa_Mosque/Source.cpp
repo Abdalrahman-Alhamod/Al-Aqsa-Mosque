@@ -110,6 +110,7 @@ AlQibliMosqueDrawer alQibliMosqueDrawer;
 DirectSoundBuffer Sound;
 DirectSoundManager SoundManager;
 float volume = 1.0f;
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -137,16 +138,12 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
-	envDrawer = EnvDrawer();
+	envDrawer = EnvDrawer(hWnd);
 
 	personDrawer = PersonDrawer();
 
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
-	
-	SoundManager.Initialize(hWnd);
-	SoundManager.CreateSound((char*)"assets/sounds/Explode.wav", Sound);
-	//Sound.Play(true);
 
 	return TRUE;										// Initialization Went OK
 }
@@ -364,7 +361,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
-		camera->decodeKeyboard(keys, 0.01);
+		if (keys[VK_SHIFT]) {
+			camera->decodeKeyboard(keys, 0.05);
+		}
+		else {
+			camera->decodeKeyboard(keys, 0.01);
+		}
 		Point p = camera->getPosition();
 		float angel = 180 + camera->getRotatedY(), r = 0.25;
 
@@ -379,8 +381,9 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 1);
+		camera->decodeKeyboard(keys, 0.5);
 	}
+	envDrawer.handleSounds(camera->getPosition());
 
 	{//envDrawer.controlLightSourcePosition(keys);
 
@@ -533,7 +536,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	envDrawer.drawTiledLand(tiledLandPoints, 100);
 
-	if (envDrawer.drawRoads) {
+	if (envDrawer.drawCity) {
 
 		float road1Length = 83, road1Width = 8;
 
@@ -573,21 +576,25 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	}
 
 	if (envDrawer.drawMinarts) {
-		pshm;
-		glTranslatef(-26.9, -7, 10);
-		envDrawer.drawCubedMinaret(0.6);
-		ppm;
-
-		pshm;
-		glTranslatef(-26.9, -7, -41);
-		envDrawer.drawCubedMinaret(0.6);
-		ppm;
-
+		// Bab Almgharebah Minart
 		pshm;
 		glTranslatef(-26.5, -7, 40);
 		envDrawer.drawCubedMinaret(0.6);
 		ppm;
 
+		// Bab Alsilselah Minart
+		pshm;
+		glTranslatef(-26.9, -7, 10);
+		envDrawer.drawCubedMinaret(0.6);
+		ppm;
+
+		// Bab Ghuanimah Minart
+		pshm;
+		glTranslatef(-26.9, -7, -41);
+		envDrawer.drawCubedMinaret(0.6);
+		ppm;
+
+		// Bab Alasbat Minart
 		pshm;
 		glTranslatef(15, -8, -41.2);
 		glScalef(1, 1.2, 1);
@@ -656,7 +663,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	envDrawer.drawWall(25, 4, envDrawer.stonesTexture[10]);
 	ppm;
 
-	if (envDrawer.drawGradens) {
+	if (envDrawer.drawGardens) {
 
 		pshm;
 		envDrawer.drawGarden(Point(-16, -9.98, 0), 10, 20,
@@ -809,7 +816,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		ppm;
 	}
 
-	if (envDrawer.drawBuildings) {
+	if (envDrawer.drawCity) {
 
 		for (int i = 0; i < 14; i++) {
 			pshm;
@@ -1340,12 +1347,6 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		if (keys[VK_CONTROL] && keys['S']) {
 			envDrawer.changeSkyBoxTexture();
 		}
-		/*if (keys['Y']) {
-			Sound.SetVolume(volume += 0.1f);
-		}
-		if (keys['U']) {
-			Sound.SetVolume(volume -= 0.1f);
-		}*/
 		envDrawer.decodeEnables(keys);
 
 		return 0;								// Jump Back

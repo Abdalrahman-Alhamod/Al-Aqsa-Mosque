@@ -6,6 +6,7 @@
 #include "Color.h"
 #include "Model_3DS.h"
 #include "MosqueDrawer.h"
+#include "Sound.h"
 #define HOUR_PER_SECOND (1.f/24.f)
 #define THREE_HOURS_PER_SECOND (3.f/24.f)
 #define MINUTE_PER_SECOND (1.f/24.f)*(1.f/60.f)
@@ -15,10 +16,11 @@
  */
 class EnvDrawer {
 public:
+	EnvDrawer();
 	/**
 	 * @brief Constructor for the EnvDrawer class.
 	 */
-	EnvDrawer();
+	EnvDrawer(HWND hWnd);
 
 	/**
 	 * @brief Draw a small tree at the specified position with the given size.
@@ -189,12 +191,17 @@ public:
 	void drawCubedMinaret(const float size);
 	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
 	void drawWall(const float length, const float wallHeight, const int texture);
+	void handleSounds(const Point& camerPosition);
 
 	GLfloat LightDir[4] = { 0.0f, 0.0f, 0.0f, 1.0f };  // Directional light from the top-left corner
 	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };    // Positional light at (1, 1, -5)
 	int stonesTexture[15];
 
-	bool drawFountains = false,drawRoads=false, drawGradens = false, drawTanks = false, drawBuildings = false, drawMinarts = false,drawSun=false;
+	bool drawFountains = true, drawGardens = true, drawTanks = true, drawCity = true, drawMinarts = true,drawSun=true,enableSounds=true;
+
+	DirectSoundBuffer sounds[13];
+	DirectSoundManager SoundManager;
+	float soundsData[13][4]; // 13 sounds- each sound has its own : x, y, z, r value
 
 private:
 	static Model_3DS* tree1Model;
