@@ -206,8 +206,6 @@ void EnvDrawer::drawPassage(const Point points[4], const int count) {
 }
 
 void EnvDrawer::drawStreet(const Point points[4], const int count) {
-	//drawLand(points, count, street);
-
 	glPushMatrix();
 	cull;
 	Front;

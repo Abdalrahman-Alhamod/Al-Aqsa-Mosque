@@ -18,11 +18,11 @@ class AlQibliMosqueDrawer
 {
 public :
 	AlQibliMosqueDrawer();
+	float size = 1;
 	void drawAlQibliMosque();
 	
 private :
 	int side[30],block[10],roof[10],carpet;
-	float size = 1;
 	void drawSideUnit(int type);
 	void drawNormalWall(const Constraints& constraints, float textureCount=1);
 	void drawLeftNormalWall(const Constraints& constraints, float textureCount);
@@ -46,7 +46,8 @@ private :
 	void drawBack();
 	void drawDome();
 	void drawInner();
-	bool drawInside = true;
+	void drawAdditionalSide();
+	bool drawInside = false;
 	Box boxDrawer;
 	EnvDrawer envDrawer;
 };

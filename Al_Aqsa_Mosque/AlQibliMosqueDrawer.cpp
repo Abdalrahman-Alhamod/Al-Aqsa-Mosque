@@ -39,6 +39,7 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 	side[23] = LoadTexture((char*)"assets/materials/AlQibli/side23.bmp", 255);
 	side[24] = LoadTexture((char*)"assets/materials/AlQibli/side24.bmp", 255);
 	side[25] = LoadTexture((char*)"assets/materials/AlQibli/side25.bmp", 255);
+	side[26] = LoadTexture((char*)"assets/materials/AlQibli/side26.bmp", 255);
 
 	block[0] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
 	block[1] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
@@ -648,12 +649,12 @@ void AlQibliMosqueDrawer::drawRoof() {
 void AlQibliMosqueDrawer::drawCarpet() {
 	glPushMatrix();
 
-	tr(25.9 * size, -0.1 * size, 5.8 * size);
+	tr(25.9 * size, 0, 5.8 * size);
 	rt(180, 0, 1, 0);
 
 
 	float width = 14.9 * size, length = 26.05 * size;
-	int textureCount = 20;
+	int textureCount = 40;
 
 	glEnable(GL_TEXTURE_2D);
 	cull;
@@ -1092,6 +1093,32 @@ void AlQibliMosqueDrawer::drawInner() {
 	}
 }
 
+void AlQibliMosqueDrawer::drawAdditionalSide() {
+	pshm;
+	tr(26 * size, 0, -20.2 * size);
+	int textures[6] = { block[0],roof[0],side[1],side[1],block[0],block[0] };
+	boxDrawer.drawOutside(Constraints(28 * size, 3.6 * size, 3 * size)
+		, textures, 8, 1, 2);
+	ppm;
+
+	pshm;
+	tr(54 * size, 0, -17.2 * size);
+	rt(270, 0, 1, 0);
+	int textures2[6] = { block[0],roof[0],block[0],side[1],block[0],block[0] };
+	boxDrawer.drawOutside(Constraints(10 * size, 3.6 * size, 3 * size)
+		, textures2, 2, 1, 2);
+	ppm;
+
+	pshm;
+	tr(54 * size, 0, -7.2 * size);
+	rt(270, 0, 1, 0);
+	int textures3[6] = { block[0],roof[0],block[0],side[26],block[0],block[0] };
+	boxDrawer.drawOutside(Constraints(13 * size, 3.6 * size, 3 * size)
+		, textures3, 1, 1, 2);
+	ppm;
+
+}
+
 void AlQibliMosqueDrawer::drawAlQibliMosque() {
 
 	drawFront();
@@ -1109,7 +1136,9 @@ void AlQibliMosqueDrawer::drawAlQibliMosque() {
 	drawDome();
 
 	drawInner();
-	
+
+	drawAdditionalSide();
+
 	drawTransparentWindow(5);
 }
 
