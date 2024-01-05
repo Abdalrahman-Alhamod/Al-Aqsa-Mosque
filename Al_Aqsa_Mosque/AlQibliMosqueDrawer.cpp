@@ -50,7 +50,8 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 
 	carpet = LoadTexture((char*)"assets/materials/AlQibli/carpet.bmp", 255);
 
-	envDrawer = EnvDrawer();
+	HWND		hWnd = NULL;		// Holds Our Window Handle
+	envDrawer = EnvDrawer(hWnd);
 	boxDrawer = Box();
 
 }
@@ -1073,22 +1074,22 @@ void AlQibliMosqueDrawer::drawInner() {
 
 		pshm;
 		tr(15 * size, -0.1 * size, -14.5 * size);
-		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[0], 3.0f);
+		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[3], 3.0f);
 		ppm;
 
 		pshm;
 		tr(20 * size, -0.1 * size, -14.5 * size);
-		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[0], 3.0f);
+		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[3], 3.0f);
 		ppm;
 
 		pshm;
 		tr(20 * size, -0.1 * size, -19.5 * size);
-		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[0], 3.0f);
+		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[3], 3.0f);
 		ppm;
 
 		pshm;
 		tr(15 * size, -0.1 * size, -19.5 * size);
-		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[0], 3.0f);
+		boxDrawer.drawOutside(Constraints(1 * size, 4.9 * size, 1 * size), block[3], 3.0f);
 		ppm;
 	}
 }
