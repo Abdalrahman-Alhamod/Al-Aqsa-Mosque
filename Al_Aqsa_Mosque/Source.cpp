@@ -32,6 +32,7 @@
 #include "PersonDrawer.h"
 #include "Box.h"
 #include "AlQibliMosqueDrawer.h"
+#include "Sound.h"
 
 
 using namespace std;
@@ -106,7 +107,9 @@ PersonDrawer personDrawer;
 
 AlQibliMosqueDrawer alQibliMosqueDrawer;
 
-
+DirectSoundBuffer Sound;
+DirectSoundManager SoundManager;
+float volume = 1.0f;
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -139,6 +142,11 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	personDrawer = PersonDrawer();
 
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+
+	
+	SoundManager.Initialize(hWnd);
+	SoundManager.CreateSound((char*)"assets/sounds/Explode.wav", Sound);
+	//Sound.Play(true);
 
 	return TRUE;										// Initialization Went OK
 }
@@ -885,6 +893,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	alQibliMosqueDrawer.drawAlQibliMosque();
 	ppm;
 
+
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
@@ -1331,6 +1340,12 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		if (keys[VK_CONTROL] && keys['S']) {
 			envDrawer.changeSkyBoxTexture();
 		}
+		/*if (keys['Y']) {
+			Sound.SetVolume(volume += 0.1f);
+		}
+		if (keys['U']) {
+			Sound.SetVolume(volume -= 0.1f);
+		}*/
 		envDrawer.decodeEnables(keys);
 
 		return 0;								// Jump Back

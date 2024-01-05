@@ -170,9 +170,12 @@
     <ClCompile Include="PersonDrawer.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PrimitiveDrawer.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
@@ -191,8 +194,11 @@
     <ClInclude Include="PersonDrawer.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Wave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
