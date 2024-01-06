@@ -371,10 +371,10 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		float angel = 180 + camera->getRotatedY(), r = 0.25;
 
 
-		
+
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z)))-9.8;
+		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z))) - 9.8;
 
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
 		//console.print(personDrawer.v());
@@ -787,9 +787,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				pshm;
-				envDrawer.drawFountain(Point(-21 + j * 3, -9.4, 27 + i * 5), 0.3);
-				ppm;
+				if (!(i == 1 && j == 1)) {
+					pshm;
+					envDrawer.drawFountain(Point(-21 + j * 3, -9.4, 27 + i * 5), 0.3);
+					ppm;
+				}
 			}
 		}
 
@@ -892,6 +894,35 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		}
 		ppm;
 	}
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(17, -6, 11), 1, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(-17, -6, 11), 2, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(17, -6, -25), 3, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(-17, -6, -25), 4, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(12, -6, 38), 5, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(0, -6, -7), 6, 1, 4);
+	ppm;
+
+	pshm;
+	envDrawer.drawLightingPillar(Point(-18, -6, 32), 7, 1, 4);
+	ppm;
+
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
@@ -1347,6 +1378,11 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		if (keys[VK_CONTROL] && keys['S']) {
 			envDrawer.changeSkyBoxTexture();
 		}
+
+		if (keys[VK_CONTROL] && keys[VK_NUMPAD7]) {
+			alQibliMosqueDrawer.drawInside = !alQibliMosqueDrawer.drawInside;
+		}
+
 		envDrawer.decodeEnables(keys);
 
 		return 0;								// Jump Back

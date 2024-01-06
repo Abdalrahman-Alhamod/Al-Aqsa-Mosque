@@ -198,6 +198,7 @@ public:
 	int stonesTexture[15];
 
 	bool drawFountains = true, drawGardens = true, drawTanks = true, drawCity = true, drawMinarts = true,drawSun=true,enableSounds=true;
+	bool lights[8];
 
 	DirectSoundBuffer sounds[13];
 	DirectSoundManager SoundManager;

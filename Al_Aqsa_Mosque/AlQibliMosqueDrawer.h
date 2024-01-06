@@ -20,7 +20,7 @@ public :
 	AlQibliMosqueDrawer();
 	float size = 1;
 	void drawAlQibliMosque();
-	
+	bool drawInside = true;
 private :
 	int side[30],block[10],roof[10],carpet;
 	void drawSideUnit(int type);
@@ -47,7 +47,6 @@ private :
 	void drawDome();
 	void drawInner();
 	void drawAdditionalSide();
-	bool drawInside = false;
 	Box boxDrawer;
 	EnvDrawer envDrawer;
 };

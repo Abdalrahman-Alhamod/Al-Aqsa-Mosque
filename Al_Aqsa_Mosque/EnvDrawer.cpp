@@ -56,7 +56,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	buildingTexture[4] = LoadTexture((char*)"assets/materials/building5.bmp", 255);
 	buildingTexture[5] = LoadTexture((char*)"assets/materials/building6.bmp", 255);
 
-	skyBoxTextures[0][0]= LoadTexture((char*)"assets/skybox/SkyBox0Bottom.bmp", 255);
+	skyBoxTextures[0][0] = LoadTexture((char*)"assets/skybox/SkyBox0Bottom.bmp", 255);
 	skyBoxTextures[0][1] = LoadTexture((char*)"assets/skybox/SkyBox0Up.bmp", 255);
 	skyBoxTextures[0][2] = LoadTexture((char*)"assets/skybox/SkyBox0Back.bmp", 255);
 	skyBoxTextures[0][3] = LoadTexture((char*)"assets/skybox/SkyBox0Front.bmp", 255);
@@ -224,9 +224,14 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	// AlQibli Mosque Sound
 	SoundManager.CreateSound((char*)"assets/sounds/telawah.wav", sounds[12]);
 	soundsData[12][0] = -6;	 // x
-	soundsData[12][1] = -5;	// y
+	soundsData[12][1] = -9;	// y
 	soundsData[12][2] = 34.3;	// z
 	soundsData[12][3] = 12;	// r
+
+	lights[0] = true;
+	for (int i = 1; i <= 7; i++) {
+		lights[i] = false;
+	}
 
 }
 
@@ -258,17 +263,16 @@ void EnvDrawer::drawFountain(const Point& position, const float size) {
 
 void EnvDrawer::drawLand(const Point points[4], const int count, const int textureID) {
 	glPushMatrix();
-	
-	
+
 	glEnable(GL_TEXTURE_2D);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	
+
 	glNormal3f(0, 1, 0);
 	cull;
 	Front;
-	
+
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(points[0].x, points[0].y, points[0].z);
 	glTexCoord2f(count, 0); glVertex3f(points[1].x, points[1].y, points[1].z);
@@ -423,12 +427,12 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	float hight = 10;
 	glPushMatrix();
 	glScalef(size, size, size);
-	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4,9,9);
+	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4, 9, 9);
 
 	cull;
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Cylinder cyl = Cylinder(2.5, 2.5, 0.1,9);
+	Cylinder cyl = Cylinder(2.5, 2.5, 0.1, 9);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	glTranslated(0, 0, -6.6);
@@ -476,7 +480,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	glTranslated(0, 1.5, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Sphere sphere = Sphere(0.75, 10, 18, true, 2, true,2);
+	Sphere sphere = Sphere(0.75, 10, 18, true, 2, true, 2);
 	sphere.draw();
 	glDisable(GL_TEXTURE_2D);
 	nocull;
@@ -522,7 +526,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	Box().drawOutside(Constraints(3, 0.1, 3), stonesTexture[13]);
 	glPopMatrix();
 
-	
+
 
 	for (int i = 0; i <= 3; ++i)
 	{
@@ -539,7 +543,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glPopMatrix();
 	}
 
-	
+
 
 
 	glTranslated(0, height - 3.8, 0);
@@ -547,7 +551,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	cull;
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[12]);
-	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 5,1,true,3,false,true);
+	Cylinder cyl = Cylinder(0.7, 0.9, 2.5, 5, 1, true, 3, false, true);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	cyl.drawSide();
@@ -573,7 +577,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	// Top Spheres
 	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
 		glPushMatrix();
-		glTranslatef(0 , 0.6 + yOffset, 0 );
+		glTranslatef(0, 0.6 + yOffset, 0);
 		Sphere((0.1 - (yOffset * 0.1) + 0.02), 3, 3).draw();
 		glPopMatrix();
 	}
@@ -583,52 +587,52 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	glPopMatrix();
 }
 
-void EnvDrawer::drawWallWithDoor(const float length,const float wallHeight, const int texture)
+void EnvDrawer::drawWallWithDoor(const float length, const float wallHeight, const int texture)
 {
 	glPushMatrix();
 
 	int i = 0;
-	for (; 2*(i+1) < length; ++i)
+	for (; 2 * (i + 1) < length; ++i)
 	{
 		glPushMatrix();
-		glTranslated(2*i - (length - 2.5) / 2, wallHeight-4, -0.5);
+		glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
 		Box().drawOutside(Constraints(1.3, 1, 1), texture);
 		glPopMatrix();
 	}
 	glPushMatrix();
 	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
-	Box().drawOutside(Constraints(length-(2*i), 1, 1), texture);
+	Box().drawOutside(Constraints(length - (2 * i), 1, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0,wallHeight-5,0);
+	glTranslated(0, wallHeight - 5, 0);
 	glPushMatrix();
-	glTranslatef(-(length - 2.5) / 2, -wallHeight+1, -0.5);
-	Box().drawOutside(Constraints((length-2.5)/2, wallHeight , 1), texture);
+	glTranslatef(-(length - 2.5) / 2, -wallHeight + 1, -0.5);
+	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0, -wallHeight+1, 0);
+	glTranslated(0, -wallHeight + 1, 0);
 
 	glPushMatrix();
-	glTranslatef(0,0, -1 * 0.5);
-	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glTranslatef(0, 0, -1 * 0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(2.25,0, -0.5);
-	Box().drawOutside(Constraints(0.25, wallHeight-2, 1), texture);
+	glTranslatef(2.25, 0, -0.5);
+	Box().drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
 	glPopMatrix();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(1.25, -1, 0);
-	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5,2, 1), 5, texture);
+	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5, 2, 1), 5, texture);
 	glPopMatrix();
 
 
 	glPushMatrix();
-	glTranslatef(2.5, -wallHeight+1, -0.5);
+	glTranslatef(2.5, -wallHeight + 1, -0.5);
 	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
 	glPopMatrix();
 	glPopMatrix();
@@ -653,8 +657,8 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(-(length - 2.5)/2,-wallHeight,-0.5);
-	Box().drawOutside(Constraints(length,wallHeight,1), texture,5.0f);
+	glTranslated(-(length - 2.5) / 2, -wallHeight, -0.5);
+	Box().drawOutside(Constraints(length, wallHeight, 1), texture, 5.0f);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -750,7 +754,7 @@ void EnvDrawer::drawPillar(const float radius, const float height, int texture, 
 }
 
 void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const int texture) {
-	
+
 	float width = 60, height = 30, length = 30;
 	length = constraints.length;
 	width = max(constraints.width, radius * 2);
@@ -810,7 +814,7 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 
 	// Start drawing cylinder
 	glEnable(GL_TEXTURE_2D);
-	
+
 	glPushMatrix();
 	cull;
 	Front;
@@ -963,12 +967,12 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 
 
 	glPushMatrix();
-	
+
 	Cylinder cylinder = Cylinder(radius, radius, length, sectorCount * 2);
 	cylinder.setIsHalf(true);
 	cylinder.reverseNormals();
 	cylinder.drawSide();
-	
+
 	nocull;
 	glPopMatrix();
 
@@ -1014,7 +1018,7 @@ void EnvDrawer::drawArchway(const float size, const float pillarHeight, const in
 
 }
 
-void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex,const int sectorCount) {
+void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex, const int sectorCount) {
 	int texture = stonesTexture[textureIndex];
 	glPushMatrix();
 	glTranslatef(-size * 1.75, -wallHeight, -length * 0.5);
@@ -1047,7 +1051,7 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 }
 
 void EnvDrawer::drawBuidling(const float size, const int buildingTextureIndex) {
-	Box().drawOutside(Constraints(10*size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
+	Box().drawOutside(Constraints(10 * size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
 }
 
 void EnvDrawer::controlLightSourcePosition(bool* keys) {
@@ -1075,12 +1079,6 @@ void EnvDrawer::controlLightSourcePosition(bool* keys) {
 	{
 		LightPos[2] += 1;
 	}
-	if (keys['L']) {
-		glEnable(GL_LIGHT0);		// Turn On Light
-	}
-	if (keys['O']) {
-		glDisable(GL_LIGHT0);	// Turn Off Light
-	}
 }
 
 float sunAngle = 0;
@@ -1095,8 +1093,11 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	if (sunAngle >= PI * 1.5 || sunAngle <= PI * 0.5) {
 		glEnable(GL_LIGHT0);
-		if (sunAngle <= PI * 1.75&& sunAngle >= PI * 1.5 || 
-			sunAngle >= PI * 0.25&& sunAngle <= PI * 0.5) {
+		for (int i = 1; i <= 7; i++) {
+			glDisable(GL_LIGHT0 + i);
+		}
+		if (sunAngle <= PI * 1.75 && sunAngle >= PI * 1.5 ||
+			sunAngle >= PI * 0.25 && sunAngle <= PI * 0.5) {
 			currentSkyBoxIndex = 1;
 		}
 		else {
@@ -1105,6 +1106,9 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	else {
 		glDisable(GL_LIGHT0);
+		for (int i = 1; i <= 7; i++) {
+			glEnable(GL_LIGHT0 + i);
+		}
 		currentSkyBoxIndex = 2;
 	}
 	//std::cout << sunAngle << std::endl;
@@ -1120,18 +1124,28 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 }
 
 void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, const float size, const float pillarHeight) {
+
 	GLenum light = GL_LIGHT0 + lightIndex;
 
-	glEnable(light);
-	float lightpos[4] = { position.x, position.y + pillarHeight * 0.5, position.z,1 };
+	// Light properties
+	float lightpos[4] = { position.x, position.y + pillarHeight * 0.5, position.z, 1.0 };
 	glLightfv(light, GL_POSITION, lightpos);
-	glLightfv(light, GL_AMBIENT, LightAmb);
-	glLightfv(light, GL_DIFFUSE, LightDiff);
-	glLightfv(light, GL_SPECULAR, LightSpec);
 
-	glLightfv(light, GL_POSITION, lightpos);
-	glLightfv(light, GL_SPOT_DIRECTION, LightDir);
-	glLightf(light, GL_SPOT_CUTOFF, 120);
+	float lightAmbient[] = { 0.002, 0.002, 0.002, 1.0 };
+	float lightDiffuse[] = { 1.0, 1.0, 1.0, 1.0 }; // Adjust for color
+	float lightSpecular[] = { 1.0, 1.0, 1.0, 1.0 }; // Adjust for shininess
+
+	glLightfv(light, GL_AMBIENT, lightAmbient);
+	glLightfv(light, GL_DIFFUSE, lightDiffuse);
+	glLightfv(light, GL_SPECULAR, lightSpecular);
+
+	// Set up the attenuation
+	float constantAttenuation = 1;
+	float linearAttenuation = 0.05; // Adjust as needed
+	float quadraticAttenuation = 0.001; // Adjust as needed
+	glLightf(light, GL_CONSTANT_ATTENUATION, constantAttenuation);
+	glLightf(light, GL_LINEAR_ATTENUATION, linearAttenuation);
+	glLightf(light, GL_QUADRATIC_ATTENUATION, quadraticAttenuation);
 
 
 	glEnable(GL_TEXTURE_2D);
@@ -1155,7 +1169,7 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	bulp.setUpAxis(2);
 	const float linesColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 	glBindTexture(GL_TEXTURE_2D, lightTexture);
-	bulp.drawWithLines(linesColor);
+	bulp.draw();
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
@@ -1219,6 +1233,19 @@ void EnvDrawer::decodeEnables(bool* keys) {
 	if (keys['M']) {
 		enableSounds = !enableSounds;
 	}
+	for (int i = '0'; i <= '7'; i++) {
+		if (keys[i]) {
+			int index = i - '0';
+			lights[index] = !lights[index];
+			if (lights[index]) {
+				glEnable(GL_LIGHT0 + index);
+			}
+			else {
+				glDisable(GL_LIGHT0 + index);
+			}
+		}
+	}
+
 }
 
 void EnvDrawer::handleSounds(const Point& cameraPosition) {
