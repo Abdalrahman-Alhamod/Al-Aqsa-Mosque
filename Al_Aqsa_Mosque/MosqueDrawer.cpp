@@ -22,24 +22,13 @@ MosqueDrawer::MosqueDrawer() {
 
 	glDisable(GL_TEXTURE_2D);
 
-	crescentModel->Load((char*)"assets/models/crescent.3DS");
-	// remove unused 2 crescent
-	crescentModel->Objects[5].pos.z = 100000000;
-	crescentModel->Objects[6].pos.z = 100000000;
-	// setting initial values
-	crescentModel->pos.x = 5;
-	crescentModel->pos.y = 6.8;
-	crescentModel->pos.z = 0;
-	crescentModel->rot.y = 90;
-	crescentModel->rot.x = 90;
-	crescentModel->scale = 0.01;
 }
 
-void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, bool inside, bool lines) {
+void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, int sectorCnt, bool inside, bool lines) {
 	// Dome
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	Sphere sphere = Sphere(5 * size, 50, 18, true, 2, true);
+	Sphere sphere = Sphere(5 * size, sectorCnt, 18, true, 2, true);
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
 	if (inside) sphere.reverseNormals();
@@ -48,8 +37,8 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	//sphere.draw();
 	glPopMatrix();
 
-	// Top Cone
-	/*glPushMatrix();
+	 //Top Cone
+	glPushMatrix();
 	glTranslatef(position.x, position.y + 5.5 * size, position.z);
 	glDisable(GL_TEXTURE_2D);
 	Cylinder domeTop = Cylinder(0.1 * size, 0.001 * size, 1 * size);
@@ -62,16 +51,16 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	}
 
 	domeTop.draw();
-	glPopMatrix();*/
+	glPopMatrix();
 
-	// Top Spheres
-	//for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
-	//	glPushMatrix();
-	//	glTranslatef(position.x, position.y + (5 + yOffset) * size, position.z);
-	//	Sphere topSphere = Sphere((0.12 - (yOffset * 0.1) + 0.02) * size,9,18); // Adjust size based on yOffset
-	//	topSphere.draw();
-	//	glPopMatrix();
-	//}
+	 //Top Spheres
+	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
+		glPushMatrix();
+		glTranslatef(position.x, position.y + (5 + yOffset) * size, position.z);
+		Sphere topSphere = Sphere((0.12 - (yOffset * 0.1) + 0.02) * size,9,18); // Adjust size based on yOffset
+		topSphere.draw();
+		glPopMatrix();
+	}
 
 	// Drawing crescentModel
 	/*crescentModel->pos.x = position.x;

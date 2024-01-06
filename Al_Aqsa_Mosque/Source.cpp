@@ -128,7 +128,7 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int roof1 , roof2 , bridge1, bridge2;
+int roof1 , roof2 , roof3 , bridge1, bridge2;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -143,6 +143,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	roof1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	roof2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
+	roof3 = LoadTexture((char*)"assets/domeOfTheRock/roof3.bmp");
 	bridge1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
 	bridge2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
 
@@ -611,15 +612,25 @@ void outerRoof() {
 	db dia = a + 2 * p, dia2 = b + 2 * p2;
 	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
 
+	
+
 	pshm;
 	glNormal3f(0, 1, 0);
 	glTranslated(0, 35.1, 0);
-	glColor3f(0, 0.230, 0.23);
+	entxt;
+	glColor3ub(83, 114, 139);
+	glBindTexture(GL_TEXTURE_2D, roof3);
+	
 	pshm;
+	glTranslated(0, 0.1, 0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p + 0.6, 0.5, 0);
+	txt(0.8, 0);
 	glVertex3d(p + a - 0.5, 0.5, 0);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3,1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
@@ -630,21 +641,29 @@ void outerRoof() {
 	glRotated(45, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p - 0.6, 0.5, 0);
+	txt(0.8, 0);
 	glVertex3d(p + a - 1.5, 0.5, 0);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
 
 	pshm;
-	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glTranslated(p + a / 2.0, 0.2, -p - a / 2.0);
 	glRotated(90, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p - 1.6, 0.5, 0);
+	txt(0.8, 0);
 	glVertex3d(p + a - 1.5, 0.5, 0);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
@@ -654,33 +673,45 @@ void outerRoof() {
 	glRotated(135, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p - 0.6, 0, -2);
+	txt(0.8, 0);
 	glVertex3d(p + a - 1.5, 0, -2);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
 
 	pshm;
-	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glTranslated(p + a / 2.0, 0.1, -p - a / 2.0);
 	glRotated(180, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p, 0, -2);
+	txt(0.8, 0);
 	glVertex3d(p + a - 0.1, 0, -2);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
 
 	pshm;
-	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glTranslated(p + a / 2.0, 0.2, -p - a / 2.0);
 	glRotated(225, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p, 0, -2);
+	txt(0.8, 0);
 	glVertex3d(p + a + 0.7, 0, -2);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
@@ -690,21 +721,29 @@ void outerRoof() {
 	glRotated(270, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p + 2, 0, -1.5);
+	txt(0.8, 0);
 	glVertex3d(p + a + 1, 0, -1.5);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
 
 	pshm;
-	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
+	glTranslated(p + a / 2.0, 0.2, -p - a / 2.0);
 	glRotated(315, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
+	txt(0.2, 0);
 	glVertex3d(p + 1, 0, 0);
+	txt(0.8, 0);
 	glVertex3d(p + a + 1, 0, 0);
+	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
+	txt(0.3, 1);
 	glVertex3d(p + 15, 5, -dist - 22);
 	endf;
 	ppm;
@@ -1496,9 +1535,8 @@ void DORdrawArcadeSide() {
 	pshm;
 	glTranslated(0, pillarH, 0);
 	bool flag[6] = { 0,0,0,0,1,1 };
-	textures[0] = bridge2;
+	textures[0] = textures[1] = bridge2;
 	textures[2]  = textures[3] = bridge1;
-	textures[1] = bridge2;
 	white;
 	bridge.drawOutside(Constraints(48, 1.5, 3), textures,flag);
 	ppm;
@@ -1972,7 +2010,7 @@ void DORdrawFence(db heightOfWall) {
 	pshm;
 	glTranslated(1.5, 11.46, 1.5);
 	cull;
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0),false,false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0),8,false,false);
 	nocull;
 	ppm;
 
@@ -2073,13 +2111,13 @@ void DORdrawDomes() {
 
 	distxt;
 	cull;
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13));
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13),50);
 	nocull;
 	
 	pshm;
 	distxt;
 	glTranslated(0, -0.32, 0);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.75, Color(254, 203, 13), true, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.75, Color(254, 203, 13),50, true, false);
 	ppm;
 
 	pshm;
@@ -2273,17 +2311,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 #pragma region design
 	
 
-	
-	Box bridge;
-	pshm;
-	glTranslated(-20, 10, 0);
-	bool flag[6] = { 0,0,0,0,1,1 };
-	textures[0] = bridge2;
-	textures[2] = textures[3] = bridge1;
-	textures[1] = bridge2;
-	white;
-	bridge.drawOutside(Constraints(48, 1.5, 3), textures, flag);
-	ppm;
 
 #pragma endregion
 

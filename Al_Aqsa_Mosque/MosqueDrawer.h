@@ -29,7 +29,7 @@ public:
      * @param size Scaling factor for size.
      * @param color RGB color of the dome.
      */
-    void drawDome(const Point& position, const float size, const Color& color, bool inside = false, bool lines = true);
+    void drawDome(const Point& position, const float size, const Color& color, int sectorCnt = 36, bool inside = false, bool lines = true);
 
     /**
      * @brief Draws the first type of prayer carpet.
