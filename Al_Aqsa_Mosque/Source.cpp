@@ -128,7 +128,7 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int roof1 , roof2 , roof3 , bridge1, bridge2;
+int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -141,11 +141,19 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
-	roof1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
-	roof2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
-	roof3 = LoadTexture((char*)"assets/domeOfTheRock/roof3.bmp");
-	bridge1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
-	bridge2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
+	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
+	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
+	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof3.bmp");
+	BRIDGE1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
+	BRIDGE2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
+	ROCK = LoadTexture((char*)"assets/domeOfTheRock/rock.bmp");
+	FENCE = LoadTexture((char*)"assets/domeOfTheRock/fence.bmp");
+	MARBLE_FENCE = LoadTexture((char*)"assets/domeOfTheRock/marbleFence.bmp");
+	FOOT1 = LoadTexture((char*)"assets/domeOfTheRock/footprint1.bmp");
+	FOOT2 = LoadTexture((char*)"assets/domeOfTheRock/footprint2.bmp");
+	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
+	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
+	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
 
 
 	// Initialize Camera
@@ -244,7 +252,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p + 0.6 + 7.1, 0, 0);
@@ -275,7 +283,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p - 0.6 + 7.4, 0, 0);
@@ -303,7 +311,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p - 1.6 + 7.3, 0, 0);
@@ -331,7 +339,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p - 0.6 + 7.2, 0, -2);
@@ -359,7 +367,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p + 7.2, 0, -2);
@@ -387,7 +395,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p+7.2, 0, -2);
@@ -415,7 +423,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p + 2 + 7.2, 0, -1.5);
@@ -443,7 +451,7 @@ void innerRoof() {
 	white;
 	entxt;
 	glTranslated(0, -0.1, 0);
-	glBindTexture(GL_TEXTURE_2D, roof1);
+	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(p + 1 + 7.2, 0, 0);
@@ -463,7 +471,7 @@ void innerRoof() {
 	ppm;
 #pragma endregion
 
-	
+	cull;
 	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
 	pshm;
@@ -472,7 +480,7 @@ void innerRoof() {
 
 	white;
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, roof2);
+	glBindTexture(GL_TEXTURE_2D, ROOF2);
 	pshm;
 	beg(GL_QUADS);
 	txt(0, 1);
@@ -600,6 +608,7 @@ void innerRoof() {
 	ppm;
 
 	ppm;
+	nocull;
 }
 
 void outerRoof() {
@@ -612,14 +621,14 @@ void outerRoof() {
 	db dia = a + 2 * p, dia2 = b + 2 * p2;
 	db dist = dia / 2.0 * sin(45) - dia2 / 2.0 * sin(45) + 5.2;
 
-	
+	cull;
 
 	pshm;
 	glNormal3f(0, 1, 0);
 	glTranslated(0, 35.1, 0);
 	entxt;
 	glColor3ub(83, 114, 139);
-	glBindTexture(GL_TEXTURE_2D, roof3);
+	glBindTexture(GL_TEXTURE_2D, ROOF3);
 	
 	pshm;
 	glTranslated(0, 0.1, 0);
@@ -749,6 +758,8 @@ void outerRoof() {
 	ppm;
 
 	ppm;
+
+	nocull;
 }
 
 void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int texture2, bool isHalf) {
@@ -1123,7 +1134,7 @@ void arch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
 
 }
 
-void DORdrawsides() {
+void DORdrawWalls() {
 
 	//the main param is the length of the side: a, then every thing is drawn in the reverse order of the base ocatgon
 	//the second param maybe the angle of door openeing
@@ -1134,10 +1145,10 @@ void DORdrawsides() {
 	db a = 60;
 	db p = a / srt;
 	if (keys[VK_F1]) {
-		if (openTheDoor < 90) openTheDoor += 1;
+		if (openTheDoor < 90) openTheDoor += 2;
 	}
 	if (keys[VK_F2]) {
-		if (openTheDoor > 0) openTheDoor -= 1;
+		if (openTheDoor > 0) openTheDoor -= 2;
 	}
 
 #pragma region front side
@@ -1535,8 +1546,8 @@ void DORdrawArcadeSide() {
 	pshm;
 	glTranslated(0, pillarH, 0);
 	bool flag[6] = { 0,0,0,0,1,1 };
-	textures[0] = textures[1] = bridge2;
-	textures[2]  = textures[3] = bridge1;
+	textures[0] = textures[1] = BRIDGE2;
+	textures[2]  = textures[3] = BRIDGE1;
 	white;
 	bridge.drawOutside(Constraints(48, 1.5, 3), textures,flag);
 	ppm;
@@ -1805,248 +1816,432 @@ void DORdrawDrum() {
 }
 
 void DORdrawFence(db heightOfWall) {
-	int textures[6] = { 0,0,0,0,0,0 };
-	bool flag[6] = { 1,0,0,0,0,0 };
 
-	glColor3f(0.5, 0.5, 0.5);
+
+#pragma region Rock
+	white;
+	glNormal3f(0, 0.5, 0);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, ROCK);
 	//first topological tier
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(-5, 0, 27);
+	txt(0, 1);
 	glVertex3d(-2, 2, 23);
+	txt(2, 1);
 	glVertex3d(0, 0, 27);
+	txt(2, 0);
 	glVertex3d(1, 2, 23);
+	txt(0, 0);
 	glVertex3d(7, 0, 25.5);
+	txt(0, 1);
 	glVertex3d(5, 2, 22);
+	txt(2, 1);
 	glVertex3d(14, 0, 20);
+	txt(2, 0);
 	glVertex3d(12, 2, 18);
+	txt(0, 0);
 	glVertex3d(20, 0, 12);
+	txt(0, 1);
 	glVertex3d(18, 2, 10);
+	txt(2, 1);
 	glVertex3d(22, 0, 7);
+	txt(2, 0);
 	glVertex3d(20, 2, 4);
+	txt(0, 0);
 	glVertex3d(18, 0, -10);
+	txt(0, 1);
 	glVertex3d(11, 2, -10);
+	txt(2, 1);
 	glVertex3d(7, 0, -22);
+	txt(2, 0);
 	glVertex3d(4, 2, -18);
+	txt(0, 0);
 	glVertex3d(-14, 0, -24);
+	txt(0, 2);
 	glVertex3d(-10, 2, -15);
+	txt(3, 2);
 	glVertex3d(-17, 0, 20);
+	txt(3, 0);
 	glVertex3d(-14, 2, 16);
+	txt(0, 0);
 	glVertex3d(-5, 0, 20);
+	txt(0, 1);
 	glVertex3d(-2, 2, 17);
+	txt(2, 1);
 	glVertex3d(-5, 0, 27);
+	txt(2, 0);
 	glVertex3d(-2, 2, 23);
 	endf;
 
-	glColor3f(0.4, 0.4, 0.4);
+	glNormal3f(0, 1, 0);
 	//second topological tier
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(-2, 2, 23);
+	txt(0, 1);
 	glVertex3d(1, 2.5, 20);
+	txt(2, 1);
 	glVertex3d(1, 2, 23);
+	txt(2, 0);
 	glVertex3d(3, 2.5, 20);
+	txt(0, 0);
 	glVertex3d(5, 2, 22);
+	txt(0, 1);
 	glVertex3d(5, 2.5, 18);
+	txt(2, 1);
 	glVertex3d(12, 2, 18);
+	txt(2, 0);
 	glVertex3d(8, 2.5, 15);
+	txt(0, 0);
 	glVertex3d(18, 2, 10);
+	txt(0, 1);
 	glVertex3d(12, 2.5, 10);
+	txt(2, 1);
 	glVertex3d(20, 2, 4);
+	txt(2, 0);
 	glVertex3d(12, 2.5, 4);
+	txt(0, 0);
 	glVertex3d(11, 2, -10);
+	txt(0, 1);
 	glVertex3d(8, 2.5, -3);
+	txt(2, 1);
 	glVertex3d(4, 2, -18);
+	txt(2, 0);
 	glVertex3d(4, 2.5, -13);
+	txt(0, 0);
 	glVertex3d(-10, 2, -15);
+	txt(0, 1);
 	glVertex3d(-7, 2.5, -10);
+	txt(2, 1);
 	glVertex3d(-14, 2, 16);
+	txt(2, 0);
 	glVertex3d(-12, 2.5, 12);
+	txt(0, 0);
 	glVertex3d(-2, 2, 17);
+	txt(0, 1);
 	glVertex3d(0, 2.5, 14);
+	txt(2, 1);
 	glVertex3d(-2, 2, 23);
+	txt(2, 0);
 	glVertex3d(1, 2.5, 20);
 	endf;
 
-	glColor3f(0.3, 0.3, 0.3);
+
+	//distxt;
+
+	glNormal3f(0,2, 0);
 	//third topological tier
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(1, 2.5, 20);
+	txt(0, 1);
 	glVertex3d(2, 3, 15);
+	txt(2, 1);
 	glVertex3d(3, 2.5, 20);
+	txt(2, 0);
 	glVertex3d(3, 3, 16);
+	txt(0, 0);
 	glVertex3d(5, 2.5, 18);
+	txt(0, 1);
 	glVertex3d(5, 3, 14);
+	txt(2, 1);
 	glVertex3d(8, 2.5, 15);
+	txt(2, 0);
 	glVertex3d(8, 3, 10);
+	txt(0, 0);
 	glVertex3d(12, 2.5, 10);
+	txt(0, 1);
 	glVertex3d(10, 3, 7);
+	txt(2, 1);
 	glVertex3d(12, 2.5, 4);
+	txt(2, 0);
 	glVertex3d(10, 3, 3);
+	txt(0, 0);
 	glVertex3d(8, 2.5, -3);
+	txt(0, 1);
 	glVertex3d(6, 3, 0);
+	txt(2, 1);
 	glVertex3d(4, 2.5, -13);
+	txt(2, 0);
 	glVertex3d(4, 3, -7);
+	txt(0, 0);
 	glVertex3d(-7, 2.5, -10);
+	txt(0, 1);
 	glVertex3d(-4, 3, -2);
+	txt(2, 1);
 	glVertex3d(-12, 2.5, 12);
+	txt(2, 0);
 	glVertex3d(-6, 3, 9);
+	txt(0, 0);
 	glVertex3d(0, 2.5, 14);
+	txt(0, 1);
 	glVertex3d(1, 3, 12);
+	txt(2, 1);
 	glVertex3d(1, 2.5, 20);
+	txt(2, 0);
 	glVertex3d(2, 3, 15);
 	endf;
 
-	glColor3f(0.2, 0.2, 0.2);
-	//fourth topological tier
+	glNormal3f(0, 3, 0);
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(5, 3, 14);
+	txt(0, 1);
 	glVertex3d(5, 3.5, 11);
+	txt(1, 1);
 	glVertex3d(8, 3, 10);
+	txt(1, 0);
 	glVertex3d(5, 3.5, 10);
+	txt(0, 0);
 	glVertex3d(10, 3, 7);
+	txt(0, 1);
 	glVertex3d(6, 3.5, 7);
+	txt(1, 1);
 	glVertex3d(10, 3, 3);
+	txt(1, 0);
 	glVertex3d(7, 3.5, 3);
+	txt(0, 0);
 	glVertex3d(6, 3, 0);
+	txt(0, 1);
 	glVertex3d(6, 3.5, 2);
+	txt(1, 1);
 	glVertex3d(4, 3, -7);
+	txt(1, 0);
 	glVertex3d(4, 3.5, 0);
+	txt(0, 0);
 	glVertex3d(-4, 3, -2);
+	txt(0, 1);
 	glVertex3d(1, 3.5, 2);
+	txt(1, 1);
 	glVertex3d(-4, 3, -2);
+	txt(1, 0);
 	glVertex3d(-2, 3.5, 3);
+	txt(0, 0);
 	glVertex3d(-6, 3, 9);
+	txt(0, 1);
 	glVertex3d(1, 3.5, 8);
+	txt(1, 1);
 	glVertex3d(1, 3, 12);
+	txt(1, 0);
 	glVertex3d(2, 3.5, 10);
+	txt(0, 0);
 	glVertex3d(2, 3, 15);
+	txt(0, 1);
 	glVertex3d(3, 3.5, 11);
+	txt(1, 1);
 	glVertex3d(3, 3, 16);
+	txt(1, 0);
 	glVertex3d(5, 3.5, 11);
+	txt(0, 0);
 	glVertex3d(5, 3, 14);
 	endf;
 
-	glColor3f(0.1, 0.1, 0.1);
 	//fifth topological tier
+	glNormal3f(0, 4, 0);
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(-2, 3.5, 3);
+	txt(0, 1);
 	glVertex3d(2, 4, 5);
+	txt(1, 1);
 	glVertex3d(1, 3.5, 8);
+	txt(1, 0);
 	glVertex3d(2, 4, 7);
+	txt(0, 0);
 	glVertex3d(2, 3.5, 10);
+	txt(0, 1);
 	glVertex3d(3, 4, 10.5);
+	txt(1, 1);
 	glVertex3d(3, 3.5, 11);
+	txt(1, 0);
 	glVertex3d(3.5, 4, 10);
+	txt(0, 0);
 	glVertex3d(3, 3.5, 11);
+	txt(0, 1);
 	glVertex3d(4, 4, 10.5);
+	txt(1, 1);
 	glVertex3d(5, 3.5, 11);
+	txt(1, 0);
 	glVertex3d(4, 4, 10.5);
+	txt(0, 0);
 	glVertex3d(5, 3.5, 10);
+	txt(0, 1);
 	glVertex3d(5, 4, 8);
+	txt(1, 1);
 	glVertex3d(6, 3.5, 7);
+	txt(1, 0);
 	glVertex3d(5, 4, 7);
+	txt(0, 0);
 	glVertex3d(7, 3.5, 3);
+	txt(0, 1);
 	glVertex3d(5, 4, 3);
+	txt(1, 1);
 	glVertex3d(6, 3.5, 2);
+	txt(1, 0);
 	glVertex3d(4, 4, 3);
+	txt(0, 0);
 	glVertex3d(4, 3.5, 0);
+	txt(0, 1);
 	glVertex3d(3, 4, 5);
+	txt(1, 1);
 	glVertex3d(1, 3.5, 2);
+	txt(1, 0);
 	glVertex3d(2, 4, 5);
+	txt(0, 0);
 	glVertex3d(-2, 3.5, 3);
+	txt(0, 1);
 	glVertex3d(2, 4, 7);
 	endf;
 
-	glColor3f(0, 0, 0);
+	//glColor3f(0, 0, 0);
+	glNormal3f(0, 5, 0);
 	//sixth topological tier
 	beg(GL_TRIANGLE_STRIP);
+	txt(0, 0);
 	glVertex3d(4, 4, 3);
+	txt(0, 1);
 	glVertex3d(4, 4.3, 7);
+	txt(1, 1);
 	glVertex3d(3, 4, 5);
+	txt(1, 0);
 	glVertex3d(4, 4.3, 7);
+	txt(0, 0);
 	glVertex3d(2, 4, 5);
+	txt(0, 1);
 	glVertex3d(4, 4.3, 7);
+	txt(1, 1);
 	glVertex3d(2, 4, 7);
+	txt(1, 0);
 	glVertex3d(4, 4.3, 7);
+	txt(0, 0);
 	glVertex3d(3, 4, 10.5);
+	txt(0, 1);
 	glVertex3d(4, 4.3, 7);
+	txt(1, 1);
 	glVertex3d(3.5, 4, 10);
+	txt(1, 0);
 	glVertex3d(4, 4.3, 7);
+	txt(0, 0);
 	glVertex3d(4, 4, 10.5);
+	txt(0, 1);
 	glVertex3d(4, 4.3, 7);
+	txt(1, 1);
 	glVertex3d(5, 4, 8);
+	txt(1, 0);
 	glVertex3d(4, 4.3, 7);
+	txt(0, 0);
 	glVertex3d(5, 4, 7);
+	txt(0, 1);
 	glVertex3d(4, 4.3, 7);
+	txt(1, 1);
 	glVertex3d(5, 4, 3);
+	txt(1, 0);
 	glVertex3d(4, 4.3, 7);
+	txt(0, 0);
 	glVertex3d(4, 4, 3);
 	endf;
+
+#pragma endregion
 
 	//////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 
-
+	glDisable(GL_LIGHTING);
 	white;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, FENCE);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(-14, 0, -24);
+	txt(8, 0);
 	glVertex3d(-17, 0, 20);
+	txt(8, 1);
 	glVertex3d(-17, heightOfWall, 20);
+	txt(0, 1);
 	glVertex3d(-14, heightOfWall, -24);
 	endf;
 
+	glEnable(GL_LIGHTING);
 	pshm;
+
+	int textures[6] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2};
+	bool flag[6] = { 1,0,0,0,0,0 };
 	white;
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
 	feet.drawOutside(Constraints(3, 10, 3), textures,flag);
-	Cylinder top = Cylinder(1.2, 1.2, 1.5, 8, 1, false, 2);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, FOOT4);
+	Cylinder top = Cylinder(1.2, 1.2, 1.5, 8, 1, false, 2,false,true);
 	pshm;
-	glTranslated(1.5, 10.5, 1.5);
 	cull;
-	top.drawSide();
+	glTranslated(1.5, 10.8, 1.5);
+	top.draw();
+	glTranslated(0, 0.96, 0);
+	glBindTexture(GL_TEXTURE_2D, FOOT5);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 255, 255),8,false,false,false);
 	nocull;
 	ppm;
-	pshm;
-	glTranslated(1.5, 11.46, 1.5);
-	cull;
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 34, 0),8,false,false);
-	nocull;
+	distxt;
 	ppm;
 
-	ppm;
+	white;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, MARBLE_FENCE);
 
-	glColor3f(0.5, 0.2, 0.5);
-
-
+	glNormal3f(0, 0, 2);
 	beg(GL_QUADS);
-	glVertex3d(-17, 0, 20);
+	txt(0, 0);
+	glVertex3d(-15.5, 0, 20);
+	txt(3, 0);
 	glVertex3d(-5, 0, 20);
+	txt(3, 1);
 	glVertex3d(-5, heightOfWall, 20);
-	glVertex3d(-17, heightOfWall, 20);
+	txt(0, 1);
+	glVertex3d(-15.5, heightOfWall, 20);
 	endf;
 
+	glBindTexture(GL_TEXTURE_2D, FENCE);
+	glNormal3f(-2, 0, 0);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(-5, 0, 20);
+	txt(2, 0);
 	glVertex3d(-5, 0, 27);
+	txt(2, 1);
 	glVertex3d(-5, heightOfWall, 27);
+	txt(0, 1);
 	glVertex3d(-5, heightOfWall, 20);
 	endf;
 
+	glNormal3f(0, 0, 2);
 	beg(GL_QUADS);
+	txt(0,0);
 	glVertex3d(-5, 0, 27);
+	txt(1, 0);
 	glVertex3d(0, 0, 27);
+	txt(1, 1);
 	glVertex3d(0, heightOfWall, 27);
+	txt(0, 1);
 	glVertex3d(-5, heightOfWall, 27);
 	endf;
 
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(0, 0, 27);
+	txt(1.5, 0);
 	glVertex3d(7, 0, 25.5);
+	txt(1.5, 1);
 	glVertex3d(7, heightOfWall, 25.5);
+	txt(0, 1);
 	glVertex3d(0, heightOfWall, 27);
 	endf;
+	distxt;
 
+	glEnable(GL_LIGHTING);
 	pshm;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2060,44 +2255,68 @@ void DORdrawFence(db heightOfWall) {
 	glDisable(GL_BLEND);
 	ppm;
 
-	glColor3f(0.5, 0.2, 0.5);
 
+	glDisable(GL_LIGHTING);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, FENCE);
+	white;
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(14, 0, 20);
+	txt(2, 0);
 	glVertex3d(20, 0, 12);
+	txt(2, 1);
 	glVertex3d(20, heightOfWall, 12);
+	txt(0, 1);
 	glVertex3d(14, heightOfWall, 20);
 	endf;
 
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(20, 0, 12);
+	txt(1, 0);
 	glVertex3d(22, 0, 7);
+	txt(1, 1);
 	glVertex3d(22, heightOfWall, 7);
+	txt(0, 1);
 	glVertex3d(20, heightOfWall, 12);
 	endf;
 
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(22, 0, 7);
+	txt(4, 0);
 	glVertex3d(18, 0, -10);
+	txt(4, 1);
 	glVertex3d(18, heightOfWall, -10);
+	txt(0, 1);
 	glVertex3d(22, heightOfWall, 7);
 	endf;
 
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(18, 0, -10);
+	txt(3, 0);
 	glVertex3d(7, 0, -22);
+	txt(3, 1);
 	glVertex3d(7, heightOfWall, -22);
+	txt(0, 1);
 	glVertex3d(18, heightOfWall, -10);
 	endf;
 
-
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(7, 0, -22);
+	txt(5, 0);
 	glVertex3d(-14, 0, -24);
+	txt(5, 1);
 	glVertex3d(-14, heightOfWall, -24);
+	txt(0, 1);
 	glVertex3d(7, heightOfWall, -22);
 	endf;
 
+	distxt;
+	glEnable(GL_LIGHTING);
 	
 
 }
@@ -2224,7 +2443,7 @@ void DomeOfTheRock() {
 	DORdrawDomes();
 	glTranslated(0, 0.1, 0);
 	white;
-	DORdrawsides();
+	DORdrawWalls();
 	ppm;
 
 	pshm;

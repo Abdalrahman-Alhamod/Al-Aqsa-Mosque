@@ -24,11 +24,11 @@ MosqueDrawer::MosqueDrawer() {
 
 }
 
-void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, int sectorCnt, bool inside, bool lines) {
+void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, int sectorCnt, bool inside, bool lines , bool smooth) {
 	// Dome
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	Sphere sphere = Sphere(5 * size, sectorCnt, 18, true, 2, true);
+	Sphere sphere = Sphere(5 * size, sectorCnt, 18,smooth, 2, true);
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
 	if (inside) sphere.reverseNormals();
