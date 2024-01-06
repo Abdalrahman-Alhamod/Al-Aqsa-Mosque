@@ -128,7 +128,8 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
-int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5;
+int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
+,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -154,6 +155,16 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
 	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
 	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
+	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch1.bmp");
+	ARCH2 = LoadTexture((char*)"assets/domeOfTheRock/arch2.bmp");
+	ARCH3 = LoadTexture((char*)"assets/domeOfTheRock/arch3.bmp");
+	ARCH4 = LoadTexture((char*)"assets/domeOfTheRock/arch4.bmp");
+	ARCH5 = LoadTexture((char*)"assets/domeOfTheRock/arch5.bmp");
+	ARCH6 = LoadTexture((char*)"assets/domeOfTheRock/arch6.bmp");
+	ARCH7 = LoadTexture((char*)"assets/domeOfTheRock/arch7.bmp");
+	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
+	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum2.bmp");
+
 
 
 	// Initialize Camera
@@ -194,7 +205,6 @@ db openTheDoor = 0;
 
 
 void arch(db sectorCount , db radius, db thickness = 0) {
-	glEnable(GL_TEXTURE_2D);
 
 	db length = 0;
 	pshm;
@@ -667,9 +677,9 @@ void outerRoof() {
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
 	beg(GL_QUADS);
 	txt(0.2, 0);
-	glVertex3d(p - 1.6, 0.5, 0);
+	glVertex3d(p - 1.6, -0.2, 0);
 	txt(0.8, 0);
-	glVertex3d(p + a - 1.5, 0.5, 0);
+	glVertex3d(p + a - 1.5, -0.2, 0);
 	txt(0.6, 1);
 	glVertex3d(p + a - 15, 5, -dist - 22);
 	txt(0.3, 1);
@@ -816,42 +826,44 @@ void drawRing(db innerR, db outerR,db height, int sectorCnt, int texture1, int t
 
 void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bool isHalf, bool isArch = false) {
 
+	//texture 2 and 3 for front ring, 4 and 5 for back ring, 6 for outer cylinder and 7 for the inner one
+
 #pragma region front ring
-	
+	entxt;
+
 	pshm;
 	glNormal3f(0, 0, -1);
 	cull;
 	frontf;
-	drawRing(innerR, outerR, -height, sectorCnt, textures[0], textures[1], isHalf);
+	drawRing(innerR, outerR, -height, sectorCnt, textures[2], textures[3], isHalf);
 	backf;
 	nocull;
 	ppm;
 #pragma endregion
 
-		if (!isArch) {
+	entxt;
 #pragma region outer cylinder
+		if (!isArch) {
 		pshm;
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, textures[2]);
 		Cylinder outerC = Cylinder(outerR, outerR, height, sectorCnt);
 		outerC.setIsHalf(isHalf);
 		cull;
+		glBindTexture(GL_TEXTURE_2D, textures[6]);
 		outerC.drawSide();
 		nocull;
 		ppm;
-#pragma endregion
 		}
+#pragma endregion
 
 #pragma region inner cylinder
 	pshm;
-	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
 	innerC.setIsHalf(isHalf);
 	innerC.reverseNormals();
 	cull;
+	glBindTexture(GL_TEXTURE_2D, textures[7]);
 	innerC.drawSide();
 	nocull;
-	glDisable(GL_TEXTURE_2D);
 	ppm;
 #pragma endregion
 
@@ -859,11 +871,14 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	pshm;
 	glNormal3f(0, 0, 1);
 	cull;
-	drawRing(innerR, outerR, height, sectorCnt, textures[0], textures[1], isHalf);
+	drawRing(innerR, outerR, height, sectorCnt, textures[4], textures[5], isHalf);
 	nocull;
 	ppm;
 #pragma endregion
+
+distxt;
 	if (isHalf) {
+		white;
 		glNormal3f(0, -1, 0);
 		cull;
 		beg(GL_QUADS);
@@ -1111,11 +1126,13 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 
 void arch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
 	white;
+	entxt;
 	pshm;
 	glNormal3f(0, 0, 1);
 	glTranslated(0, 0, height/2.0 - 0.01);
 	cull;
 	frontf;
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	arch(sectorCnt/2.0, outerR);
 	backf;
 	nocull;
@@ -1125,13 +1142,15 @@ void arch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
 	glNormal3f(0, 0, -1);
 	glTranslated(0, 0, -height/2.0 + 0.01);
 	cull;
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
 	arch(sectorCnt/2.0, outerR);
 	nocull;
 	ppm;
 
-	glColor3f(0, 0.123, 0.21);
+	//glColor3f(0, 0.123, 0.21);
 	drawPipe(innerR, outerR, height, sectorCnt, textures, true, true);
 
+	distxt;
 }
 
 void DORdrawWalls() {
@@ -1537,10 +1556,9 @@ void DORdrawWalls() {
 
 void DORdrawArcadeSide() {
 
-	int textures[6] = { 0,0,0,0,0,0 }; db h = 20;
+	int textures[8] = { 0,0,0,0,0,0,0,0 }; db h = 20;
 	db pillarH = h + 3 + 2.5;
 
-	pshm;
 #pragma region bridge
 	Box bridge;
 	pshm;
@@ -1552,9 +1570,13 @@ void DORdrawArcadeSide() {
 	bridge.drawOutside(Constraints(48, 1.5, 3), textures,flag);
 	ppm;
 #pragma endregion
-	textures[0] = textures[1] = 0;
-	textures[2] = textures[3] = 0;
+
 #pragma region archs
+	entxt;
+
+	textures[0] = textures[1] = ARCH1;
+	textures[2] = textures[3] = textures[4] = textures[5] = ARCH2;
+	textures[6] = textures[7] = ARCH3;
 
 	db sectorCnt = 16;
 	pshm;
@@ -1571,7 +1593,6 @@ void DORdrawArcadeSide() {
 	glTranslated(40, 1.5 + pillarH, 1.5);
 	arch(6.5, 8, 3, sectorCnt, textures);
 	ppm;
-	ppm;
 #pragma endregion
 
 #pragma region pillars
@@ -1587,7 +1608,6 @@ void DORdrawArcadeSide() {
 	ppm;
 #pragma endregion
 
-	ppm;
 }
 
 void DORdrawArcade() {
@@ -1742,28 +1762,31 @@ void DORdrawDrum() {
 
 
 	db innerR = 33, outerR = 36, Outerheight = 3;
-	int textures[6] = { 0,0,0,0,0,0 };
+	int textures[8] = {0,0, 0,0,0,0,0,0 };
 	bool flag[6] = { 1,1,0,0,0,0 };
 	glTranslated(0, 28, 0);
-	glColor3f(1,1, 0.1);
 
 
-
+	white;
 	pshm;
 	cull;
 	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
 	pshm;
-	glTranslated(0, 8.6 * 20  / 20.0 - 1, 0);
-	Cylinder drum = Cylinder(33, 33, 20, 20, 1);
+	entxt;
+	glTranslated(0, 8.6 * 21  / 20.0 - 0.8 , 0);
+	glBindTexture(GL_TEXTURE_2D, DRUM2);
+	Cylinder drum = Cylinder(33, 33, 14, 20, 1);
 	drum.setUpAxis(2);
 	drum.reverseNormals();
 	drum.drawSide();
 	ppm;
 	pshm;
 	drum.reverseNormals();
-	glTranslated(0, 1, 0);
-	drum.set(36, 36, 5, 20, 1, true, 2);
+	glTranslated(0, 2.4, 0);
+	drum.set(36, 36, 2.5, 20, 1, true, 2);
+	glBindTexture(GL_TEXTURE_2D, DRUM1);
 	drum.drawSide();
+	distxt;
 	ppm;
 	pshm;
 	glColor3ub(0, 119, 182);
@@ -1783,7 +1806,12 @@ void DORdrawDrum() {
 		if (i % 5) {
 			pshm;
 			glRotated(angle, 0, 1, 0);
-			glTranslated(0, 0, -innerR * sin(11.25) + 2.13);
+			glTranslated(0, 2.8, -innerR * sin(11.25) + 2.13);
+			textures[0] = ARCH1;
+			textures[1] = ARCH4;
+			textures[7] = ARCH7;
+			textures[2] = textures[5] = ARCH5;
+			textures[3] = textures[4] = ARCH6;
 			arch(4.65, 5.65, 3, 16, textures);
 			ppm;
 		}
@@ -1791,7 +1819,7 @@ void DORdrawDrum() {
 			pshm;
 			glRotated(angle, 0, 1, 0);
 			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.3);
-			tier.drawOutside(Constraints(13, 35, 3.5), textures,flag);
+			tier.drawOutside(Constraints(13, 36.5, 3.5), textures,flag);
 
 			glColor3ub(0, 119, 182);
 			glTranslated(0, 40,2);
@@ -1809,7 +1837,7 @@ void DORdrawDrum() {
 			pshm;
 			glRotated(angle, 0, 1, 0);
 			glTranslated(outerR - 1.5, -29, 0);
-			drawDrumPillar(1, 23.5, 3, textures);
+			drawDrumPillar(1, 26.3, 3, textures);
 			ppm;
 		}
 	}
@@ -2336,7 +2364,7 @@ void DORdrawDomes() {
 	pshm;
 	distxt;
 	glTranslated(0, -0.32, 0);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.4, -p - a / 2.0), 6.75, Color(254, 203, 13),50, true, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 62.5, -p - a / 2.0), 6.9, Color(254, 203, 13),50, true, false);
 	ppm;
 
 	pshm;
@@ -2510,7 +2538,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//the width of the dome of the rock is 18m and the height is 11m the width of the door is 2.75m and the height is 4.5m 
 	//the virtual width and heights are 60 * 37 and the door is 15 * 10
 
-	Box wall; int textures[] = { 0,0,0,0,0,0 };
+	Box wall; int textures[] = { 0,0,0,0,0,0,0,0,0,0 };
 	db texturess[] = { 0,0,0,0,0,0 };
 	pshm;
 	wall.drawOutside(Constraints(1,1,1), textures);
@@ -2529,7 +2557,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 #pragma region design
 	
-
+	
 
 #pragma endregion
 
