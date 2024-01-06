@@ -57,6 +57,9 @@ public:
 
 	void drawOutside(const Constraints& c, int textures[], bool flag[]);
 
+	void drawOutside(const Constraints& c, const int texture, bool flag[]);
+
+
 
 	/**
 	* @brief draw the shadow of the box

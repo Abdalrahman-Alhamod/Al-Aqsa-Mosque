@@ -129,7 +129,8 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
-,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2;
+,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
+MARBLE4, MARBLE5;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -164,6 +165,14 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	ARCH7 = LoadTexture((char*)"assets/domeOfTheRock/arch7.bmp");
 	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
 	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum2.bmp");
+	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome1.bmp");
+	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
+	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
+	MARBLE1 = LoadTexture((char*)"assets/domeOfTheRock/marble1.bmp");
+	MARBLE2 = LoadTexture((char*)"assets/domeOfTheRock/marble2.bmp");
+	MARBLE3 = LoadTexture((char*)"assets/domeOfTheRock/marble3.bmp");
+	MARBLE4 = LoadTexture((char*)"assets/domeOfTheRock/marble4.bmp");
+	MARBLE5 = LoadTexture((char*)"assets/domeOfTheRock/marble5.bmp");
 
 
 
@@ -899,15 +908,17 @@ distxt;
 	}
 }
 
-void drawColumn(db pillarRadius, db pillarHeight) {
+void drawColumn(db pillarRadius, db pillarHeight, int texture) {
 	cull;
+	entxt;
 #pragma region main body
 	pshm;
-	glColor3f(1, 0.5, 0.5);
 	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 6);
 	c.setUpAxis(2);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	c.drawSide();
 	ppm;
+	
 #pragma endregion
 
 #pragma region bracelets
@@ -916,26 +927,28 @@ void drawColumn(db pillarRadius, db pillarHeight) {
 	white;
 	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 6);
 	bracelet.setUpAxis(2);
+	glBindTexture(GL_TEXTURE_2D, PILLAR2);
 	bracelet.drawSide();
 	ppm;
 
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 - 0.25, 0);
-	white;
 	bracelet.setUpAxis(2);
+	glBindTexture(GL_TEXTURE_2D, PILLAR1);
 	bracelet.drawSide();
 	ppm;
+	distxt;
 #pragma endregion
 	nocull;
 }
 
-void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture) {
 
 
 	pshm;
 	glTranslated(5, pillarHeight/2.0 + 1.401, 0);
 #pragma region column
-	drawColumn(pillarRadius, pillarHeight);
+	drawColumn(pillarRadius, pillarHeight,texture);
 #pragma endregion
 
 #pragma region base
@@ -945,17 +958,17 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.2, -3 * pillarRadius / 2.0);
 	pshm;
-	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures,flag);
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), PILLAR2,flag);
 	ppm;
 
 	pshm;
 	glTranslated(0.1, -1, 0.1);
-	base.drawOutside(Constraints(basesWidth - 0.2, 1, basesWidth - 0.2), textures,flag);
+	base.drawOutside(Constraints(basesWidth - 0.2, 1, basesWidth - 0.2), ARCH5,flag);
 	ppm;
 
 	pshm;
 	glTranslated(0, -1.2, 0);
-	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), textures,flag);
+	base.drawOutside(Constraints(basesWidth, 0.2, basesWidth), PILLAR2,flag);
 	ppm;
 
 	ppm;
@@ -965,23 +978,28 @@ void drawOuterPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	pshm;
 	glTranslated(0, pillarHeight / 2.0, 0);
 	glRotated(45, 0, 1, 0);
+	entxt;
 	Cylinder top = Cylinder(pillarRadius - 0.1, basesWidth - 0.5, 1.4, 4);
 	top.setUpAxis(2);
 	cull;
+	glBindTexture(GL_TEXTURE_2D, PILLAR1);
 	top.drawSide();
 	nocull;
+
+	distxt;
 	ppm;
+
 #pragma endregion
 	ppm;
 }
 
-void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture) {
 
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 1.5 + 0.1, 0);
 #pragma region body
 	pshm;
-	drawColumn(1.2, pillarHeight);
+	drawColumn(1.2, pillarHeight,texture);
 	ppm;
 #pragma endregion
 
@@ -992,14 +1010,17 @@ void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
-	base.drawOutside(Constraints(3, 1.5, 3), textures,flag);
+	base.drawOutside(Constraints(3, 1.5, 3), ARCH5);
 	ppm;
 	glRotated(45, 0, 1, 0);
+	entxt;
 	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
 	top.setUpAxis(2);
 	cull;
+	glBindTexture(GL_TEXTURE_2D, PILLAR1);
 	top.drawSide();
 	nocull;
+	distxt;
 	ppm;
 
 #pragma endregion
@@ -1008,19 +1029,19 @@ void drawInnerPillar(db pillarRadius, db pillarHeight, db basesWidth, int textur
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 2, -3 * pillarRadius / 2.0);
 	flag[1] = 0;
-	base.drawOutside(Constraints(basesWidth, 2, basesWidth), textures,flag);
+	base.drawOutside(Constraints(basesWidth, 2, basesWidth), PILLAR2,flag);
 	ppm;
 #pragma endregion
 
 	ppm;
 }
 
-void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int textures[]) {
+void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture) {
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + basesWidth + 0.1, 0);
 #pragma region body
 	pshm;
-	drawColumn(1.2, pillarHeight);
+	drawColumn(1.2, pillarHeight,texture);
 	ppm;
 #pragma endregion
 
@@ -1032,14 +1053,17 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
-	base.drawOutside(Constraints(3, 1.5, 3), textures);
+	base.drawOutside(Constraints(3, 1.5, 3), ARCH5);
 	ppm;
 	glRotated(45, 0, 1, 0);
+	entxt;
 	Cylinder top = Cylinder(pillarRadius + 0.2, basesWidth - 1, 1.4, 4);
 	top.setUpAxis(2);
 	cull;
+	glBindTexture(GL_TEXTURE_2D,PILLAR1);
 	top.drawSide();
 	nocull;
+	distxt;
 	ppm;
 
 #pragma endregion
@@ -1047,9 +1071,9 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 #pragma region base
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.5, -3 * pillarRadius / 2.0);
-	base.drawOutside(Constraints(basesWidth, 0.5,basesWidth), textures,flag);
+	base.drawOutside(Constraints(basesWidth, 0.5,basesWidth), PILLAR2,flag);
 	glTranslated(-0.25,-1.5,-0.25);
-	base.drawOutside(Constraints(basesWidth + 0.5, 1.5, basesWidth + 0.5), textures,flag);
+	base.drawOutside(Constraints(basesWidth + 0.5, 1.5, basesWidth + 0.5), PILLAR2,flag);
 
 	ppm;
 #pragma endregion
@@ -1081,12 +1105,12 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	white;
 	pshm;
 	glTranslated(20 - 0.5, 0.2, archLength + 0.5);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE1);
 	ppm;
 
 	pshm;
 	glTranslated(20 - 0.5 + doorWidth + 1, 0.2, archLength + 0.5);
-	drawOuterPillar(0.5, 12.7, 1.7, textures);
+	drawOuterPillar(0.5, 12.7, 1.7, MARBLE1);
 	ppm;
 #pragma endregion
 
@@ -1216,42 +1240,42 @@ void DORdrawWalls() {
 
 	pshm;
 	glTranslated(20-0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE5);
 	ppm;
 
 	pshm;
 	glTranslated(20 - 0.5 + doorWidth + 1 , 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE5);
 	ppm;
 
 	pshm;
 	glTranslated(25 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(33.7 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(38.7 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(15 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(6.3 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(1.3 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, textures);
+	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
 	ppm;
 
 
@@ -1599,12 +1623,12 @@ void DORdrawArcadeSide() {
 	h += 1;
 	pshm;
 	glTranslated(16, 0.5, 1.5);
-	drawInnerPillar(1, h, 3, textures);
+	drawInnerPillar(1, h, 3, MARBLE3);
 	ppm;
 
 	pshm;
 	glTranslated(32, 0.5, 1.5);
-	drawInnerPillar(1, h, 3, textures);
+	drawInnerPillar(1, h, 3, MARBLE4);
 	ppm;
 #pragma endregion
 
@@ -1773,9 +1797,9 @@ void DORdrawDrum() {
 	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
 	pshm;
 	entxt;
-	glTranslated(0, 8.6 * 21  / 20.0 - 0.8 , 0);
+	glTranslated(0, 8.6 * 25.8 / 20.0 , 0);
 	glBindTexture(GL_TEXTURE_2D, DRUM2);
-	Cylinder drum = Cylinder(33, 33, 14, 20, 1);
+	Cylinder drum = Cylinder(33, 33, 19.7, 20, 1);
 	drum.setUpAxis(2);
 	drum.reverseNormals();
 	drum.drawSide();
@@ -1822,22 +1846,25 @@ void DORdrawDrum() {
 			tier.drawOutside(Constraints(13, 36.5, 3.5), textures,flag);
 
 			glColor3ub(0, 119, 182);
-			glTranslated(0, 40,2);
+			glTranslated(0, 40,2.3);
 			tier.drawOutside(Constraints(15, 16.5, 3), textures);
 			ppm;
 		}
 	}
 
 
-	i = 0;
+	i = 0; int texture; white;
 	for (db angle = 18; angle <= 360; angle += 18) {
 		i++;
 		if (i % 5 != 0 && i % 5 != 4)
 		{
+			if (i % 5 == 1) texture = MARBLE1;
+			else if (i % 5 == 2) texture = MARBLE5;
+			else texture = MARBLE2;
 			pshm;
 			glRotated(angle, 0, 1, 0);
 			glTranslated(outerR - 1.5, -29, 0);
-			drawDrumPillar(1, 26.3, 3, textures);
+			drawDrumPillar(1, 26.3, 3, texture);
 			ppm;
 		}
 	}
@@ -2358,13 +2385,15 @@ void DORdrawDomes() {
 
 	distxt;
 	cull;
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 61.2, -p - a / 2.0), 7.2, Color(254, 203, 13),50);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(254, 203, 13),50);
 	nocull;
 	
 	pshm;
-	distxt;
+	entxt;
 	glTranslated(0, -0.32, 0);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 62.5, -p - a / 2.0), 6.9, Color(254, 203, 13),50, true, false);
+	glBindTexture(GL_TEXTURE_2D, DOME1);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7, Color(255, 255, 255),50, true, false);
+	distxt;
 	ppm;
 
 	pshm;

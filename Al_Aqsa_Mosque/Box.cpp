@@ -280,6 +280,12 @@ if(!flag[5])
 	ppm;
 }
 
+void Box::drawOutside(const Constraints& c, const int texture, bool flag[]) {
+	int textures[6] = { texture,texture,texture,texture,texture,texture };
+	Box::drawOutside(c, textures, flag);
+}
+
+
 void Box::drawInside(const Constraints& c, int texture[]) {
 
 	db width = c.width;
