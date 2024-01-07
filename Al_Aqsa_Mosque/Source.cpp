@@ -130,7 +130,7 @@ GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
 ,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
-MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4;
+MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -176,6 +176,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	MARBLE3 = LoadTexture((char*)"assets/domeOfTheRock/marble3.bmp");
 	MARBLE4 = LoadTexture((char*)"assets/domeOfTheRock/marble4.bmp");
 	MARBLE5 = LoadTexture((char*)"assets/domeOfTheRock/marble5.bmp");
+	MARBLE6 = LoadTexture((char*)"assets/domeOfTheRock/marble6.bmp");
+	MARBLE7 = LoadTexture((char*)"assets/domeOfTheRock/marble7.bmp");
 	WHITE_STONE = LoadTexture((char*)"assets/domeOfTheRock/whiteStone.bmp");
 	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
 	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier1.bmp");
@@ -1104,6 +1106,7 @@ void drawEntrance(db doorWidth, db doorHeight) {
 	pshm;
 	glColor3f(0.9, 0.9, 0.9);
 	glTranslated(22.5, 0.01, 0);
+	textures[1] = MARBLE7; textures[2] = textures[3] = textures[4] = textures[5] = WHITE_STONE;
 	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures,flag);
 	ppm;
 #pragma endregion
@@ -1239,6 +1242,7 @@ void DORdrawWalls() {
 	pshm;
 	glColor3f(0.9, 0.9, 0.9);
 	glTranslated(0, 0.01, 0);
+	textures[1] = MARBLE6; textures[2] = textures[3] = textures[4] = textures[5] = WHITE_STONE;
 	marbleGround.drawOutside(Constraints(60, 0.2, archLength+1), textures);
 	ppm;
 #pragma endregion
@@ -1304,7 +1308,7 @@ void DORdrawWalls() {
 #pragma endregion
 
 #pragma region umbrellas
-	textures[0] = WOOD; textures[1] = textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = LEAD;
+	textures[0] = textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = WOOD; textures[1] = LEAD;
 	pshm;
 	glTranslated(5, doorHeight-archbaseHeight, c.length);
 	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6/2, archbaseHeight / 2.0, archLength),textures);
