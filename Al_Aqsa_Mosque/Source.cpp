@@ -168,8 +168,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	LEAD = LoadTexture((char*)"assets/domeOfTheRock/arch9.bmp");
 	ARCH10 = LoadTexture((char*)"assets/domeOfTheRock/arch10.bmp");
 	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
-	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum02.bmp");
-	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome1.bmp");
+	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum002.bmp");
+	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
 	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
 	MARBLE1 = LoadTexture((char*)"assets/domeOfTheRock/marble1.bmp");
@@ -1839,9 +1839,9 @@ void DORdrawDrum() {
 	glTranslated(0, Outerheight / 2.0 + 5.65, 0);
 	pshm;
 	entxt;
-	glTranslated(0, 8.6 * 25.8 / 20.0 , 0);
+	glTranslated(0, 8.6 * 47 / 20.0 , 0);
 	glBindTexture(GL_TEXTURE_2D, DRUM2);
-	Cylinder drum = Cylinder(33, 33, 19.7, 20, 1);
+	Cylinder drum = Cylinder(33, 33, 38, 20, 1);
 	drum.setUpAxis(2);
 	drum.reverseNormals();
 	drum.drawSide();
@@ -2437,7 +2437,7 @@ void DORdrawDomes() {
 	entxt;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7, Color(255, 255, 255),50, true, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255),50, true, false);
 	distxt;
 	ppm;
 
