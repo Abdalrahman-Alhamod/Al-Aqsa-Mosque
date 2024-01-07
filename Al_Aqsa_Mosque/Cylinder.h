@@ -10,10 +10,6 @@
 // - stacks     : the number of subdivisions along z-axis
 // - smooth     : surface shading smooth(true, default) or flat(false)
 // - up-axis    : top surface facing: X=1, Y=2, Z=3(default)
-//
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2018-03-27
-// UPDATED: 2023-03-12
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef GEOMETRY_CYLINDER_H

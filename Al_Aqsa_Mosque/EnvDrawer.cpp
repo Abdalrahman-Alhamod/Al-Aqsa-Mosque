@@ -853,62 +853,13 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	float width = 60, height = 30, length = 30;
 	length = constraints.length;
 	width = max(constraints.width, radius * 2);
-	/*if (constraints.width >= radius * 2) {
-		width = constraints.width;
-	}
-	else {
-		width = radius * 2;
-	}*/
-
 	height = max(constraints.height, radius);
-	//if (constraints.height >= radius) {
-	//	height = constraints.height;
-	//}
-	//else {
-	//	height = radius;
-	//}
 
 	int sectorCount = sectors; // for dividing cylinder and circle ( increase for more quality )
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	// Fill the bottom gab
-	//glPushMatrix();
-	//glTranslatef(radius, 0, -length / 2);
-	//envBoxDrawer.drawOutside(Constraints(width / 2 - radius, 1, length), texture);
-	//glPopMatrix();
-	//
-	//glPushMatrix();
-	//glTranslatef(-width / 2, 0, -length / 2);
-	//envBoxDrawer.drawOutside(Constraints(width / 2 - radius, 1, length), texture);
-	//glPopMatrix();
-
-
-	//the front face
-
-	// Fill the gab
-
-	// top
-	//glPushMatrix();
-	//glTranslatef(-width / 2, radius, length / 2 - 1);
-	////envBoxDrawer.drawOutside(Constraints(width, height - radius, 1), texture);
-	//glPopMatrix();
-	//
-	//// right
-	//glPushMatrix();
-	//glTranslatef(radius, 0, length / 2 - 1);
-	////envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
-	//glPopMatrix();
-	//
-	//// left
-	//glPushMatrix();
-	//glTranslatef(-width / 2, 0, length / 2 - 1);
-	////envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
-	//glPopMatrix();
-
 	// Start drawing cylinder
 	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glPushMatrix();
 	cull;
@@ -941,8 +892,6 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	glPopMatrix();
 
 	//the back face
-
-	// Fill the gab
 
 	//top
 	glPushMatrix();
@@ -1076,10 +1025,6 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 
 void EnvDrawer::drawArchway(const float size, const float pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector, const int innerSectorCount) {
 	int texture = stonesTexture[textureIndex];
-	//glPushMatrix();
-	//glTranslatef(-size * 1.5, -pillarHeight * 0.5 - 0.1, 0);
-	//EnvDrawer::drawPillar(0.25f * size, pillarHeight, texture, 0.2 * size, pillarCylinderSector, pillarBaseSector);
-	//glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-size * 2, 0, -size * 0.5);
@@ -1297,17 +1242,7 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 }
 
 void EnvDrawer::decodeEnables(bool* keys) {
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD1])
-	{
-		drawGardens = !drawGardens;
-		if (drawGardens) {
-			sounds[6].Play(true);
-		}
-		else {
-			sounds[6].Stop();
-		}
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD0])
 	{
 		drawSun = !drawSun;
 	}
@@ -1407,126 +1342,124 @@ void EnvDrawer::drawPigeons() {
 }
 
 void EnvDrawer::drawAllGardens() {
-	if (drawGardens) {
-		float treeSize = 0.9;
-		bool isTreeSmall = true;
+	float treeSize = 0.9;
+	bool isTreeSmall = true;
 
+	pshm;
+	drawGarden(Point(-16, -9.98, 0), 10, 20,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(26, -9.98, 0), 10, 20,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(-16, -9.98, -35), 10, 20,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(26, -9.98, -35), 10, 20,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	for (int i = 0; i < 3; i++) {
 		pshm;
-		drawGarden(Point(-16, -9.98, 0), 10, 20,
-			10, treeSize, isTreeSmall);
+		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
+			Point(-6 + i * 10, -9.98, -35) ,
+			Point(-6 + i * 10, -9.98, -27) ,
+			Point(-14 + i * 10, -9.98, -27) };
+		drawGrassLand(grassLandPoints1, 10);
 		ppm;
+	}
 
+	for (int i = 0; i < 3; i++) {
 		pshm;
-		drawGarden(Point(26, -9.98, 0), 10, 20,
-			10, treeSize, isTreeSmall);
+		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
+			Point(-6 + i * 10, -9.98, -25) ,
+			Point(-6 + i * 10, -9.98, -17) ,
+			Point(-14 + i * 10, -9.98, -17) };
+		drawGrassLand(grassLandPoints1, 10);
 		ppm;
+	}
 
+	for (int i = 0; i < 3; i++) {
 		pshm;
-		drawGarden(Point(-16, -9.98, -35), 10, 20,
-			10, treeSize, isTreeSmall);
+		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
+			Point(-6 + i * 10, -9.98, 2) ,
+			Point(-6 + i * 10, -9.98, 10) ,
+			Point(-14 + i * 10, -9.98, 10) };
+		drawGrassLand(grassLandPoints1, 10);
 		ppm;
+	}
 
+	for (int i = 0; i < 3; i++) {
 		pshm;
-		drawGarden(Point(26, -9.98, -35), 10, 20,
-			10, treeSize, isTreeSmall);
+		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 12) ,
+			Point(-6 + i * 10, -9.98, 12) ,
+			Point(-6 + i * 10, -9.98, 20) ,
+			Point(-14 + i * 10, -9.98, 20) };
+		drawGrassLand(grassLandPoints1, 10);
 		ppm;
+	}
 
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
-				Point(-6 + i * 10, -9.98, -35) ,
-				Point(-6 + i * 10, -9.98, -27) ,
-				Point(-14 + i * 10, -9.98, -27) };
-			drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
-				Point(-6 + i * 10, -9.98, -25) ,
-				Point(-6 + i * 10, -9.98, -17) ,
-				Point(-14 + i * 10, -9.98, -17) };
-			drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
-				Point(-6 + i * 10, -9.98, 2) ,
-				Point(-6 + i * 10, -9.98, 10) ,
-				Point(-14 + i * 10, -9.98, 10) };
-			drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 12) ,
-				Point(-6 + i * 10, -9.98, 12) ,
-				Point(-6 + i * 10, -9.98, 20) ,
-				Point(-14 + i * 10, -9.98, 20) };
-			drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 4; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
-					Point(-14 + i * 10 , -9.98, 2) ,
-					Point(-14 + i * 10 , -9.98, 20) ,
-					Point(-16 + i * 10, -9.98, 20) };
-			drawPassage(passagePoints1, 5);
-			ppm;
-		}
-
-
-		for (int i = 0; i < 4; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
-					Point(-14 + i * 10 , -9.98, -35) ,
-					Point(-14 + i * 10 , -9.98, -17) ,
-					Point(-16 + i * 10, -9.98, -17) };
-			drawPassage(passagePoints1, 5);
-			ppm;
-		}
-
+	for (int i = 0; i < 4; i++) {
 		pshm;
-		Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
-				Point(16  , -9.98, 0) ,
-				Point(16  , -9.98, 2) ,
-				Point(-16 , -9.98, 2) };
-		drawPassage(passagePoints1, 4);
+		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
+				Point(-14 + i * 10 , -9.98, 2) ,
+				Point(-14 + i * 10 , -9.98, 20) ,
+				Point(-16 + i * 10, -9.98, 20) };
+		drawPassage(passagePoints1, 5);
 		ppm;
+	}
 
+
+	for (int i = 0; i < 4; i++) {
 		pshm;
-		Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
-				Point(16  , -9.98, -17) ,
-				Point(16  , -9.98, -15) ,
-				Point(-16 , -9.98, -15) };
-		drawPassage(passagePoints2, 4);
+		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
+				Point(-14 + i * 10 , -9.98, -35) ,
+				Point(-14 + i * 10 , -9.98, -17) ,
+				Point(-16 + i * 10, -9.98, -17) };
+		drawPassage(passagePoints1, 5);
 		ppm;
+	}
 
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
-					Point(-6 + i * 10  , -9.98,10) ,
-					Point(-6 + i * 10  , -9.98, 12) ,
-					Point(-14 + i * 10 , -9.98, 12) };
-			drawPassage(passagePoints1, 3);
-			ppm;
-		}
+	pshm;
+	Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
+			Point(16  , -9.98, 0) ,
+			Point(16  , -9.98, 2) ,
+			Point(-16 , -9.98, 2) };
+	drawPassage(passagePoints1, 4);
+	ppm;
 
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
-					Point(-6 + i * 10  , -9.98,-27) ,
-					Point(-6 + i * 10  , -9.98, -25) ,
-					Point(-14 + i * 10 , -9.98, -25) };
-			drawPassage(passagePoints1, 3);
-			ppm;
-		}
+	pshm;
+	Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
+			Point(16  , -9.98, -17) ,
+			Point(16  , -9.98, -15) ,
+			Point(-16 , -9.98, -15) };
+	drawPassage(passagePoints2, 4);
+	ppm;
+
+	for (int i = 0; i < 3; i++) {
+		pshm;
+		Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
+				Point(-6 + i * 10  , -9.98,10) ,
+				Point(-6 + i * 10  , -9.98, 12) ,
+				Point(-14 + i * 10 , -9.98, 12) };
+		drawPassage(passagePoints1, 3);
+		ppm;
+	}
+
+	for (int i = 0; i < 3; i++) {
+		pshm;
+		Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
+				Point(-6 + i * 10  , -9.98,-27) ,
+				Point(-6 + i * 10  , -9.98, -25) ,
+				Point(-14 + i * 10 , -9.98, -25) };
+		drawPassage(passagePoints1, 3);
+		ppm;
 	}
 
 }
@@ -1575,6 +1508,21 @@ void EnvDrawer::drawBench() {
 		ppm;
 	}
 	ppm;
+}
+
+void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture) {
+	for (int i = 0; i < count; i++) {
+		for (int j = 0; j < i + 1; j++) {
+			pshm;
+			glTranslatef(0, -i-unitConstraints.height, j * unitConstraints.length);
+			envBoxDrawer.drawOutside(unitConstraints, texture);
+			ppm;
+		}
+	}
+}
+
+void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count) {
+	drawStairs(unitConstraints, count, stonesTexture[7]);
 }
 
 void EnvDrawer::drawBenchesGroub() {
@@ -2068,7 +2016,7 @@ void EnvDrawer::drawDynamic(bool* keys) {
 		ppm;
 	}
 
-	/*
+
 	drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
 
 	pshm;
@@ -2100,11 +2048,12 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	ppm;
 
 	drawPigeons();
-	*/
+
 }
 
 void EnvDrawer::draw(bool* keys) {
-	glCallList(envDisplayList);
-	//drawAllGardens();
-	//drawDynamic(keys);
+	/*glCallList(envDisplayList);
+	drawAllGardens();
+	drawDynamic(keys);*/
+	drawStairs(Constraints(3, 1, 1), 7);
 }

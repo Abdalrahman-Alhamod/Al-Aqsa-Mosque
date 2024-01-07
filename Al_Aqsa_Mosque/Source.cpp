@@ -50,14 +50,13 @@ int mouseX = 0;	// Current mouse X-coordinate
 int mouseY = 0;	// Current mouse Y-coordinate
 bool isClicked = false;	// Flag indicating whether the left mouse button is clicked
 bool isRClicked = false;	// Flag indicating whether the right mouse button is clicked
+GLfloat zoomFactor = 1.0f;
 
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
 void ToggleFullscreen();	// Function to toggle between full-screen and windowed mode
 void SwitchToWindowedMode();	// Function to switch to windowed mode
 bool SwitchToFullScreen();	// Function to switch to full-screen mode
-void initTextures();
-void initShadows();
 void updatePerspective();
 void updateZoomFactor(bool zoom);
 
@@ -91,13 +90,6 @@ Camera* camera;
 // Console Object
 Console console;
 
-// More Texture Images Variables
-int wood, ground;
-
-// Shadows Variables
-M3DMatrix44f shadowMat;
-M3DVector4f vPlaneEquation;
-
 // Mosque Drawer Object
 MosqueDrawer mosqueDrawer;
 
@@ -123,15 +115,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::changeMode();
 
 	// Initialize Console
-	console.init();
-	// Print testing message
-	//console.print("Hello, Console!");
-
-	// Initialize Texture Images
-	initTextures();
-
-	// Initialize Shadows
-	initShadows();
+	// console.init();
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
@@ -143,183 +127,6 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 
 	return TRUE;										// Initialization Went OK
-}
-
-float angle = 90;
-GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
-
-void square(void) {
-	glPushMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, wood);
-	glTranslatef(0, 2.5, 0);
-	glScalef(2, 2, 2);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1, 0);
-	glVertex3f(-1, -1, 0);
-	glTexCoord2f(1, 1);
-	glVertex3f(-1, 1, 0);
-	glTexCoord2f(0, 1);
-	glVertex3f(1, 1, 0);
-	glTexCoord2f(0, 0);
-	glVertex3f(1, -1, 0);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-}
-
-void bench(void) {
-	glPushMatrix();
-	glColor4f(1, 1, 1, 0.4);
-	glTranslatef(0, -2.5, 0);
-	glScalef(4, 2, 4);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1, 0);
-	glVertex3f(-1, -1, 1);
-	glTexCoord2f(1, 1);
-	glVertex3f(-1, 1, -0.5);
-	glTexCoord2f(0, 1);
-	glVertex3f(1, 1, -0.5);
-	glTexCoord2f(0, 0);
-	glVertex3f(1, -1, 1);
-	glEnd();
-	glPopMatrix();
-}
-
-void testReflection() {
-	// Disable the color mask and depth mask
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glDepthMask(GL_FALSE);
-
-	// Enable stencil testing
-	glEnable(GL_STENCIL_TEST);
-
-	// Set the stencil buffer to replace the next lot of data
-	glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
-	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-
-	// Set the data plane to be replaced (assuming `bench` is a function to set the data plane)
-	bench();
-
-	// Enable the color mask and depth mask
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-
-	// Set the stencil buffer to keep the next lot of data
-	glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-	// Disable depth testing of the reflection
-	glDisable(GL_DEPTH_TEST);
-
-	// Apply transformations to draw the reflection
-	glPushMatrix();
-	glScalef(1.0f, -1.0f, 1.0f);  // Flip the reflection vertically
-	glTranslatef(0, 2, 0);        // Translate the reflection onto the drawing plane
-	glRotatef(angle, 0, 1, 0);     // Rotate the reflection
-	square();                      // Draw the square as our reflection
-	glPopMatrix();
-
-	// Enable depth testing
-	glEnable(GL_DEPTH_TEST);
-
-	// Disable stencil testing
-	glDisable(GL_STENCIL_TEST);
-
-	// Enable alpha blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// Draw the bench with alpha blending
-	bench();
-
-	// Disable alpha blending
-	glDisable(GL_BLEND);
-
-	// Rotate the square and draw it
-	glRotatef(angle, 0, 1, 0);
-	square();
-
-}
-
-void testEnv() {
-	// Testing Camera
-
-	glPushMatrix();
-	glTranslatef(-4, 2, +2);
-	glColor3f(0, 0, 1);
-	//PrimitiveDrawer().drawCube(Point(0, 0, -5), 2, Color(255, 255, 255));   // Nedd fixing for lighting
-	auxSolidCube(2);
-	glPopMatrix();
-
-	// Testing Light & Shadows
-
-	// Set light position in world coordinates ( fix moving with camera bug)
-
-	// Lighting Destination Test
-
-	glPushMatrix();
-	glColor3f(1, 0, 0);
-	glutSolidSphere(1, 100, 100);
-	glPopMatrix();
-
-	// Shadow
-	initShadows();
-	glDisable(GL_LIGHTING);
-	glPushMatrix();
-	glTranslatef(0, 0.1, 0);
-	glColor3b(0, 0, 0);
-	glMultMatrixf((GLfloat*)shadowMat);
-	glutSolidSphere(1, 100, 100);
-	glPopMatrix();
-	glEnable(GL_LIGHTING);
-
-
-	// Test Texture
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glPushMatrix();
-	glTranslatef(0, 2, -20);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, wood);
-	glNormal3f(0, 0, 1);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);       glVertex3f(5, -5, 0);
-	glTexCoord2f(-1, 0);       glVertex3f(5, 5, 0);
-	glTexCoord2f(-1, -1);       glVertex3f(-5, 5, 0);
-	glTexCoord2f(0, -1);       glVertex3f(-5, -5, 0);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslated(30, 10, 10);
-	testReflection();
-	glPopMatrix();
-
-	if (keys[VK_ADD]) {
-		updateZoomFactor(ZOOM_INCREASE);
-	}
-	if (keys[VK_SUBTRACT]) {
-		updateZoomFactor(ZOOM_DECREASE);
-	}
-
-
-	// Rotate and change rotate angle
-	/*glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	angle++;
-
-	glBegin(GL_TRIANGLES);
-
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3i(0, 1, -6);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3i(-1, -1, -6);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3i(1, -1, -6);
-
-	glEnd();*/
 }
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
@@ -337,7 +144,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-
 	camera = Camera::getInstance();
 
 	camera->Render();
@@ -346,7 +152,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
 		if (keys[VK_SHIFT]) {
-			camera->decodeKeyboard(keys, 0.05);//0.05
+			camera->decodeKeyboard(keys, 0.05);
 		}
 		else {
 			camera->decodeKeyboard(keys, 0.01);
@@ -363,11 +169,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.05);
+		camera->decodeKeyboard(keys, 0.1);
 	}
 
 	//envDrawer.handleSounds(camera->getPosition());
-	console.print(to_string(int(camera->getPosition().x*10+350)) + '+' + to_string(int(camera->getPosition().z*10+500)));
+	console.print(to_string(int(camera->getPosition().x * 10 + 350)) + '+' + to_string(int(camera->getPosition().z * 10 + 500)));
 
 	envDrawer.draw(keys);
 	//glCallList(list);
@@ -384,26 +190,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
-}
-
-void initTextures() {
-	glEnable(GL_TEXTURE_2D);
-	wood = LoadTexture((char*)"assets/materials/tree1.bmp", 255);
-	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
-	// note if you load an image the opengl while on the GL_Texture_2D himself
-	glDisable(GL_TEXTURE_2D);
-}
-
-void initShadows() {
-
-	M3DVector3f points[3] = { { -30.0f, -1.9f, -20.0f },{ -30.0f, -1.9f, 20.0f },
-		{ 40.0f, -1.9f, 20.0f } };
-
-	m3dGetPlaneEquation(vPlaneEquation, points[0], points[1],
-		points[2]);
-	// Calculate projection matrix to draw shadow on the ground
-	m3dMakePlanarShadowMatrix(shadowMat, vPlaneEquation,
-		envDrawer.LightPos);
 }
 
 void updatePerspective() {
@@ -432,7 +218,6 @@ void updateZoomFactor(bool zoom) {
 		}
 	}
 }
-
 
 
 /**

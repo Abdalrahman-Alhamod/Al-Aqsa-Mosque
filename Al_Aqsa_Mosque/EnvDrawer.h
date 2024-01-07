@@ -53,8 +53,18 @@ public:
 	 */
 	void drawFountain(const Point& position, const float size);
 
+	/**
+	 * @brief Draw a bird at the specified position with the given size.
+	 * @param position The position where the bird will be drawn.
+	 * @param size The size of the bird.
+	 */
 	void drawBird(const Point& position, const float size);
 
+	/**
+	 * @brief Draw a Quraan at the specified position with the given size.
+	 * @param position The position where the Quraan will be drawn.
+	 * @param size The size of the Quraan.
+	 */
 	void drawQuraan(const Point& position, const float size);
 
 	/**
@@ -91,7 +101,11 @@ public:
 	 */
 	void drawSkyBox(const Constraints& constraints);
 
+	/**
+	* @brief Change the texture of the skybox.
+	*/
 	void changeSkyBoxTexture();
+
 	/**
 	 * @brief Draw a garden with grass and trees.
 	 * @param point Position, width, and length of the garden.
@@ -105,7 +119,7 @@ public:
 	 *
 	 * Example usage: "envDrawer.drawGarden({0, 0, 0}, 100, 100, 500, 0.1, true);"
 	 */
-	void drawGarden(const Point& point, const float width, const float length,const int grassTilesCount,const float treeSize, bool isSmall);
+	void drawGarden(const Point& point, const float width, const float length, const int grassTilesCount, const float treeSize, bool isSmall);
 
 	/**
 	* @brief Draw a textured cylindrical column with decorative elements.
@@ -117,7 +131,7 @@ public:
 	* Example: "envDrawer.drawColumn(3);"
 	* Draws a larger column with a size factor of 3.
 	*/
-	void drawPillar(const float radius,const float height, const int texture,const float baseHeight=0.2, const int cylinderSector=18,const int baseSector=18);
+	void drawPillar(const float radius, const float height, const int texture, const float baseHeight = 0.2, const int cylinderSector = 18, const int baseSector = 18);
 
 	/**
 	 * @brief Draw a tiled passage using the specified points and count.
@@ -139,7 +153,7 @@ public:
 	 * @param constraints The constraints defining the size of the rectangular prism.
 	 * @param texture The texture ID to be applied to the surfaces.
 	 */
-	void drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints,const int sectors,const  int texture);
+	void drawHalfCylinderInRectangularPrism(const float radius, const Constraints& constraints, const int sectors, const  int texture);
 
 	/**
 	* @brief Draw an archway composed of pillars and a curved structure.
@@ -150,8 +164,8 @@ public:
 	* @param pillarCylinderSector The number of sectors in the pillar cylinders.
 	* @param pillarBaseSector The number of sectors in the pillar bases.
 	*/
-	void drawArchway(const float size,const float pillarHeight,const int count,const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18,const int innerSectorCount=18);
-	
+	void drawArchway(const float size, const float pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector = 18, const int pillarBaseSector = 18, const int innerSectorCount = 18);
+
 	/**
 	* @brief Draw a hallway with alternating rectangular and curved sections.
 	* @param size The size of each section in the hallway.
@@ -160,7 +174,7 @@ public:
 	* @param length The overall length of the hallway.
 	* @param textureIndex The index of the texture to be applied, between 0 and 9.
 	*/
-	void drawHallway(const float size, const float wallHeight, const int count,const float length, const int textureIndex,const int sectorCount=18);
+	void drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex, const int sectorCount = 18);
 
 	/**
 	* @brief Draw a building with the specified size and building texture.
@@ -181,7 +195,7 @@ public:
 	* @param sunRadius The radius of the sun.
 	* @param speed The speed at which the sun moves, in units per second.
 	*/
-	void simulateSun(const float rotatioRadius=40,const float sunRadius=10,const float speed=THREE_HOURS_PER_SECOND);
+	void simulateSun(const float rotatioRadius = 40, const float sunRadius = 10, const float speed = THREE_HOURS_PER_SECOND);
 
 	/**
 	* @brief Draw a lighting pillar at the specified position with optional parameters.
@@ -190,34 +204,137 @@ public:
 	* @param size The size factor determining the dimensions of the pillar.
 	* @param pillarHeight The height of the lighting pillar.
 	*/
-	void drawLightingPillar(const Point& position,const int lightIndex,const float size=1,const float pillarHeight=4);
-	
+	void drawLightingPillar(const Point& position, const int lightIndex, const float size = 1, const float pillarHeight = 4);
+
+	/**
+	 * @brief Decode key inputs to control various features.
+	 * @param keys An array indicating the state of keys, where true means a key is pressed.
+	 */
 	void decodeEnables(bool* keys);
-	
+
+	/**
+	* @brief Draws a cylindric minaret with the specified size and texture.
+	* @param size The size of the minaret.
+	* @param texture The texture ID to be used.
+	*/
 	void drawCylindricMinaret(const float size, const int texture);
+
+   	/**
+    * @brief Draws a cubed minaret with the specified size.
+    * @param size The size of the minaret.
+    */
 	void drawCubedMinaret(const float size);
+
+	/**
+	* @brief Draws a wall with a door using the specified length, wall height, and texture.
+	* @param length The length of the wall.
+	* @param wallHeight The height of the wall.
+	* @param texture The texture ID to be used.
+	*/
 	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
+
+	/**
+	 * @brief Draws a wall with the specified length, wall height, and texture.
+	 * @param length The length of the wall.
+	 * @param wallHeight The height of the wall.
+	 * @param texture The texture ID to be used.
+	 */
 	void drawWall(const float length, const float wallHeight, const int texture);
+
+	/**
+	* @brief Handles sounds based on the camera position.
+	* @param camerPosition The position of the camera.
+	*/
 	void handleSounds(const Point& camerPosition);
+
+	/**
+	* @brief Draws a flock of pigeons in a 3D environment.
+	*
+	* The function utilizes OpenGL for rendering and includes the creation and placement
+	* of pigeon-like shapes in a geometric pattern. The pigeons are oriented and positioned
+	* based on a combination of rotations and translations.
+	*/
 	void drawPigeons();
+
+	/**
+	* @brief Draws a single bench in the 3D environment.
+	*
+	* The function draws a bench by arranging multiple rectangular blocks in a specific
+	* configuration, creating a bench-like structure. The position, rotation, and dimensions
+	* of each block are adjusted to form the overall appearance of a bench.
+	*/
 	void drawBench();
+
+	/**
+	 * @brief Draw a staircase in the 3D environment with a specified number of steps.
+	 * @param unitConstraints The constraints for each step (width, height, length).
+	 * @param count The number of steps in the staircase.
+	 */
+	void drawStairs(const Constraints& unitConstraints, const int count);
+
+	/**
+	 * @brief Draw a textured staircase in the 3D environment with a specified number of steps.
+	 * @param unitConstraints The constraints for each step (width, height, length).
+	 * @param count The number of steps in the staircase.
+	 * @param texture The texture index for the steps.
+	 */
+	void drawStairs(const Constraints& unitConstraints, const int count, const int texture);
+
+	/**
+	* @brief Draws a group of benches in the 3D environment.
+	*
+	* The function arranges multiple benches in a specific layout by translating and
+	* rotating individual benches. The benches are drawn using the `drawBench` function,
+	* and the layout forms a visually interesting pattern in the environment.
+	*/
 	void drawBenchesGroub();
+
+	/**
+	* @brief Draws all gardens in the 3D environment.
+	*
+	* The function checks if the flag `drawGardens` is set to true and proceeds to draw
+	* gardens at specific locations. It includes the drawing of trees, grasslands, passages,
+	* and various structures to create visually appealing garden areas.
+	*/
 	void drawAllGardens();
+
+	/**
+	* @brief Draws constant elements in the 3D environment.
+	*
+	* The function draws fixed elements in the environment such as tiled land, streets,
+	* minarets, walls, fountains, tanks, buildings, and other structures that do not change
+	* dynamically. It contributes to the overall static scenery of the environment.
+	*/
 	void drawConst();
+
+	/**
+	* @brief Draws dynamic elements and handles sun position in the 3D environment.
+	*
+	* The function adjusts the position of a light source based on user input or simulates
+	* the movement of the sun if enabled. It also draws a representation of the sun or the
+	* light source. Additionally, it may include other dynamic elements in the environment.
+	*
+	* @param keys A boolean array representing the state of keys, potentially used for
+	* controlling elements in the environment.
+	*/
 	void drawDynamic(bool* keys);
+
+	/**
+	* @brief Draws various elements in the 3D environment.
+	*
+	* The function is the main drawing function for the environment. It typically calls a
+	* display list (not shown in the provided code) and invokes other functions like
+	* `drawAllGardens()` and `drawDynamic(keys)` to draw various elements in the environment.
+	*
+	* @param keys A boolean array representing the state of keys, potentially used for
+	* controlling elements in the environment.
+	*/
 	void draw(bool* keys);
 
-	GLfloat LightDir[3] = { 0.0f, -1.0f, 0.0f };  // Directional light from the top-left corner
-	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };    // Positional light at (1, 1, -5)
 	int stonesTexture[15];
 
-	bool drawGardens = false, drawSun=true,enableSounds=true;
-	bool lights[8];
-
-	DirectSoundBuffer sounds[14];
-	DirectSoundManager SoundManager;
-	float soundsData[14][4]; // 13 sounds- each sound has its own : x, y, z, r value
-
+	bool drawSun = true, enableSounds = true;
+	
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;
@@ -225,15 +342,24 @@ private:
 	static Model_3DS* fountainModel;
 	static Model_3DS* birdModel;
 	static Model_3DS* quraanModel;
-	int ground, grass, stone,wall,passage,street,sunTexture,lightTexture;
+	int ground, grass, stone, wall, passage, street, sunTexture, lightTexture;
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;
 	Box envBoxDrawer;
-	
+
 	int buildingTexture[6];
 	int skyBoxTextures[3][6];
 	int currentSkyBoxIndex = 0;
+
+	GLfloat LightDir[3] = { 0.0f, -1.0f, 0.0f };
+	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };
+
+	bool lights[8];
+
+	DirectSoundBuffer sounds[14];
+	DirectSoundManager SoundManager;
+	float soundsData[14][4]; // 14 sounds- each sound has its own : x, y, z, r value
 
 
 	int envDisplayList;
@@ -275,7 +401,7 @@ private:
 	 */
 	void drawSkyBox(const Point& position, const Constraints& constraints);
 
-	
+
 };
 
 #endif // ENV_DRAWER_H

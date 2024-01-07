@@ -148,6 +148,7 @@ public:
     * @param isRightClicked Indicates whether the right mouse button is clicked.
     */
     void decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRightClicked);
+
     Point getPosition();
 
     float getRotatedY();

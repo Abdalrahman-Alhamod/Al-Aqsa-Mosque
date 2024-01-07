@@ -5,10 +5,6 @@
 // The min number of sectors is 3 and the min number of stacks are 2.
 // The default up axis is +Z axis. You can change the up axis with setUpAxis():
 // X=1, Y=2, Z=3.
-//
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2017-11-01
-// UPDATED: 2023-03-11
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef _WIN32
