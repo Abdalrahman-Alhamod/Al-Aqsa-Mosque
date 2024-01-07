@@ -131,7 +131,7 @@ GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
 ,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2,DRUM3,DRUM4,DRUM5, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
 MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7, WALL1, WALL2 , WALL3, WALL4,
-DOOR1, DOOR2 , DOOR3, DOME2,WALL5,WALL6;
+DOOR1, DOOR2 , DOOR3, DOME2,WALL5,WALL6, DOME3,CARPET;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -181,6 +181,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
 	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
+	DOME3 = LoadTexture((char*)"assets/domeOfTheRock/dome3.bmp");
 
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
 	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
@@ -211,6 +212,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	DOOR1 = LoadTexture((char*)"assets/domeOfTheRock/door1.bmp");
 	DOOR2 = LoadTexture((char*)"assets/domeOfTheRock/door2.bmp");
 	DOOR3 = LoadTexture((char*)"assets/domeOfTheRock/door3.bmp");
+
+	CARPET = LoadTexture((char*)"assets/domeOfTheRock/carpet.bmp");
 
 
 
@@ -1221,7 +1224,7 @@ void DORdrawWalls() {
 	//the second param maybe the angle of door openeing
 
 	Constraints c = Constraints(60, 37, 1.5);
-	int textures[] = { 0,LEAD,0,0,0,0 ,0,0};
+	int textures[] = { 0,0,0,0,0,0 ,0,0};
 	Box wall, door, arch, marbleGround;
 	db a = 60;
 	db p = a / srt;
@@ -1242,6 +1245,7 @@ void DORdrawWalls() {
 	glTranslated(0, 17.7, 0);
 	textures[2] = WALL2;
 	textures[3] = WALL6;
+	textures[1] = LEAD;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
@@ -1408,6 +1412,7 @@ void DORdrawWalls() {
 	white;
 	textures[3] = WALL3;
 	textures[2] = WALL4;
+	textures[1] = LEAD;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
 	textures[2] = -1;
@@ -1426,6 +1431,7 @@ void DORdrawWalls() {
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
 	textures[2] = WALL6;
+	textures[1] = LEAD;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
@@ -1488,6 +1494,7 @@ void DORdrawWalls() {
 	white;
 	textures[3] = WALL3;
 	textures[2] = WALL4;
+	textures[1] = LEAD;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
 	textures[2] = -1;
@@ -1504,6 +1511,7 @@ void DORdrawWalls() {
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
 	textures[2] = WALL6;
+	textures[1] = LEAD;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
@@ -1582,6 +1590,7 @@ void DORdrawWalls() {
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
 	textures[2] = WALL6;
+	textures[1] = LEAD;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
@@ -1644,6 +1653,7 @@ void DORdrawWalls() {
 	white;
 	textures[3] = WALL3;
 	textures[2] = WALL4;
+	textures[1] = LEAD;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
 	textures[2] = -1;
@@ -1651,18 +1661,38 @@ void DORdrawWalls() {
 #pragma endregion
 
 #pragma region carpet
-	glColor3ub(173, 3, 23);
+
+	db numOfUnits = 20;
+	db side = numOfUnits * (srt / (1 + srt));
+	db point = side / srt;
+	db num = 0;
+	/*numOfUnits = 20;
+	db side2 = numOfUnits*(srt / (1 + srt));
+	db point2 = side2/srt*/
+
+	//glColor3ub(173, 3, 23);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, CARPET);
+	glNormal3f(0, 7, 0);
 	glBegin(GL_POLYGON);
-	glNormal3f(0, 1, 0);
+	txt(point, 0);
 	glVertex3d(p, 0.1, 0);
+	txt(point + side, 0);
 	glVertex3d(p + a, 0.1, 0);
+	txt(2 * point + side, point + num);
 	glVertex3d(2 * p + a, 0.1, -p);
+	txt(2 * point + side, point + side + num);
 	glVertex3d(2 * p + a, 0.1, -p - a+c.length);
+	txt(point + side, 2 * point + side + num);
 	glVertex3d(p + a, 0.1, -2 * p - a+c.length);
+	txt(point, 2 * point + side + num);
 	glVertex3d(p, 0.1, -2 * p - a+c.length);
+	txt(0, point + side + num);
 	glVertex3d(0, 0.1, -p - a + c.length);
+	txt(0, point + num);
 	glVertex3d(0, 0.1, -p);
 	glEnd();
+	distxt;
 #pragma endregion
 
 
@@ -2457,7 +2487,7 @@ void DORdrawFence(db heightOfWall) {
 }
 
 void DORdrawDomes() {
-	int textures[] = { 0,0,0,0,0,0 };
+	int textures[] = { 0,0,0,0,0,0,0,0 };
 	Constraints outer = Constraints(60, 37, 1.5);
 	Constraints inner = Constraints(48, 1.5, 3);
 	db a = outer.width, b = inner.width;
@@ -2477,9 +2507,9 @@ void DORdrawDomes() {
 	ppm;
 
 	pshm;
-	glColor3ub(254, 203, 13);
 	glTranslated(p + a / 2.0, 57, -p - a / 2.0);
 	glRotated(90, 1, 0, 0);
+	textures[2] = textures[3] = textures[4] = textures[4] = textures[5] = textures[6] = textures[7] = DOME3;
 	drawPipe(35.5, 38, 1, 40, textures, false);
 	ppm;
 }
