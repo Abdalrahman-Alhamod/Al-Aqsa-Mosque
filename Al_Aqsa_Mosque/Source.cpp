@@ -107,10 +107,6 @@ PersonDrawer personDrawer;
 
 AlQibliMosqueDrawer alQibliMosqueDrawer;
 
-DirectSoundBuffer Sound;
-DirectSoundManager SoundManager;
-float volume = 1.0f;
-
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -126,7 +122,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::changeMode();
 
 	// Initialize Console
-	//console.init();
+	// console.init();
 	// Print testing message
 	//console.print("Hello, Console!");
 
@@ -188,6 +184,7 @@ void bench(void) {
 	glEnd();
 	glPopMatrix();
 }
+
 void testReflection() {
 	// Disable the color mask and depth mask
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -333,7 +330,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glClearStencil(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-
 	// Update Perspective Projection with new zooming value
 	updatePerspective();
 
@@ -345,19 +341,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera = Camera::getInstance();
 
 	camera->Render();
-	//camera->decodeKeyboard(keys, 0.01);
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
-	pshm;
-	glTranslatef(envDrawer.LightPos[0], envDrawer.LightPos[1], envDrawer.LightPos[2]);
-	Sphere(1, 5, 5).draw();
-	ppm;
-	glLightfv(GL_LIGHT0, GL_POSITION, envDrawer.LightPos);
-	if (envDrawer.drawSun) {
-		envDrawer.simulateSun(100, 10, THREE_HOURS_PER_SECOND);
-	}
-	else {
-		envDrawer.controlLightSourcePosition(keys);
-	}
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
@@ -383,546 +367,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	else {
 		camera->decodeKeyboard(keys, 0.5);
 	}
+
 	envDrawer.handleSounds(camera->getPosition());
 
-	{//envDrawer.controlLightSourcePosition(keys);
-
-
-
-	////envDrawer.simulateSun(60,10 HOUR_PER_SECOND);
-	////envDrawer.simulateSun(60,10 MINUTE_PER_SECOND);
-
-	//testEnv();
-	//const Point points[4] = { Point(-30.0f, -2.0f, -20.0f),Point(-30.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, 20.0f),Point(40.0f, -2.0f, -20.0f) };
-	//envDrawer.drawTiledLand(points, 10);
-	////envDrawer.drawGrassLand(points, 10);
-	////mosqueDrawer.drawPrayerCarbet1(points, 10);
-	////mosqueDrawer.drawPrayerCarbet2(points, 10);
-
-	//envDrawer.drawCitySkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-	// envDrawer.drawCloudsSkyBox(Point(0, 0, 0), Constraints(1000, 1000, 1000));
-
-	////envDrawer.drawSmallTree(Point(5, -2, -5), 1);
-	////envDrawer.drawBigTree(Point(15, -2, -5), 1);
-	////envDrawer.drawTank(Point(-5, -2, -5), 1);
-
-	//if (camera->getMode() == THIRD_PERSON_CAMERA)
-	//{
-	//	Point p = camera->getPosition();
-	//	float angel = 180 + camera->getRotatedY(), r = 1.8;
-
-		/* trying to fix weird movement while pressing movement letters
-		p.x *= 0.95;
-		p.z *= 0.95;
-		*/
-		//	p.x += r * sin(angel * PIdiv180);
-		//	p.z += r * cos(angel * PIdiv180);
-		//	p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
-
-		//	//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
-		//	//console.print(personDrawer.v());
-		//	personDrawer.drawPerson(p, angel, 10);
-		//}
-		////personDrawer.drawPerson(Point(0,0,-5), 0, 10);
-		//envDrawer.drawGarden(Point(0, -1, 20), 30, 10, 10, 1, true);
-
-		//const Point passagePoints[4] = { Point(-35.0f, -2.0f, -20.0f),Point(-35.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, 20.0f),Point(-30.0f, -2.0f, -20.0f) };
-		//envDrawer.drawPassage(passagePoints, 10);
-
-		//const Point streetPoints[4] = { Point(50.0f, -2.0f, -20.0f), Point(40.0f, -2.0f, -20.0f),Point(40.0f, -2.0f, 20.0f),Point(50.0f, -2.0f, 20.0f) };
-		//envDrawer.drawStreet(streetPoints, 1);
-
-		// Test Column
-		/*glPushMatrix();
-		glTranslatef(-20, 10, 0);
-		envDrawer.drawPillar(1,wood);
-		glPopMatrix();*/
-
-		////added by mohammad yassen
-		//pshm;
-		//glTranslated(-11, 0, 0);
-		//int inside[6];
-		//inside[0] = wood;
-		//inside[1] = wood;
-		//inside[2] = wood;
-		//inside[3] = wood;
-		//inside[4] = wood;
-		//inside[5] = wood;
-
-		//added by mohammad yassen
-		//pshm;
-		//glTranslated(-11, 0, 0);
-		//int inside[6];
-		//inside[0] = wood;
-		//inside[1] = wood;
-		//inside[2] = wood;
-		//inside[3] = wood;
-		//inside[4] = wood;
-		//inside[5] = wood;
-
-		//int outside[6];
-		//outside[0] = ground;
-		//outside[1] = ground;
-		//outside[2] = ground;
-		//outside[3] = ground;
-		//outside[4] = ground;
-		//outside[5] = ground;
-		////shadow won't work because the flag is false in default
-		//pshm;
-		//glTranslated(-5, 0, 0);
-		//Box b1 = Box();
-		//b1.drawOutside(Constraints(1, 1, 1), outside);
-		//ppm;
-		//ppm;
-		//Box b(Constraints(5.0f, 10.0f, 5.0f), inside, outside, shadowMat, true);
-
-		//ppm;
-
-		// Test Windows
-		/*int alpha = 200;
-		glTranslatef(-10, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 0);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(-5, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 1);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(0, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 2);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(5, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 3);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(10, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 4);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(15, 10, 0);
-		mosqueDrawer.drawWindow(1, alpha, 5);
-		glPopMatrix();
-
-		mosqueDrawer.drawDome(Point(5, 0, 0), 0.5, GOLDEN_DOME);
-		mosqueDrawer.drawDome(Point(5, 0, 7), 0.5, SILVER_DOME);*/
-
-		/*glPushMatrix();
-		glTranslatef(0, 10, 0);
-		envDrawer.drawHallway(2, 8, 4, 10, 6);
-		envDrawer.drawArchway(1, 3, 3, 6);
-		glPopMatrix();*/
-
-		// envDrawer.drawFountain(Point(0, 15, 0), 1);
-
-		/*for (int i = 0; i < 6; i++) {
-			glPushMatrix();
-			glTranslatef(20 * i, 20, 0);
-			envDrawer.drawBuidling(1, i);
-			glPopMatrix();
-		}*/
-
-		// envDrawer.	drawLightingPillar(Point(0, 0, 0), 1);
-	}
-
-	float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
-	envDrawer.drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
-
-	float tiledLandLength = 83, tiledLandWidth = 55;
-	Point tiledLandPoints[4] = { Point(-tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
-		Point(tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
-		Point(tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2),
-		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
-
-	envDrawer.drawTiledLand(tiledLandPoints, 100);
-
-	if (envDrawer.drawCity) {
-
-		float road1Length = 83, road1Width = 8;
-
-		Point road1Points[4] = { Point(-road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
-			Point(road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
-			Point(road1Width / 2,-skyboxHeight / 10,road1Length / 2),
-			Point(-road1Width / 2,-skyboxHeight / 10,road1Length / 2), };
-
-		pshm;
-		glTranslatef(31.5, 0, 0);
-		envDrawer.drawStreet(road1Points, 50);
-		ppm;
-
-		pshm;
-		glTranslatef(-31.5, 0, 0);
-		envDrawer.drawStreet(road1Points, 50);
-		ppm;
-
-		float road2Length = 70, road2Width = 8;
-
-		Point road2Points[4] = { Point(-road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
-			Point(road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
-			Point(road2Width / 2,-skyboxHeight / 10,road2Length / 2),
-			Point(-road2Width / 2,-skyboxHeight / 10,road2Length / 2), };
-
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(-45.5, 0, 0);
-		envDrawer.drawStreet(road2Points, 40);
-		ppm;
-
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(45.5, 0, 0);
-		envDrawer.drawStreet(road2Points, 40);
-		ppm;
-	}
-
-	if (envDrawer.drawMinarts) {
-		// Bab Almgharebah Minart
-		pshm;
-		glTranslatef(-26.5, -7, 40);
-		envDrawer.drawCubedMinaret(0.6);
-		ppm;
-
-		// Bab Alsilselah Minart
-		pshm;
-		glTranslatef(-26.9, -7, 10);
-		envDrawer.drawCubedMinaret(0.6);
-		ppm;
-
-		// Bab Ghuanimah Minart
-		pshm;
-		glTranslatef(-26.9, -7, -41);
-		envDrawer.drawCubedMinaret(0.6);
-		ppm;
-
-		// Bab Alasbat Minart
-		pshm;
-		glTranslatef(15, -8, -41.2);
-		glScalef(1, 1.2, 1);
-		envDrawer.drawCylindricMinaret(0.4, envDrawer.stonesTexture[10]);
-		ppm;
-	}
-
-	pshm;
-	glTranslatef(-26.9, -8, 25.2);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(-26.9, -8, 9);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWall(60, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(-26.9, -8, -7);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(-26.9, -8, -24);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWall(65, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(-1, -8, -41.2);
-	glScalef(1, 0.5, 0.5);
-	envDrawer.drawWall(54, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(26.9, -8, -7);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWallWithDoor(5, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(26.9, -8, -24);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWall(65, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(26.9, -8, 18);
-	glScalef(1, 0.5, 0.5);
-	glRotatef(90, 0, 1, 0);
-	envDrawer.drawWall(96, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	pshm;
-	glTranslatef(13.2, -8, 41.2);
-	glScalef(1, 0.5, 0.5);
-	envDrawer.drawWall(25, 4, envDrawer.stonesTexture[10]);
-	ppm;
-
-	if (envDrawer.drawGardens) {
-
-		pshm;
-		envDrawer.drawGarden(Point(-16, -9.98, 0), 10, 20,
-			1, 0.9, true);
-		ppm;
-
-		pshm;
-		envDrawer.drawGarden(Point(26, -9.98, 0), 10, 20,
-			1, 0.9, true);
-		ppm;
-
-		pshm;
-		envDrawer.drawGarden(Point(-16, -9.98, -35), 10, 20,
-			1, 0.9, true);
-		ppm;
-
-		pshm;
-		envDrawer.drawGarden(Point(26, -9.98, -35), 10, 20,
-			1, 0.9, true);
-		ppm;
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
-				Point(-6 + i * 10, -9.98, -35) ,
-				Point(-6 + i * 10, -9.98, -27) ,
-				Point(-14 + i * 10, -9.98, -27) };
-			envDrawer.drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
-				Point(-6 + i * 10, -9.98, -25) ,
-				Point(-6 + i * 10, -9.98, -17) ,
-				Point(-14 + i * 10, -9.98, -17) };
-			envDrawer.drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
-				Point(-6 + i * 10, -9.98, 2) ,
-				Point(-6 + i * 10, -9.98, 10) ,
-				Point(-14 + i * 10, -9.98, 10) };
-			envDrawer.drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 12) ,
-				Point(-6 + i * 10, -9.98, 12) ,
-				Point(-6 + i * 10, -9.98, 20) ,
-				Point(-14 + i * 10, -9.98, 20) };
-			envDrawer.drawGrassLand(grassLandPoints1, 10);
-			ppm;
-		}
-
-		for (int i = 0; i < 4; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
-					Point(-14 + i * 10 , -9.98, 2) ,
-					Point(-14 + i * 10 , -9.98, 20) ,
-					Point(-16 + i * 10, -9.98, 20) };
-			envDrawer.drawPassage(passagePoints1, 5);
-			ppm;
-		}
-
-
-		for (int i = 0; i < 4; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
-					Point(-14 + i * 10 , -9.98, -35) ,
-					Point(-14 + i * 10 , -9.98, -17) ,
-					Point(-16 + i * 10, -9.98, -17) };
-			envDrawer.drawPassage(passagePoints1, 5);
-			ppm;
-		}
-
-		pshm;
-		Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
-				Point(16  , -9.98, 0) ,
-				Point(16  , -9.98, 2) ,
-				Point(-16 , -9.98, 2) };
-		envDrawer.drawPassage(passagePoints1, 4);
-		ppm;
-
-		pshm;
-		Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
-				Point(16  , -9.98, -17) ,
-				Point(16  , -9.98, -15) ,
-				Point(-16 , -9.98, -15) };
-		envDrawer.drawPassage(passagePoints2, 4);
-		ppm;
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
-					Point(-6 + i * 10  , -9.98,10) ,
-					Point(-6 + i * 10  , -9.98, 12) ,
-					Point(-14 + i * 10 , -9.98, 12) };
-			envDrawer.drawPassage(passagePoints1, 3);
-			ppm;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			pshm;
-			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
-					Point(-6 + i * 10  , -9.98,-27) ,
-					Point(-6 + i * 10  , -9.98, -25) ,
-					Point(-14 + i * 10 , -9.98, -25) };
-			envDrawer.drawPassage(passagePoints1, 3);
-			ppm;
-		}
-	}
-
-	if (envDrawer.drawFountains) {
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (!(i == 1 && j == 1)) {
-					pshm;
-					envDrawer.drawFountain(Point(-21 + j * 3, -9.4, 27 + i * 5), 0.3);
-					ppm;
-				}
-			}
-		}
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				pshm;
-				envDrawer.drawFountain(Point(2 + j * 3, -9.4, 27 + i * 5), 0.3);
-				ppm;
-			}
-		}
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				pshm;
-				envDrawer.drawFountain(Point(16 + j * 3, -9.4, 27 + i * 5), 0.3);
-				ppm;
-			}
-		}
-	}
-
-	if (envDrawer.drawTanks) {
-		pshm;
-		envDrawer.drawTank(Point(12, -10, 32), 0.5);
-		ppm;
-	}
-
-	if (envDrawer.drawCity) {
-
-		for (int i = 0; i < 14; i++) {
-			pshm;
-			glTranslatef(-40, -10, 44 - i * 7);
-			envDrawer.drawBuidling(0.5, i % 6);
-			ppm;
-
-
-			pshm;
-			Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
-					Point(-35   , -9.98,42 - i * 7) ,
-					Point(-35   , -9.98, 44 - i * 7) ,
-					Point(-40 , -9.98, 44 - i * 7) };
-			envDrawer.drawPassage(passagePoints3, 3);
-			ppm;
-		}
-
-		pshm;
-		glTranslatef(75, 0, 0);
-		for (int i = 0; i < 14; i++) {
-			pshm;
-			glTranslatef(-40, -10, 44 - i * 7);
-			envDrawer.drawBuidling(0.5, i % 6);
-			ppm;
-
-
-			pshm;
-			Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
-					Point(-35   , -9.98,42 - i * 7) ,
-					Point(-35   , -9.98, 44 - i * 7) ,
-					Point(-40 , -9.98, 44 - i * 7) };
-			envDrawer.drawPassage(passagePoints3, 3);
-			ppm;
-		}
-		ppm;
-
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		for (int i = 0; i < 10; i++) {
-			pshm;
-			glTranslatef(-54, -10, 29 - i * 7);
-			envDrawer.drawBuidling(0.5, i % 6);
-			ppm;
-
-
-			pshm;
-			Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
-					Point(-49  , -9.98,27 - i * 7) ,
-					Point(-49   , -9.98, 29 - i * 7) ,
-					Point(-54, -9.98, 29 - i * 7) };
-			envDrawer.drawPassage(passagePoints3, 3);
-			ppm;
-		}
-		ppm;
-
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(103, 0, 0);
-		for (int i = 0; i < 10; i++) {
-			pshm;
-			glTranslatef(-54, -10, 29 - i * 7);
-			envDrawer.drawBuidling(0.5, i % 6);
-			ppm;
-
-
-			pshm;
-			Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
-					Point(-49  , -9.98,27 - i * 7) ,
-					Point(-49   , -9.98, 29 - i * 7) ,
-					Point(-54, -9.98, 29 - i * 7) };
-			envDrawer.drawPassage(passagePoints3, 3);
-			ppm;
-		}
-		ppm;
-	}
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(17, -6, 11), 1, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(-17, -6, 11), 2, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(17, -6, -25), 3, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(-17, -6, -25), 4, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(12, -6, 38), 5, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(0, -6, -7), 6, 1, 4);
-	ppm;
-
-	pshm;
-	envDrawer.drawLightingPillar(Point(-18, -6, 32), 7, 1, 4);
-	ppm;
-
+	envDrawer.draw(keys);
+	//glCallList(list);
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
@@ -1137,14 +586,25 @@ BOOL CreateGLWindow(const char* title, int width, int height, int bits, bool ful
 	WindowRect.bottom = (long)height;		// Set Bottom Value To Requested Height
 
 	fullscreen = fullscreenflag;			// Set The Global Fullscreen Flag
-
+	// Load Custome Icon
+	HICON hIcon = (HICON)LoadImage(NULL, "icon.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+	if (hIcon)
+	{
+		// Set the loaded icon as both the big icon and small icon
+		SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+		SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+	}
+	else
+	{
+		MessageBox(NULL, "Failed to load the application icon.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
+	}
 	hInstance = GetModuleHandle(NULL);				// Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
 	wc.lpfnWndProc = (WNDPROC)WndProc;					// WndProc Handles Messages
 	wc.cbClsExtra = 0;									// No Extra Window Data
 	wc.cbWndExtra = 0;									// No Extra Window Data
 	wc.hInstance = hInstance;							// Set The Instance
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);			// Load The Default Icon
+	wc.hIcon = hIcon;			// Load The Default Icon
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);			// Load The Arrow Pointer
 	wc.hbrBackground = NULL;									// No Background Required For GL
 	wc.lpszMenuName = NULL;									// We Don't Want A Menu
@@ -1377,10 +837,6 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 
 		if (keys[VK_CONTROL] && keys['S']) {
 			envDrawer.changeSkyBoxTexture();
-		}
-
-		if (keys[VK_CONTROL] && keys[VK_NUMPAD7]) {
-			alQibliMosqueDrawer.drawInside = !alQibliMosqueDrawer.drawInside;
 		}
 
 		envDrawer.decodeEnables(keys);

@@ -2,6 +2,8 @@
 #define nocull glDisable(GL_CULL_FACE)
 #define Front glCullFace(GL_FRONT)
 #define Back glCullFace(GL_BACK)
+#define pshm glPushMatrix()
+#define ppm glPopMatrix()
 #include "EnvDrawer.h"
 #include <GL/glut.h>  
 #include "Point.h"
@@ -11,17 +13,76 @@
 #include "Model_3DS.h"
 #include "Cylinder.h"
 #include "Sphere.h"
-#include "Box.h"
 #include <windows.h>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
+using namespace std;
 Model_3DS* EnvDrawer::tree1Model = new Model_3DS();
 Model_3DS* EnvDrawer::tree2Model = new Model_3DS();
 Model_3DS* EnvDrawer::tankModel = new Model_3DS();
 Model_3DS* EnvDrawer::fountainModel = new Model_3DS();
-EnvDrawer::EnvDrawer() {
+Model_3DS* EnvDrawer::birdModel = new Model_3DS();
+Model_3DS* EnvDrawer::quraanModel = new Model_3DS();
 
+void* font = GLUT_BITMAP_8_BY_13;
+void drawString(const char* str, int x, int y, float color[4], void* font)
+{
+	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+
+	glColor4fv(color);          // set text color
+	glRasterPos2i(x, y);        // place text position
+
+	// loop all characters in the string
+	while (*str)
+	{
+		glutBitmapCharacter(font, *str);
+		++str;
+	}
+
+	glEnable(GL_LIGHTING);
+	glPopAttrib();
 }
+
+void showInfo(string info)
+{
+	// backup current model-view matrix
+	glPushMatrix();                     // save current modelview matrix
+	glLoadIdentity();                   // reset modelview matrix
+
+	// set to 2D orthogonal projection
+	glMatrixMode(GL_PROJECTION);     // switch to projection matrix
+	glPushMatrix();                  // save current projection matrix
+	glLoadIdentity();                // reset projection matrix
+	gluOrtho2D(0, 400, 0, 300);  // set to orthogonal projection
+
+	float color[4] = { 1, 1, 1, 1 };
+
+	stringstream ss;
+	ss << std::fixed << std::setprecision(3);
+
+	ss << info << ends;
+	drawString(ss.str().c_str(), 2, 290, color, font);
+
+	// unset floating format
+	ss << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
+
+	// restore projection matrix
+	glPopMatrix();                   // restore to previous projection matrix
+
+	// restore modelview matrix
+	glMatrixMode(GL_MODELVIEW);      // switch to modelview matrix
+	glPopMatrix();                   // restore to previous modelview matrix
+}
+
+EnvDrawer::EnvDrawer() {
+	envBoxDrawer = Box();
+}
+
 EnvDrawer::EnvDrawer(HWND hWnd) {
+
+	envBoxDrawer = Box();
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -118,6 +179,19 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	fountainModel->Load((char*)"assets/models/fountain.3DS");
 	fountainModel->Materials[0].tex.LoadBMP((char*)"assets/materials/stones1.bmp");
 	fountainModel->Materials[1].tex.LoadBMP((char*)"assets/materials/stones1.bmp");
+
+	birdModel->Load((char*)"assets/models/bird.3DS");
+	birdModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
+
+	quraanModel->Load((char*)"assets/models/quraan.3DS");
+	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/quraanCover.bmp");
+	quraanModel->Materials[1].tex.LoadBMP((char*)"assets/materials/quraanPage2.bmp");
+	quraanModel->Materials[2].tex.LoadBMP((char*)"assets/materials/quraanPage1.bmp");
+	quraanModel->Materials[3].tex.LoadBMP((char*)"assets/materials/quraanWood.bmp");
+	/*quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
+	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
+	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
+	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");*/
 
 	// Lighting Variables Initializing
 	glEnable(GL_LIGHT0);
@@ -225,13 +299,25 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	SoundManager.CreateSound((char*)"assets/sounds/telawah.wav", sounds[12]);
 	soundsData[12][0] = -6;	 // x
 	soundsData[12][1] = -9;	// y
-	soundsData[12][2] = 34.3;	// z
-	soundsData[12][3] = 12;	// r
+	soundsData[12][2] = 39;	// z
+	soundsData[12][3] = 20;	// r
+
+	// Pigons Sounds
+	SoundManager.CreateSound((char*)"assets/sounds/pigeons.wav", sounds[13]);
+	soundsData[13][0] = 20;	 // x
+	soundsData[13][1] = -2;	// y
+	soundsData[13][2] = 0;	// z
+	soundsData[13][3] = 40;	// r
 
 	lights[0] = true;
 	for (int i = 1; i <= 7; i++) {
 		lights[i] = false;
 	}
+
+	envDisplayList = glGenLists(1);
+	glNewList(envDisplayList, GL_COMPILE);
+	drawConst();
+	glEndList();
 
 }
 
@@ -259,6 +345,14 @@ void EnvDrawer::drawTank(const Point& position, const float size) {
 
 void EnvDrawer::drawFountain(const Point& position, const float size) {
 	drawModel(fountainModel, position, size, 1);
+}
+
+void EnvDrawer::drawBird(const Point& position, const float size) {
+	drawModel(birdModel, position, size, 1);
+}
+
+void EnvDrawer::drawQuraan(const Point& position, const float size) {
+	drawModel(quraanModel, position, size, 0.01);
 }
 
 void EnvDrawer::drawLand(const Point points[4], const int count, const int textureID) {
@@ -462,7 +556,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 		glPushMatrix();
 		glRotatef(21, 0, 1, 0);
 		glTranslatef(0, hight - 4.8, 1.86);
-		Box().drawOutside(Constraints(0.10, 1.0, 0.05), texture);
+		envBoxDrawer.drawOutside(Constraints(0.10, 1.0, 0.05), texture);
 		glPopMatrix();
 	}
 
@@ -518,12 +612,12 @@ void EnvDrawer::drawCubedMinaret(const float size)
 
 	glPushMatrix();
 	glTranslated(-2, 6.6, -2);
-	Box().drawOutside(Constraints(4, 0.1, 4), stonesTexture[13]);
+	envBoxDrawer.drawOutside(Constraints(4, 0.1, 4), stonesTexture[13]);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-1.5, 5.2, -1.42);
-	Box().drawOutside(Constraints(3, 0.1, 3), stonesTexture[13]);
+	envBoxDrawer.drawOutside(Constraints(3, 0.1, 3), stonesTexture[13]);
 	glPopMatrix();
 
 
@@ -539,7 +633,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glPushMatrix();
 		glRotatef(45, 0, 1, 0);
 		glTranslatef(0, height - 4.8, 1.9);
-		Box().drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[10]);
+		envBoxDrawer.drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[10]);
 		glPopMatrix();
 	}
 
@@ -596,19 +690,19 @@ void EnvDrawer::drawWallWithDoor(const float length, const float wallHeight, con
 	{
 		glPushMatrix();
 		glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
-		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		envBoxDrawer.drawOutside(Constraints(1.3, 1, 1), texture);
 		glPopMatrix();
 	}
 	glPushMatrix();
 	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
-	Box().drawOutside(Constraints(length - (2 * i), 1, 1), texture);
+	envBoxDrawer.drawOutside(Constraints(length - (2 * i), 1, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0, wallHeight - 5, 0);
 	glPushMatrix();
 	glTranslatef(-(length - 2.5) / 2, -wallHeight + 1, -0.5);
-	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
+	envBoxDrawer.drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -616,12 +710,12 @@ void EnvDrawer::drawWallWithDoor(const float length, const float wallHeight, con
 
 	glPushMatrix();
 	glTranslatef(0, 0, -1 * 0.5);
-	Box().drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
+	envBoxDrawer.drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(2.25, 0, -0.5);
-	Box().drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
+	envBoxDrawer.drawOutside(Constraints(0.25, wallHeight - 2, 1), texture);
 	glPopMatrix();
 	glPopMatrix();
 
@@ -633,7 +727,7 @@ void EnvDrawer::drawWallWithDoor(const float length, const float wallHeight, con
 
 	glPushMatrix();
 	glTranslatef(2.5, -wallHeight + 1, -0.5);
-	Box().drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
+	envBoxDrawer.drawOutside(Constraints((length - 2.5) / 2, wallHeight, 1), texture);
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
@@ -648,17 +742,17 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 	{
 		glPushMatrix();
 		glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
-		Box().drawOutside(Constraints(1.3, 1, 1), texture);
+		envBoxDrawer.drawOutside(Constraints(1.3, 1, 1), texture);
 		glPopMatrix();
 	}
 	glPushMatrix();
 	glTranslated(2 * i - (length - 2.5) / 2, wallHeight - 4, -0.5);
-	Box().drawOutside(Constraints(length - (2 * i), 1, 1), texture);
+	envBoxDrawer.drawOutside(Constraints(length - (2 * i), 1, 1), texture);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-(length - 2.5) / 2, -wallHeight, -0.5);
-	Box().drawOutside(Constraints(length, wallHeight, 1), texture, 5.0f);
+	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), texture, 5.0f);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -781,12 +875,12 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	// Fill the bottom gab
 	//glPushMatrix();
 	//glTranslatef(radius, 0, -length / 2);
-	//Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
+	//envBoxDrawer.drawOutside(Constraints(width / 2 - radius, 1, length), texture);
 	//glPopMatrix();
 	//
 	//glPushMatrix();
 	//glTranslatef(-width / 2, 0, -length / 2);
-	//Box().drawOutside(Constraints(width / 2 - radius, 1, length), texture);
+	//envBoxDrawer.drawOutside(Constraints(width / 2 - radius, 1, length), texture);
 	//glPopMatrix();
 
 
@@ -797,19 +891,19 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	// top
 	//glPushMatrix();
 	//glTranslatef(-width / 2, radius, length / 2 - 1);
-	////Box().drawOutside(Constraints(width, height - radius, 1), texture);
+	////envBoxDrawer.drawOutside(Constraints(width, height - radius, 1), texture);
 	//glPopMatrix();
 	//
 	//// right
 	//glPushMatrix();
 	//glTranslatef(radius, 0, length / 2 - 1);
-	////Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	////envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
 	//glPopMatrix();
 	//
 	//// left
 	//glPushMatrix();
 	//glTranslatef(-width / 2, 0, length / 2 - 1);
-	////Box().drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
+	////envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, 1), texture);
 	//glPopMatrix();
 
 	// Start drawing cylinder
@@ -852,19 +946,19 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 	//top
 	glPushMatrix();
 	glTranslatef(-width / 2, radius, -length / 2);
-	Box().drawOutside(Constraints(width, height - radius, length), texture);
+	envBoxDrawer.drawOutside(Constraints(width, height - radius, length), texture);
 	glPopMatrix();
 
 	//right
 	glPushMatrix();
 	glTranslatef(radius, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, length), texture);
+	envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, length), texture);
 	glPopMatrix();
 
 	// left
 	glPushMatrix();
 	glTranslatef(-width / 2, 0, -length / 2);
-	Box().drawOutside(Constraints(width / 2 - radius, radius, length), texture);
+	envBoxDrawer.drawOutside(Constraints(width / 2 - radius, radius, length), texture);
 	glPopMatrix();
 
 	// Start drawing cylinder
@@ -988,7 +1082,7 @@ void EnvDrawer::drawArchway(const float size, const float pillarHeight, const in
 
 	glPushMatrix();
 	glTranslatef(-size * 2, 0, -size * 0.5);
-	Box().drawOutside(Constraints(size * 0.5, size * 1.5, 1 * size), texture);
+	envBoxDrawer.drawOutside(Constraints(size * 0.5, size * 1.5, 1 * size), texture);
 	glPopMatrix();
 
 
@@ -1013,7 +1107,7 @@ void EnvDrawer::drawArchway(const float size, const float pillarHeight, const in
 
 	glPushMatrix();
 	glTranslatef(size * 1.5 + (count - 1) * size * 3, 0, -size * 0.5);
-	Box().drawOutside(Constraints(size * 0.5, size * 1.5, 1 * size), texture);
+	envBoxDrawer.drawOutside(Constraints(size * 0.5, size * 1.5, 1 * size), texture);
 	glPopMatrix();
 
 }
@@ -1022,7 +1116,7 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 	int texture = stonesTexture[textureIndex];
 	glPushMatrix();
 	glTranslatef(-size * 1.75, -wallHeight, -length * 0.5);
-	Box().drawOutside(Constraints(size * 0.5, wallHeight + (size) * 1.5, length), texture);
+	envBoxDrawer.drawOutside(Constraints(size * 0.5, wallHeight + (size) * 1.5, length), texture);
 	glPopMatrix();
 
 	for (int i = 0; i < count; i++) {
@@ -1031,12 +1125,12 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 
 		glPushMatrix();
 		glTranslatef(-size * 1.25, -wallHeight, -length * 0.5);
-		Box().drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
+		envBoxDrawer.drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
 		glPopMatrix();
 
 		glPushMatrix();
 		glTranslatef(size, -wallHeight, -length * 0.5);
-		Box().drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
+		envBoxDrawer.drawOutside(Constraints(size * 0.25, wallHeight, length), texture);
 		glPopMatrix();
 
 		EnvDrawer::drawHalfCylinderInRectangularPrism(size, Constraints(size * 2.5, (size) * 1.5, length), sectorCount, texture);
@@ -1045,13 +1139,13 @@ void EnvDrawer::drawHallway(const float size, const float wallHeight, const int 
 	}
 	glPushMatrix();
 	glTranslatef(size * 1.25 + (count - 1) * size * 2.5, -wallHeight, -length * 0.5);
-	Box().drawOutside(Constraints(size * 0.5, wallHeight + (size) * 1.5, length), texture);
+	envBoxDrawer.drawOutside(Constraints(size * 0.5, wallHeight + (size) * 1.5, length), texture);
 	glPopMatrix();
 
 }
 
 void EnvDrawer::drawBuidling(const float size, const int buildingTextureIndex) {
-	Box().drawOutside(Constraints(10 * size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
+	envBoxDrawer.drawOutside(Constraints(10 * size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
 }
 
 void EnvDrawer::controlLightSourcePosition(bool* keys) {
@@ -1083,8 +1177,33 @@ void EnvDrawer::controlLightSourcePosition(bool* keys) {
 
 float sunAngle = 0;
 
-void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, const float speed) {
+// Function to convert sun angle to simulated time
+std::string getSimulatedTime(float sunAngle) {
+	float totalSunAngles = 2 * PI;
+	float offsetAngle = PI; // Offset angle to adjust for midmorning
 
+	float adjustedSunAngle = sunAngle + offsetAngle;
+	if (adjustedSunAngle > totalSunAngles) {
+		adjustedSunAngle -= totalSunAngles;
+	}
+
+	float percentOfDay = adjustedSunAngle / totalSunAngles;
+
+	int totalSecondsInDay = 24 * 60 * 60; // 24 hours * 60 minutes * 60 seconds
+	int simulatedTimeInSeconds = static_cast<int>(percentOfDay * totalSecondsInDay);
+
+	int hours = simulatedTimeInSeconds / 3600;
+	int minutes = (simulatedTimeInSeconds % 3600) / 60;
+
+	char buffer[10];
+	std::sprintf(buffer, "%02d:%02d", hours, minutes);
+
+	return std::string(buffer);
+}
+
+void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, const float speed) {
+	string simulatedTime = getSimulatedTime(sunAngle);
+	showInfo("Time : " + simulatedTime);
 	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
 	sunAngle += (2 * PI / 60) * speed;
@@ -1152,7 +1271,7 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 
 	glPushMatrix();
 	glTranslatef(position.x, position.y - pillarHeight / 2, position.z);
-	Cylinder pillar = Cylinder(0.1 * size, 0.1 * size, pillarHeight);
+	Cylinder pillar = Cylinder(0.1 * size, 0.1 * size, pillarHeight, 5);
 	pillar.setUpAxis(2);
 	glBindTexture(GL_TEXTURE_2D, wall);
 	pillar.draw();
@@ -1175,22 +1294,9 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	glDisable(GL_TEXTURE_2D);
 
 }
+
 void EnvDrawer::decodeEnables(bool* keys) {
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD1])
-	{
-		drawFountains = !drawFountains;
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
-	{
-		drawCity = !drawCity;
-		if (drawCity) {
-			sounds[5].Play(true);
-		}
-		else {
-			sounds[5].Stop();
-		}
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD3])
 	{
 		drawGardens = !drawGardens;
 		if (drawGardens) {
@@ -1200,33 +1306,7 @@ void EnvDrawer::decodeEnables(bool* keys) {
 			sounds[6].Stop();
 		}
 	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD4])
-	{
-		drawTanks = !drawTanks;
-		if (drawTanks) {
-			sounds[0].Play(true);
-		}
-		else {
-			sounds[0].Stop();
-		}
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD5])
-	{
-		drawMinarts = !drawMinarts;
-		if (drawMinarts) {
-			sounds[1].Play(true);
-			sounds[2].Play(true);
-			sounds[3].Play(true);
-			sounds[4].Play(true);
-		}
-		else {
-			sounds[1].Stop();
-			sounds[2].Stop();
-			sounds[3].Stop();
-			sounds[4].Stop();
-		}
-	}
-	if (keys[VK_CONTROL] && keys[VK_NUMPAD6])
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
 	{
 		drawSun = !drawSun;
 	}
@@ -1250,7 +1330,7 @@ void EnvDrawer::decodeEnables(bool* keys) {
 
 void EnvDrawer::handleSounds(const Point& cameraPosition) {
 	if (enableSounds) {
-		for (int i = 0; i < 13; i++) {
+		for (int i = 0; i < 14; i++) {
 			float x = soundsData[i][0], y = soundsData[i][1], z = soundsData[i][2];
 			float radius = soundsData[i][3];
 			/*glPushMatrix();
@@ -1281,4 +1361,748 @@ void EnvDrawer::handleSounds(const Point& cameraPosition) {
 			sounds[i].Stop();
 		}
 	}
+}
+
+float birdAngle = 0;
+
+void EnvDrawer::drawPigeons() {
+
+	pshm;
+
+	glRotatef(birdAngle -= 1, 0, 1, 0);
+	glTranslatef(20, 0, 0);
+
+
+	soundsData[13][0] = 20 * cosf(birdAngle * PIdiv180);	 // x
+	soundsData[13][2] = 20 * sinf(-birdAngle * PIdiv180);	// z
+	const int numRows = 3;
+	const GLfloat triangleLength = 2.0 * sqrt(3.0) / 2.0;
+	const GLfloat xOffset = 2.0;
+	const GLfloat zOffset = triangleLength;
+
+	for (int i = 0; i < numRows; ++i) {
+		for (int j = 0; j < (i + 1) * 2; ++j) {
+			GLfloat x = 1 * (j - i) + xOffset * 2;
+			GLfloat z = -i * zOffset;
+			GLfloat y = 0.0;
+			GLfloat scale = 1.0;
+
+			glPushMatrix();
+			glTranslatef(x, y, z);
+			glRotatef(45, 0, 0, 1);
+			drawBird(Point(x, y, z), 1);
+			glPopMatrix();
+		}
+	}
+
+	glPushMatrix();
+	glTranslatef(4.5, 0, 2);
+	glRotatef(45, 0, 0, 1);
+	drawBird(Point(4.5, 0, 2), 0.8);
+	glPopMatrix();
+
+	ppm;
+
+}
+
+void EnvDrawer::drawAllGardens() {
+	if (drawGardens) {
+		float treeSize = 0.9;
+		bool isTreeSmall = true;
+
+		pshm;
+		drawGarden(Point(-16, -9.98, 0), 10, 20,
+			10, treeSize, isTreeSmall);
+		ppm;
+
+		pshm;
+		drawGarden(Point(26, -9.98, 0), 10, 20,
+			10, treeSize, isTreeSmall);
+		ppm;
+
+		pshm;
+		drawGarden(Point(-16, -9.98, -35), 10, 20,
+			10, treeSize, isTreeSmall);
+		ppm;
+
+		pshm;
+		drawGarden(Point(26, -9.98, -35), 10, 20,
+			10, treeSize, isTreeSmall);
+		ppm;
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
+				Point(-6 + i * 10, -9.98, -35) ,
+				Point(-6 + i * 10, -9.98, -27) ,
+				Point(-14 + i * 10, -9.98, -27) };
+			drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
+				Point(-6 + i * 10, -9.98, -25) ,
+				Point(-6 + i * 10, -9.98, -17) ,
+				Point(-14 + i * 10, -9.98, -17) };
+			drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
+				Point(-6 + i * 10, -9.98, 2) ,
+				Point(-6 + i * 10, -9.98, 10) ,
+				Point(-14 + i * 10, -9.98, 10) };
+			drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 12) ,
+				Point(-6 + i * 10, -9.98, 12) ,
+				Point(-6 + i * 10, -9.98, 20) ,
+				Point(-14 + i * 10, -9.98, 20) };
+			drawGrassLand(grassLandPoints1, 10);
+			ppm;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
+					Point(-14 + i * 10 , -9.98, 2) ,
+					Point(-14 + i * 10 , -9.98, 20) ,
+					Point(-16 + i * 10, -9.98, 20) };
+			drawPassage(passagePoints1, 5);
+			ppm;
+		}
+
+
+		for (int i = 0; i < 4; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
+					Point(-14 + i * 10 , -9.98, -35) ,
+					Point(-14 + i * 10 , -9.98, -17) ,
+					Point(-16 + i * 10, -9.98, -17) };
+			drawPassage(passagePoints1, 5);
+			ppm;
+		}
+
+		pshm;
+		Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
+				Point(16  , -9.98, 0) ,
+				Point(16  , -9.98, 2) ,
+				Point(-16 , -9.98, 2) };
+		drawPassage(passagePoints1, 4);
+		ppm;
+
+		pshm;
+		Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
+				Point(16  , -9.98, -17) ,
+				Point(16  , -9.98, -15) ,
+				Point(-16 , -9.98, -15) };
+		drawPassage(passagePoints2, 4);
+		ppm;
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
+					Point(-6 + i * 10  , -9.98,10) ,
+					Point(-6 + i * 10  , -9.98, 12) ,
+					Point(-14 + i * 10 , -9.98, 12) };
+			drawPassage(passagePoints1, 3);
+			ppm;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			pshm;
+			Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
+					Point(-6 + i * 10  , -9.98,-27) ,
+					Point(-6 + i * 10  , -9.98, -25) ,
+					Point(-14 + i * 10 , -9.98, -25) };
+			drawPassage(passagePoints1, 3);
+			ppm;
+		}
+	}
+
+}
+
+void EnvDrawer::drawBench() {
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-2 + i * 0.2, -10, 2);
+		envBoxDrawer.drawOutside(Constraints(0.05, 0.15, 0.05), stonesTexture[0]);
+		ppm;
+	}
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-2 + i * 0.2, -10, 2.2);
+		envBoxDrawer.drawOutside(Constraints(0.05, 0.15, 0.05), stonesTexture[0]);
+		ppm;
+	}
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-2 + i * 0.2, -9.85, 2);
+		glRotatef(90, 1, 0, 0);
+		envBoxDrawer.drawOutside(Constraints(0.05, 0.25, 0.05), stonesTexture[0]);
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-2 + i * 0.2, -9.92, 2.2);
+		glRotatef(10, 1, 0, 0);
+		envBoxDrawer.drawOutside(Constraints(0.05, 0.25, 0.05), stonesTexture[0]);
+		ppm;
+	}
+	for (int i = 0; i < 3; i++) {
+		pshm;
+		glTranslatef(-2, -9.85, 2 + i * 0.07);
+		envBoxDrawer.drawOutside(Constraints(0.65, 0.01, 0.05), stonesTexture[9]);
+		ppm;
+	}
+	pshm;
+	glTranslatef(-2, -9.85, 2.22);
+	glRotatef(-80, 1, 0, 0);
+	for (int i = 0; i < 3; i++) {
+		pshm;
+		glTranslatef(0, 0, 0 + i * 0.07);
+		envBoxDrawer.drawOutside(Constraints(0.65, 0.01, 0.05), stonesTexture[9]);
+		ppm;
+	}
+	ppm;
+}
+
+void EnvDrawer::drawBenchesGroub() {
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-1.2 + i * 2, 0, 0);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-11.2 + i * 2, 0, 0);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(8.8 + i * 2, 0, 0);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-1.2 + i * 2, 0, 10);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-11.2 + i * 2, 0, 10);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(8.8 + i * 2, 0, 10);
+		drawBench();
+		ppm;
+	}
+	pshm;
+
+	glRotatef(180, 0, 1, 0);
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-1.2 + i * 2, 0, -12);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-11.2 + i * 2, 0, -12);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(8.8 + i * 2, 0, -12);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-1.2 + i * 2, 0, -22);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(-11.2 + i * 2, 0, -22);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glTranslatef(8.8 + i * 2, 0, -22);
+		drawBench();
+		ppm;
+	}
+
+	ppm;
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-7.3 + i * 2, 0, 4);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-17.3 + i * 2, 0, 4);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-7.3 + i * 2, 0, 14);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-17.3 + i * 2, 0, 14);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-7.3 + i * 2, 0, -6);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-17.3 + i * 2, 0, -6);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-7.3 + i * 2, 0, -16);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(-17.3 + i * 2, 0, -16);
+		drawBench();
+		ppm;
+	}
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(4.8 + i * 2, 0, 4);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(14.8 + i * 2, 0, 4);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(4.8 + i * 2, 0, 14);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(14.8 + i * 2, 0, 14);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(4.8 + i * 2, 0, -6);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(14.8 + i * 2, 0, -6);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(4.8 + i * 2, 0, -16);
+		drawBench();
+		ppm;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		pshm;
+		glRotatef(90, 0, 1, 0);
+		glTranslatef(14.8 + i * 2, 0, -16);
+		drawBench();
+		ppm;
+	}
+	ppm;
+}
+
+float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
+
+void EnvDrawer::drawConst() {
+
+	float tiledLandLength = 83, tiledLandWidth = 55;
+	Point tiledLandPoints[4] = { Point(-tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
+		Point(tiledLandWidth / 2,-skyboxHeight / 10,-tiledLandLength / 2),
+		Point(tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2),
+		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
+
+	drawTiledLand(tiledLandPoints, 100);
+
+
+	float road1Length = 83, road1Width = 8;
+
+	Point road1Points[4] = { Point(-road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
+		Point(road1Width / 2,-skyboxHeight / 10,-road1Length / 2),
+		Point(road1Width / 2,-skyboxHeight / 10,road1Length / 2),
+		Point(-road1Width / 2,-skyboxHeight / 10,road1Length / 2), };
+
+	pshm;
+	glTranslatef(31.5, 0, 0);
+	drawStreet(road1Points, 50);
+	ppm;
+
+	pshm;
+	glTranslatef(-31.5, 0, 0);
+	drawStreet(road1Points, 50);
+	ppm;
+
+	float road2Length = 70, road2Width = 8;
+
+	Point road2Points[4] = { Point(-road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
+		Point(road2Width / 2,-skyboxHeight / 10,-road2Length / 2),
+		Point(road2Width / 2,-skyboxHeight / 10,road2Length / 2),
+		Point(-road2Width / 2,-skyboxHeight / 10,road2Length / 2), };
+
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	glTranslatef(-45.5, 0, 0);
+	drawStreet(road2Points, 40);
+	ppm;
+
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	glTranslatef(45.5, 0, 0);
+	drawStreet(road2Points, 40);
+	ppm;
+
+
+
+	// Bab Almgharebah Minart
+	pshm;
+	glTranslatef(-26.5, -7, 40);
+	drawCubedMinaret(0.6);
+	ppm;
+
+	// Bab Alsilselah Minart
+	pshm;
+	glTranslatef(-26.9, -7, 10);
+	drawCubedMinaret(0.6);
+	ppm;
+
+	// Bab Ghuanimah Minart
+	pshm;
+	glTranslatef(-26.9, -7, -41);
+	drawCubedMinaret(0.6);
+	ppm;
+
+	// Bab Alasbat Minart
+	pshm;
+	glTranslatef(15, -8, -41.2);
+	glScalef(1, 1.2, 1);
+	drawCylindricMinaret(0.4, stonesTexture[10]);
+	ppm;
+
+
+	pshm;
+	glTranslatef(-26.9, -8, 25.2);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWallWithDoor(5, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, 9);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWall(60, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, -7);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWallWithDoor(5, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8, -24);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWall(65, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(-1, -8, -41.2);
+	glScalef(1, 0.5, 0.5);
+	drawWall(54, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, -7);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWallWithDoor(5, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, -24);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWall(65, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(26.9, -8, 18);
+	glScalef(1, 0.5, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWall(96, 4, stonesTexture[10]);
+	ppm;
+
+	pshm;
+	glTranslatef(13.2, -8, 41.2);
+	glScalef(1, 0.5, 0.5);
+	drawWall(25, 4, stonesTexture[10]);
+	ppm;
+
+
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (!(i == 1 && j == 1)) {
+				pshm;
+				drawFountain(Point(-21 + j * 3, -9.4, 27 + i * 5), 0.3);
+				ppm;
+			}
+		}
+	}
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			pshm;
+			drawFountain(Point(2 + j * 3, -9.4, 27 + i * 5), 0.3);
+			ppm;
+		}
+	}
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			pshm;
+			drawFountain(Point(16 + j * 3, -9.4, 27 + i * 5), 0.3);
+			ppm;
+		}
+	}
+
+
+
+	pshm;
+	drawTank(Point(12, -10, 32), 0.5);
+	ppm;
+
+
+
+
+	for (int i = 0; i < 14; i++) {
+		pshm;
+		glTranslatef(-40, -10, 44 - i * 7);
+		drawBuidling(0.5, i % 6);
+		ppm;
+
+
+		pshm;
+		Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
+				Point(-35   , -9.98,42 - i * 7) ,
+				Point(-35   , -9.98, 44 - i * 7) ,
+				Point(-40 , -9.98, 44 - i * 7) };
+		drawPassage(passagePoints3, 3);
+		ppm;
+	}
+
+	pshm;
+	glTranslatef(75, 0, 0);
+	for (int i = 0; i < 14; i++) {
+		pshm;
+		glTranslatef(-40, -10, 44 - i * 7);
+		drawBuidling(0.5, i % 6);
+		ppm;
+
+
+		pshm;
+		Point  passagePoints3[4] = { Point(-40   , -9.98, 42 - i * 7) ,
+				Point(-35   , -9.98,42 - i * 7) ,
+				Point(-35   , -9.98, 44 - i * 7) ,
+				Point(-40 , -9.98, 44 - i * 7) };
+		drawPassage(passagePoints3, 3);
+		ppm;
+	}
+	ppm;
+
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	for (int i = 0; i < 10; i++) {
+		pshm;
+		glTranslatef(-54, -10, 29 - i * 7);
+		drawBuidling(0.5, i % 6);
+		ppm;
+
+
+		pshm;
+		Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
+				Point(-49  , -9.98,27 - i * 7) ,
+				Point(-49   , -9.98, 29 - i * 7) ,
+				Point(-54, -9.98, 29 - i * 7) };
+		drawPassage(passagePoints3, 3);
+		ppm;
+	}
+	ppm;
+
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	glTranslatef(103, 0, 0);
+	for (int i = 0; i < 10; i++) {
+		pshm;
+		glTranslatef(-54, -10, 29 - i * 7);
+		drawBuidling(0.5, i % 6);
+		ppm;
+
+
+		pshm;
+		Point  passagePoints3[4] = { Point(-54   , -9.98, 27 - i * 7) ,
+				Point(-49  , -9.98,27 - i * 7) ,
+				Point(-49   , -9.98, 29 - i * 7) ,
+				Point(-54, -9.98, 29 - i * 7) };
+		drawPassage(passagePoints3, 3);
+		ppm;
+	}
+	ppm;
+
+	drawBenchesGroub();
+	pshm;
+	glTranslatef(0, 0, -37);
+	drawBenchesGroub();
+	ppm;
+
+}
+
+void EnvDrawer::drawDynamic(bool* keys) {
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
+
+	if (drawSun) {
+		simulateSun(100, 10, THREE_HOURS_PER_SECOND);
+	}
+	else {
+		controlLightSourcePosition(keys);
+		pshm;
+		glTranslatef(LightPos[0], LightPos[1], LightPos[2]);
+		Sphere(1, 5, 5).draw();
+		ppm;
+	}
+
+
+	drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
+
+	pshm;
+	drawLightingPillar(Point(17, -6, 11), 1, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(-17, -6, 11), 2, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(17, -6, -25), 3, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(-17, -6, -25), 4, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(12, -6, 38), 5, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(0, -6, -7), 6, 1, 4);
+	ppm;
+
+	pshm;
+	drawLightingPillar(Point(-18, -6, 32), 7, 1, 4);
+	ppm;
+
+	drawPigeons();
+}
+
+void EnvDrawer::draw(bool* keys) {
+	glCallList(envDisplayList);
+	drawAllGardens();
+	drawDynamic(keys);
 }

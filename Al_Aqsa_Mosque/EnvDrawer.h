@@ -7,6 +7,7 @@
 #include "Model_3DS.h"
 #include "MosqueDrawer.h"
 #include "Sound.h"
+#include "Box.h"
 #define HOUR_PER_SECOND (1.f/24.f)
 #define THREE_HOURS_PER_SECOND (3.f/24.f)
 #define MINUTE_PER_SECOND (1.f/24.f)*(1.f/60.f)
@@ -49,6 +50,10 @@ public:
 	 * @param size The size of the fountain.
 	 */
 	void drawFountain(const Point& position, const float size);
+
+	void drawBird(const Point& position, const float size);
+
+	void drawQuraan(const Point& position, const float size);
 
 	/**
 	 * @brief Draw a tiled land using the specified points and count.
@@ -192,31 +197,43 @@ public:
 	void drawWallWithDoor(const float length, const float wallHeight, const int texture);
 	void drawWall(const float length, const float wallHeight, const int texture);
 	void handleSounds(const Point& camerPosition);
+	void drawPigeons();
+	void drawBench();
+	void drawBenchesGroub();
+	void drawAllGardens();
+	void drawConst();
+	void drawDynamic(bool* keys);
+	void draw(bool* keys);
 
-	GLfloat LightDir[4] = { 0.0f, 0.0f, 0.0f, 1.0f };  // Directional light from the top-left corner
+	GLfloat LightDir[3] = { 0.0f, -1.0f, 0.0f };  // Directional light from the top-left corner
 	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };    // Positional light at (1, 1, -5)
 	int stonesTexture[15];
 
-	bool drawFountains = true, drawGardens = true, drawTanks = true, drawCity = true, drawMinarts = true,drawSun=true,enableSounds=true;
+	bool drawGardens = false, drawSun=true,enableSounds=true;
 	bool lights[8];
 
-	DirectSoundBuffer sounds[13];
+	DirectSoundBuffer sounds[14];
 	DirectSoundManager SoundManager;
-	float soundsData[13][4]; // 13 sounds- each sound has its own : x, y, z, r value
+	float soundsData[14][4]; // 13 sounds- each sound has its own : x, y, z, r value
 
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;
 	static Model_3DS* tankModel;
 	static Model_3DS* fountainModel;
+	static Model_3DS* birdModel;
+	static Model_3DS* quraanModel;
 	int ground, grass, stone,wall,passage,street,sunTexture,lightTexture;
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;
+	Box envBoxDrawer;
 	
 	int buildingTexture[6];
 	int skyBoxTextures[3][6];
 	int currentSkyBoxIndex = 0;
+
+	int envDisplayList;
 
 	// Lighting Variables
 	float ch = 0;
