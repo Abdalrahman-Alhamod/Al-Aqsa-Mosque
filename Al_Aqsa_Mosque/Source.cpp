@@ -1662,15 +1662,10 @@ void DORdrawWalls() {
 
 #pragma region carpet
 
-	db numOfUnits = 20;
+	db numOfUnits = 30;
 	db side = numOfUnits * (srt / (1 + srt));
 	db point = side / srt;
-	db num = 0;
-	/*numOfUnits = 20;
-	db side2 = numOfUnits*(srt / (1 + srt));
-	db point2 = side2/srt*/
-
-	//glColor3ub(173, 3, 23);
+	db num = 0.5;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, CARPET);
 	glNormal3f(0, 7, 0);
@@ -1679,17 +1674,17 @@ void DORdrawWalls() {
 	glVertex3d(p, 0.1, 0);
 	txt(point + side, 0);
 	glVertex3d(p + a, 0.1, 0);
-	txt(2 * point + side, point + num);
+	txt(2 * point + side, num* point);
 	glVertex3d(2 * p + a, 0.1, -p);
-	txt(2 * point + side, point + side + num);
-	glVertex3d(2 * p + a, 0.1, -p - a+c.length);
-	txt(point + side, 2 * point + side + num);
-	glVertex3d(p + a, 0.1, -2 * p - a+c.length);
-	txt(point, 2 * point + side + num);
-	glVertex3d(p, 0.1, -2 * p - a+c.length);
-	txt(0, point + side + num);
+	txt(2 * point + side, (point + side)* num);
+	glVertex3d(2 * p + a, 0.1, -p - a + c.length);
+	txt(point + side, (2 * point + side)* num);
+	glVertex3d(p + a, 0.1, -2 * p - a + c.length);
+	txt(point, (2 * point + side)* num);
+	glVertex3d(p, 0.1, -2 * p - a + c.length);
+	txt(0, (point + side)* num);
 	glVertex3d(0, 0.1, -p - a + c.length);
-	txt(0, point + num);
+	txt(0, num* point);
 	glVertex3d(0, 0.1, -p);
 	glEnd();
 	distxt;
