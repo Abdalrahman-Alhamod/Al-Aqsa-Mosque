@@ -1926,8 +1926,8 @@ void DORdrawDrum() {
 			tier.drawOutside(Constraints(15, 36.7, 6), textures,flag);
 			textures[3] = DRUM4;
 			textures[4] = textures[5] = DRUM5;
-			glTranslated(0, 40,2.3);
-			tier.drawOutside(Constraints(15, 16.5, 3), textures);
+			glTranslated(2, 40,3.5);
+			tier.drawOutside(Constraints(10, 16.5, 3), textures);
 			ppm;
 		}
 	}
