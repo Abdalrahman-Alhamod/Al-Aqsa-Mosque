@@ -68,6 +68,10 @@ private:
      * @brief Default constructor. Initializes camera values.
      */
     Camera();
+    static int nx(int);
+    static int nz(int);
+    static void posInit();
+
 
 public:
     static bool pos[701][1001];

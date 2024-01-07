@@ -61,13 +61,7 @@ Vector3dStruct operator- (Vector3dStruct v, Vector3dStruct u)
 
 Vector3dStruct operator+ (Vector3dStruct v, Vector3dStruct u)
 {
-	return v - (Vector3dCreate(-u.x,-u.y,-u.z));
 	Vector3dStruct res = v;
-	int nx = min(max((v.x + u.x) * 10 + 350, 0), 701);
-	int nz = min(max((v.z + u.z) * 10 + 500, 0), 1001);
-	//Console::print(pos[std::to_string(nx)]]std::to_string(nz)]);
-	//Console::print(std::to_string(Camera::pos[(nx)][(nz)]));
-	if (!Camera::pos[nx][nz])
 	{
 		res.x = v.x + u.x;
 		res.z = v.z + u.z;
@@ -79,9 +73,6 @@ Vector3dStruct operator+ (Vector3dStruct v, Vector3dStruct u)
 Vector3dStruct operator* (Vector3dStruct v, float r)
 {
 	Vector3dStruct res = v;
-	int nx = min(max((v.x * r) * 10 + 350, 0), 701);
-	int nz = min(max((v.z * r) * 10 + 500, 0), 1001);
-	if (!Camera::pos[nx][nz])
 	{
 		res.x = v.x * r;
 		res.z = v.z * r;
@@ -114,29 +105,35 @@ float operator* (Vector3dStruct v, Vector3dStruct u)	//dot product
 
 Camera::Camera()
 {
+}
+
+void Camera::posInit()
+{
 	for (int i = -280; i <= -260; ++i)
 		for (int j = -400; j <= 400; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
+
 	for (int i = -280; i <= -260; ++i)
 		for (int j = 240; j <= 250; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
+
 	for (int i = -280; i <= -260; ++i)
 		for (int j = 417; j <= 428; ++j)
 			Camera::pos[i + 350][j] = 0;
 
-	for (int i = 80; i <= 625; ++i)
+	for (int i = 75; i <= 630; ++i)
 		for (int j = 85; j <= 90; ++j)
 			Camera::pos[i][j] = 1;
 
-	for (int i = 613; i <= 624; ++i)
+	for (int i = 610; i <= 630; ++i)
 		for (int j = -400; j <= 400; ++j)
 			Camera::pos[i][j + 500] = 1;
 
-	for (int i = 613; i <= 624; ++i)
+	for (int i = 610; i <= 630; ++i)
 		for (int j = 417; j <= 428; ++j)
 			Camera::pos[i][j] = 0;
 
-	for (int i = 77; i <= 630; ++i)
+	for (int i = 75; i <= 635; ++i)
 		for (int j = 908; j <= 915; ++j)
 			Camera::pos[i][j] = 1;
 
@@ -157,6 +154,15 @@ Camera::Camera()
 			Camera::pos[i][j] = 0;
 }
 
+int Camera::nx(int v) {
+
+	return max(min(v * 10 + 350,701),0);
+}
+
+int Camera::nz(int v) {
+	return max(min(v * 10 + 500, 1001), 0);
+}
+
 Camera* Camera::getInstance()
 {
 	return Camera::camera[Camera::cameraMode];
@@ -164,6 +170,7 @@ Camera* Camera::getInstance()
 
 void Camera::cameraInit()
 {
+	Camera::posInit();
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -228,6 +235,10 @@ void Camera::changeMode(void)
 
 void Camera::MoveForward(GLfloat Distance)
 {
+	int nx = Camera::nx(Position.x + (View * Distance).x);
+	int nz = Camera::nz(Position.z + (View * Distance).z);
+	if (Camera::pos[nx][nz])
+		return;
 	if (Camera::getMode() == FREE_CAMERA)
 	{
 		Position = Position + (View * Distance);
@@ -239,6 +250,10 @@ void Camera::MoveForward(GLfloat Distance)
 
 void Camera::MoveRight(GLfloat Distance)
 {
+	int nx = Camera::nx(Position.x + (RightVector * Distance).x);
+	int nz = Camera::nz(Position.z + (RightVector * Distance).z);
+	if (Camera::pos[nx][nz])
+		return;
 	Position = Position + (RightVector * Distance);
 }
 

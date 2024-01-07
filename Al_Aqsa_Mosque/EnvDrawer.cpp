@@ -113,6 +113,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	stonesTexture[11] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
 	stonesTexture[12] = LoadTexture((char*)"assets/materials/AlQibli/block3.bmp", 255);
 	stonesTexture[13] = LoadTexture((char*)"assets/materials/AlQibli/roof0.bmp", 255);
+	stonesTexture[14] = LoadTexture((char*)"assets/materials/stones9.bmp", 255);
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -632,12 +633,12 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glPushMatrix();
 		glTranslatef(0, height - 4, 1.4);
 		drawHalfCylinderInRectangularPrism(0.35,
-			Constraints(2.8, 0.6, 0.07), 6, stonesTexture[10]);
+			Constraints(2.8, 0.6, 0.07), 6, stonesTexture[14]);
 		glPopMatrix();
 		glPushMatrix();
 		glRotatef(45, 0, 1, 0);
 		glTranslatef(0, height - 4.8, 1.9);
-		envBoxDrawer.drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[10]);
+		envBoxDrawer.drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[14]);
 		glPopMatrix();
 	}
 
@@ -753,7 +754,8 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 
 	glPushMatrix();
 	glTranslated(-(length - 2.5) / 2, -wallHeight, -0.5);
-	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), texture, 5.0f);
+	int t[] = { texture,texture,texture, texture, texture, texture, };
+	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), t, length / 10,2,1);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -1813,12 +1815,11 @@ void EnvDrawer::drawConst() {
 	glTranslatef(-26.9, -7, -41);
 	drawCubedMinaret(0.6);
 	ppm;
-
 	// Bab Alasbat Minart
 	pshm;
 	glTranslatef(15, -8, -41.2);
 	glScalef(1, 1.2, 1);
-	drawCylindricMinaret(0.4, stonesTexture[10]);
+	drawCylindricMinaret(0.4, stonesTexture[14]);
 	ppm;
 
 
@@ -1826,61 +1827,61 @@ void EnvDrawer::drawConst() {
 	glTranslatef(-26.9, -8, 25.2);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWallWithDoor(5, 4, stonesTexture[10]);
+	drawWallWithDoor(5, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(-26.9, -8, 9);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWall(60, 4, stonesTexture[10]);
+	drawWall(60, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(-26.9, -8, -7);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWallWithDoor(5, 4, stonesTexture[10]);
+	drawWallWithDoor(5, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(-26.9, -8, -24);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWall(65, 4, stonesTexture[10]);
+	drawWall(65, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(-1, -8, -41.2);
 	glScalef(1, 0.5, 0.5);
-	drawWall(54, 4, stonesTexture[10]);
+	drawWall(54, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(26.9, -8, -7);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWallWithDoor(5, 4, stonesTexture[10]);
+	drawWallWithDoor(5, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(26.9, -8, -24);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWall(65, 4, stonesTexture[10]);
+	drawWall(65, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(26.9, -8, 18);
 	glScalef(1, 0.5, 0.5);
 	glRotatef(90, 0, 1, 0);
-	drawWall(96, 4, stonesTexture[10]);
+	drawWall(96, 4, stonesTexture[14]);
 	ppm;
 
 	pshm;
 	glTranslatef(13.2, -8, 41.2);
 	glScalef(1, 0.5, 0.5);
-	drawWall(25, 4, stonesTexture[10]);
+	drawWall(25, 4, stonesTexture[14]);
 	ppm;
 
 
@@ -1994,10 +1995,10 @@ void EnvDrawer::drawConst() {
 	}
 	ppm;
 
-	drawBenchesGroub();
+	//drawBenchesGroub();
 	pshm;
 	glTranslatef(0, 0, -37);
-	drawBenchesGroub();
+	//drawBenchesGroub();
 	ppm;
 
 }
@@ -2052,8 +2053,8 @@ void EnvDrawer::drawDynamic(bool* keys) {
 }
 
 void EnvDrawer::draw(bool* keys) {
-	/*glCallList(envDisplayList);
-	drawAllGardens();
-	drawDynamic(keys);*/
-	drawStairs(Constraints(3, 1, 1), 7);
+	glCallList(envDisplayList);
+	//drawAllGardens();
+	drawDynamic(keys);
+	//drawStairs(Constraints(3, 1, 1), 7);
 }
