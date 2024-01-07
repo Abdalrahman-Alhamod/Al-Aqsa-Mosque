@@ -1887,8 +1887,8 @@ void DORdrawDrum() {
 			textures[2] = TIER3; textures[3] = TIER1;
 			textures[4] = textures[5] = TIER2;
 
-			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.2);
-			tier.drawOutside(Constraints(13, 36.7, 5), textures,flag);
+			glTranslated(-7, -28, -innerR * sin(11.25) - 0.3);
+			tier.drawOutside(Constraints(15, 36.7, 6), textures,flag);
 
 			glColor3ub(0, 119, 182);
 			glTranslated(0, 40,2.3);
