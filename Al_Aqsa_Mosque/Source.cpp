@@ -130,7 +130,7 @@ GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
 ,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
-MARBLE4, MARBLE5;
+MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -156,15 +156,18 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
 	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
 	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
-	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch1.bmp");
+	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch01.bmp");
 	ARCH2 = LoadTexture((char*)"assets/domeOfTheRock/arch2.bmp");
 	ARCH3 = LoadTexture((char*)"assets/domeOfTheRock/arch3.bmp");
 	ARCH4 = LoadTexture((char*)"assets/domeOfTheRock/arch4.bmp");
 	ARCH5 = LoadTexture((char*)"assets/domeOfTheRock/arch5.bmp");
 	ARCH6 = LoadTexture((char*)"assets/domeOfTheRock/arch6.bmp");
 	ARCH7 = LoadTexture((char*)"assets/domeOfTheRock/arch7.bmp");
+	ARCH8 = LoadTexture((char*)"assets/domeOfTheRock/arch8.bmp");
+	LEAD = LoadTexture((char*)"assets/domeOfTheRock/arch9.bmp");
+	ARCH10 = LoadTexture((char*)"assets/domeOfTheRock/arch10.bmp");
 	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
-	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum2.bmp");
+	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum02.bmp");
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome1.bmp");
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
 	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
@@ -173,7 +176,12 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	MARBLE3 = LoadTexture((char*)"assets/domeOfTheRock/marble3.bmp");
 	MARBLE4 = LoadTexture((char*)"assets/domeOfTheRock/marble4.bmp");
 	MARBLE5 = LoadTexture((char*)"assets/domeOfTheRock/marble5.bmp");
-
+	WHITE_STONE = LoadTexture((char*)"assets/domeOfTheRock/whiteStone.bmp");
+	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
+	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier1.bmp");
+	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier2.bmp");
+	TIER3 = LoadTexture((char*)"assets/domeOfTheRock/tier3.bmp");
+	TIER4 = LoadTexture((char*)"assets/domeOfTheRock/tier4.bmp");
 
 
 	// Initialize Camera
@@ -646,7 +654,6 @@ void outerRoof() {
 	glNormal3f(0, 1, 0);
 	glTranslated(0, 35.1, 0);
 	entxt;
-	glColor3ub(83, 114, 139);
 	glBindTexture(GL_TEXTURE_2D, ROOF3);
 	
 	pshm;
@@ -838,7 +845,7 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 	//texture 2 and 3 for front ring, 4 and 5 for back ring, 6 for outer cylinder and 7 for the inner one
 
 #pragma region front ring
-	entxt;
+	entxt; white;
 
 	pshm;
 	glNormal3f(0, 0, -1);
@@ -863,7 +870,6 @@ void drawPipe(db innerR, db outerR, db height, int sectorCnt,int textures[4], bo
 		ppm;
 		}
 #pragma endregion
-
 #pragma region inner cylinder
 	pshm;
 	Cylinder innerC = Cylinder(innerR, innerR, height, sectorCnt);
@@ -1081,7 +1087,7 @@ void drawDrumPillar(db pillarRadius, db pillarHeight, db basesWidth, int texture
 	ppm;
 }
 
-void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
+void drawEntrance(db doorWidth, db doorHeight) {
 
 
 	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
@@ -1091,6 +1097,7 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	Constraints c(0, 0, 1.5);
 	Box marbleGround, arch;
 	bool flag[6] = {1,0,0,0,0,0};
+	int textures[] = { 0,0,0,0,0,0,0,0 };
 
 	pshm;
 #pragma region marble ground
@@ -1100,6 +1107,7 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	marbleGround.drawOutside(Constraints(15, 0.2, archLength + 2), textures,flag);
 	ppm;
 #pragma endregion
+
 
 #pragma region pillars
 	white;
@@ -1114,29 +1122,28 @@ void drawEntrance(db doorWidth, db doorHeight, int textures[]) {
 	ppm;
 #pragma endregion
 
+	white;
 
 	glTranslated(0, archbaseHeight, 0);
 	flag[0] = 0; flag[2] = 1;
 #pragma region bases of the arch 
 	pshm;
-	glColor3f(1, 1, 0);
 	glTranslated(24 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
-
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures,flag);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), WHITE_STONE,flag);
 	ppm;
 
 	pshm;
-	glColor3f(1, 1, 0);
 	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures,flag);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), WHITE_STONE,flag);
 	ppm;
 #pragma endregion
 
 #pragma region the arch
 	pshm;
-	glColor3f(0, 1, 1);
 	//moving the arch to it's position
 	glTranslated(30, 15, archLength / 2.0 + c.length + 0.1);
+	textures[6] = LEAD; textures[7] = ARCH8;
+	textures[2] = textures[3] = textures[4] = textures[5] = ARCH10;
 	drawPipe(innerR + 1, outerR + 1, archLength, 24, textures, true);
 	ppm;
 #pragma endregion
@@ -1183,7 +1190,7 @@ void DORdrawWalls() {
 	//the second param maybe the angle of door openeing
 
 	Constraints c = Constraints(60, 37, 1.5);
-	int textures[] = { 0,0,0,0,0,0 };
+	int textures[] = { 0,0,0,0,0,0 ,0,0};
 	Box wall, door, arch, marbleGround;
 	db a = 60;
 	db p = a / srt;
@@ -1286,41 +1293,40 @@ void DORdrawWalls() {
 
 #pragma region bases of the arch 
 	pshm;
-	glColor3f(1, 1, 0);
 	glTranslated(24-0.6/2, doorHeight- archbaseHeight, c.length);
-	
-	arch.drawOutside(Constraints(outerR - innerR + 0.6,archbaseHeight,archLength+0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6,archbaseHeight,archLength+0.5), WHITE_STONE);
 	ppm;
 
 	pshm;
-	glColor3f(1, 1, 0);
 	glTranslated(35 - 0.6 / 2, doorHeight - archbaseHeight, c.length);
-	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), textures);
+	arch.drawOutside(Constraints(outerR - innerR + 0.6, archbaseHeight, archLength + 0.5), WHITE_STONE);
 	ppm;
 #pragma endregion
 
 #pragma region umbrellas
+	textures[0] = WOOD; textures[1] = textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = LEAD;
 	pshm;
-	glColor3f(0, 0, 1);
 	glTranslated(5, doorHeight-archbaseHeight, c.length);
 	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6/2, archbaseHeight / 2.0, archLength),textures);
 	ppm;
 
 	pshm;
-	glColor3f(0, 0, 1);
 	glTranslated(60 - 5 - (20 - outerR + innerR - 0.6 / 2), doorHeight - archbaseHeight, c.length);
 	arch.drawOutside(Constraints(20 - outerR + innerR - 0.6 / 2, archbaseHeight / 2.0, archLength), textures);
 	ppm;
 #pragma endregion
 
 #pragma region the arch
-	glColor3f(0, 1, 1);
+	textures[7] = ARCH8; textures[6] = LEAD; textures[2] = textures[3] = textures[4] = textures[5] = ARCH10;
+
 	//moving the arch to it's position
 	glTranslated(30,15, 7.5 + c.length + 0.1);
+
 	drawPipe(innerR+1, outerR+1, archLength, 24, textures, true);
 #pragma endregion
 
 
+	textures[7] = textures[6] = LEAD; textures[2] = textures[3] = textures[4] = textures[5] = -1;
 
 	
 	ppm;
@@ -1389,7 +1395,7 @@ void DORdrawWalls() {
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15, textures);
+	drawEntrance(10, 15);
 	ppm;
 #pragma endregion
 
@@ -1454,7 +1460,7 @@ void DORdrawWalls() {
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15, textures);
+	drawEntrance(10, 15);
 	ppm;
 #pragma endregion
 
@@ -1519,7 +1525,7 @@ void DORdrawWalls() {
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15, textures);
+	drawEntrance(10, 15);
 	ppm;
 #pragma endregion
 
@@ -1636,19 +1642,20 @@ void DORdrawArcadeSide() {
 
 void DORdrawArcade() {
 
-	int textures[6] = { 0,0,0,0,0,0 };
+	int textures = TIER4;
 	Constraints c = Constraints(48, 1.5, 3);
 	db a = c.width;
 	db p = a / srt;
 	Box tier;
 	bool flag[6] = { 1,1,0,0,0,0 };
 
+	white;
+
 	pshm;
 	glTranslated(2 * p + a  , 0, -p + c.length);
 	glRotated(-135, 0, 1, 0);
 	
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glTranslated(a, 0, 0);
 	glRotated(-22.5, 0, 1, 0);
 	glTranslated(-2.5, 0,0);
@@ -1668,14 +1675,12 @@ void DORdrawArcade() {
 	glTranslated(p, 0, c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(157.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(135, 0, 1, 0);
-	glColor3f(0.5, 0.5, 0.5);
 	DORdrawArcadeSide();
 	ppm;
 
@@ -1686,14 +1691,12 @@ void DORdrawArcade() {
 	glTranslated(0, 0.1, -p + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(112.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(90, 0, 1, 0);
-	glColor3f(1, 1, 1);
 	DORdrawArcadeSide();
 
 	ppm;
@@ -1704,14 +1707,12 @@ void DORdrawArcade() {
 	glTranslated(0, 0, -p - a + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(67.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
 	DORdrawArcadeSide();
 
 	ppm;
@@ -1721,13 +1722,11 @@ void DORdrawArcade() {
 	glTranslated(p, 0.1, -2 * p - a + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(22.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
-	glColor3f(1, 1, 1);
 	DORdrawArcadeSide();
 
 	ppm;
@@ -1737,14 +1736,12 @@ void DORdrawArcade() {
 	glTranslated(p + a, 0, -2 * p - a + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-22.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
 	DORdrawArcadeSide();
 	ppm;
 
@@ -1753,14 +1750,12 @@ void DORdrawArcade() {
 	glTranslated(2 * p + a, 0.1, -p - a + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-67.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-90, 0, 1, 0);
-	glColor3f(1, 1, 1);
 	DORdrawArcadeSide();
 
 	ppm;
@@ -1770,14 +1765,12 @@ void DORdrawArcade() {
 	glTranslated(2 * p + a, 0, -p + c.length);
 
 	pshm;
-	glColor3f(0.3, 0.2, 0.7);
 	glRotated(-112.5, 0, 1, 0);
 	glTranslated(-2.5, 0, 0);
 	tier.drawOutside(Constraints(5, 35.1, 5), textures,flag);
 	ppm;
 
 	glRotated(-135, 0, 1, 0);
-	glColor3f(0.1, 0.1, 0.1);
 	DORdrawArcadeSide();
 	ppm;
 }
@@ -1842,8 +1835,11 @@ void DORdrawDrum() {
 		else {
 			pshm;
 			glRotated(angle, 0, 1, 0);
-			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.3);
-			tier.drawOutside(Constraints(13, 36.5, 3.5), textures,flag);
+			textures[2] = TIER3; textures[3] = TIER1;
+			textures[4] = textures[5] = TIER2;
+
+			glTranslated(-6.5, -28, -innerR * sin(11.25) + 0.2);
+			tier.drawOutside(Constraints(13, 36.7, 5), textures,flag);
 
 			glColor3ub(0, 119, 182);
 			glTranslated(0, 40,2.3);
