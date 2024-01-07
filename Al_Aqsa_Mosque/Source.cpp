@@ -129,9 +129,9 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
-,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
-MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7, WALL1, WALL2 , WALL3,
-DOOR1, DOOR2 , DOOR3;
+,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2,DRUM3,DRUM4,DRUM5, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
+MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7, WALL1, WALL2 , WALL3, WALL4,
+DOOR1, DOOR2 , DOOR3, DOME2,WALL5,WALL6;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -147,16 +147,21 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
 	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof3.bmp");
+
 	BRIDGE1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
 	BRIDGE2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
+
 	ROCK = LoadTexture((char*)"assets/domeOfTheRock/rock.bmp");
+
 	FENCE = LoadTexture((char*)"assets/domeOfTheRock/fence.bmp");
 	MARBLE_FENCE = LoadTexture((char*)"assets/domeOfTheRock/marbleFence.bmp");
+
 	FOOT1 = LoadTexture((char*)"assets/domeOfTheRock/footprint1.bmp");
 	FOOT2 = LoadTexture((char*)"assets/domeOfTheRock/footprint2.bmp");
 	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
 	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
 	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
+
 	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch01.bmp");
 	ARCH2 = LoadTexture((char*)"assets/domeOfTheRock/arch2.bmp");
 	ARCH3 = LoadTexture((char*)"assets/domeOfTheRock/arch3.bmp");
@@ -167,11 +172,19 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	ARCH8 = LoadTexture((char*)"assets/domeOfTheRock/arch8.bmp");
 	LEAD = LoadTexture((char*)"assets/domeOfTheRock/arch9.bmp");
 	ARCH10 = LoadTexture((char*)"assets/domeOfTheRock/arch10.bmp");
+
 	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
 	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum002.bmp");
+	DRUM3 = LoadTexture((char*)"assets/domeOfTheRock/drum3.bmp");
+	DRUM4 = LoadTexture((char*)"assets/domeOfTheRock/drum4.bmp");
+	DRUM5 = LoadTexture((char*)"assets/domeOfTheRock/drum5.bmp");
+
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
+	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
+
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
 	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
+
 	MARBLE1 = LoadTexture((char*)"assets/domeOfTheRock/marble1.bmp");
 	MARBLE2 = LoadTexture((char*)"assets/domeOfTheRock/marble2.bmp");
 	MARBLE3 = LoadTexture((char*)"assets/domeOfTheRock/marble3.bmp");
@@ -180,14 +193,21 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	MARBLE6 = LoadTexture((char*)"assets/domeOfTheRock/marble6.bmp");
 	MARBLE7 = LoadTexture((char*)"assets/domeOfTheRock/marble7.bmp");
 	WHITE_STONE = LoadTexture((char*)"assets/domeOfTheRock/whiteStone.bmp");
+
 	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
+
 	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier1.bmp");
 	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier2.bmp");
 	TIER3 = LoadTexture((char*)"assets/domeOfTheRock/tier3.bmp");
 	TIER4 = LoadTexture((char*)"assets/domeOfTheRock/tier4.bmp");
+
 	WALL1 = LoadTexture((char*)"assets/domeOfTheRock/wall1.bmp");
 	WALL2 = LoadTexture((char*)"assets/domeOfTheRock/wall2.bmp");
 	WALL3 = LoadTexture((char*)"assets/domeOfTheRock/wall3.bmp");
+	WALL4 = LoadTexture((char*)"assets/domeOfTheRock/wall4.bmp");
+	WALL5 = LoadTexture((char*)"assets/domeOfTheRock/wall5.bmp");
+	WALL6 = LoadTexture((char*)"assets/domeOfTheRock/wall6.bmp");
+
 	DOOR1 = LoadTexture((char*)"assets/domeOfTheRock/door1.bmp");
 	DOOR2 = LoadTexture((char*)"assets/domeOfTheRock/door2.bmp");
 	DOOR3 = LoadTexture((char*)"assets/domeOfTheRock/door3.bmp");
@@ -1221,22 +1241,22 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(0, 17.7, 0);
 	textures[2] = WALL2;
+	textures[3] = WALL6;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
-	textures[2] = -1;
 	ppm;
 
-	pshm;
 	textures[2] = WALL1;
+	textures[3] = WALL5;
+	pshm;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
-	textures[2] = -1;
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	textures[2] = WALL1;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 	textures[2] = -1;
+	textures[3] = -1;
 #pragma endregion
 
 #pragma region entrance
@@ -1387,8 +1407,10 @@ void DORdrawWalls() {
 	glRotated(135, 0, 1, 0);
 	white;
 	textures[3] = WALL3;
+	textures[2] = WALL4;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
+	textures[2] = -1;
 	ppm;
 #pragma endregion
 
@@ -1403,20 +1425,23 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
+	textures[2] = WALL6;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
 	textures[3] = WALL1;
+	textures[2] = WALL5;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	textures[3] = WALL1;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 	textures[3] = -1;
+	textures[2] = -1;
+
 #pragma endregion
 
 #pragma region entrance
@@ -1462,8 +1487,10 @@ void DORdrawWalls() {
 	glRotated(45, 0, 1, 0);
 	white;
 	textures[3] = WALL3;
+	textures[2] = WALL4;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
+	textures[2] = -1;
 	ppm;
 #pragma endregion
 
@@ -1476,20 +1503,22 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
+	textures[2] = WALL6;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
 	textures[3] = WALL1;
+	textures[2] = WALL5;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	textures[3] = WALL1;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 	textures[3] = -1;
+	textures[2] = -1;
 #pragma endregion
 
 #pragma region entrance
@@ -1535,8 +1564,10 @@ void DORdrawWalls() {
 	glRotated(-45, 0, 1, 0);
 	white;
 	textures[3] = WALL3;
+	textures[2] = WALL4;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
+	textures[2] = -1;
 	ppm;
 #pragma endregion
 
@@ -1550,20 +1581,22 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(0, 17.7, 0);
 	textures[3] = WALL2;
+	textures[2] = WALL6;
 	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
 	textures[3] = WALL1;
+	textures[2] = WALL5;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	textures[3] = WALL1;
 	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 	textures[3] = -1;
+	textures[2] = -1;
 #pragma endregion
 
 #pragma region entrance
@@ -1610,8 +1643,10 @@ void DORdrawWalls() {
 	glRotated(-135, 0, 1, 0);
 	white;
 	textures[3] = WALL3;
+	textures[2] = WALL4;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
+	textures[2] = -1;
 	ppm;
 #pragma endregion
 
@@ -1852,17 +1887,17 @@ void DORdrawDrum() {
 	drum.set(36, 36, 2.5, 20, 1, true, 2);
 	glBindTexture(GL_TEXTURE_2D, DRUM1);
 	drum.drawSide();
-	distxt;
 	ppm;
 	pshm;
-	glColor3ub(0, 119, 182);
 	glTranslated(0, 13, 0);
 	drum.set(36, 36, 17, 28, 1, true, 2);
+	glBindTexture(GL_TEXTURE_2D, DRUM3);
 	drum.drawSide();
 	ppm;
 	nocull;
 	ppm;
 
+	distxt;
 
 
 	Box tier;
@@ -1889,8 +1924,8 @@ void DORdrawDrum() {
 
 			glTranslated(-7, -28, -innerR * sin(11.25) - 0.3);
 			tier.drawOutside(Constraints(15, 36.7, 6), textures,flag);
-
-			glColor3ub(0, 119, 182);
+			textures[3] = DRUM4;
+			textures[4] = textures[5] = DRUM5;
 			glTranslated(0, 40,2.3);
 			tier.drawOutside(Constraints(15, 16.5, 3), textures);
 			ppm;
@@ -2427,10 +2462,10 @@ void DORdrawDomes() {
 	Constraints inner = Constraints(48, 1.5, 3);
 	db a = outer.width, b = inner.width;
 	db p = a / srt, p2 = b / srt;
-
-	distxt;
+	entxt;
 	cull;
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(254, 203, 13),50);
+	glBindTexture(GL_TEXTURE_2D, DOME2);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255),50,false,false);
 	nocull;
 	
 	pshm;
