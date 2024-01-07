@@ -33,6 +33,7 @@
 #include "Box.h"
 #include "AlQibliMosqueDrawer.h"
 #include "Sound.h"
+#include <string>
 
 
 using namespace std;
@@ -122,7 +123,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::changeMode();
 
 	// Initialize Console
-	// console.init();
+	console.init();
 	// Print testing message
 	//console.print("Hello, Console!");
 
@@ -255,7 +256,6 @@ void testEnv() {
 
 	// Set light position in world coordinates ( fix moving with camera bug)
 
-
 	// Lighting Destination Test
 
 	glPushMatrix();
@@ -346,15 +346,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
 		if (keys[VK_SHIFT]) {
-			camera->decodeKeyboard(keys, 0.05);
+			camera->decodeKeyboard(keys, 0.05);//0.05
 		}
 		else {
 			camera->decodeKeyboard(keys, 0.01);
 		}
 		Point p = camera->getPosition();
 		float angel = 180 + camera->getRotatedY(), r = 0.25;
-
-
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
@@ -365,10 +363,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.5);
+		camera->decodeKeyboard(keys, 0.05);
 	}
 
-	envDrawer.handleSounds(camera->getPosition());
+	//envDrawer.handleSounds(camera->getPosition());
+	console.print(to_string(int(camera->getPosition().x*10+350)) + '+' + to_string(int(camera->getPosition().z*10+500)));
 
 	envDrawer.draw(keys);
 	//glCallList(list);
