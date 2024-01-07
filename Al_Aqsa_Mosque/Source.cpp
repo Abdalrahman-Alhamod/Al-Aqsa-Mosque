@@ -130,7 +130,8 @@ GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 int ROOF1 , ROOF2 , ROOF3 , BRIDGE1, BRIDGE2, ROCK , FENCE, MARBLE_FENCE, FOOT1 , FOOT2 , FOOT3, FOOT4 , FOOT5
 ,ARCH1 ,ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7,DRUM1, DRUM2, DOME1, PILLAR1, PILLAR2, MARBLE1, MARBLE2, MARBLE3,
-MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7;
+MARBLE4, MARBLE5,ARCH8, LEAD,ARCH10, WHITE_STONE,WOOD,TIER1, TIER2,TIER3,TIER4, MARBLE6, MARBLE7, WALL1, WALL2 , WALL3,
+DOOR1, DOOR2 , DOOR3;
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
@@ -184,6 +185,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier2.bmp");
 	TIER3 = LoadTexture((char*)"assets/domeOfTheRock/tier3.bmp");
 	TIER4 = LoadTexture((char*)"assets/domeOfTheRock/tier4.bmp");
+	WALL1 = LoadTexture((char*)"assets/domeOfTheRock/wall1.bmp");
+	WALL2 = LoadTexture((char*)"assets/domeOfTheRock/wall2.bmp");
+	WALL3 = LoadTexture((char*)"assets/domeOfTheRock/wall3.bmp");
+	DOOR1 = LoadTexture((char*)"assets/domeOfTheRock/door1.bmp");
+	DOOR2 = LoadTexture((char*)"assets/domeOfTheRock/door2.bmp");
+	DOOR3 = LoadTexture((char*)"assets/domeOfTheRock/door3.bmp");
+
 
 
 	// Initialize Camera
@@ -1116,12 +1124,12 @@ void drawEntrance(db doorWidth, db doorHeight) {
 	white;
 	pshm;
 	glTranslated(20 - 0.5, 0.2, archLength + 0.5);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE1);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE1);
 	ppm;
 
 	pshm;
 	glTranslated(20 - 0.5 + doorWidth + 1, 0.2, archLength + 0.5);
-	drawOuterPillar(0.5, 12.7, 1.7, MARBLE1);
+	drawOuterPillar(0.5, 15.4, 1.7, MARBLE1);
 	ppm;
 #pragma endregion
 
@@ -1144,7 +1152,7 @@ void drawEntrance(db doorWidth, db doorHeight) {
 #pragma region the arch
 	pshm;
 	//moving the arch to it's position
-	glTranslated(30, 15, archLength / 2.0 + c.length + 0.1);
+	glTranslated(30, 17.7, archLength / 2.0 + c.length + 0.1);
 	textures[6] = LEAD; textures[7] = ARCH8;
 	textures[2] = textures[3] = textures[4] = textures[5] = ARCH10;
 	drawPipe(innerR + 1, outerR + 1, archLength, 24, textures, true);
@@ -1193,7 +1201,7 @@ void DORdrawWalls() {
 	//the second param maybe the angle of door openeing
 
 	Constraints c = Constraints(60, 37, 1.5);
-	int textures[] = { 0,0,0,0,0,0 ,0,0};
+	int textures[] = { 0,LEAD,0,0,0,0 ,0,0};
 	Box wall, door, arch, marbleGround;
 	db a = 60;
 	db p = a / srt;
@@ -1207,27 +1215,34 @@ void DORdrawWalls() {
 #pragma region front side
 
 #pragma region walls
+	white;
 	pshm;
 	glTranslated(p, 0, 0);
 	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	glTranslated(0, 17.7, 0);
+	textures[2] = WALL2;
+	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
+	textures[2] = -1;
 	ppm;
 
 	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[2] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
+	textures[2] = -1;
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[2] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
+	textures[2] = -1;
 #pragma endregion
 
 #pragma region entrance
 
 
-	db doorWidth = 10; db doorHeight = 15;
+	db doorWidth = 10; db doorHeight = 17.7;
 	db archbaseHeight = 1; db outerR = 5, innerR = 4, archLength = 15;
 	
 	/*db thirdPeiceOfPillarBase = 0.2, sideLengthOfPillarBase = 1.6;
@@ -1251,42 +1266,42 @@ void DORdrawWalls() {
 
 	pshm;
 	glTranslated(20-0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE5);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE5);
 	ppm;
 
 	pshm;
 	glTranslated(20 - 0.5 + doorWidth + 1 , 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE5);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE5);
 	ppm;
 
 	pshm;
 	glTranslated(25 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(33.7 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(38.7 - 0.5 + doorWidth + 1, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(15 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(6.3 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 	pshm;
 	glTranslated(1.3 - 0.5, 0.2, archLength);
-	drawOuterPillar(0.5, 12.7, 1.6, MARBLE2);
+	drawOuterPillar(0.5, 15.4, 1.6, MARBLE2);
 	ppm;
 
 
@@ -1324,7 +1339,7 @@ void DORdrawWalls() {
 	textures[7] = ARCH8; textures[6] = LEAD; textures[2] = textures[3] = textures[4] = textures[5] = ARCH10;
 
 	//moving the arch to it's position
-	glTranslated(30,15, 7.5 + c.length + 0.1);
+	glTranslated(30,17.7, 7.5 + c.length + 0.1);
 
 	drawPipe(innerR+1, outerR+1, archLength, 24, textures, true);
 #pragma endregion
@@ -1342,20 +1357,24 @@ void DORdrawWalls() {
 
 	//the left door
 	pshm;
-	glColor3ub(158, 69, 5);
+	textures[0] = textures[1] = textures[4] = textures[5] = DOOR3;
 	glTranslated(25, 0, 0);
+	textures[2] = DOOR1; textures[3] = DOOR2;
 	glRotated(openTheDoor, 0, 1, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
 
 	//the right door
 	pshm;
-	glColor3ub(128, 45, 1);
 	glTranslated(35, 0, 0);
 	glRotated(-openTheDoor, 0, 1, 0);
 	glTranslated(-5, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	textures[3] = DOOR1; textures[2] = DOOR2;
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
+	textures[0] = textures[1] = textures[4] = textures[5] = textures[2] =  textures[3] = -1;
+	
+
 #pragma endregion
 
 
@@ -1366,8 +1385,10 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(p, 0.01, c.length);
 	glRotated(135, 0, 1, 0);
-	glColor3f(0.5, 0.5, 0.5);
+	white;
+	textures[3] = WALL3;
 	wall.drawOutside(c, textures);
+	textures[3] = -1;
 	ppm;
 #pragma endregion
 
@@ -1379,50 +1400,56 @@ void DORdrawWalls() {
 	glColor3f(1, 1, 1);
 
 #pragma region walls
-
 	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	glTranslated(0, 17.7, 0);
+	textures[3] = WALL2;
+	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
+	textures[3] = -1;
 #pragma endregion
 
 #pragma region entrance
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15);
+	drawEntrance(10, 17.7);
 	ppm;
 #pragma endregion
 
 #pragma region doors
+
+	textures[0] = textures[1] = textures[4] = textures[5] = DOOR3;
+
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
 	pshm;
-	glColor3ub(158, 69, 5);
 	glTranslated(25, 0, 0);
+	textures[2] = DOOR1; textures[3] = DOOR2;
 	glRotated(-openTheDoor, 0, 1, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
 
 	//the right door
 	pshm;
-	glColor3ub(128, 45, 1);
 	glTranslated(35, 0, 0);
 	glRotated(openTheDoor, 0, 1, 0);
 	glTranslated(-5, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	textures[3] = DOOR1; textures[2] = DOOR2;
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
-
+	textures[0] = textures[1] = textures[4] = textures[5] = textures[2] = textures[3] = -1;
 	ppm;
 #pragma endregion
 
@@ -1433,8 +1460,10 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(0, 0, -p - a + c.length);
 	glRotated(45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
+	white;
+	textures[3] = WALL3;
 	wall.drawOutside(c, textures);
+	textures[3] = -1;
 	ppm;
 #pragma endregion
 
@@ -1444,51 +1473,57 @@ void DORdrawWalls() {
 	glTranslated(p, 0, -2 * p - a + c.length);
 	glColor3f(1, 1, 1);
 #pragma region walls
-
 	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	glTranslated(0, 17.7, 0);
+	textures[3] = WALL2;
+	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
+	textures[3] = -1;
 #pragma endregion
 
 #pragma region entrance
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15);
+	drawEntrance(10, 17.7);
 	ppm;
 #pragma endregion
 
 #pragma region doors
+
+	textures[0] = textures[1] = textures[4] = textures[5] = DOOR3;
+
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
 	pshm;
-	glColor3ub(158, 69, 5);
 	glTranslated(25, 0, 0);
+	textures[2] = DOOR1; textures[3] = DOOR2;
 	glRotated(-openTheDoor, 0, 1, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
 
 	//the right door
 	pshm;
-	glColor3ub(128, 45, 1);
 	glTranslated(35, 0, 0);
 	glRotated(openTheDoor, 0, 1, 0);
+	textures[3] = DOOR1; textures[2] = DOOR2;
 	glTranslated(-5, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
-
 	ppm;
+	textures[0] = textures[1] = textures[4] = textures[5] = textures[2] = textures[3] = -1;
 #pragma endregion
 
 	ppm;
@@ -1498,8 +1533,10 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(p + a, 0, -2 * p - a + c.length);
 	glRotated(-45, 0, 1, 0);
-	glColor3f(0.3, 0.3, 0.3);
+	white;
+	textures[3] = WALL3;
 	wall.drawOutside(c, textures);
+	textures[3] = -1;
 	ppm;
 #pragma endregion
 
@@ -1511,50 +1548,56 @@ void DORdrawWalls() {
 
 #pragma region walls
 	pshm;
-	glTranslated(0, 15, 0);
-	wall.drawOutside(Constraints(60, 22, 1.5), textures);
+	glTranslated(0, 17.7, 0);
+	textures[3] = WALL2;
+	wall.drawOutside(Constraints(60, 19.3, 1.5), textures);
 	ppm;
 
 	pshm;
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
 
 	pshm;
 	glTranslated(35, 0, 0);
-	wall.drawOutside(Constraints(25, 15, 1.5), textures);
+	textures[3] = WALL1;
+	wall.drawOutside(Constraints(25, 17.7, 1.5), textures);
 	ppm;
+	textures[3] = -1;
 #pragma endregion
 
 #pragma region entrance
 	pshm;
 	glRotated(180, 0, 1, 0);
 	glTranslated(-60, 0, -2);
-	drawEntrance(10, 15);
+	drawEntrance(10, 17.7);
 	ppm;
 #pragma endregion
 
 #pragma region doors
+	textures[0] = textures[1] = textures[4] = textures[5] = DOOR3;
 
 	pshm;
 	glTranslated(0, 0, c.length);
 	//the left door
 	pshm;
-	glColor3ub(158, 69, 5);
 	glTranslated(25, 0, 0);
+	textures[2] = DOOR1; textures[3] = DOOR2;
 	glRotated(-openTheDoor, 0, 1, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
 
 	//the right door
 	pshm;
-	glColor3ub(128, 45, 1);
 	glTranslated(35, 0, 0);
 	glRotated(openTheDoor, 0, 1, 0);
 	glTranslated(-5, 0, 0);
-	door.drawOutside(Constraints(5, 15, 0.5), textures);
+	textures[3] = DOOR1; textures[2] = DOOR2;
+	door.drawOutside(Constraints(5, 17.7, 0.5), textures);
 	ppm;
 
 	ppm;
+	textures[0] = textures[1] = textures[4] = textures[5] = textures[2] = textures[3] = -1;
 #pragma endregion
 
 	ppm;
@@ -1565,8 +1608,10 @@ void DORdrawWalls() {
 	pshm;
 	glTranslated(2 * p + a, 0, -p + c.length);
 	glRotated(-135, 0, 1, 0);
-	glColor3f(0.1, 0.1, 0.1);
+	white;
+	textures[3] = WALL3;
 	wall.drawOutside(c, textures);
+	textures[3] = -1;
 	ppm;
 #pragma endregion
 
