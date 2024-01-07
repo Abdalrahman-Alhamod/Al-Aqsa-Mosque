@@ -70,6 +70,7 @@ private:
     Camera();
 
 public:
+    static bool pos[701][1001];
     static void cameraInit();
     static Camera* getInstance();
 

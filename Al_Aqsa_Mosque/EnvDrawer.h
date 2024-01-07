@@ -4,6 +4,7 @@
 #include "Point.h"
 #include "Constraints.h"
 #include "Color.h"
+#include "Camera.h"
 #include "Model_3DS.h"
 #include "MosqueDrawer.h"
 #include "Sound.h"
@@ -15,6 +16,7 @@
  * @class EnvDrawer
  * @brief A utility class for drawing environmental elements such as trees, tanks, land, and skyboxes.
  */
+
 class EnvDrawer {
 public:
 	EnvDrawer();
@@ -232,6 +234,7 @@ private:
 	int buildingTexture[6];
 	int skyBoxTextures[3][6];
 	int currentSkyBoxIndex = 0;
+
 
 	int envDisplayList;
 

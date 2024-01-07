@@ -25,6 +25,8 @@ Model_3DS* EnvDrawer::fountainModel = new Model_3DS();
 Model_3DS* EnvDrawer::birdModel = new Model_3DS();
 Model_3DS* EnvDrawer::quraanModel = new Model_3DS();
 
+bool pos[701][1001] = {};
+
 void* font = GLUT_BITMAP_8_BY_13;
 void drawString(const char* str, int x, int y, float color[4], void* font)
 {
@@ -83,6 +85,8 @@ EnvDrawer::EnvDrawer() {
 EnvDrawer::EnvDrawer(HWND hWnd) {
 
 	envBoxDrawer = Box();
+
+	pos[0][0] = 0;
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -636,9 +640,6 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		envBoxDrawer.drawOutside(Constraints(0.10, .8, 0.05), stonesTexture[10]);
 		glPopMatrix();
 	}
-
-
-
 
 	glTranslated(0, height - 3.8, 0);
 
@@ -2067,7 +2068,7 @@ void EnvDrawer::drawDynamic(bool* keys) {
 		ppm;
 	}
 
-
+	/*
 	drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
 
 	pshm;
@@ -2099,10 +2100,11 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	ppm;
 
 	drawPigeons();
+	*/
 }
 
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
-	drawAllGardens();
-	drawDynamic(keys);
+	//drawAllGardens();
+	//drawDynamic(keys);
 }
