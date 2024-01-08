@@ -196,11 +196,11 @@ void DomeOfTheRock::drawInnerRoof() {
 
 	cull;
 	frontf;
-	glNormal3f(0, -1, 0);
+	glNormal3f(0, 1, 0);
 	glTranslated(0, 35.1, 0);
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	beg(GL_QUADS);
 	glVertex3d(p + 0.6, 0, 0);
 	glVertex3d(p + a - 0.5, 0, 0);
@@ -227,7 +227,7 @@ void DomeOfTheRock::drawInnerRoof() {
 
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(0, -0.1, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(45, 0, 1, 0);
@@ -256,7 +256,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(90, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -284,7 +284,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(135, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -312,7 +312,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(180, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -340,7 +340,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(225, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -368,7 +368,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(270, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -396,7 +396,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	ppm;
 
 	pshm;
-	glColor3ub(48, 8, 0);
+	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(315, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
@@ -435,7 +435,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
 	pshm;
-	glNormal3f(0, -1, 0);
+	glNormal3f(0, 1, 0);
 	glTranslated(0, 35.1, 0);
 
 	white;
