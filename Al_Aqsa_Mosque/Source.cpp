@@ -242,13 +242,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	}
 
 
-#pragma region design
-	
-	
-
-#pragma endregion
-
-
 	white;
 
 
