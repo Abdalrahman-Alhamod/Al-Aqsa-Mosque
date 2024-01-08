@@ -179,8 +179,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 }
 
 
-float angle = 90;
-GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
+//float angle = 90;
+//GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
 

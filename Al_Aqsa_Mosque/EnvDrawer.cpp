@@ -1268,6 +1268,7 @@ void EnvDrawer::setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz) {
 	this->LightSpec[2] = specz;
 	glLightfv(GL_LIGHT0, GL_SPECULAR, this->LightSpec);
 	return;
+}
 
 void EnvDrawer::decodeEnables(bool* keys) {
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD0])
@@ -1289,8 +1290,8 @@ void EnvDrawer::decodeEnables(bool* keys) {
 			}
 		}
 	}
-
 }
+
 
 void EnvDrawer::handleSounds(const Point& cameraPosition) {
 	if (enableSounds) {

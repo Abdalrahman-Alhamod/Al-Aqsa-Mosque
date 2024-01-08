@@ -39,7 +39,7 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	glNormal3f(0, -1, 0);
 	txt(0, 0);
 	glVertex3d(0, 0, 0);
-	txt(1*textureCount, 0);
+	txt(1 * textureCount, 0);
 	glVertex3d(width, 0, 0);
 	txt(1 * textureCount, 1 * textureCount);
 	glVertex3d(width, 0, length);
@@ -64,7 +64,7 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	glVertex3d(width, height, 0);
 	glEnd();
 	ppm;
-	
+
 	//the back face
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, texture[2]);
@@ -81,7 +81,7 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	glVertex3d(width, height, 0);
 	glEnd();
 	ppm;
-	
+
 	//the front face
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, texture[3]);
@@ -98,7 +98,7 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	glVertex3d(0, height, length);
 	glEnd();
 	ppm;
-	
+
 	//the right side
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, texture[4]);
@@ -115,7 +115,7 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	glVertex3d(0, height, 0);
 	glEnd();
 	ppm;
-	
+
 	//the left side
 	pshm;
 	glBindTexture(GL_TEXTURE_2D, texture[5]);
@@ -136,11 +136,148 @@ void Box::drawOutside(const Constraints& c, int texture[], float textureCount) {
 	ppm;
 }
 
-void Box::drawOutside(const Constraints& c,const int texture, float textureCount) {
-	int textures[6] = { texture,texture, texture, texture, texture, texture };
-	Box::drawOutside(c, textures,textureCount);
+void Box::drawOutside(const Constraints& c, int texture[], bool flag[]) {
+	db width = c.width;
+	db height = c.height;
+	db length = c.length;
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_CULL_FACE);
+	pshm;
+
+	//the base
+	if (!flag[0])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glBegin(GL_QUADS);
+		glNormal3f(0, -1, 0);
+		txt(0, 0);
+		glVertex3d(0, 0, 0);
+		txt(1, 0);
+		glVertex3d(width, 0, 0);
+		txt(1, 1);
+		glVertex3d(width, 0, length);
+		txt(0, 1);
+		glVertex3d(0, 0, length);
+		glEnd();
+		ppm;
+	}
+
+	//the top
+	if (!flag[1])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		//glColor3ub(12, 213, 122);
+		glNormal3f(0, 1, 0);
+		frontf;
+		glBegin(GL_QUADS);
+		txt(0, 0);
+		glVertex3d(0, height, 0);
+		txt(1, 0);
+		glVertex3d(width, height, 0);
+		txt(1, 1);
+		glVertex3d(width, height, length);
+		txt(0, 1);
+		glVertex3d(0, height, length);
+		glEnd();
+		backf;
+		ppm;
+	}
+
+	//the back face
+	if (!flag[2])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[2]);
+		//glColor3ub(12, 213, 122);
+		glBegin(GL_QUADS);
+		glNormal3f(0, 0, -1);
+		txt(0, 0);
+		glVertex3d(width, 0, 0);
+		txt(1, 0);
+		glVertex3d(0, 0, 0);
+		txt(1, 1);
+		glVertex3d(0, height, 0);
+		txt(0, 1);
+		glVertex3d(width, height, 0);
+		glEnd();
+		ppm;
+	}
+
+	//the front face
+	if (!flag[3])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[3]);
+		//glColor3ub(12, 213, 122);
+		glBegin(GL_QUADS);
+		glNormal3f(0, 0, 1);
+		txt(0, 0);
+		glVertex3d(0, 0, length);
+		txt(1, 0);
+		glVertex3d(width, 0, length);
+		txt(1, 1);
+		glVertex3d(width, height, length);
+		txt(0, 1);
+		glVertex3d(0, height, length);
+		glEnd();
+		ppm;
+
+	}
+	//the right side
+	if (!flag[4])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[4]);
+		//glColor3ub(12, 213, 122);
+		glBegin(GL_QUADS);
+		glNormal3f(-1, 0, 0);
+		txt(0, 0);
+		glVertex3d(0, 0, 0);
+		txt(1, 0);
+		glVertex3d(0, 0, length);
+		txt(1, 1);
+		glVertex3d(0, height, length);
+		txt(0, 1);
+		glVertex3d(0, height, 0);
+		glEnd();
+		ppm;
+	}
+
+	//the left side
+	if (!flag[5])
+	{
+		pshm;
+		glBindTexture(GL_TEXTURE_2D, texture[5]);
+		glBegin(GL_QUADS);
+		glNormal3f(0, 0, 1);
+		txt(0, 0);
+		glVertex3d(width, 0, length);
+		txt(1, 0);
+		glVertex3d(width, 0, 0);
+		txt(1, 1);
+		glVertex3d(width, height, 0);
+		txt(0, 1);
+		glVertex3d(width, height, length);
+		glEnd();
+		ppm;
+	}
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_CULL_FACE);
+	ppm;
 }
-void Box::drawOutside(const Constraints& c, int texture[], float textureWidthCount , float textureHeightCount, float textureLengthCount ) {
+
+void Box::drawOutside(const Constraints& c, const int texture, bool flag[]) {
+	int textures[6] = { texture,texture,texture,texture,texture,texture };
+	Box::drawOutside(c, textures, flag);
+}
+
+void Box::drawOutside(const Constraints& c, const int texture, float textureCount) {
+	int textures[6] = { texture,texture, texture, texture, texture, texture };
+	Box::drawOutside(c, textures, textureCount);
+}
+void Box::drawOutside(const Constraints& c, int texture[], float textureWidthCount, float textureHeightCount, float textureLengthCount) {
 	db width = c.width;
 	db height = c.height;
 	db length = c.length;
@@ -281,11 +418,11 @@ void Box::drawTriangleOutside(const Constraints& c, int texture[], float texture
 	glBegin(GL_QUADS);
 	glNormal3f(0, 1, 0);
 	txt(0, 0);
-	glVertex3d(width/2, height, 0);
+	glVertex3d(width / 2, height, 0);
 	txt(1 * textureCount, 0);
 	glVertex3d(width / 2, height, length);
 	txt(1 * textureCount, 1 * textureCount);
-	glVertex3d(width/2, height, length);
+	glVertex3d(width / 2, height, length);
 	txt(0, 1 * textureCount);
 	glVertex3d(width / 2, height, 0);
 	glEnd();
@@ -361,7 +498,6 @@ void Box::drawTriangleOutside(const Constraints& c, int texture[], float texture
 	glDisable(GL_CULL_FACE);
 	ppm;
 }
-
 void Box::drawTrangleOutside(const Constraints& c, const int texture, float textureCount) {
 	int textures[6] = { texture,texture, texture, texture, texture, texture };
 	Box::drawTriangleOutside(c, textures, textureCount);
@@ -372,150 +508,12 @@ void Box::drawOutside(const Constraints& c, const int sourroundTexture, const in
 	Box::drawOutside(c, textures);
 }
 
-void Box::drawOutside(const Constraints& c, int texture[], bool flag[]) {
-	db width = c.width;
-	db height = c.height;
-	db length = c.length;
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_CULL_FACE);
-	pshm;
-
-	//the base
-if(!flag[0])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	glBegin(GL_QUADS);
-	glNormal3f(0, -1, 0);
-	txt(0, 0);
-	glVertex3d(0, 0, 0);
-	txt(1, 0);
-	glVertex3d(width, 0, 0);
-	txt(1, 1);
-	glVertex3d(width, 0, length);
-	txt(0, 1);
-	glVertex3d(0, 0, length);
-	glEnd();
-	ppm;
-}
-
-	//the top
-if(!flag[1])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	//glColor3ub(12, 213, 122);
-	glNormal3f(0, 1, 0);
-	frontf;
-	glBegin(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(0, height, 0);
-	txt(1, 0);
-	glVertex3d(width, height, 0);
-	txt(1, 1);
-	glVertex3d(width, height, length);
-	txt(0, 1);
-	glVertex3d(0, height, length);
-	glEnd();
-	backf;
-	ppm;
-}
-
-	//the back face
-if(!flag[2])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[2]);
-	//glColor3ub(12, 213, 122);
-	glBegin(GL_QUADS);
-	glNormal3f(0, 0, -1);
-	txt(0, 0);
-	glVertex3d(width, 0, 0);
-	txt(1, 0);
-	glVertex3d(0, 0, 0);
-	txt(1, 1);
-	glVertex3d(0, height, 0);
-	txt(0, 1);
-	glVertex3d(width, height, 0);
-	glEnd();
-	ppm;
-}
-
-	//the front face
-if(!flag[3])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[3]);
-	//glColor3ub(12, 213, 122);
-	glBegin(GL_QUADS);
-	glNormal3f(0, 0, 1);
-	txt(0, 0);
-	glVertex3d(0, 0, length);
-	txt(1, 0);
-	glVertex3d(width, 0, length);
-	txt(1, 1);
-	glVertex3d(width, height, length);
-	txt(0, 1);
-	glVertex3d(0, height, length);
-	glEnd();
-	ppm;
-
-}
-	//the right side
-if(!flag[4])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
-	//glColor3ub(12, 213, 122);
-	glBegin(GL_QUADS);
-	glNormal3f(-1, 0, 0);
-	txt(0, 0);
-	glVertex3d(0, 0, 0);
-	txt(1, 0);
-	glVertex3d(0, 0, length);
-	txt(1, 1);
-	glVertex3d(0, height, length);
-	txt(0, 1);
-	glVertex3d(0, height, 0);
-	glEnd();
-	ppm;
-}
-
-	//the left side
-if(!flag[5])
-{
-	pshm;
-	glBindTexture(GL_TEXTURE_2D, texture[5]);
-	glBegin(GL_QUADS);
-	glNormal3f(0, 0, 1);
-	txt(0, 0);
-	glVertex3d(width, 0, length);
-	txt(1, 0);
-	glVertex3d(width, 0, 0);
-	txt(1, 1);
-	glVertex3d(width, height, 0);
-	txt(0, 1);
-	glVertex3d(width, height, length);
-	glEnd();
-	ppm;
-}
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_CULL_FACE);
-	ppm;
-}
-
-void Box::drawOutside(const Constraints& c, const int texture, bool flag[]) {
-	int textures[6] = { texture,texture,texture,texture,texture,texture };
-	Box::drawOutside(c, textures, flag);
-}
-
-
 void Box::drawInside(const Constraints& c, int texture[]) {
 
 	db width = c.width;
 	db height = c.height;
 	db length = c.length;
-	
+
 	glEnable(GL_TEXTURE_2D);
 	pshm;
 	glFrontFace(GL_CCW);
@@ -629,7 +627,7 @@ void Box::drawInside(const Constraints& c, int texture[]) {
 }
 
 void Box::drawShadow(const Constraints& c, M3DMatrix44f shadowMat) {
-	
+
 	db width = c.width;
 	db height = c.height;
 	db length = c.length;
