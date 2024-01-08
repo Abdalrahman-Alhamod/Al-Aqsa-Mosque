@@ -644,7 +644,7 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 			envDrawer.changeSkyBoxTexture();
 		}
 
-		envDrawer.decodeEnables(keys);
+		envDrawer.decodeKeyboard(keys);
 
 		return 0;								// Jump Back
 	}
