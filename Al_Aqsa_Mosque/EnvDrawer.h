@@ -9,9 +9,15 @@
 #include "MosqueDrawer.h"
 #include "Sound.h"
 #include "Box.h"
-#define HOUR_PER_SECOND (1.f/24.f)
-#define THREE_HOURS_PER_SECOND (3.f/24.f)
+#include <chrono>
+#include <thread>
 #define MINUTE_PER_SECOND (1.f/24.f)*(1.f/60.f)
+#define QUARTER_HOUR_PER_SECOND (1.f/24.f)/4
+#define HALF_HOUR_PER_SECOND (1.f/24.f)/2
+#define HOUR_PER_SECOND (1.f/24.f)
+#define TWO_HOURS_PER_SECOND (1.f/24.f)*2
+#define THREE_HOURS_PER_SECOND (1.f/24.f)*3
+
 /**
  * @class EnvDrawer
  * @brief A utility class for drawing environmental elements such as trees, tanks, land, and skyboxes.
@@ -219,10 +225,10 @@ public:
 	*/
 	void drawCylindricMinaret(const float size, const int texture);
 
-   	/**
-    * @brief Draws a cubed minaret with the specified size.
-    * @param size The size of the minaret.
-    */
+	/**
+	* @brief Draws a cubed minaret with the specified size.
+	* @param size The size of the minaret.
+	*/
 	void drawCubedMinaret(const float size);
 
 	/**
@@ -341,7 +347,7 @@ public:
 	int stonesTexture[15];
 
 	bool drawSun = true, enableSounds = true;
-	
+
 private:
 	static Model_3DS* tree1Model;
 	static Model_3DS* tree2Model;
@@ -362,11 +368,14 @@ private:
 	GLfloat LightDir[3] = { 0.0f, -1.0f, 0.0f };
 	GLfloat LightPos[4] = { 1.0f, 100.0f, 50.0f, 1.0f };
 
-	bool lights[8];
+	bool lights[7];
 
 	DirectSoundBuffer sounds[14];
 	DirectSoundManager SoundManager;
 	float soundsData[14][4]; // 14 sounds- each sound has its own : x, y, z, r value
+
+	float sunTime = MINUTE_PER_SECOND;
+	std::chrono::high_resolution_clock::time_point lastUpdateTime;
 
 
 	int envDisplayList;

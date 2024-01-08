@@ -28,9 +28,10 @@ void PrimitiveDrawer::drawTriangle(const Point& vertex1, const Point& vertex2, c
 	glVertex3f(vertex3.getX(), vertex3.getY(), vertex3.getZ());
 	glEnd();
 }
+
 void PrimitiveDrawer::drawEquilateralTriangle(const Point& vertex, const GLfloat sideLength, const Color& color) {
 	Point vertex2(vertex.getX() + sideLength, vertex.getY(), vertex.getZ());
-	Point vertex3(vertex2.getX() - sideLength * cos(60.0 * 3.141592653589793 / 180.0), vertex2.getY() + sideLength * cos(60.0 * 3.141592653589793 / 180.0), vertex.getZ());
+	Point vertex3(vertex2.getX() - sideLength * cos(60.0 * PI / 180.0), vertex2.getY() + sideLength * cos(60.0 * PI / 180.0), vertex.getZ());
 
 	glColor3f(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat());
 

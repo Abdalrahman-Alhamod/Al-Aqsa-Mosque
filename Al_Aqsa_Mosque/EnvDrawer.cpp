@@ -13,6 +13,7 @@
 #include "Model_3DS.h"
 #include "Cylinder.h"
 #include "Sphere.h"
+#include "PrimitiveDrawer.h"
 #include <windows.h>
 #include <iostream>
 #include <sstream>
@@ -315,7 +316,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	soundsData[13][3] = 40;	// r
 
 	lights[0] = true;
-	for (int i = 1; i <= 7; i++) {
+	for (int i = 1; i <= 6; i++) {
 		lights[i] = false;
 	}
 
@@ -755,7 +756,7 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 	glPushMatrix();
 	glTranslated(-(length - 2.5) / 2, -wallHeight, -0.5);
 	int t[] = { texture,texture,texture, texture, texture, texture, };
-	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), t, length / 10,1,1);
+	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), t, length / 10, 1, 1);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -1150,13 +1151,25 @@ std::string getSimulatedTime(float sunAngle) {
 }
 
 void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, const float speed) {
+	using namespace std::chrono;
+
+	// Calculate elapsed time since the last update
+	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
+	duration<double> deltaTime = duration_cast<duration<double>>(currentTime - lastUpdateTime);
+	lastUpdateTime = currentTime;
+
 	string simulatedTime = getSimulatedTime(sunAngle);
 	showInfo("Time : " + simulatedTime);
+
 	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
-	sunAngle += (2 * PI / 60) * speed;
-	if (sunAngle >= PI * 2) {
-		sunAngle = 0.0;
+
+	// Update sunAngle based on deltaTime and speed
+	sunAngle += (2 * PI) * speed * deltaTime.count();
+	// Normalize sunAngle to keep it within [0, 2*PI]
+	sunAngle = fmod(sunAngle, 2 * PI);
+	if (sunAngle < 0) {
+		sunAngle += 2 * PI;
 	}
 	if (sunAngle >= PI * 1.5 || sunAngle <= PI * 0.5) {
 		glEnable(GL_LIGHT0);
@@ -1173,7 +1186,7 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	else {
 		glDisable(GL_LIGHT0);
-		for (int i = 1; i <= 7; i++) {
+		for (int i = 1; i <= 6; i++) {
 			glEnable(GL_LIGHT0 + i);
 		}
 		currentSkyBoxIndex = 2;
@@ -1275,10 +1288,34 @@ void EnvDrawer::decodeEnables(bool* keys) {
 	{
 		drawSun = !drawSun;
 	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD1])
+	{
+		sunTime = MINUTE_PER_SECOND;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD2])
+	{
+		sunTime = QUARTER_HOUR_PER_SECOND;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD3])
+	{
+		sunTime = HALF_HOUR_PER_SECOND;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD4])
+	{
+		sunTime = HOUR_PER_SECOND;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD5])
+	{
+		sunTime = TWO_HOURS_PER_SECOND;
+	}
+	if (keys[VK_CONTROL] && keys[VK_NUMPAD6])
+	{
+		sunTime = THREE_HOURS_PER_SECOND;
+	}
 	if (keys['M']) {
 		enableSounds = !enableSounds;
 	}
-	for (int i = '0'; i <= '7'; i++) {
+	for (int i = '0'; i <= '6'; i++) {
 		if (keys[i]) {
 			int index = i - '0';
 			lights[index] = !lights[index];
@@ -1291,7 +1328,6 @@ void EnvDrawer::decodeEnables(bool* keys) {
 		}
 	}
 }
-
 
 void EnvDrawer::handleSounds(const Point& cameraPosition) {
 	if (enableSounds) {
@@ -1543,7 +1579,7 @@ void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, 
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < i + 1; j++) {
 			pshm;
-			glTranslatef(0, -i-unitConstraints.height, j * unitConstraints.length);
+			glTranslatef(0, -i - unitConstraints.height, j * unitConstraints.length);
 			envBoxDrawer.drawOutside(unitConstraints, texture);
 			ppm;
 		}
@@ -2030,11 +2066,12 @@ void EnvDrawer::drawConst() {
 
 }
 
+float triangleAngle = 0;
 void EnvDrawer::drawDynamic(bool* keys) {
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
 
 	if (drawSun) {
-		simulateSun(100, 10, THREE_HOURS_PER_SECOND);
+		simulateSun(100, 10, sunTime);
 	}
 	else {
 		controlLightSourcePosition(keys);
@@ -2068,20 +2105,24 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(0, -6, -7), 6, 1, 4);
-	ppm;
-
-	pshm;
-	drawLightingPillar(Point(-18, -6, 32), 7, 1, 4);
+	drawLightingPillar(Point(-18, -6, 32), 6, 1, 4);
 	ppm;
 
 	drawPigeons();
+
+	pshm;
+	glRotatef(180, 0, 0, 1);
+	glNormal3b(0, 0, -1);
+	PrimitiveDrawer().drawEquilateralTriangle(
+		Point(-12.25, 8 + 0.25 * sinf((triangleAngle += 20) * PIdiv180), 32), 0.5, Color(255, 0, 0));
+	glColor3ub(255, 255, 255);
+	ppm;
 
 }
 
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
-	//drawAllGardens();
+	drawAllGardens();
 	drawDynamic(keys);
-	//drawStairs(Constraints(3, 1, 1), 7);
+
 }

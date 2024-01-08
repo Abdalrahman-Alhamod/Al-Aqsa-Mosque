@@ -61,7 +61,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DomeOfTheRock.cpp">
-
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="AlQibliMosqueDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -130,7 +131,6 @@
     <ClInclude Include="DomeOfTheRock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="AlQibliMosqueDrawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

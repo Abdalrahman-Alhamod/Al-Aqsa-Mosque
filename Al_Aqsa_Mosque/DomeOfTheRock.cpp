@@ -2363,10 +2363,12 @@ void DomeOfTheRock::drawDomes() {
 
 	pshm;
 	entxt;
+	cull;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
 	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 50, true, false);
 	distxt;
+	nocull;
 	ppm;
 
 	pshm;
@@ -2494,6 +2496,5 @@ void DomeOfTheRock::draw(db openTheDoor) {
 }
 
 void DomeOfTheRock::draw() {
-	//glCallList(domeOfTheRockDisplayList);
-	draw(90);
+	glCallList(domeOfTheRockDisplayList);
 }
