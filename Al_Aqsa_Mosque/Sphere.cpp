@@ -5,10 +5,6 @@
 // The min number of sectors is 3 and the min number of stacks are 2.
 // The default up axis is +Z axis. You can change the up axis with setUpAxis():
 // X=1, Y=2, Z=3.
-//
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2017-11-01
-// UPDATED: 2023-03-11
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef _WIN32
@@ -37,10 +33,11 @@ const int MIN_STACK_COUNT = 2;
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up, bool isDome, float sectorTextureCount) : interleavedStride(32)
-{
 
-    set(radius, sectors, stacks, smooth, up, isDome, sectorTextureCount);
+Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up,bool isDome, float sectorTextureCount) : interleavedStride(32)
+{
+   
+    set(radius, sectors, stacks, smooth, up,isDome, sectorTextureCount);
 }
 
 
@@ -48,7 +45,8 @@ Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up, bool 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up, bool isDome, float sectorTextureCount)
+
+void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up,bool isDome, float sectorTextureCount)
 {
     if (radius > 0)
         this->radius = radius;
@@ -70,8 +68,6 @@ void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up, boo
         buildVerticesSmooth();
     else
         buildVerticesFlat();
-
-
 
 }
 
@@ -316,7 +312,7 @@ void Sphere::buildVerticesSmooth()
     float sectorStep = 2 * PI / sectorCount;
     float stackStep = PI / stackCount;
     float sectorAngle, stackAngle;
-
+   
     for (int i = 0; i <= stackCount; ++i)
     {
         stackAngle = PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2

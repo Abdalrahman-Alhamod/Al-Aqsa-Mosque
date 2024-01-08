@@ -31,6 +31,7 @@ const db pi = 3.141592653589793238462643383279502884197;
 #include "Texture.h"
 #include "Camera.h"
 #include "Console.h"
+#include "Constraints.h"
 #include "Model_3DS.h"
 #include "3DTexture.h"
 #include "Constraints.h"
@@ -42,6 +43,9 @@ const db pi = 3.141592653589793238462643383279502884197;
 #include "PersonDrawer.h"
 #include "Box.h"
 #include "DomeOfTheRock.h"
+#include "AlQibliMosqueDrawer.h"
+#include "Sound.h"
+#include <string>
 
 
 using namespace std;
@@ -58,14 +62,13 @@ int mouseX = 0;	// Current mouse X-coordinate
 int mouseY = 0;	// Current mouse Y-coordinate
 bool isClicked = false;	// Flag indicating whether the left mouse button is clicked
 bool isRClicked = false;	// Flag indicating whether the right mouse button is clicked
+GLfloat zoomFactor = 1.0f;
 
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
 void ToggleFullscreen();	// Function to toggle between full-screen and windowed mode
 void SwitchToWindowedMode();	// Function to switch to windowed mode
 bool SwitchToFullScreen();	// Function to switch to full-screen mode
-void initTextures();
-void initShadows();
 void updatePerspective();
 void updateZoomFactor(bool zoom);
 
@@ -99,13 +102,6 @@ Camera* camera;
 // Console Objec
 Console console;
 
-// More Texture Images Variables
-int wood, ground;
-
-// Shadows Variables
-M3DMatrix44f shadowMat;
-M3DVector4f vPlaneEquation;
-
 // Mosque Drawer Object
 MosqueDrawer mosqueDrawer;
 
@@ -130,6 +126,7 @@ GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular materi
 
 GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
+AlQibliMosqueDrawer alQibliMosqueDrawer;
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -148,37 +145,45 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::cameraInit();
 	Camera::changeMode();
 
-	initTextures();
 
+	// Initialize Console
+	// console.init();
+
+	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
-	envDrawer = EnvDrawer();
+	envDrawer = EnvDrawer(hWnd);
 
 	personDrawer = PersonDrawer();
 
-	glDisable(GL_LIGHT0);
-	// Lighting Variables Initializing
-	glEnable(GL_LIGHT1);
-	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmb);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiff);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpec);
+  //////////////////////////////////////////////these are the trur lights variable for scaling dome of the rock by 0.75 factor/////////////////////////////////////////
+// 	glDisable(GL_LIGHT0);
+// 	// Lighting Variables Initializing
+// 	glEnable(GL_LIGHT1);
+// 	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);
+// 	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmb);
+// 	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiff);
+// 	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpec);
 
-	/*glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDir);
-	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 5.0);*/
+// 	/*glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDir);
+// 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 5.0);*/
 
-	glEnable(GL_LIGHTING);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
-	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
+// 	glEnable(GL_LIGHTING);
+// 	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
+// 	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
+// 	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
+// 	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
 	return TRUE;										// Initialization Went OK
 }
+
 
 float angle = 90;
 GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
 
 db openTheDoor = 0;
+
 
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
@@ -188,7 +193,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 	glClearStencil(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
 
 	// Update Perspective Projection with new zooming value
 	updatePerspective();
@@ -200,86 +204,90 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera = Camera::getInstance();
 
 	camera->Render();
-	camera->decodeKeyboard(keys, 0.7);
-	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 
 	//testEnv();
-	const Point points[4] = { Point(-200.0f, -2.0f, -200.0f),Point(-200.0f, -2.0f, 200.0f),Point(200.0f, -2.0f, 200.0f),Point(200.0f,-2.0f, -200.0f) };
-	envDrawer.drawTiledLand(points, 10);
+// 	const Point points[4] = { Point(-200.0f, -2.0f, -200.0f),Point(-200.0f, -2.0f, 200.0f),Point(200.0f, -2.0f, 200.0f),Point(200.0f,-2.0f, -200.0f) };
+// 	envDrawer.drawTiledLand(points, 10);
 	
+	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
+		if (keys[VK_SHIFT]) {
+			camera->decodeKeyboard(keys, 0.05);
+		}
+		else {
+			camera->decodeKeyboard(keys, 0.01);
+		}
 		Point p = camera->getPosition();
-		float angel = 180 + camera->getRotatedY(), r = 1.8;
+
+		float angel = 180 + camera->getRotatedY(), r = 0.25;
+
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.9 * 0.04 * cos(4 * (abs(p.x) + abs(p.z)));
+		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z))) - 9.8;
 
 
-		personDrawer.drawPerson(p, angel, 10);
-	}
-	glTranslated(-50, -2, 20);
+//these comming l
+// 	glTranslated(-50, -2, 20);
 
 	//drawing the ocatgon shape 
 
 	//the width of the dome of the rock is 18m and the height is 11m the width of the door is 2.75m and the height is 4.5m 
 	//the virtual width and heights are 60 * 37 and the door is 15 * 10
 
-	Box wall; int textures[] = { 0,0,0,0,0,0,0,0,0,0 };
-	db texturess[] = { 0,0,0,0,0,0 };
+// 	Box wall; int textures[] = { 0,0,0,0,0,0,0,0,0,0 };
+// 	db texturess[] = { 0,0,0,0,0,0 };
+// 	pshm;
+// 	wall.drawOutside(Constraints(1,1,1), textures);
+// 	ppm;
+
+
+// 	if (keys[VK_F1]) {
+// 		if (openTheDoor < 90) openTheDoor += 2;
+// 	}
+// 	if (keys[VK_F2]) {
+// 		if (openTheDoor > 0) openTheDoor -= 2;
+// 	}
+
+
+// 	white;
+
+
+// #pragma region domeOfTheRock
+
+// 	glScaled(0.75, 0.75, 0.75);
+// 	dome.draw(openTheDoor);
+
+// #pragma endregion
+
+		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
+		//console.print(personDrawer.v());
+		personDrawer.drawPerson(p, angel, 2);
+	}
+	else {
+		camera->decodeKeyboard(keys, 0.1);
+	}
+
+	//envDrawer.handleSounds(camera->getPosition());
+	console.print(to_string(int(camera->getPosition().x * 10 + 350)) + '+' + to_string(int(camera->getPosition().z * 10 + 500)));
+
+	envDrawer.draw(keys);
+	//glCallList(list);
+
 	pshm;
-	wall.drawOutside(Constraints(1,1,1), textures);
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(-5, -9.98, -29.3);
+	alQibliMosqueDrawer.size = 0.6;
+	alQibliMosqueDrawer.drawAlQibliMosque();
 	ppm;
-
-
-	if (keys[VK_F1]) {
-		if (openTheDoor < 90) openTheDoor += 2;
-	}
-	if (keys[VK_F2]) {
-		if (openTheDoor > 0) openTheDoor -= 2;
-	}
-
-
-	white;
-
-
-#pragma region domeOfTheRock
-
-	glScaled(0.75, 0.75, 0.75);
-	dome.draw(openTheDoor);
-
-#pragma endregion
 
 
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
 	SwapBuffers(hDC);
-}
-
-
-
-
-void initTextures() {
-	glEnable(GL_TEXTURE_2D);
-	wood = LoadTexture((char*)"assets/materials/tree1.bmp", 255);
-	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
-	// note if you load an image the opengl while on the GL_Texture_2D himself
-	glDisable(GL_TEXTURE_2D);
-}
-
-void initShadows() {
-
-	M3DVector3f points[3] = { { -30.0f, -1.9f, -20.0f },{ -30.0f, -1.9f, 20.0f },
-		{ 40.0f, -1.9f, 20.0f } };
-
-	m3dGetPlaneEquation(vPlaneEquation, points[0], points[1],
-		points[2]);
-	// Calculate projection matrix to draw shadow on the ground
-	m3dMakePlanarShadowMatrix(shadowMat, vPlaneEquation,
-		envDrawer.LightPos);
 }
 
 void updatePerspective() {
@@ -308,7 +316,6 @@ void updateZoomFactor(bool zoom) {
 		}
 	}
 }
-
 
 
 /**
@@ -461,14 +468,25 @@ BOOL CreateGLWindow(const char* title, int width, int height, int bits, bool ful
 	WindowRect.bottom = (long)height;		// Set Bottom Value To Requested Height
 
 	fullscreen = fullscreenflag;			// Set The Global Fullscreen Flag
-
+	// Load Custome Icon
+	HICON hIcon = (HICON)LoadImage(NULL, "icon.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+	if (hIcon)
+	{
+		// Set the loaded icon as both the big icon and small icon
+		SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+		SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+	}
+	else
+	{
+		MessageBox(NULL, "Failed to load the application icon.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
+	}
 	hInstance = GetModuleHandle(NULL);				// Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
 	wc.lpfnWndProc = (WNDPROC)WndProc;					// WndProc Handles Messages
 	wc.cbClsExtra = 0;									// No Extra Window Data
 	wc.cbWndExtra = 0;									// No Extra Window Data
 	wc.hInstance = hInstance;							// Set The Instance
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);			// Load The Default Icon
+	wc.hIcon = hIcon;			// Load The Default Icon
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);			// Load The Arrow Pointer
 	wc.hbrBackground = NULL;									// No Background Required For GL
 	wc.lpszMenuName = NULL;									// We Don't Want A Menu
@@ -698,6 +716,12 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		{
 			Camera::changeMode();
 		}
+
+		if (keys[VK_CONTROL] && keys['S']) {
+			envDrawer.changeSkyBoxTexture();
+		}
+
+		envDrawer.decodeEnables(keys);
 
 		return 0;								// Jump Back
 	}

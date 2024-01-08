@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
+    <ClCompile Include="AlQibliMosqueDrawer.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -170,12 +171,16 @@
     <ClCompile Include="PersonDrawer.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PrimitiveDrawer.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
+    <ClInclude Include="AlQibliMosqueDrawer.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
@@ -191,8 +196,18 @@
     <ClInclude Include="PersonDrawer.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PrimitiveDrawer.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Al_Aqsa_Mosque.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\materials\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -68,8 +68,13 @@ private:
      * @brief Default constructor. Initializes camera values.
      */
     Camera();
+    static int nx(int);
+    static int nz(int);
+    static void posInit();
+
 
 public:
+    static bool pos[701][1001];
     static void cameraInit();
     static Camera* getInstance();
 
@@ -147,6 +152,7 @@ public:
     * @param isRightClicked Indicates whether the right mouse button is clicked.
     */
     void decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRightClicked);
+
     Point getPosition();
 
     float getRotatedY();
