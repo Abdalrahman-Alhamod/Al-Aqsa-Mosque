@@ -1,14 +1,10 @@
 // A56
 // Names 
 /*
-Abdalrahmad Alhamod
+Abdalrahman Alhamod
 Mohammad Obada Almasri
 Mohammad Yassen
 */
-
-
-
-
 
 #define ZOOM_INCREASE true
 #define ZOOM_DECREASE false
@@ -16,8 +12,6 @@ Mohammad Yassen
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
-
-
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
