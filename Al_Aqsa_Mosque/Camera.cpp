@@ -5,6 +5,7 @@
 #include <fstream>
 #include <math.h>
 #include "Console.h"
+#include "Constants.h"
 
 #include "Camera.h"
 
@@ -235,15 +236,17 @@ void Camera::changeMode(void)
 
 void Camera::MoveForward(GLfloat Distance)
 {
-	int nx = Camera::nx(Position.x + (View * Distance).x);
-	int nz = Camera::nz(Position.z + (View * Distance).z);
-	if (Camera::pos[nx][nz])
-		return;
-	if (Camera::getMode() == FREE_CAMERA)
+	if (cameraMode == FREE_CAMERA)
 	{
 		Position = Position + (View * Distance);
 		return;
 	}
+
+	int nx = Camera::nx(Position.x + (View * Distance).x);
+	int nz = Camera::nz(Position.z + (View * Distance).z);
+	if (Camera::pos[nx][nz])
+		return;
+
 	float x = View.x, z = View.z;
 	Position = Position + (Vector3dCreate(x, 0, z) * Distance);
 }
@@ -252,7 +255,7 @@ void Camera::MoveRight(GLfloat Distance)
 {
 	int nx = Camera::nx(Position.x + (RightVector * Distance).x);
 	int nz = Camera::nz(Position.z + (RightVector * Distance).z);
-	if (Camera::pos[nx][nz])
+	if (cameraMode != FREE_CAMERA && Camera::pos[nx][nz])
 		return;
 	Position = Position + (RightVector * Distance);
 }

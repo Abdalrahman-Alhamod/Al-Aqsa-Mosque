@@ -755,7 +755,7 @@ void EnvDrawer::drawWall(const float length, const float wallHeight, const int t
 	glPushMatrix();
 	glTranslated(-(length - 2.5) / 2, -wallHeight, -0.5);
 	int t[] = { texture,texture,texture, texture, texture, texture, };
-	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), t, length / 10,2,1);
+	envBoxDrawer.drawOutside(Constraints(length, wallHeight, 1), t, length / 10,1,1);
 	glPopMatrix();
 
 	glPopMatrix();
