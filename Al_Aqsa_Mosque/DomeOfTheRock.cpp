@@ -116,8 +116,12 @@ DomeOfTheRock::DomeOfTheRock() {
 	CARPET = LoadTexture((char*)"assets/domeOfTheRock/carpet.bmp");
 
 	mosqueDrawer = MosqueDrawer();
-}
 
+	domeOfTheRockDisplayList = glGenLists(1);
+	glNewList(domeOfTheRockDisplayList, GL_COMPILE);
+	draw(90);
+	glEndList();
+}
 
 void DomeOfTheRock::arch(db sectorCount, db radius, db thickness) {
 
@@ -2173,10 +2177,10 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 
 #pragma region Fence
 
-	glDisable(GL_LIGHTING);
 	white;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FENCE);
+	glNormal3f(-1, 0, 0);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(-14, 0, -24);
@@ -2188,7 +2192,6 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	glVertex3d(-14, heightOfWall, -24);
 	endf;
 
-	glEnable(GL_LIGHTING);
 	pshm;
 
 	int textures[6] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2 };
@@ -2216,7 +2219,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, MARBLE_FENCE);
 
-	glNormal3f(0, 0, 2);
+	glNormal3f(0, 0, 1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(-15.5, 0, 20);
@@ -2229,7 +2232,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	endf;
 
 	glBindTexture(GL_TEXTURE_2D, FENCE);
-	glNormal3f(-2, 0, 0);
+	glNormal3f(-1, 0, 0);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(-5, 0, 20);
@@ -2241,7 +2244,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	glVertex3d(-5, heightOfWall, 20);
 	endf;
 
-	glNormal3f(0, 0, 2);
+	glNormal3f(0, 0, 1);
 	beg(GL_QUADS);
 	txt(0, 0);
 	glVertex3d(-5, 0, 27);
@@ -2265,7 +2268,6 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	endf;
 	distxt;
 
-	glEnable(GL_LIGHTING);
 	pshm;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2280,7 +2282,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	ppm;
 
 
-	glDisable(GL_LIGHTING);
+
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FENCE);
 	white;
@@ -2340,7 +2342,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	endf;
 
 	distxt;
-	glEnable(GL_LIGHTING);
+
 
 #pragma endregion
 
@@ -2489,4 +2491,9 @@ void DomeOfTheRock::draw(db openTheDoor) {
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b) / 2.0, 0, -(dia - dia2) / 2.0);
 	drawArcade();
+}
+
+void DomeOfTheRock::draw() {
+	//glCallList(domeOfTheRockDisplayList);
+	draw(90);
 }
