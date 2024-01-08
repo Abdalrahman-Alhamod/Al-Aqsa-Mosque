@@ -216,7 +216,7 @@ public:
 	 * @brief Decode key inputs to control various features.
 	 * @param keys An array indicating the state of keys, where true means a key is pressed.
 	 */
-	void decodeEnables(bool* keys);
+	void decodeKeyboard(bool* keys);
 
 	/**
 	* @brief Draws a cylindric minaret with the specified size and texture.

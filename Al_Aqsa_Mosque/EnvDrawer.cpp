@@ -1283,7 +1283,7 @@ void EnvDrawer::setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz) {
 	return;
 }
 
-void EnvDrawer::decodeEnables(bool* keys) {
+void EnvDrawer::decodeKeyboard(bool* keys) {
 	if (keys[VK_CONTROL] && keys[VK_NUMPAD0])
 	{
 		drawSun = !drawSun;
@@ -2058,10 +2058,10 @@ void EnvDrawer::drawConst() {
 	}
 	ppm;
 
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	pshm;
 	glTranslatef(0, 0, -37);
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	ppm;
 
 }
