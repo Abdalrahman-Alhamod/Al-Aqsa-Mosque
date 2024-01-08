@@ -22,31 +22,22 @@ MosqueDrawer::MosqueDrawer() {
 
 	glDisable(GL_TEXTURE_2D);
 
-	crescentModel->Load((char*)"assets/models/crescent.3DS");
-	// remove unused 2 crescent
-	crescentModel->Objects[5].pos.z = 100000000;
-	crescentModel->Objects[6].pos.z = 100000000;
-	// setting initial values
-	crescentModel->pos.x = 5;
-	crescentModel->pos.y = 6.8;
-	crescentModel->pos.z = 0;
-	crescentModel->rot.y = 90;
-	crescentModel->rot.x = 90;
-	crescentModel->scale = 0.01;
 }
 
-void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color) {
+void MosqueDrawer::drawDome(const Point& position, const float size, const Color& color, int sectorCnt, bool inside, bool lines , bool smooth) {
 	// Dome
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
-	Sphere sphere = Sphere(5 * size, 36, 18, true, 2, true);
+	Sphere sphere = Sphere(5 * size, sectorCnt,18,smooth, 2, true);
 	glColor3f(color.redf, color.greenf, color.bluef);
 	const float lineColor[4] = { 0,0,0,0 };
-	sphere.drawWithLines(lineColor);
+	if (inside) sphere.reverseNormals();
+	if(lines) sphere.drawWithLines(lineColor);
+	if (!lines) sphere.draw();
 	//sphere.draw();
 	glPopMatrix();
 
-	// Top Cone
+	 //Top Cone
 	glPushMatrix();
 	glTranslatef(position.x, position.y + 5.5 * size, position.z);
 	glDisable(GL_TEXTURE_2D);
@@ -58,10 +49,11 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	else {
 		glColor3f(color.redf, color.greenf, color.bluef);
 	}
+
 	domeTop.draw();
 	glPopMatrix();
 
-	// Top Spheres
+	 //Top Spheres
 	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
 		glPushMatrix();
 		glTranslatef(position.x, position.y + (5 + yOffset) * size, position.z);
@@ -75,8 +67,11 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	crescentModel->pos.y = position.y + 5.8 * size;
 	crescentModel->pos.z = position.z;
 	crescentModel->scale = 0.01 * size;
-	crescentModel->Draw();*/
+	if(!inside) crescentModel->Draw();*/
+	//crescentModel->Draw();
 }
+
+
 void MosqueDrawer::drawCarbet(const Point points[4], const int count, const int textureID) {
 	glPushMatrix();
 	glEnable(GL_TEXTURE_2D);

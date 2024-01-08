@@ -22,7 +22,8 @@ class Cylinder
 public:
     // ctor/dtor
     Cylinder(float baseRadius = 1.0f, float topRadius = 1.0f, float height = 1.0f,
-        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3, bool isHalf = false,bool onSectorTexture=false );
+        int sectorCount = 36, int stackCount = 1, bool smooth = true, int up = 3, bool isHalf = false, bool onSectorTexture = false);
+
     ~Cylinder() {}
 
     // getters/setters
@@ -32,7 +33,8 @@ public:
     int getSectorCount() const { return sectorCount; }
     int getStackCount() const { return stackCount; }
     void set(float baseRadius, float topRadius, float height,
-        int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isHalf=false, bool onSectorTexture = false);
+       int sectorCount, int stackCount, bool smooth = true, int up = 3, bool isHalf = false, bool onSectorTexture = false);
+
     void setBaseRadius(float radius);
     void setTopRadius(float radius);
     void setHeight(float radius);

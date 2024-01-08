@@ -163,6 +163,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Constraints.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="DomeOfTheRock.cpp" />
     <ClCompile Include="EnvDrawer.cpp" />
     <ClCompile Include="math3d.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Constraints.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="DomeOfTheRock.h" />
     <ClInclude Include="EnvDrawer.h" />
     <ClInclude Include="math3d.h" />
     <ClInclude Include="Model_3DS.h" />

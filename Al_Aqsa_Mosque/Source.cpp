@@ -4,7 +4,18 @@
 #define gf GLfloat
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
-
+#define beg(word) glBegin(word)
+#define endf glEnd()
+#define cull glEnable(GL_CULL_FACE)
+#define nocull glDisable(GL_CULL_FACE)
+#define frontf glCullFace(GL_FRONT)
+#define backf glCullFace(GL_BACK)
+#define txt(s,t) glTexCoord2d(s,t)
+#define entxt 	glEnable(GL_TEXTURE_2D)
+#define distxt glDisable(GL_TEXTURE_2D)
+#define white glColor3f(1,1,1)
+const db srt = 1.414213562373095;
+const db pi = 3.141592653589793238462643383279502884197;
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -31,6 +42,7 @@
 #include "EnvDrawer.h"
 #include "PersonDrawer.h"
 #include "Box.h"
+#include "DomeOfTheRock.h"
 #include "AlQibliMosqueDrawer.h"
 #include "Sound.h"
 #include <string>
@@ -84,10 +96,10 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
 
-// Camera Object
+// Camera Objec
 Camera* camera;
 
-// Console Object
+// Console Objec
 Console console;
 
 // Mosque Drawer Object
@@ -97,6 +109,22 @@ MosqueDrawer mosqueDrawer;
 EnvDrawer envDrawer;
 
 PersonDrawer personDrawer;
+DomeOfTheRock dome;
+
+
+
+GLfloat LightDir[4] = { 1.0f, 1.0f, -5.0f, 1.0f };  // Directional light from the top-left corner
+GLfloat LightPos[4] = { 1.0f, 1.0f, -5.0f, 1.0f };    // Positional light at (1, 1, -5)
+
+GLfloat LightAmb[4] = { 0.2f, 0.2f, 0.2f, 1.0f };    // Low ambient lighting
+GLfloat LightDiff[4] = { 0.6f, 0.6f, 0.6f, 1.0f };    // High diffuse lighting
+GLfloat LightSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };    // High specular lighting
+
+GLfloat MatAmb[4] = { 0.2f, 0.2f, 0.2f, 1.0f };      // Red ambient material
+GLfloat MatDif[4] = { 0.6f, 0.6f, 0.6f, 1.0f };      // High diffuse material
+GLfloat MatSpec[4] = { 0.1f, 0.1f, 0.1f, 1.0f };     // Moderate specular material
+
+GLfloat MatShn[1] = { 10.0f };                        // Moderate shininess
 
 AlQibliMosqueDrawer alQibliMosqueDrawer;
 
@@ -110,9 +138,13 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
+	dome = DomeOfTheRock();
+	
+
 	// Initialize Camera
 	Camera::cameraInit();
 	Camera::changeMode();
+
 
 	// Initialize Console
 	// console.init();
@@ -123,11 +155,36 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	personDrawer = PersonDrawer();
 
-	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+  //////////////////////////////////////////////these are the trur lights variable for scaling dome of the rock by 0.75 factor/////////////////////////////////////////
+// 	glDisable(GL_LIGHT0);
+// 	// Lighting Variables Initializing
+// 	glEnable(GL_LIGHT1);
+// 	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);
+// 	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmb);
+// 	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiff);
+// 	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpec);
 
+// 	/*glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDir);
+// 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 5.0);*/
+
+// 	glEnable(GL_LIGHTING);
+// 	glMaterialfv(GL_FRONT, GL_AMBIENT, MatAmb);
+// 	glMaterialfv(GL_FRONT, GL_DIFFUSE, MatDif);
+// 	glMaterialfv(GL_FRONT, GL_SPECULAR, MatSpec);
+// 	glMaterialfv(GL_FRONT, GL_SHININESS, MatShn);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
 	return TRUE;										// Initialization Went OK
 }
+
+
+float angle = 90;
+GLfloat zoomFactor = 1.0f; // Adjust this value based on your zoom requirements
+
+db openTheDoor = 0;
+
+
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -147,6 +204,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera = Camera::getInstance();
 
 	camera->Render();
+
+
+	//testEnv();
+// 	const Point points[4] = { Point(-200.0f, -2.0f, -200.0f),Point(-200.0f, -2.0f, 200.0f),Point(200.0f, -2.0f, 200.0f),Point(200.0f,-2.0f, -200.0f) };
+// 	envDrawer.drawTiledLand(points, 10);
+	
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
@@ -158,11 +221,46 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 			camera->decodeKeyboard(keys, 0.01);
 		}
 		Point p = camera->getPosition();
+
 		float angel = 180 + camera->getRotatedY(), r = 0.25;
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
 		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z))) - 9.8;
+
+
+//these comming l
+// 	glTranslated(-50, -2, 20);
+
+	//drawing the ocatgon shape 
+
+	//the width of the dome of the rock is 18m and the height is 11m the width of the door is 2.75m and the height is 4.5m 
+	//the virtual width and heights are 60 * 37 and the door is 15 * 10
+
+// 	Box wall; int textures[] = { 0,0,0,0,0,0,0,0,0,0 };
+// 	db texturess[] = { 0,0,0,0,0,0 };
+// 	pshm;
+// 	wall.drawOutside(Constraints(1,1,1), textures);
+// 	ppm;
+
+
+// 	if (keys[VK_F1]) {
+// 		if (openTheDoor < 90) openTheDoor += 2;
+// 	}
+// 	if (keys[VK_F2]) {
+// 		if (openTheDoor > 0) openTheDoor -= 2;
+// 	}
+
+
+// 	white;
+
+
+// #pragma region domeOfTheRock
+
+// 	glScaled(0.75, 0.75, 0.75);
+// 	dome.draw(openTheDoor);
+
+// #pragma endregion
 
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
 		//console.print(personDrawer.v());

@@ -256,6 +256,13 @@ public:
 	*/
 	void drawPigeons();
 
+	void setLightAmb(GLfloat ambx, GLfloat amby, GLfloat ambz);
+	void setLightDiff(GLfloat diffx, GLfloat diffy, GLfloat diffz);
+	void setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz);
+
+
+
+
 	/**
 	* @brief Draws a single bench in the 3D environment.
 	*

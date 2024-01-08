@@ -60,6 +60,8 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DomeOfTheRock.cpp">
+
     <ClCompile Include="AlQibliMosqueDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,6 +127,10 @@
     <ClInclude Include="Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DomeOfTheRock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+
     <ClInclude Include="AlQibliMosqueDrawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
