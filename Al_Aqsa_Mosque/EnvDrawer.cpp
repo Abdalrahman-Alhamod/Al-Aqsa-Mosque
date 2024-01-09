@@ -1256,8 +1256,6 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 
 }
 
-
-
 void EnvDrawer::setLightAmb(GLfloat ambx, GLfloat amby, GLfloat ambz) {
 	this->LightAmb[0] = ambx;
 	this->LightAmb[1] = amby;
@@ -1409,53 +1407,55 @@ void EnvDrawer::drawPigeons() {
 void EnvDrawer::drawAllGardens() {
 	float treeSize = 0.9;
 	bool isTreeSmall = true;
+	pshm;
+	glTranslatef(0, 0, 3);
 
 	pshm;
-	drawGarden(Point(-16, -9.98, 0), 10, 20,
+	drawGarden(Point(-16, -9.98, 10), 10, 10,
 		10, treeSize, isTreeSmall);
 	ppm;
 
 	pshm;
-	drawGarden(Point(26, -9.98, 0), 10, 20,
+	drawGarden(Point(26, -9.98, 10), 10, 10,
 		10, treeSize, isTreeSmall);
 	ppm;
 
 	pshm;
-	drawGarden(Point(-16, -9.98, -35), 10, 20,
+	drawGarden(Point(-16, -9.98, -43), 10, 10,
 		10, treeSize, isTreeSmall);
 	ppm;
 
 	pshm;
-	drawGarden(Point(26, -9.98, -35), 10, 20,
+	drawGarden(Point(26, -9.98, -43), 10, 10,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(-24, -9.98, -33), 2, 20,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(-24, -9.98, -8.5), 2, 19,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(26, -9.98, -33), 2, 20.5,
+		10, treeSize, isTreeSmall);
+	ppm;
+
+	pshm;
+	drawGarden(Point(26, -9.98, -8.5), 2, 19,
 		10, treeSize, isTreeSmall);
 	ppm;
 
 	for (int i = 0; i < 3; i++) {
 		pshm;
-		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -35) ,
+		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -43) ,
+			Point(-6 + i * 10, -9.98, -43) ,
 			Point(-6 + i * 10, -9.98, -35) ,
-			Point(-6 + i * 10, -9.98, -27) ,
-			Point(-14 + i * 10, -9.98, -27) };
-		drawGrassLand(grassLandPoints1, 10);
-		ppm;
-	}
-
-	for (int i = 0; i < 3; i++) {
-		pshm;
-		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, -25) ,
-			Point(-6 + i * 10, -9.98, -25) ,
-			Point(-6 + i * 10, -9.98, -17) ,
-			Point(-14 + i * 10, -9.98, -17) };
-		drawGrassLand(grassLandPoints1, 10);
-		ppm;
-	}
-
-	for (int i = 0; i < 3; i++) {
-		pshm;
-		Point  grassLandPoints1[4] = { Point(-14 + i * 10, -9.98, 2) ,
-			Point(-6 + i * 10, -9.98, 2) ,
-			Point(-6 + i * 10, -9.98, 10) ,
-			Point(-14 + i * 10, -9.98, 10) };
+			Point(-14 + i * 10, -9.98, -35) };
 		drawGrassLand(grassLandPoints1, 10);
 		ppm;
 	}
@@ -1472,8 +1472,8 @@ void EnvDrawer::drawAllGardens() {
 
 	for (int i = 0; i < 4; i++) {
 		pshm;
-		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,2) ,
-				Point(-14 + i * 10 , -9.98, 2) ,
+		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98,12) ,
+				Point(-14 + i * 10 , -9.98, 12) ,
 				Point(-14 + i * 10 , -9.98, 20) ,
 				Point(-16 + i * 10, -9.98, 20) };
 		drawPassage(passagePoints1, 5);
@@ -1483,50 +1483,31 @@ void EnvDrawer::drawAllGardens() {
 
 	for (int i = 0; i < 4; i++) {
 		pshm;
-		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -35) ,
+		Point  passagePoints1[4] = { Point(-16 + i * 10 , -9.98, -43) ,
+				Point(-14 + i * 10 , -9.98, -43) ,
 				Point(-14 + i * 10 , -9.98, -35) ,
-				Point(-14 + i * 10 , -9.98, -17) ,
-				Point(-16 + i * 10, -9.98, -17) };
+				Point(-16 + i * 10, -9.98, -35) };
 		drawPassage(passagePoints1, 5);
 		ppm;
 	}
 
 	pshm;
-	Point  passagePoints1[4] = { Point(-16  , -9.98, 0) ,
-			Point(16  , -9.98, 0) ,
-			Point(16  , -9.98, 2) ,
-			Point(-16 , -9.98, 2) };
+	Point  passagePoints1[4] = { Point(-16  , -9.98, 10) ,
+			Point(16  , -9.98, 10) ,
+			Point(16  , -9.98, 12) ,
+			Point(-16 , -9.98, 12) };
 	drawPassage(passagePoints1, 4);
 	ppm;
 
 	pshm;
-	Point  passagePoints2[4] = { Point(-16  , -9.98, -17) ,
-			Point(16  , -9.98, -17) ,
-			Point(16  , -9.98, -15) ,
-			Point(-16 , -9.98, -15) };
+	Point  passagePoints2[4] = { Point(-16  , -9.98, -35) ,
+			Point(16  , -9.98, -35) ,
+			Point(16  , -9.98, -33) ,
+			Point(-16 , -9.98, -33) };
 	drawPassage(passagePoints2, 4);
 	ppm;
 
-	for (int i = 0; i < 3; i++) {
-		pshm;
-		Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, 10) ,
-				Point(-6 + i * 10  , -9.98,10) ,
-				Point(-6 + i * 10  , -9.98, 12) ,
-				Point(-14 + i * 10 , -9.98, 12) };
-		drawPassage(passagePoints1, 3);
-		ppm;
-	}
-
-	for (int i = 0; i < 3; i++) {
-		pshm;
-		Point  passagePoints1[4] = { Point(-14 + i * 10  , -9.98, -27) ,
-				Point(-6 + i * 10  , -9.98,-27) ,
-				Point(-6 + i * 10  , -9.98, -25) ,
-				Point(-14 + i * 10 , -9.98, -25) };
-		drawPassage(passagePoints1, 3);
-		ppm;
-	}
-
+	ppm;
 }
 
 void EnvDrawer::drawBench() {
@@ -1579,7 +1560,8 @@ void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, 
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < i + 1; j++) {
 			pshm;
-			glTranslatef(0, -i - unitConstraints.height, j * unitConstraints.length);
+			glTranslatef(0, -i* unitConstraints.height,
+				j * unitConstraints.length);
 			envBoxDrawer.drawOutside(unitConstraints, texture);
 			ppm;
 		}
@@ -1591,26 +1573,6 @@ void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count) 
 }
 
 void EnvDrawer::drawBenchesGroub() {
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(-1.2 + i * 2, 0, 0);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(-11.2 + i * 2, 0, 0);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(8.8 + i * 2, 0, 0);
-		drawBench();
-		ppm;
-	}
 
 	for (int i = 0; i < 4; i++) {
 		pshm;
@@ -1635,26 +1597,6 @@ void EnvDrawer::drawBenchesGroub() {
 	pshm;
 
 	glRotatef(180, 0, 1, 0);
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(-1.2 + i * 2, 0, -12);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(-11.2 + i * 2, 0, -12);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glTranslatef(8.8 + i * 2, 0, -12);
-		drawBench();
-		ppm;
-	}
 
 	for (int i = 0; i < 4; i++) {
 		pshm;
@@ -1682,23 +1624,7 @@ void EnvDrawer::drawBenchesGroub() {
 	for (int i = 0; i < 4; i++) {
 		pshm;
 		glRotatef(90, 0, 1, 0);
-		glTranslatef(-7.3 + i * 2, 0, 4);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
 		glTranslatef(-17.3 + i * 2, 0, 4);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(-7.3 + i * 2, 0, 14);
 		drawBench();
 		ppm;
 	}
@@ -1714,23 +1640,7 @@ void EnvDrawer::drawBenchesGroub() {
 	for (int i = 0; i < 4; i++) {
 		pshm;
 		glRotatef(90, 0, 1, 0);
-		glTranslatef(-7.3 + i * 2, 0, -6);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
 		glTranslatef(-17.3 + i * 2, 0, -6);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(-7.3 + i * 2, 0, -16);
 		drawBench();
 		ppm;
 	}
@@ -1744,26 +1654,11 @@ void EnvDrawer::drawBenchesGroub() {
 	}
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(4.8 + i * 2, 0, 4);
-		drawBench();
-		ppm;
-	}
 
 	for (int i = 0; i < 4; i++) {
 		pshm;
 		glRotatef(90, 0, 1, 0);
 		glTranslatef(14.8 + i * 2, 0, 4);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(4.8 + i * 2, 0, 14);
 		drawBench();
 		ppm;
 	}
@@ -1779,23 +1674,7 @@ void EnvDrawer::drawBenchesGroub() {
 	for (int i = 0; i < 4; i++) {
 		pshm;
 		glRotatef(90, 0, 1, 0);
-		glTranslatef(4.8 + i * 2, 0, -6);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
 		glTranslatef(14.8 + i * 2, 0, -6);
-		drawBench();
-		ppm;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		pshm;
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(4.8 + i * 2, 0, -16);
 		drawBench();
 		ppm;
 	}
@@ -1811,6 +1690,145 @@ void EnvDrawer::drawBenchesGroub() {
 }
 
 float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
+
+void EnvDrawer::drawDomeOfTheRockSquare() {
+	pshm;
+	glTranslatef(-17, -10, -27);
+	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
+		stonesTexture[14], 30.0f);
+
+	ppm;
+
+	// font middle
+	pshm;
+	glTranslatef(-5.7, -9.35, 11);
+	drawStairs(Constraints(5, 0.05, 0.1), 14);
+	ppm;
+
+	int pillarSectors = 5, innerSector = 5;
+
+	pshm;
+	glTranslatef(-5, -7.72, 10.75);
+	drawArchway(0.4, 1.5, 4,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+	// front left
+	pshm;
+	glTranslatef(11, -9.35, 11);
+	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glTranslatef(11.7, -7.72, 10.75);
+	drawArchway(0.4, 1.5, 3,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+
+
+	// left middle
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(-5, -9.35, 17);
+	drawStairs(Constraints(5, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(-4.4, -7.72, 16.75);
+	drawArchway(0.4, 1.5, 4,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+
+	// left left
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(-26.5, -9.35, 17);
+	drawStairs(Constraints(5, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(-25.8, -7.72, 16.75);
+	drawArchway(0.4, 1.5, 4,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+	// left right
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(5.5, -9.35, 17);
+	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(6.1, -7.72, 16.75);
+	drawArchway(0.4, 1.5, 3,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+	// back right
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(5, -9.35, 27);
+	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(5.65, -7.72, 26.75);
+	drawArchway(0.4, 1.5, 3,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+	// back left
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(-9, -9.35, 27);
+	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(-8.35, -7.72, 26.75);
+	drawArchway(0.4, 1.5, 3,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+	// right 
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	glTranslatef(0, -9.35, 17);
+	drawStairs(Constraints(6.25, 0.05, 0.1), 14);
+	ppm;
+
+	pshm;
+	glRotatef(90, 0, 1, 0);
+	glTranslatef(0.7, -7.72, 16.75);
+	drawArchway(0.4, 1.5, 5,
+		1, pillarSectors, pillarSectors
+		, innerSector
+	);
+	ppm;
+
+}
 
 void EnvDrawer::drawConst() {
 
@@ -2058,11 +2076,16 @@ void EnvDrawer::drawConst() {
 	}
 	ppm;
 
-	drawBenchesGroub();
 	pshm;
-	glTranslatef(0, 0, -37);
+	glTranslatef(0, 0, 3);
 	drawBenchesGroub();
 	ppm;
+	pshm;
+	glTranslatef(0, 0, -52);
+	drawBenchesGroub();
+	ppm;
+
+	drawDomeOfTheRockSquare();
 
 }
 
@@ -2085,23 +2108,23 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
 
 	pshm;
-	drawLightingPillar(Point(17, -6, 11), 1, 1, 4);
+	drawLightingPillar(Point(16.75, -5.3, 10.75), 1, 1, 4);
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(-17, -6, 11), 2, 1, 4);
+	drawLightingPillar(Point(-16.75, -5.3, 10.75), 2, 1, 4);
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(17, -6, -25), 3, 1, 4);
+	drawLightingPillar(Point(16.65, -5.3, -26.9), 3, 1, 4);
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(-17, -6, -25), 4, 1, 4);
+	drawLightingPillar(Point(-16.85, -5.3, -26.9), 4, 1, 4);
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(12, -6, 38), 5, 1, 4);
+	drawLightingPillar(Point(12, -5, 38), 5, 1, 4);
 	ppm;
 
 	pshm;
@@ -2124,5 +2147,4 @@ void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
 	drawAllGardens();
 	drawDynamic(keys);
-
 }

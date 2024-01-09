@@ -181,7 +181,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.08);
+		camera->decodeKeyboard(keys, 0.5);
+
 	}
 
 	envDrawer.handleSounds(camera->getPosition());
@@ -196,7 +197,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	ppm;
 
 	pshm;
-	glTranslatef(-6, -10, -2);
+	glTranslatef(-9, -9.3, 3);
 	glScalef(0.08, 0.08, 0.08);
 	domeOfTheRock.draw();
 	ppm;

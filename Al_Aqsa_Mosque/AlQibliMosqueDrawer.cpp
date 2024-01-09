@@ -76,6 +76,8 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 
 	drawInner();
 
+	drawMihrab();
+
 	drawTransparentWindow(5);
 
 	glEndList();

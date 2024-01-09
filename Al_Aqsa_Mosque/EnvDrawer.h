@@ -266,9 +266,6 @@ public:
 	void setLightDiff(GLfloat diffx, GLfloat diffy, GLfloat diffz);
 	void setLightSpec(GLfloat specx, GLfloat specy, GLfloat specz);
 
-
-
-
 	/**
 	* @brief Draws a single bench in the 3D environment.
 	*
@@ -310,6 +307,8 @@ public:
 	* and various structures to create visually appealing garden areas.
 	*/
 	void drawAllGardens();
+
+	void drawDomeOfTheRockSquare();
 
 	/**
 	* @brief Draws constant elements in the 3D environment.
