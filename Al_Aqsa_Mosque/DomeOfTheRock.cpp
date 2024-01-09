@@ -46,7 +46,7 @@ DomeOfTheRock::DomeOfTheRock() {
 
 	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
-	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof3.bmp");
+	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof03.bmp");
 
 	BRIDGE1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
 	BRIDGE2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
@@ -97,8 +97,8 @@ DomeOfTheRock::DomeOfTheRock() {
 
 	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
 
-	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier1.bmp");
-	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier2.bmp");
+	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier01.bmp");
+	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier02.bmp");
 	TIER3 = LoadTexture((char*)"assets/domeOfTheRock/tier3.bmp");
 	TIER4 = LoadTexture((char*)"assets/domeOfTheRock/tier4.bmp");
 
@@ -853,7 +853,7 @@ void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture) {
 	entxt;
 #pragma region main body
 	pshm;
-	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 6);
+	Cylinder c = Cylinder(pillarRadius, pillarRadius, pillarHeight, 12);
 	c.setUpAxis(2);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	c.drawSide();
@@ -865,7 +865,7 @@ void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture) {
 	pshm;
 	glTranslated(0, -pillarHeight / 2.0 + 0.25, 0);
 	white;
-	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 6);
+	Cylinder bracelet = Cylinder(pillarRadius + 0.01, pillarRadius + 0.01, 0.5, 12);
 	bracelet.setUpAxis(2);
 	glBindTexture(GL_TEXTURE_2D, PILLAR2);
 	bracelet.drawSide();
@@ -1589,7 +1589,7 @@ void DomeOfTheRock::drawArcadeSide() {
 	textures[2] = textures[3] = textures[4] = textures[5] = ARCH2;
 	textures[6] = textures[7] = ARCH3;
 
-	db sectorCnt = 16;
+	db sectorCnt = 28;
 	pshm;
 	glTranslated(24, 1.5 + pillarH, 1.5);
 	drawArch(6.5, 8, 3, sectorCnt, textures);
@@ -1809,7 +1809,7 @@ void DomeOfTheRock::drawDrum() {
 			textures[7] = ARCH7;
 			textures[2] = textures[5] = ARCH5;
 			textures[3] = textures[4] = ARCH6;
-			drawArch(4.65, 5.65, 3, 16, textures);
+			drawArch(4.65, 5.65, 3, 28, textures);
 			ppm;
 		}
 		else {
