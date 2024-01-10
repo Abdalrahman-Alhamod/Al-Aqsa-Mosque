@@ -110,49 +110,46 @@ Camera::Camera()
 
 void Camera::posInit()
 {
-	for (int i = -280; i <= -260; ++i)
-		for (int j = -400; j <= 400; ++j)
+	// Left wall
+	for (int i = -275; i <= -260; ++i)
+		for (int j = -415; j <= 415; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
-
-	for (int i = -280; i <= -260; ++i)
-		for (int j = 240; j <= 250; ++j)
+	//Doors in it
+	for (int i = -275; i <= -260; ++i)
+		for (int j = -85; j <= -77; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
-	for (int i = -280; i <= -260; ++i)
-		for (int j = 417; j <= 428; ++j)
-			Camera::pos[i + 350][j] = 0;
+	for (int i = -275; i <= -260; ++i)
+		for (int j = 247; j <= 255; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
 
-	for (int i = 75; i <= 630; ++i)
-		for (int j = 85; j <= 90; ++j)
-			Camera::pos[i][j] = 1;
+	//Back wall
+	for (int i = -275; i <= 276; ++i)
+		for (int j = -415; j <= -406; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = 610; i <= 630; ++i)
-		for (int j = -400; j <= 400; ++j)
-			Camera::pos[i][j + 500] = 1;
+	// Right wall
+	for (int i = 263; i <= 277; ++i)
+		for (int j = -415; j <= 415; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = 610; i <= 630; ++i)
-		for (int j = 417; j <= 428; ++j)
-			Camera::pos[i][j] = 0;
+	for (int i = 263; i <= 277; ++i)
+		for (int j = -87; j <= -77; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
 
-	for (int i = 75; i <= 635; ++i)
-		for (int j = 908; j <= 915; ++j)
-			Camera::pos[i][j] = 1;
+	// Front wall
+	for (int i = -273; i <= 276; ++i)
+		for (int j = 408; j <= 413; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	// start of al qibaly
+	for (int i = -273; i <= 20; ++i)
+		for (int j = 396; j <= 408; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = 345; i <= 370; ++i)
-		for (int j = 897; j <= 907; ++j)
-			Camera::pos[i][j] = 1;
+	for (int i = -263; i <= -257; ++i)
+		for (int j = 255; j <= 408; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = 300; i <= 335; ++i)
-		for (int j = 738; j <= 850; ++j)
-			Camera::pos[i][j] = 1;
-
-	for (int i = 240; i <= 280; ++i)
-		for (int j = 730; j <= 885; ++j)
-			Camera::pos[i][j] = 1;
-
-	for (int i = 250; i <= 325; ++i)
-		for (int j = 760; j <= 900; ++j)
-			Camera::pos[i][j] = 0;
 }
 
 int Camera::nx(int v) {
@@ -171,7 +168,7 @@ Camera* Camera::getInstance()
 
 void Camera::cameraInit()
 {
-	Camera::posInit();
+	//Camera::posInit();
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -294,17 +291,17 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 
 	// Camera orientation adjustment using arrow keys
 	if (keys[VK_DOWN])
-		Camera::RotateX(-1 * (speed + 1)); // Rotate camera around X-axis (look up)
+		Camera::RotateX(-1 * (speed + 5)); // Rotate camera around X-axis (look up)
 	if (keys[VK_UP])
-		Camera::RotateX(1 * (speed + 1)); // Rotate camera around X-axis (look down)
+		Camera::RotateX(1 * (speed + 5)); // Rotate camera around X-axis (look down)
 	if (keys[VK_LEFT])
-		Camera::RotateY(1 * (speed + 1)); // Rotate camera around Y-axis (look left)
+		Camera::RotateY(1 * (speed + 5)); // Rotate camera around Y-axis (look left)
 	if (keys[VK_RIGHT])
-		Camera::RotateY(-1 * (speed + 1)); // Rotate camera around Y-axis (look right)
+		Camera::RotateY(-1 * (speed + 5)); // Rotate camera around Y-axis (look right)
 	if (keys['Z'])
-		Camera::RotateZ(1 * (speed + 1));  // Rotate camera around Z-axis (roll clockwise)
+		Camera::RotateZ(1 * (speed + 5));  // Rotate camera around Z-axis (roll clockwise)
 	if (keys['X'])
-		Camera::RotateZ(-1 * (speed + 1)); // Rotate camera around Z-axis (roll counterclockwise)
+		Camera::RotateZ(-1 * (speed + 5)); // Rotate camera around Z-axis (roll counterclockwise)
 }
 
 
