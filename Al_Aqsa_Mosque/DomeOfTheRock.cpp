@@ -2356,10 +2356,8 @@ void DomeOfTheRock::drawDomes() {
 	db a = outer.width, b = inner.width;
 	db p = a / srt, p2 = b / srt;
 	entxt;
-	cull;
 	glBindTexture(GL_TEXTURE_2D, DOME2);
 	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255), 50, false, false);
-	nocull;
 
 	pshm;
 	entxt;

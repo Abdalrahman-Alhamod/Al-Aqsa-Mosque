@@ -309,6 +309,7 @@ public:
 	void drawAllGardens();
 
 	void drawDomeOfTheRockSquare();
+	void drawDomeOfRockSquareGround();
 
 	/**
 	* @brief Draws constant elements in the 3D environment.

@@ -61,7 +61,7 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 		topSphere.draw();
 		glPopMatrix();
 	}
-
+	glColor4f(1, 1, 1,1);
 	// Drawing crescentModel
 	/*crescentModel->pos.x = position.x;
 	crescentModel->pos.y = position.y + 5.8 * size;

@@ -2143,6 +2143,25 @@ void EnvDrawer::drawDynamic(bool* keys) {
 
 }
 
+void EnvDrawer::drawDomeOfRockSquareGround() {
+
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[7]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1, 0);
+	glVertex3f(17, -9.3, 11);
+	glTexCoord2f(1, 1);
+	glVertex3f(17, -9.3, -27);
+	glTexCoord2f(0, 1);
+	glVertex3f(-17, -9.3, -27);
+	glTexCoord2f(0, 0);
+	glVertex3f(-17, -9.3, 11);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
 	drawAllGardens();
