@@ -251,7 +251,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.5 + keys[VK_SHIFT]);
+		camera->decodeKeyboard(keys, 0.2 + keys[VK_SHIFT]);
 
 	}
 

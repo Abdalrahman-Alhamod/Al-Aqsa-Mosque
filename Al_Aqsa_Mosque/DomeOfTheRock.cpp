@@ -93,7 +93,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	MARBLE5 = LoadTexture((char*)"assets/domeOfTheRock/marble5.bmp");
 	MARBLE6 = LoadTexture((char*)"assets/domeOfTheRock/marble6.bmp");
 	MARBLE7 = LoadTexture((char*)"assets/domeOfTheRock/marble7.bmp");
-	MARBLE9 = LoadTexture((char*)"assets/domeOfTheRock/marble8.bmp");
+	MARBLE8 = LoadTexture((char*)"assets/domeOfTheRock/marble8.bmp");
 
 	LIME_STONE1 = LoadTexture((char*)"assets/domeOfTheRock/limestone1.bmp");
 	LIME_STONE2 = LoadTexture((char*)"assets/domeOfTheRock/limestone2.bmp");
@@ -1452,6 +1452,7 @@ void DomeOfTheRock::drawWalls(db openTheDoor) {
 	white;
 	textures[3] = WALL3;
 	textures[2] = WALL4;
+	textures[1] = LEAD;
 	wall.drawOutside(c, textures);
 	textures[3] = -1;
 	textures[2] = -1;
@@ -2275,21 +2276,6 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	endf;
 	distxt;
 
-	pshm;
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4ub(255, 255, 255, 80);
-	beg(GL_QUADS);
-	glVertex3d(7, 0, 25.5);
-	glVertex3d(14, 0, 20);
-	glVertex3d(14, heightOfWall, 20);
-	glVertex3d(7, heightOfWall, 25.5);
-	endf;
-	glDisable(GL_BLEND);
-	ppm;
-
-
-
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FENCE);
 	white;
@@ -2349,6 +2335,19 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	endf;
 
 	distxt;
+
+	pshm;
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4ub(255, 255, 255, 80);
+	beg(GL_QUADS);
+	glVertex3d(7, 0, 25.5);
+	glVertex3d(14, 0, 20);
+	glVertex3d(14, heightOfWall, 20);
+	glVertex3d(7, heightOfWall, 25.5);
+	endf;
+	glDisable(GL_BLEND);
+	ppm;
 
 
 #pragma endregion
@@ -2482,22 +2481,27 @@ void DomeOfTheRock::draw(db openTheDoor) {
 	drawWalls(openTheDoor);
 	ppm;
 
-	pshm;
-	glTranslated(p + a / 2.0 + 1, 0.2, -p - a / 2.0 - 2);
-	db heightOfWall = 4;
-	drawFence(heightOfWall);
-	ppm;
+
 
 	pshm;
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(55, 0, 1, 0);
 	drawDrum();
 	ppm;
+
+	pshm;
 	//moving the outer octagon to the base of the outer octagon 
 	glTranslated(p - p2, 0, -inner.length);
 	//move to the middle of the outer oct depending on the diameters of the oct
 	glTranslated((a - b) / 2.0, 0, -(dia - dia2) / 2.0);
 	drawArcade();
+	ppm;
+
+	pshm;
+	glTranslated(p + a / 2.0 + 1, 0.2, -p - a / 2.0 - 2);
+	db heightOfWall = 4;
+	drawFence(heightOfWall);
+	ppm;
 }
 
 void DomeOfTheRock::draw() {
