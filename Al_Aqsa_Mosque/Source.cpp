@@ -181,7 +181,6 @@ void testReflection() {
 
 }
 
-
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -210,83 +209,6 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK
-}
-
-void draw(float x, float z, bool det)
-{
-	//x -= 0.2;
-	//z -= 1;
-	PrimitiveDrawer d;
-	Point p = Point(x, -9.8, z, 3, 1, Color(det * 255, (!det) * 255, 0));
-	d.drawPoint(p);
-}
-
-void v()
-{
-
-	// Left wall
-	for (int i = -275; i <= -260; ++i)
-		for (int j = -415; j <= 415; ++j)
-			Camera::pos[i + 350][j + 500] = 1,draw(i/10.0,j/10.0,1);
-	//Doors in it
-	for (int i = -275; i <= -260; ++i)
-		for (int j = -70; j <= -63; ++j)
-			Camera::pos[i + 350][j + 500] = 0, draw(i / 10.0, j / 10.0, 0);
-
-	for (int i = -275; i <= -260; ++i)
-		for (int j = 240; j <= 243; ++j)
-			Camera::pos[i + 350][j + 500] = 0, draw(i / 10.0, j / 10.0, 0);
-
-	//Back wall
-	for (int i = -275; i <= 276; ++i)
-		for (int j = -415; j <= -405; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	for(int i = 210;i<=266;++i)
-		for(int j = -406;j<=-390;++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	for (int i = -265; i <= -250; ++i)
-		for (int j = -406; j <= -360; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	// Right wall
-	for (int i = 260; i <= 277; ++i)
-		for (int j = -415; j <= 415; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	for (int i = 260; i <= 277; ++i)
-		for (int j = -70; j <= -63; ++j)
-			Camera::pos[i + 350][j + 500] = 0, draw(i / 10.0, j / 10.0, 0);
-
-	// Front wall
-	for (int i = -273; i <= 276; ++i)
-		for (int j = 408; j <= 413; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-	// start of al qibaly
-	for (int i = -273; i <= 20; ++i)
-		for (int j = 390; j <= 408; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	for (int i = -263; i <= -250; ++i)
-		for (int j = 253; j <= 408; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	// al qibaly
-	for (int i = -100; i <= -2; ++i)
-		for (int j = 230; j <= 408; ++j)
-			Camera::pos[i + 350][j + 500] = 1, draw(i / 10.0, j / 10.0, 1);
-
-	for(int i = -55;i<=-50;++i)
-		for(int j = 230;j<=272;++j)
-			Camera::pos[i + 350][j + 500] = 0, draw(i / 10.0, j / 10.0, 0);
-
-	for (int i = -90; i <= -20; ++i)
-		for (int j = 270; j <= 395; ++j)
-			Camera::pos[i + 350][j + 500] = 0, draw(i / 10.0, j / 10.0, 0);
-
-
-	glColor3ub(255,255,255);
 }
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
@@ -329,14 +251,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.08 + keys[VK_SHIFT]);
+		camera->decodeKeyboard(keys, 0.5 + keys[VK_SHIFT]);
+
 	}
 
-	//envDrawer.handleSounds(camera->getPosition());
+	envDrawer.handleSounds(camera->getPosition());
 
 	envDrawer.draw(keys);
-
-	v();
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
