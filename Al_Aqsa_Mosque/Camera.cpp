@@ -110,31 +110,40 @@ Camera::Camera()
 
 void Camera::posInit()
 {
+
 	// Left wall
 	for (int i = -275; i <= -260; ++i)
 		for (int j = -415; j <= 415; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
 	//Doors in it
 	for (int i = -275; i <= -260; ++i)
-		for (int j = -85; j <= -77; ++j)
+		for (int j = -70; j <= -63; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
 	for (int i = -275; i <= -260; ++i)
-		for (int j = 247; j <= 255; ++j)
+		for (int j = 240; j <= 243; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
 	//Back wall
 	for (int i = -275; i <= 276; ++i)
-		for (int j = -415; j <= -406; ++j)
+		for (int j = -415; j <= -405; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = 210; i <= 266; ++i)
+		for (int j = -406; j <= -390; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = -265; i <= -250; ++i)
+		for (int j = -406; j <= -360; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
 
 	// Right wall
-	for (int i = 263; i <= 277; ++i)
+	for (int i = 260; i <= 277; ++i)
 		for (int j = -415; j <= 415; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = 263; i <= 277; ++i)
-		for (int j = -87; j <= -77; ++j)
+	for (int i = 260; i <= 277; ++i)
+		for (int j = -70; j <= -63; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
 	// Front wall
@@ -143,13 +152,95 @@ void Camera::posInit()
 			Camera::pos[i + 350][j + 500] = 1;
 	// start of al qibaly
 	for (int i = -273; i <= 20; ++i)
-		for (int j = 396; j <= 408; ++j)
+		for (int j = 390; j <= 408; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
 
-	for (int i = -263; i <= -257; ++i)
-		for (int j = 255; j <= 408; ++j)
+	for (int i = -263; i <= -250; ++i)
+		for (int j = 253; j <= 408; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
 
+	// al qibaly
+	for (int i = -100; i <= -2; ++i)
+		for (int j = 230; j <= 408; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = -55; i <= -50; ++i)
+		for (int j = 230; j <= 272; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -90; i <= -20; ++i)
+		for (int j = 270; j <= 395; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	//sahn
+	for (int i = -172; i <= 176; ++i)
+		for (int j = -272; j <= 116; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	//side 1
+	for (int i = -58; i <= -6; ++i)
+		for (int j = 105; j <= 123; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	for (int i = 109; i <= 146; ++i)
+		for (int j = 105; j <= 123; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	for (int i = -50; i <= -12; ++i)
+		for (int j = 100; j <= 140; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+	for (int i = 119; i <= 140; ++i)
+		for (int j = 100; j <= 140; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	//side 2
+	for (int i = -87; i <= -50; ++i)
+		for (int j = -287; j <= -274; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	for (int i = 52; i <= 90; ++i)
+		for (int j = -287; j <= -274; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	for (int i = -80; i <= -56; ++i)
+		for (int j = -300; j <= -260; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+	for (int i = 62; i <= 80; ++i)
+		for (int j = -300; j <= -260; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	//side 3
+	for (int i = -187; i <= -173; ++i)
+	{
+		for (int j = 56; j <= 91; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+		for (int j = -49; j <= -1; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+		for (int j = -264; j <= -216; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	}
+	for (int i = -200; i <= -150; ++i)
+	{
+		for (int j = 65; j <= 85; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+		for (int j = -40; j <= -10; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+		for (int j = -254; j <= -226; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+	}
+	//side 4
+	for (int i = 175; i <= 187; ++i)
+		for (int j = -62; j <= 0; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+	for (int i = 150; i <= 200; ++i)
+		for (int j = -50; j <= -10; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -160; i <= 160; ++i)
+		for (int j = -260; j <= 106; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	//Dom of rock
 }
 
 int Camera::nx(int v) {
@@ -168,7 +259,7 @@ Camera* Camera::getInstance()
 
 void Camera::cameraInit()
 {
-	//Camera::posInit();
+	Camera::posInit();
 
 	for (int i = 0; i < 3; ++i)
 	{
