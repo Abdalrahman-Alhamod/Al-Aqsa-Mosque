@@ -2103,11 +2103,11 @@ void EnvDrawer::drawConst() {
 
 	pshm;
 	glTranslatef(0, 0, 3);
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	ppm;
 	pshm;
 	glTranslatef(0, 0, -52);
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	ppm;
 
 	drawDomeOfTheRockSquare();
@@ -2187,6 +2187,6 @@ void EnvDrawer::drawDomeOfRockSquareGround() {
 
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
-	//drawAllGardens();
-	//drawDynamic(keys);
+	drawAllGardens();
+	drawDynamic(keys);
 }
