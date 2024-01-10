@@ -196,7 +196,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	Camera::changeMode();
 
 	// Initialize Console
-	console.init();
+	//console.init();
 
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
@@ -480,6 +480,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslatef(4, -9.3, -8);
 	glScaled(0.3, 0.3, 0.3);
 	domeOfTheRock.drawDomeOfSouls();
+	ppm;
+
+	pshm;
+	glTranslatef(4, -9.3, 4);
+	glScaled(0.3, 0.3, 0.3);
+	domeOfTheRock.drawDomeOfKhalili();
 	ppm;
 
 	glFlush();											// Done Drawing The Quad
