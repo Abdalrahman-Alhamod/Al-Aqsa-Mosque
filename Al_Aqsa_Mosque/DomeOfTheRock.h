@@ -68,6 +68,14 @@ public:
 
 	void drawDomeOfKhalili();
 
+
+	void drawDomeOfSouls1();
+
+	void drawDomeOfTheProphet1();
+
+	void drawDomeOfAscention1();
+
+	void drawDomeOfKhalili1();
 private:
 
 	int
@@ -90,6 +98,7 @@ private:
 	MosqueDrawer mosqueDrawer;
 
 	int domeOfTheRockDisplayList;
+	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList;
 
 };
 

@@ -134,6 +134,28 @@ DomeOfTheRock::DomeOfTheRock() {
 	glNewList(domeOfTheRockDisplayList, GL_COMPILE);
 	draw(90);
 	glEndList();
+
+	dome1DisplayList = glGenLists(1);
+	glNewList(dome1DisplayList, GL_COMPILE);
+	drawDomeOfSouls();
+	glEndList();
+
+	dome2DisplayList = glGenLists(1);
+	glNewList(dome2DisplayList, GL_COMPILE);
+	drawDomeOfAscention();
+	glEndList();
+
+	dome3DisplayList = glGenLists(1);
+	glNewList(dome3DisplayList, GL_COMPILE);
+	drawDomeOfKhalili();
+	glEndList();
+
+	dome4DisplayList = glGenLists(1);
+	glNewList(dome4DisplayList, GL_COMPILE);
+	drawDomeOfTheProphet();
+	glEndList();
+
+
 }
 
 void DomeOfTheRock::arch(db sectorCount, db radius, db thickness) {
@@ -2933,3 +2955,20 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 
 
 
+void DomeOfTheRock::drawDomeOfSouls1() {
+	glCallList(dome1DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfAscention1() {
+	glCallList(dome2DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfKhalili1() {
+	glCallList(dome3DisplayList);
+
+	
+}
+
+void DomeOfTheRock::drawDomeOfTheProphet1() {
+	glCallList(dome4DisplayList);
+}

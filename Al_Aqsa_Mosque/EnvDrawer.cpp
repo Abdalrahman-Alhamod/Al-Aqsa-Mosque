@@ -1884,7 +1884,7 @@ void EnvDrawer::drawConst() {
 	ppm;
 
 
-	/*
+	
 	// Bab Almgharebah Minart
 	pshm;
 	glTranslatef(-26.5, -7, 40);
@@ -1908,7 +1908,7 @@ void EnvDrawer::drawConst() {
 	glScalef(1, 1.2, 1);
 	drawCylindricMinaret(0.4, stonesTexture[14]);
 	ppm;
-	*/
+	
 
 	pshm;
 	glTranslatef(-26.9, -8, 25.2);
@@ -2103,11 +2103,11 @@ void EnvDrawer::drawConst() {
 
 	pshm;
 	glTranslatef(0, 0, 3);
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	ppm;
 	pshm;
 	glTranslatef(0, 0, -52);
-	//drawBenchesGroub();
+	drawBenchesGroub();
 	ppm;
 
 	drawDomeOfTheRockSquare();
@@ -2187,6 +2187,6 @@ void EnvDrawer::drawDomeOfRockSquareGround() {
 
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
-	//drawAllGardens();
-	//drawDynamic(keys);
+	drawAllGardens();
+	drawDynamic(keys);
 }
