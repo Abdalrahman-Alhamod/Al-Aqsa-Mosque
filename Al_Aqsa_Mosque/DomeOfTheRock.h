@@ -18,7 +18,7 @@ public:
 
 	void drawPipe(db innerR, db outerR, db height, int sectorCnt, int textures[], bool isHalf, bool isArch);
 
-	void drawColumn(db pillarRadius, db pillarHeight, int texture);
+	void drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt = 12, bool bracelets = true);
 
 	void drawEntrancePillar(db pillarRadius, db pillarHeight, db basesWidth, int texture);
 
@@ -47,6 +47,21 @@ public:
 	void draw(db openTheDoor);
 
 	void draw();
+
+
+	//dome of souls 
+
+	void drawDomeOfSoulsPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
+
+	void drawDomeOfSouls();
+
+	//dome of the prophet
+
+	void drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
+
+	void drawDomeOfTheProphet();
+
+
 private:
 
 	int
@@ -54,13 +69,13 @@ private:
 		BRIDGE1, BRIDGE2,
 		ROCK,
 		FENCE, MARBLE_FENCE,
-		FOOT1, FOOT2, FOOT3, FOOT4, FOOT5
-		, ARCH1, ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7, ARCH8, LEAD, ARCH10,
+		FOOT1, FOOT2, FOOT3, FOOT4, FOOT5,
+		ARCH1, ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7, ARCH8, LEAD, ARCH10,
 		DRUM1, DRUM2, DRUM3, DRUM4, DRUM5,
 		DOME1, DOME3, DOME2,
 		PILLAR1, PILLAR2,
-		MARBLE1, MARBLE2, MARBLE3, MARBLE4, MARBLE5, MARBLE6, MARBLE7,
-		WHITE_STONE, WOOD,
+		MARBLE1, MARBLE2, MARBLE3, MARBLE4, MARBLE5, MARBLE6, MARBLE7, MARBLE9,
+		LIME_STONE1, LIME_STONE2,WHITE_STONE, WOOD,
 		TIER1, TIER2, TIER3, TIER4,
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
