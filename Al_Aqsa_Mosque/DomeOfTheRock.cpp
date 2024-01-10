@@ -121,6 +121,13 @@ DomeOfTheRock::DomeOfTheRock() {
 
 	CARPET = LoadTexture((char*)"assets/domeOfTheRock/carpet.bmp");
 
+	KHALILI1 = LoadTexture((char*)"assets/domeOfTheRock/khalili1.bmp");
+	KHALILI2 = LoadTexture((char*)"assets/domeOfTheRock/khalili2.bmp");
+	KHALILI3 = LoadTexture((char*)"assets/domeOfTheRock/khalili3.bmp");
+	KHALILI4 = LoadTexture((char*)"assets/domeOfTheRock/khalili4.bmp");
+
+
+
 	mosqueDrawer = MosqueDrawer();
 
 	domeOfTheRockDisplayList = glGenLists(1);
@@ -2906,3 +2913,23 @@ void DomeOfTheRock::drawDomeOfAscention() {
 
 
 }
+
+void DomeOfTheRock::drawDomeOfKhalili() {
+	Box khalili;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
+	textures[0] = 0;
+	textures[1] = KHALILI3;
+	textures[2] = KHALILI1;
+	textures[3] = KHALILI4;
+	textures[4] = KHALILI4;
+	textures[5] = KHALILI4;
+	khalili.drawOutside(Constraints(9, 5, 9), textures);
+
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, KHALILI2);
+	mosqueDrawer.drawDome(Point(4.5, 4.9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true);
+	distxt;
+}
+
+
+

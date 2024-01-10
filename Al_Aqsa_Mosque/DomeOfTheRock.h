@@ -66,6 +66,8 @@ public:
 
 	void drawDomeOfAscention();
 
+	void drawDomeOfKhalili();
+
 private:
 
 	int
@@ -83,7 +85,7 @@ private:
 		TIER1, TIER2, TIER3, TIER4,
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
-		CARPET;
+		CARPET,KHALILI1, KHALILI2, KHALILI3, KHALILI4;
 
 	MosqueDrawer mosqueDrawer;
 
