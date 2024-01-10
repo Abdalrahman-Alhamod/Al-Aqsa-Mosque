@@ -464,6 +464,24 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.draw();
 	ppm;
 
+	pshm;
+	glTranslatef(10, -9.3, 3);
+	glScaled(0.3, 0.3, 0.3);
+	domeOfTheRock.drawDomeOfTheProphet();
+	ppm;
+
+	pshm;
+	glTranslatef(-7, -9.3, -18);
+	glScaled(0.3, 0.3, 0.3);
+	domeOfTheRock.drawDomeOfAscention();
+	ppm;
+
+	pshm;
+	glTranslatef(4, -9.3, -8);
+	glScaled(0.3, 0.3, 0.3);
+	domeOfTheRock.drawDomeOfSouls();
+	ppm;
+
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
