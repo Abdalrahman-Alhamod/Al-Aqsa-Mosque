@@ -97,6 +97,8 @@ DomeOfTheRock::DomeOfTheRock() {
 
 	LIME_STONE1 = LoadTexture((char*)"assets/domeOfTheRock/limestone1.bmp");
 	LIME_STONE2 = LoadTexture((char*)"assets/domeOfTheRock/limestone2.bmp");
+	LIME_STONE3 = LoadTexture((char*)"assets/domeOfTheRock/limestone3.bmp");
+
 	WHITE_STONE = LoadTexture((char*)"assets/domeOfTheRock/whiteStone.bmp");
 
 	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
@@ -2765,5 +2767,142 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 	nocull;
 	ppm;
 #pragma endregion
+
+}
+
+
+
+//dome of ascention
+
+void DomeOfTheRock::drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
+
+	//db pillarHeight = 4, pillarRadius = 0.1; db basesWidth = 0.6;
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
+#pragma region column
+	drawColumn(pillarRadius, pillarHeight, texture, 10);
+#pragma endregion
+
+#pragma region base
+
+	pshm;
+	glTranslated(0, -pillarHeight / 2.0 - 0.1, 0);
+	Cylinder coneBase = Cylinder((basesWidth - 0.1) / 2.0, (basesWidth - 0.1) / 2.0, 0.6, 6, 1, true, 2);
+	coneBase.draw();
+	ppm;
+#pragma endregion
+
+#pragma region top
+
+	bool flag[6] = { 1,0,0,0,0,0 };
+	Box base;
+
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1, 0);
+	entxt;
+	coneBase.set(pillarRadius + 0.01, basesWidth / 2.0 - 0.1, 0.3, 4, 1, true, 2);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	coneBase.drawSide();
+	distxt;
+	glRotated(45, 0, 1, 0);
+	glTranslated(0, 0.1, 0);
+	glTranslated(-(basesWidth - 0.3) / 2.0, 0.02, -(basesWidth - 0.3) / 2.0);
+	base.drawOutside(Constraints(basesWidth - 0.3, 0.08, basesWidth - 0.3), texture);
+	ppm;
+
+#pragma endregion
+	ppm;
+}
+
+void DomeOfTheRock::drawDomeOfAscention() {
+
+	int textures[] = { 0,0,0,0,0,0,0,0 };
+	db innerR = 2.5, outerR = 3; int PolygonRank = 8;
+	db pillarHieght = 4;
+
+#pragma region pillars
+	for (db angle = 22.5; angle < 360; angle += 45) {
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		pshm;
+		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 0.15);
+		drawDomeOfAscentionPillar(pillarHieght, 0.1, 0.6, LIME_STONE1);
+		ppm;
+
+		pshm;
+		glTranslated(0, pillarHieght / 2.0 + 0.6, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.04);
+		drawColumn(0.08, pillarHieght, LIME_STONE2, 12);
+		ppm;
+		ppm;
+	}
+#pragma endregion
+
+#pragma region archs
+
+	Box top;
+	pshm;
+	glTranslated(0, pillarHieght + 0.6, 0);
+	for (db angle = 0; angle < 360; angle += 45) {
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		pshm;
+		glTranslated(-1.5 * 0.765, 1.5 * 0.765, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.2);
+		textures[0] = textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = LIME_STONE2;
+		textures[1] = LIME_STONE2;
+		top.drawOutside(Constraints(0.765 * 3, 0.2, 0.26), textures);
+		ppm;
+		textures[0] = LIME_STONE3;
+		textures[1] = LIME_STONE3;
+		textures[7] = WHITE_STONE;
+		textures[2] = textures[3] = WHITE_STONE;
+		textures[4] = textures[5] = LIME_STONE3;
+		pshm;
+		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
+		drawArch(1.5 * 0.665, 1.5 * 0.765, 0.2, 28, textures);
+		ppm;
+
+		pshm;
+		textures[0] = LIME_STONE2;
+		textures[1] = LIME_STONE2;
+		textures[7] = LIME_STONE2;
+		textures[2] = textures[3] = LIME_STONE2;
+		textures[4] = textures[5] = LIME_STONE2;
+		glTranslated(0, 0, -1.2 * cos(360.0 / (2 * PolygonRank)) + 2.7 - 1.2 - 0.1);
+		drawArch(1.3 * 0.665, 1.3 * 0.765, 0.2, 28, textures);
+		ppm;
+
+		ppm;
+	}
+	ppm;
+#pragma endregion
+
+#pragma region dome
+	pshm;
+	white;
+	glRotated(22.5, 0, 1, 0);
+	glTranslated(0, pillarHieght + 2, 0);
+	cull;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.51, Color(255, 255, 255), 25, false, false, false);
+	entxt;
+	nocull;
+	ppm;
+#pragma endregion
+
+#pragma region body
+	pshm;
+	glRotated(22.5, 0, 1, 0);
+	glTranslated(0, pillarHieght / 2.0, 0);
+	entxt;
+	white;
+	glBindTexture(GL_TEXTURE_2D, LIME_STONE3);
+	Cylinder body = Cylinder(2.7, 2.7, pillarHieght + 3, 8, 1, false, 2, false, true);
+	body.drawSide();
+	distxt;
+	ppm;
+#pragma endregion
+
+
 
 }

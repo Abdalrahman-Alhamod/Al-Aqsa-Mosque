@@ -62,6 +62,10 @@ public:
 	void drawDomeOfTheProphet();
 
 
+	void drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
+
+	void drawDomeOfAscention();
+
 private:
 
 	int
@@ -75,7 +79,7 @@ private:
 		DOME1, DOME3, DOME2,
 		PILLAR1, PILLAR2,
 		MARBLE1, MARBLE2, MARBLE3, MARBLE4, MARBLE5, MARBLE6, MARBLE7, MARBLE8,
-		LIME_STONE1, LIME_STONE2,WHITE_STONE, WOOD,
+		LIME_STONE1, LIME_STONE2, LIME_STONE3,WHITE_STONE, WOOD,
 		TIER1, TIER2, TIER3, TIER4,
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
