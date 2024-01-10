@@ -174,7 +174,7 @@ void Camera::cameraInit()
 	{
 		camera[i] = new Camera();
 
-		camera[i]->Position = Vector3dCreate(0.0, -9.5, 0.0);
+		camera[i]->Position = Vector3dCreate(0.0, -9, 0.0);
 		camera[i]->View = Vector3dCreate(0.0, 0.0, -1.0);
 		camera[i]->RightVector = Vector3dCreate(1.0, 0.0, 0.0);
 		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
@@ -195,6 +195,11 @@ void Camera::RotateX(GLfloat Angle)
 	View = NormalizeVector3d(View * cosf(Angle * PIdiv180) + Up * sinf(Angle * PIdiv180));
 	//now compute the new UpVector (by cross product)
 	//Up = CrossProduct(&View, &RightVector) * -1;
+}
+
+void Camera::setY(float value)
+{
+	this->Position.y = value;
 }
 
 void Camera::RotateY(GLfloat Angle)

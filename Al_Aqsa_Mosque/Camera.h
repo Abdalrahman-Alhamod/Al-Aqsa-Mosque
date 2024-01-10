@@ -83,6 +83,7 @@ public:
      * @note You should call glLoadIdentity before using Render.
      */
     void Render(void);
+    void setY(float);
 
     /**
     * @brief

@@ -2103,15 +2103,14 @@ void EnvDrawer::drawConst() {
 
 	pshm;
 	glTranslatef(0, 0, 3);
-	drawBenchesGroub();
+	//drawBenchesGroub();
 	ppm;
 	pshm;
 	glTranslatef(0, 0, -52);
-	drawBenchesGroub();
+	//drawBenchesGroub();
 	ppm;
 
 	drawDomeOfTheRockSquare();
-
 }
 
 float triangleAngle = 0;
@@ -2128,7 +2127,6 @@ void EnvDrawer::drawDynamic(bool* keys) {
 		Sphere(1, 5, 5).draw();
 		ppm;
 	}
-
 
 	drawSkyBox(Constraints(skyboxWidth, skyboxHeight, skyBoxLength));
 
@@ -2189,6 +2187,6 @@ void EnvDrawer::drawDomeOfRockSquareGround() {
 
 void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
-	drawAllGardens();
-	drawDynamic(keys);
+	//drawAllGardens();
+	//drawDynamic(keys);
 }
