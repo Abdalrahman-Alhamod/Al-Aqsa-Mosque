@@ -110,6 +110,76 @@ AlQibliMosqueDrawer alQibliMosqueDrawer;
 
 DomeOfTheRock domeOfTheRock;
 
+void ground(void) {
+	glColor4f(1, 1, 1, 0.8);
+	envDrawer.drawDomeOfRockSquareGround();
+	glColor4f(1, 1, 1, 1);
+}
+
+void testReflection() {
+	// Disable the color mask and depth mask
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_FALSE);
+
+	// Enable stencil testing
+	glEnable(GL_STENCIL_TEST);
+
+	// Set the stencil buffer to replace the next lot of data
+	glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
+	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+	// Set the data plane to be replaced (assuming `bench` is a function to set the data plane)
+	ground();
+
+	// Enable the color mask and depth mask
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+
+	// Set the stencil buffer to keep the next lot of data
+	glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+	// Disable depth testing of the reflection
+	//glDisable(GL_DEPTH_TEST);
+
+	// Apply transformations to draw the reflection
+	glPushMatrix();
+	glTranslatef(0, -18.58, 0);
+	glScalef(1.0f, -1.0f, 1.0f);  // Flip the reflection vertically
+
+	pshm;
+	glTranslatef(-9, -9.3, 3);
+	glScalef(0.08, 0.08, 0.08);
+	domeOfTheRock.draw();
+	ppm;          
+
+
+	glPopMatrix();
+
+	// Enable depth testing
+	glEnable(GL_DEPTH_TEST);
+
+	// Disable stencil testing
+	glDisable(GL_STENCIL_TEST);
+
+	// Enable alpha blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Draw the bench with alpha blending
+	ground();
+
+	// Disable alpha blending
+	glDisable(GL_BLEND);
+
+
+	pshm;
+	glTranslatef(-9, -9.3, 3);
+	glScalef(0.08, 0.08, 0.08);
+	domeOfTheRock.draw();
+	ppm;
+
+}
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
@@ -181,7 +251,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
-		camera->decodeKeyboard(keys, 0.5);
+		camera->decodeKeyboard(keys, 0.5 + keys[VK_SHIFT]);
 
 	}
 
@@ -195,6 +265,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	alQibliMosqueDrawer.size = 0.6;
 	alQibliMosqueDrawer.drawAlQibliMosque();
 	ppm;
+
+	//testReflection();
 
 	pshm;
 	glTranslatef(-9, -9.3, 3);

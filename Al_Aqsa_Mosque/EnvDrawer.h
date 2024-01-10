@@ -188,6 +188,7 @@ public:
 	* @param buildingTextureIndex The index of the building texture to be applied.
 	*/
 	void drawBuidling(const float size, const int buildingTextureIndex);
+	void drawBuidling(const float size,const float hight, const int buildingTextureIndex);
 
 	/**
 	* @brief Control the position of the light source based on user input.
@@ -309,6 +310,7 @@ public:
 	void drawAllGardens();
 
 	void drawDomeOfTheRockSquare();
+	void drawDomeOfRockSquareGround();
 
 	/**
 	* @brief Draws constant elements in the 3D environment.
@@ -343,7 +345,7 @@ public:
 	*/
 	void draw(bool* keys);
 
-	int stonesTexture[15];
+	int stonesTexture[16];
 
 	bool drawSun = true, enableSounds = true;
 

@@ -6,6 +6,7 @@
 #define ppm glPopMatrix()
 #include "EnvDrawer.h"
 #include <GL/glut.h>  
+#include <random>
 #include "Point.h"
 #include "Color.h"
 #include "Constants.h"
@@ -115,6 +116,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	stonesTexture[12] = LoadTexture((char*)"assets/materials/AlQibli/block3.bmp", 255);
 	stonesTexture[13] = LoadTexture((char*)"assets/materials/AlQibli/roof0.bmp", 255);
 	stonesTexture[14] = LoadTexture((char*)"assets/materials/stones9.bmp", 255);
+	stonesTexture[15] = LoadTexture((char*)"assets/materials/door1.bmp", 255);
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -1097,6 +1099,10 @@ void EnvDrawer::drawBuidling(const float size, const int buildingTextureIndex) {
 	envBoxDrawer.drawOutside(Constraints(10 * size, 20 * size, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
 }
 
+void EnvDrawer::drawBuidling(const float size,const float hight, const int buildingTextureIndex) {
+	envBoxDrawer.drawOutside(Constraints(10 * size, 10 + hight, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
+}
+
 void EnvDrawer::controlLightSourcePosition(bool* keys) {
 	if (keys[VK_NUMPAD4])
 	{
@@ -1838,7 +1844,7 @@ void EnvDrawer::drawConst() {
 		Point(tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2),
 		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
 
-	drawTiledLand(tiledLandPoints, 100);
+	drawTiledLand(tiledLandPoints, 20);
 
 
 	float road1Length = 83, road1Width = 8;
@@ -1878,7 +1884,7 @@ void EnvDrawer::drawConst() {
 	ppm;
 
 
-
+	/*
 	// Bab Almgharebah Minart
 	pshm;
 	glTranslatef(-26.5, -7, 40);
@@ -1902,7 +1908,7 @@ void EnvDrawer::drawConst() {
 	glScalef(1, 1.2, 1);
 	drawCylindricMinaret(0.4, stonesTexture[14]);
 	ppm;
-
+	*/
 
 	pshm;
 	glTranslatef(-26.9, -8, 25.2);
@@ -1966,6 +1972,22 @@ void EnvDrawer::drawConst() {
 	ppm;
 
 
+	pshm;
+	glColor3ub(255, 255, 255);
+	glTranslated(-26.5, -10, -41);
+	int texturesa[6] = {stonesTexture[14],stonesTexture[14],stonesTexture[14]
+		, stonesTexture[14],stonesTexture[14], stonesTexture[15] };
+	Box().drawOutside(Constraints(1, 2.5, 4.6), texturesa, 1);
+	ppm;
+
+	pshm;
+	glTranslated(21.25, -10, -41);
+	int texturesb[6] = {stonesTexture[14],stonesTexture[14],stonesTexture[14]
+		, stonesTexture[15], stonesTexture[14], stonesTexture[15] };
+	Box().drawOutside(Constraints(5.15, 2.5, 1), texturesb, 1);
+	ppm;
+
+
 
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -1999,13 +2021,14 @@ void EnvDrawer::drawConst() {
 	drawTank(Point(12, -10, 32), 0.5);
 	ppm;
 
-
+	//just because of disply list you can use this trick
+	srand(time(NULL));
 
 
 	for (int i = 0; i < 14; i++) {
 		pshm;
 		glTranslatef(-40, -10, 44 - i * 7);
-		drawBuidling(0.5, i % 6);
+		drawBuidling(0.5,(rand()%10)-3, rand() % 6);
 		ppm;
 
 
@@ -2018,12 +2041,14 @@ void EnvDrawer::drawConst() {
 		ppm;
 	}
 
+
 	pshm;
 	glTranslatef(75, 0, 0);
 	for (int i = 0; i < 14; i++) {
 		pshm;
 		glTranslatef(-40, -10, 44 - i * 7);
-		drawBuidling(0.5, i % 6);
+		//drawBuidling(0.5, i % 6);
+		drawBuidling(0.5, (rand() % 10) - 3, rand() % 6);
 		ppm;
 
 
@@ -2042,7 +2067,7 @@ void EnvDrawer::drawConst() {
 	for (int i = 0; i < 10; i++) {
 		pshm;
 		glTranslatef(-54, -10, 29 - i * 7);
-		drawBuidling(0.5, i % 6);
+		drawBuidling(0.5, (rand() % 10) - 3, rand() % 6);
 		ppm;
 
 
@@ -2062,7 +2087,7 @@ void EnvDrawer::drawConst() {
 	for (int i = 0; i < 10; i++) {
 		pshm;
 		glTranslatef(-54, -10, 29 - i * 7);
-		drawBuidling(0.5, i % 6);
+		drawBuidling(0.5, (rand() % 10) - 3, rand() % 6);
 		ppm;
 
 
@@ -2141,6 +2166,25 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	glColor3ub(255, 255, 255);
 	ppm;
 
+}
+
+void EnvDrawer::drawDomeOfRockSquareGround() {
+
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[7]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1, 0);
+	glVertex3f(17, -9.3, 11);
+	glTexCoord2f(1, 1);
+	glVertex3f(17, -9.3, -27);
+	glTexCoord2f(0, 1);
+	glVertex3f(-17, -9.3, -27);
+	glTexCoord2f(0, 0);
+	glVertex3f(-17, -9.3, 11);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
 
 void EnvDrawer::draw(bool* keys) {

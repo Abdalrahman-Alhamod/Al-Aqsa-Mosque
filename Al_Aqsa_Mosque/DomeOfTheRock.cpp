@@ -2363,17 +2363,15 @@ void DomeOfTheRock::drawDomes() {
 	db a = outer.width, b = inner.width;
 	db p = a / srt, p2 = b / srt;
 	entxt;
-	cull;
 	glBindTexture(GL_TEXTURE_2D, DOME2);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255), 50, false, false);
-	nocull;
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255), 18, false, false);
 
 	pshm;
 	entxt;
 	cull;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 50, true, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 18, true, false);
 	distxt;
 	nocull;
 	ppm;
@@ -2382,7 +2380,7 @@ void DomeOfTheRock::drawDomes() {
 	glTranslated(p + a / 2.0, 57, -p - a / 2.0);
 	glRotated(90, 1, 0, 0);
 	textures[2] = textures[3] = textures[4] = textures[4] = textures[5] = textures[6] = textures[7] = DOME3;
-	drawPipe(35.5, 38, 1, 40, textures, false);
+	drawPipe(35.5, 38, 1, 18, textures, false);
 	ppm;
 }
 
