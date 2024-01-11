@@ -36,21 +36,21 @@ public:
 	 * @param position The position where the tree will be drawn.
 	 * @param size The size of the tree.
 	 */
-	void drawSmallTree(const Point& position, const float size);
+	void drawSmallTree(const Point& position, const float size,float rotateY = 0);
 
 	/**
 	 * @brief Draw a big tree at the specified position with the given size.
 	 * @param position The position where the tree will be drawn.
 	 * @param size The size of the tree.
 	 */
-	void drawBigTree(const Point& position, const float size);
+	void drawBigTree(const Point& position, const float size,float rotateY = 0);
 
 	/**
 	 * @brief Draw a tank at the specified position with the given size.
 	 * @param position The position where the tank will be drawn.
 	 * @param size The size of the tank.
 	 */
-	void drawTank(const Point& position, const float size);
+	void drawTank(const Point& position,float size);
 
 	/**
 	 * @brief Draw a fountain at the specified position with the given size.
@@ -401,7 +401,7 @@ private:
 	 * @param size The size of the model.
 	 * @param scaleFactor The scale factor applied to the model.
 	 */
-	void drawModel(Model_3DS* model, const Point& position, const float size, const float scaleFactor);
+	void drawModel(Model_3DS* model, const Point& position, const float size, const float scaleFactor,const float rotateY = 0);
 
 	/**
 	 * @brief Draw a land using the specified points, count, and texture ID.
