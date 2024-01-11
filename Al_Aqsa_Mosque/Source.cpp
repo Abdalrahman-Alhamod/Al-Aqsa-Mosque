@@ -110,6 +110,8 @@ AlQibliMosqueDrawer alQibliMosqueDrawer;
 
 DomeOfTheRock domeOfTheRock;
 
+
+
 void ground(void) {
 	glColor4f(1, 1, 1, 0.8);
 	envDrawer.drawDomeOfRockSquareGround();
@@ -191,6 +193,9 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
+
+
+
 	// Initialize Camera
 	Camera::cameraInit();
 	Camera::changeMode();
@@ -205,7 +210,6 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	personDrawer = PersonDrawer();
 
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
-
 	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK
@@ -326,31 +330,31 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	pshm;
 	glTranslatef(-9, -9.3, 3);
-	glScalef(0.08, 0.08, 0.08);
+	glScalef(0.07, 0.07, 0.07);
 	domeOfTheRock.draw();
 	ppm;
 
 	pshm;
 	glTranslatef(10, -9.3, 3);
-	glScaled(0.3, 0.3, 0.3);
+	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfTheProphet1();
 	ppm;
 
 	pshm;
 	glTranslatef(-7, -9.3, -18);
-	glScaled(0.3, 0.3, 0.3);
+	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfAscention1();
 	ppm;
 
 	pshm;
 	glTranslatef(4, -9.3, -8);
-	glScaled(0.3, 0.3, 0.3);
+	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfSouls1();
 	ppm;
 
 	pshm;
 	glTranslatef(4, -9.3, 4);
-	glScaled(0.3, 0.3, 0.3);
+	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfKhalili1();
 	ppm;
 
