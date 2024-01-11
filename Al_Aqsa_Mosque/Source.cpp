@@ -228,7 +228,7 @@ void v()
 {
 }
 
-float hight = 9.3, modelHight = 9.3;
+float hight = 9.3, modelHight = 9.3,walking = 0;
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -304,8 +304,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.1 * 0.04 * cos(40 * (abs(p.x) + abs(p.z))) - modelHight;
-
+		p.y = -0.1 * 0.04 * cos(20 * walking) - modelHight;
+		walking += keys['W'];
 		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
 		//console.print(personDrawer.v());
 		personDrawer.drawPerson(p, angel, 2);

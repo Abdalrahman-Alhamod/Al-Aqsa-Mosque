@@ -329,22 +329,23 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 
 }
 
-void EnvDrawer::drawModel(Model_3DS* model, const Point& position, const float size, const float scaleFactor) {
+void EnvDrawer::drawModel(Model_3DS* model, const Point& position, const float size, const float scaleFactor,float rotateY) {
 	glEnable(GL_TEXTURE_2D);
 	model->pos.x = position.x;
 	model->pos.y = position.y;
 	model->pos.z = position.z;
 	model->scale = scaleFactor * size;
+	model->rot.y = rotateY;
 	model->Draw();
 	glDisable(GL_TEXTURE_2D);
 }
 
-void EnvDrawer::drawSmallTree(const Point& position, const float size) {
-	drawModel(tree1Model, position, size, 0.1);
+void EnvDrawer::drawSmallTree(const Point& position, const float size,float rotateY) {
+	drawModel(tree1Model, position, size, 0.1,rotateY);
 }
 
-void EnvDrawer::drawBigTree(const Point& position, const float size) {
-	drawModel(tree2Model, position, size, 0.5);
+void EnvDrawer::drawBigTree(const Point& position, const float size,float rotateY) {
+	drawModel(tree2Model, position, size, 0.5,rotateY);
 }
 
 void EnvDrawer::drawTank(const Point& position, const float size) {
@@ -805,10 +806,10 @@ void EnvDrawer::drawGarden(const Point& point, const float width, const float le
 			float x = i, y = point.y, z = j;
 			Point treePosition = Point(x, y, z);
 			if (isSmall) {
-				drawSmallTree(treePosition, treeSize);
+				drawSmallTree(treePosition, treeSize,int(x+y)%360);
 			}
 			else {
-				drawBigTree(treePosition, treeSize);
+				drawBigTree(treePosition, treeSize,int(x+y)%360);
 			}
 		}
 	}
@@ -1846,6 +1847,7 @@ void EnvDrawer::drawConst() {
 
 	drawTiledLand(tiledLandPoints, 20);
 
+	drawAllGardens();
 
 	float road1Length = 83, road1Width = 8;
 
