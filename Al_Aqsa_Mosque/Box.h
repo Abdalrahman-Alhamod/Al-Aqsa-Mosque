@@ -35,9 +35,9 @@ public:
 
     void drawOutside(const Constraints& c, int textures[], int flag[]);
 
-    void drawOutside(const Constraints& c, int textures[], int textureCntS[],int textureCntT[]);
+    void drawOutside(const Constraints& c, int textures[], db textureCntS[],db textureCntT[]);
 
-    void drawOutside(const Constraints& c, const int texture, int textureCntS[], int textureCntT[]);
+    void drawOutside(const Constraints& c, const int texture, db textureCntS[], db textureCntT[]);
 
     void drawOutside(const Constraints& c, const int texture, int flag[]);
 

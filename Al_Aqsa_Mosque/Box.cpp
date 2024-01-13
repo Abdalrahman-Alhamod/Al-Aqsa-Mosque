@@ -274,7 +274,7 @@ void Box::drawOutside(const Constraints& c, const int texture, int flag[]) {
 	Box::drawOutside(c, textures, flag);
 }
 
-void Box::drawOutside(const Constraints& c, int textures[], int textureCntS[], int textureCntT[]) {
+void Box::drawOutside(const Constraints& c, int textures[], db textureCntS[], db textureCntT[]) {
 	db width = c.width;
 	db height = c.height;
 	db length = c.length;
@@ -385,7 +385,7 @@ void Box::drawOutside(const Constraints& c, int textures[], int textureCntS[], i
 	ppm;
 }
 
-void Box::drawOutside(const Constraints& c, int texture, int textureCntS[], int textureCntT[]) {
+void Box::drawOutside(const Constraints& c, int texture, db textureCntS[], db textureCntT[]) {
 	int textures[6] = { texture,texture,texture,texture,texture,texture };
 	Box::drawOutside(c, textures, textureCntS,textureCntT);
 }

@@ -55,6 +55,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	ROCK2 = LoadTexture((char*)"assets/domeOfTheRock/rock4.bmp");
 
 	FENCE = LoadTexture((char*)"assets/domeOfTheRock/fence.bmp");
+	FENCE1 = LoadTexture((char*)"assets/domeOfTheRock/fence1.bmp");
 	MARBLE_FENCE = LoadTexture((char*)"assets/domeOfTheRock/marbleFence.bmp");
 
 	FOOT1 = LoadTexture((char*)"assets/domeOfTheRock/footprint1.bmp");
@@ -1005,7 +1006,7 @@ void DomeOfTheRock::drawArcadePillar(db pillarRadius, db pillarHeight, db basesW
 #pragma region base
 	pshm;
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 2, -3 * pillarRadius / 2.0);
-	flag[1] = 0;
+	flag[1] = 1;
 	base.drawOutside(Constraints(basesWidth, 2, basesWidth), PILLAR2, flag);
 	ppm;
 #pragma endregion
@@ -1067,7 +1068,7 @@ void DomeOfTheRock::drawEntrance(db doorWidth, db doorHeight) {
 	db archbaseHeight = 1; db outerR = 5, innerR = 4, archLength = 8.5;
 	Constraints c(0, 0, 1.5);
 	Box marbleGround, arch;
-	int flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,1,1,1,1,1 };
 	int textures[] = { 0,0,0,0,0,0,0,0 };
 
 	pshm;
@@ -1097,7 +1098,7 @@ void DomeOfTheRock::drawEntrance(db doorWidth, db doorHeight) {
 	white;
 
 	glTranslated(0, archbaseHeight, 0);
-	flag[0] = 0; flag[2] = 1;
+	flag[0] = 1; flag[2] = 0;
 
 #pragma region bases of the arch 
 	pshm;
@@ -2230,26 +2231,11 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 
 #pragma region Fence
 
-	//glEnable(GL_LIGHTING);
-	white;
-	entxt;
-	glBindTexture(GL_TEXTURE_2D, FENCE);
-	glNormal3f(-1, 0, 0);
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(-14, 0, -24);
-	txt(8, 0);
-	glVertex3d(-17, 0, 20);
-	txt(8, 1);
-	glVertex3d(-17, heightOfWall, 20);
-	txt(0, 1);
-	glVertex3d(-14, heightOfWall, -24);
-	endf;
-
-	pshm;
+#pragma region feet place
 
 	int textures[6] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2 };
-	int flag[6] = { 0,0,1,1,1,1 };
+	pshm;
+	int flag[6] = { 0,1,1,1,1,1 };
 	white;
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
@@ -2269,129 +2255,107 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	distxt;
 	ppm;
 
-	white;
-	entxt;
-	glBindTexture(GL_TEXTURE_2D, MARBLE_FENCE);
+#pragma endregion
 
-	glNormal3f(0, 0, 1);
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(-15.5, 0, 20);
-	txt(3, 0);
-	glVertex3d(-5, 0, 20);
-	txt(3, 1);
-	glVertex3d(-5, heightOfWall, 20);
-	txt(0, 1);
-	glVertex3d(-15.5, heightOfWall, 20);
-	endf;
+	textures[0] = 0;
+	db texturesCntS[6]; db texturesCntT[6] = { 1,1,1,1,1,1 };
+	texturesCntS[5] = texturesCntS[4] = texturesCntS[0] = texturesCntS[1] = 1;
 
-	glBindTexture(GL_TEXTURE_2D, FENCE);
-	glNormal3f(-1, 0, 0);
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(-5, 0, 20);
-	txt(2, 0);
-	glVertex3d(-5, 0, 27);
-	txt(2, 1);
-	glVertex3d(-5, heightOfWall, 27);
-	txt(0, 1);
-	glVertex3d(-5, heightOfWall, 20);
-	endf;
 
-	glNormal3f(0, 0, 1);
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(-5, 0, 27);
-	txt(1, 0);
-	glVertex3d(0, 0, 27);
-	txt(1, 1);
-	glVertex3d(0, heightOfWall, 27);
-	txt(0, 1);
-	glVertex3d(-5, heightOfWall, 27);
-	endf;
+	Box fence;
 
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(0, 0, 27);
-	txt(1.5, 0);
-	glVertex3d(7, 0, 25.5);
-	txt(1.5, 1);
-	glVertex3d(7, heightOfWall, 25.5);
-	txt(0, 1);
-	glVertex3d(0, heightOfWall, 27);
-	endf;
-	distxt;
+	///marble fence
 
-	entxt;
-	glBindTexture(GL_TEXTURE_2D, FENCE);
-	white;
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(14, 0, 20);
-	txt(2, 0);
-	glVertex3d(20, 0, 12);
-	txt(2, 1);
-	glVertex3d(20, heightOfWall, 12);
-	txt(0, 1);
-	glVertex3d(14, heightOfWall, 20);
-	endf;
+	textures[1] = textures[4] = textures[5] = ARCH5;
+	textures[2] = textures[3] = MARBLE_FENCE;
 
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(20, 0, 12);
-	txt(1, 0);
-	glVertex3d(22, 0, 7);
-	txt(1, 1);
-	glVertex3d(22, heightOfWall, 7);
-	txt(0, 1);
-	glVertex3d(20, heightOfWall, 12);
-	endf;
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 3;
+	glTranslated(-17, 0, 19.5);
+	fence.drawOutside(Constraints(12, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
 
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(22, 0, 7);
-	txt(4, 0);
-	glVertex3d(18, 0, -10);
-	txt(4, 1);
-	glVertex3d(18, heightOfWall, -10);
-	txt(0, 1);
-	glVertex3d(22, heightOfWall, 7);
-	endf;
 
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(18, 0, -10);
-	txt(3, 0);
-	glVertex3d(7, 0, -22);
-	txt(3, 1);
-	glVertex3d(7, heightOfWall, -22);
-	txt(0, 1);
-	glVertex3d(18, heightOfWall, -10);
-	endf;
+	///wood
 
-	beg(GL_QUADS);
-	txt(0, 0);
-	glVertex3d(7, 0, -22);
-	txt(5, 0);
-	glVertex3d(-14, 0, -24);
-	txt(5, 1);
-	glVertex3d(-14, heightOfWall, -24);
-	txt(0, 1);
-	glVertex3d(7, heightOfWall, -22);
-	endf;
+	textures[1] =textures[4] = textures[5] = FENCE1;
+	textures[2] = textures[3] = FENCE;
+	pshm;
+	texturesCntS[2] = texturesCntS[3] =8;
+	glTranslated(-14, 0, -24);
+	glRotated(-93.9, 0, 1, 0);
+	fence.drawOutside(Constraints(44, heightOfWall, 0.5),textures,texturesCntS,texturesCntT);
+	ppm;
 
-	distxt;
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 2;
+	glTranslated(-4.5, 0, 19.5);
+	glRotated(-90, 0, 1, 0);
+	fence.drawOutside(Constraints(7, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
 
+	pshm;
+	texturesCntS[2] = texturesCntS[3]  = 1;
+	glTranslated(-5, 0, 26.5);
+	fence.drawOutside(Constraints(5, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 1.5;
+	glTranslated(0, 0, 26.5);
+	glRotated(12.1, 0, 1, 0);
+	fence.drawOutside(Constraints(7.15891, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 2;
+	glTranslated(20, 0, 12);
+	glRotated(-126.9, 0, 1, 0);
+	fence.drawOutside(Constraints(10, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 1;
+	glTranslated(22, 0, 7);
+	glRotated(-111.8, 0, 1, 0);
+	fence.drawOutside(Constraints(5.38516, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 4;
+	glTranslated(18, 0, -10);
+	glRotated(-76.8, 0, 1, 0);
+	fence.drawOutside(Constraints(17.4642, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 3;
+	glTranslated(7, 0, -22);
+	glRotated(-47.5, 0, 1, 0);
+	fence.drawOutside(Constraints(16.2788, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 3;
+	glTranslated(-14, 0, -24);
+	glRotated(-5.4, 0, 1, 0);
+	fence.drawOutside(Constraints(21.095, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
+
+
+	///glass
 	pshm;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4ub(255, 255, 255, 80);
-	beg(GL_QUADS);
-	glVertex3d(7, 0, 25.5);
-	glVertex3d(14, 0, 20);
-	glVertex3d(14, heightOfWall, 20);
-	glVertex3d(7, heightOfWall, 25.5);
-	endf;
+	glColor4ub(255, 255, 255, 60);
+	pshm;
+	texturesCntS[2] = texturesCntS[3] = 1;
+	textures[0] = textures[1] = textures[2] = textures[3] = textures[4] = textures[5] = 0;
+	glTranslated(14, 0, 20);
+	glRotated(-141.8, 0, 1, 0);
+	fence.drawOutside(Constraints(8.90225, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
+	ppm;
 	glDisable(GL_BLEND);
 	ppm;
 
@@ -2555,7 +2519,7 @@ void DomeOfTheRock::draw() {
 }
 
 
-
+//other domes
 
 void DomeOfTheRock::drawDomeOfSoulsPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
 
@@ -2592,6 +2556,93 @@ void DomeOfTheRock::drawDomeOfSoulsPillar(db pillarHeight, db pillarRadius, db b
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, texture);
 	topSphere.draw();
+	distxt;
+	glRotated(45, 0, 1, 0);
+	glTranslated(0, 0.1, 0);
+	glTranslated(-(basesWidth - 0.3) / 2.0, 0.02, -(basesWidth - 0.3) / 2.0);
+	base.drawOutside(Constraints(basesWidth - 0.3, 0.08, basesWidth - 0.3), texture);
+	ppm;
+
+#pragma endregion
+	ppm;
+}
+
+void DomeOfTheRock::drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
+
+	//db pillarHeight = 4, pillarRadius = 0.1; db basesWidth = 0.6;
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
+#pragma region column
+	drawColumn(pillarRadius, pillarHeight, texture, 10);
+#pragma endregion
+
+#pragma region base
+
+	pshm;
+	glTranslated(0, -pillarHeight / 2.0 - 0.1, 0);
+	Cylinder coneBase = Cylinder((basesWidth - 0.1) / 2.0, (basesWidth - 0.1) / 2.0, 0.6, 6, 1, true, 2);
+	coneBase.draw();
+	ppm;
+#pragma endregion
+
+#pragma region top
+
+	bool flag[6] = { 1,0,0,0,0,0 };
+	Box base;
+
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1, 0);
+	entxt;
+	coneBase.set(pillarRadius + 0.01, basesWidth / 2.0 - 0.1, 0.3, 4, 1, true, 2);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	coneBase.drawSide();
+	distxt;
+	glRotated(45, 0, 1, 0);
+	glTranslated(0, 0.1, 0);
+	glTranslated(-(basesWidth - 0.3) / 2.0, 0.02, -(basesWidth - 0.3) / 2.0);
+	base.drawOutside(Constraints(basesWidth - 0.3, 0.08, basesWidth - 0.3), texture);
+	ppm;
+
+#pragma endregion
+	ppm;
+}
+
+void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
+
+	//db pillarHeight = 4, pillarRadius = 0.1; db basesWidth = 0.6;
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
+#pragma region column
+	drawColumn(pillarRadius, pillarHeight, texture, 10);
+#pragma endregion
+
+#pragma region base
+	pshm;
+	int flag[6] = { 0,1,1,1,1,1 };
+	Box base;
+
+	pshm;
+	glTranslated(0, -pillarHeight / 2.0 - 0.1, 0);
+	Cylinder coneBase = Cylinder(basesWidth / 2.0, pillarRadius, 0.3, 4, 1, true, 2);
+	coneBase.drawSide();
+	ppm;
+
+	pshm;
+	glRotated(45, 0, 1, 0);
+	glTranslated(-(basesWidth - 0.15) / 2.0, -pillarHeight / 2.0 - 0.35, -(basesWidth - 0.15) / 2.0);
+	base.drawOutside(Constraints(basesWidth - 0.15, 0.1, basesWidth - 0.15), texture, flag);
+	ppm;
+	ppm;
+#pragma endregion
+
+#pragma region top
+
+	pshm;
+	glTranslated(0, pillarHeight / 2.0 + 0.1, 0);
+	entxt;
+	coneBase.set(pillarRadius + 0.01, basesWidth / 2.0 - 0.1, 0.3, 4, 1, true, 2);
+	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
+	coneBase.drawSide();
 	distxt;
 	glRotated(45, 0, 1, 0);
 	glTranslated(0, 0.1, 0);
@@ -2706,54 +2757,6 @@ void DomeOfTheRock::drawDomeOfSouls() {
 
 }
 
-
-void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
-
-	//db pillarHeight = 4, pillarRadius = 0.1; db basesWidth = 0.6;
-	pshm;
-	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
-#pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10);
-#pragma endregion
-
-#pragma region base
-	pshm;
-	int flag[6] = { 0,1,1,1,1,1 };
-	Box base;
-
-	pshm;
-	glTranslated(0, -pillarHeight / 2.0 - 0.1, 0);
-	Cylinder coneBase = Cylinder(basesWidth / 2.0, pillarRadius, 0.3, 4, 1, true, 2);
-	coneBase.drawSide();
-	ppm;
-
-	pshm;
-	glRotated(45, 0, 1, 0);
-	glTranslated(-(basesWidth - 0.15) / 2.0, -pillarHeight / 2.0 - 0.35, -(basesWidth - 0.15) / 2.0);
-	base.drawOutside(Constraints(basesWidth - 0.15, 0.1, basesWidth - 0.15), texture, flag);
-	ppm;
-	ppm;
-#pragma endregion
-
-#pragma region top
-
-	pshm;
-	glTranslated(0, pillarHeight / 2.0 + 0.1, 0);
-	entxt;
-	coneBase.set(pillarRadius + 0.01, basesWidth / 2.0 - 0.1, 0.3, 4, 1, true, 2);
-	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
-	coneBase.drawSide();
-	distxt;
-	glRotated(45, 0, 1, 0);
-	glTranslated(0, 0.1, 0);
-	glTranslated(-(basesWidth - 0.3) / 2.0, 0.02, -(basesWidth - 0.3) / 2.0);
-	base.drawOutside(Constraints(basesWidth - 0.3, 0.08, basesWidth - 0.3), texture);
-	ppm;
-
-#pragma endregion
-	ppm;
-}
-
 void DomeOfTheRock::drawDomeOfTheProphet() {
 
 	int textures[] = { 0,0,0,0,0,0,0,0 };
@@ -2812,50 +2815,6 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 	ppm;
 #pragma endregion
 
-}
-
-
-
-//dome of ascention
-
-void DomeOfTheRock::drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
-
-	//db pillarHeight = 4, pillarRadius = 0.1; db basesWidth = 0.6;
-	pshm;
-	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
-#pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10);
-#pragma endregion
-
-#pragma region base
-
-	pshm;
-	glTranslated(0, -pillarHeight / 2.0 - 0.1, 0);
-	Cylinder coneBase = Cylinder((basesWidth - 0.1) / 2.0, (basesWidth - 0.1) / 2.0, 0.6, 6, 1, true, 2);
-	coneBase.draw();
-	ppm;
-#pragma endregion
-
-#pragma region top
-
-	bool flag[6] = { 1,0,0,0,0,0 };
-	Box base;
-
-	pshm;
-	glTranslated(0, pillarHeight / 2.0 + 0.1, 0);
-	entxt;
-	coneBase.set(pillarRadius + 0.01, basesWidth / 2.0 - 0.1, 0.3, 4, 1, true, 2);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	coneBase.drawSide();
-	distxt;
-	glRotated(45, 0, 1, 0);
-	glTranslated(0, 0.1, 0);
-	glTranslated(-(basesWidth - 0.3) / 2.0, 0.02, -(basesWidth - 0.3) / 2.0);
-	base.drawOutside(Constraints(basesWidth - 0.3, 0.08, basesWidth - 0.3), texture);
-	ppm;
-
-#pragma endregion
-	ppm;
 }
 
 void DomeOfTheRock::drawDomeOfAscention() {
