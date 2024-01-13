@@ -189,7 +189,7 @@ void DomeOfTheRock::arch(db sectorCount, db radius, db thickness) {
 	ppm;
 }
 
-void DomeOfTheRock::drawArch(db innerR, db outerR, db height, int sectorCnt, int textures[]) {
+void DomeOfTheRock::drawArch(db innerR, db outerR, db height,int textures[], int sectorCnt) {
 	white;
 	entxt;
 	pshm;
@@ -930,7 +930,7 @@ void DomeOfTheRock::drawEntrancePillar(db pillarRadius, db pillarHeight, db base
 
 #pragma region base
 	pshm;
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,1,1,1,1,1};
 	Box base;
 
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.2, -3 * pillarRadius / 2.0);
@@ -983,7 +983,7 @@ void DomeOfTheRock::drawArcadePillar(db pillarRadius, db pillarHeight, db basesW
 #pragma region top
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
-	bool flag[6] = { 1,1,0,0,0,0 };
+	int flag[6] = { 0,0,1,1,1,1 };
 	pshm;
 	glTranslated(-1.5, 0.7, -1.5);
 	Box base;
@@ -1022,7 +1022,7 @@ void DomeOfTheRock::drawDrumPillar(db pillarRadius, db pillarHeight, db basesWid
 	ppm;
 #pragma endregion
 
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,1,1,1,1,1 };
 #pragma region top
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.2, 0);
@@ -1067,7 +1067,7 @@ void DomeOfTheRock::drawEntrance(db doorWidth, db doorHeight) {
 	db archbaseHeight = 1; db outerR = 5, innerR = 4, archLength = 8.5;
 	Constraints c(0, 0, 1.5);
 	Box marbleGround, arch;
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 1,0,0,0,0,0 };
 	int textures[] = { 0,0,0,0,0,0,0,0 };
 
 	pshm;
@@ -1614,7 +1614,7 @@ void DomeOfTheRock::drawArcadeSide() {
 	Box bridge;
 	pshm;
 	glTranslated(0, pillarH, 0);
-	bool flag[6] = { 0,0,0,0,1,1 };
+	int flag[6] = { 1,1,1,1,0,0 };
 	textures[0] = textures[1] = BRIDGE2;
 	textures[2] = textures[3] = BRIDGE1;
 	white;
@@ -1629,20 +1629,20 @@ void DomeOfTheRock::drawArcadeSide() {
 	textures[2] = textures[3] = textures[4] = textures[5] = ARCH2;
 	textures[6] = textures[7] = ARCH3;
 
-	db sectorCnt = 28;
+	db sectorCnt = sectorCntForArchs;
 	pshm;
 	glTranslated(24, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3, sectorCnt, textures);
+	drawArch(6.5, 8, 3,textures,sectorCnt);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
 	glTranslated(8, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3, sectorCnt, textures);
+	drawArch(6.5, 8, 3,textures, sectorCnt);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
 	glTranslated(40, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3, sectorCnt, textures);
+	drawArch(6.5, 8, 3,textures, sectorCnt);
 	ppm;
 #pragma endregion
 
@@ -1668,7 +1668,7 @@ void DomeOfTheRock::drawArcade() {
 	db a = c.width;
 	db p = a / srt;
 	Box tier;
-	bool flag[6] = { 1,1,0,0,0,0 };
+	int flag[6] = { 0,0,1,1,1,1 };
 
 	white;
 
@@ -1800,7 +1800,7 @@ void DomeOfTheRock::drawDrum() {
 
 	db innerR = 33, outerR = 36, Outerheight = 3;
 	int textures[8] = { 0,0, 0,0,0,0,0,0 };
-	bool flag[6] = { 1,1,0,0,0,0 };
+	int flag[6] = { 0,0,1,1,1,1 };
 	glTranslated(0, 28, 0);
 
 
@@ -1849,7 +1849,7 @@ void DomeOfTheRock::drawDrum() {
 			textures[7] = ARCH7;
 			textures[2] = textures[5] = ARCH5;
 			textures[3] = textures[4] = ARCH6;
-			drawArch(4.65, 5.65, 3, 28, textures);
+			drawArch(4.65, 5.65, 3, textures, 28);
 			ppm;
 		}
 		else {
@@ -2249,7 +2249,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	pshm;
 
 	int textures[6] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2 };
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,0,1,1,1,1 };
 	white;
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
@@ -2568,7 +2568,7 @@ void DomeOfTheRock::drawDomeOfSoulsPillar(db pillarHeight, db pillarRadius, db b
 
 #pragma region base
 	pshm;
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,1,1,1,1,1 };
 	Box base;
 
 	pshm;
@@ -2639,7 +2639,7 @@ void DomeOfTheRock::drawDomeOfSouls() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(0.665, 0.765, 0.2, 28, textures);
+		drawArch(0.665, 0.765, 0.2, textures,28);
 		ppm;
 	}
 	ppm;
@@ -2718,7 +2718,7 @@ void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius,
 
 #pragma region base
 	pshm;
-	bool flag[6] = { 1,0,0,0,0,0 };
+	int flag[6] = { 0,1,1,1,1,1 };
 	Box base;
 
 	pshm;
@@ -2790,7 +2790,7 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(0.665, 0.765, 0.2, 28, textures);
+		drawArch(0.665, 0.765, 0.2, textures,28);
 		ppm;
 	}
 	ppm;
@@ -2902,7 +2902,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		textures[4] = textures[5] = LIME_STONE3;
 		pshm;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(1.5 * 0.665, 1.5 * 0.765, 0.2, 28, textures);
+		drawArch(1.5 * 0.665, 1.5 * 0.765, 0.2, textures,28);
 		ppm;
 
 		pshm;
@@ -2912,7 +2912,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -1.2 * cos(360.0 / (2 * PolygonRank)) + 2.7 - 1.2 - 0.1);
-		drawArch(1.3 * 0.665, 1.3 * 0.765, 0.2, 28, textures);
+		drawArch(1.3 * 0.665, 1.3 * 0.765, 0.2, textures,28);
 		ppm;
 
 		ppm;

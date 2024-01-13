@@ -18,7 +18,7 @@ public:
 
 	void drawPipe(db innerR, db outerR, db height, int sectorCnt, int textures[], bool isHalf, bool isArch);
 
-	void drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt = 12, bool bracelets = true);
+	void drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt = sectorCntForColumns, bool bracelets = true);
 
 	void drawEntrancePillar(db pillarRadius, db pillarHeight, db basesWidth, int texture);
 
@@ -28,7 +28,7 @@ public:
 
 	void drawEntrance(db doorWidth, db doorHeight);
 
-	void drawArch(db innerR, db outerR, db height, int sectorCnt, int textures[]);
+	void drawArch(db innerR, db outerR, db height,int textures[], int sectorCnt = sectorCntForArchs);
 
 	void drawWalls(db openTheDoor);
 
@@ -76,6 +76,8 @@ public:
 	void drawDomeOfAscention1();
 
 	void drawDomeOfKhalili1();
+
+
 private:
 
 	int
@@ -94,6 +96,9 @@ private:
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
 		CARPET,KHALILI1, KHALILI2, KHALILI3, KHALILI4;
+
+	static const int sectorCntForColumns = 6;
+	static const int sectorCntForArchs = 16; //actual sectors drawn are 8 'cause it's half cylinder
 
 	MosqueDrawer mosqueDrawer;
 

@@ -33,9 +33,13 @@ public:
      */
     void drawOutside(const Constraints& c, const int texture, float textureCount = 1);
 
-    void drawOutside(const Constraints& c, int textures[], bool flag[]);
+    void drawOutside(const Constraints& c, int textures[], int flag[]);
 
-    void drawOutside(const Constraints& c, const int texture, bool flag[]);
+    void drawOutside(const Constraints& c, int textures[], int textureCntS[],int textureCntT[]);
+
+    void drawOutside(const Constraints& c, const int texture, int textureCntS[], int textureCntT[]);
+
+    void drawOutside(const Constraints& c, const int texture, int flag[]);
 
     /**
      * @brief Draws a triangular prism from the outside with multiple textures.
