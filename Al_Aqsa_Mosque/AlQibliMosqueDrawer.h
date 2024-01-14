@@ -51,6 +51,9 @@ private :
 	int innderDisplayList;
 	int outerDisplayList;
 	int alQibliDisplayList;
+	int sectorsCount = 18;
+	int domeSectorsCount = 20;
+	int domeStacksCount = 36;
 	Box boxDrawer;
 	EnvDrawer envDrawer;
 };
