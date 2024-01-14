@@ -224,9 +224,7 @@ void draw(float x, float z, bool det)
 	d.drawPoint(p);
 }
 
-void v()
-{
-}
+db openTheDoor = 0;
 
 float hight = 9.3, modelHight = 9.3,walking = 0;
 

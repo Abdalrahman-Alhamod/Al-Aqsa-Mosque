@@ -47,6 +47,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
 	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof03.bmp");
+	ROOF4 = LoadTexture((char*)"assets/domeOfTheRock/roof4.bmp");
 
 	BRIDGE1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
 	BRIDGE2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
@@ -63,6 +64,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
 	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
 	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
+	FOOT6 = LoadTexture((char*)"assets/domeOfTheRock/footprint6.bmp");
 
 	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch01.bmp");
 	ARCH2 = LoadTexture((char*)"assets/domeOfTheRock/arch2.bmp");
@@ -232,20 +234,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	pshm;
 
 	cull;
+	entxt;
 	frontf;
-	glNormal3f(0, 1, 0);
+	glNormal3f(0, 0.2, 0);
 	glTranslated(0, 35.1, 0);
 
 	pshm;
-	glColor3ub(48, 0, 0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p + 0.6, 0, 0);
+	txt(1, 0);
 	glVertex3d(p + a - 0.5, 0, 0);
+	txt(1, 1);
 	glVertex3d(p + a - 7.1, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.1, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -258,25 +264,26 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.1, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 
-
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(0, -0.1, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(45, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p - 0.6, 0, 0);
+	txt(1, 0);
 	glVertex3d(p + a - 1.5, 0, 0);
+	txt(1, 1);
 	glVertex3d(p + a - 7.2, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.4, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -289,22 +296,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.4, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(90, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p - 1.6, 0, 0);
+	txt(1, 0);
 	glVertex3d(p + a - 1.5, 0, 0);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.3, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -317,22 +326,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.3, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(135, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p - 0.6, 0, -2);
+	txt(1, 0);
 	glVertex3d(p + a - 1.5, 0, -2);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -345,22 +356,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(180, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p, 0, -2);
+	txt(1, 0);
 	glVertex3d(p + a - 0.1, 0, -2);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -373,22 +386,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(225, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p, 0, -2);
+	txt(1, 0);
 	glVertex3d(p + a + 0.7, 0, -2);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -401,22 +416,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(270, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p + 2, 0, -1.5);
+	txt(1, 0);
 	glVertex3d(p + a + 1, 0, -1.5);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -429,22 +446,24 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 	pshm;
-	glColor3ub(48, 0, 0);
 	glTranslated(p + a / 2.0, 0, -p - a / 2.0);
 	glRotated(315, 0, 1, 0);
 	glTranslated(-p - a / 2.0, 0, p + a / 2.0);
+	glBindTexture(GL_TEXTURE_2D, ROOF4);
 	beg(GL_QUADS);
+	txt(0, 0);
 	glVertex3d(p + 1, 0, 0);
+	txt(1, 0);
 	glVertex3d(p + a + 1, 0, 0);
+	txt(1, 1);
 	glVertex3d(p + a - 7.3, 0, -dist);
+	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
 	white;
-	entxt;
 	glTranslated(0, -0.1, 0);
 	glBindTexture(GL_TEXTURE_2D, ROOF1);
 	beg(GL_QUADS);
@@ -457,7 +476,6 @@ void DomeOfTheRock::drawInnerRoof() {
 	txt(0, 1);
 	glVertex3d(p + 7.2, 0, -dist);
 	endf;
-	distxt;
 	ppm;
 
 
@@ -472,7 +490,7 @@ void DomeOfTheRock::drawInnerRoof() {
 	//the second layer
 	glColor3f(0.3, 0.5, 0.2);
 	pshm;
-	glNormal3f(0, 1, 0);
+	glNormal3f(0, 0.2, 0);
 	glTranslated(0, 35.1, 0);
 
 	white;
@@ -1801,7 +1819,7 @@ void DomeOfTheRock::drawDrum() {
 
 	db innerR = 33, outerR = 36, Outerheight = 3;
 	int textures[8] = { 0,0, 0,0,0,0,0,0 };
-	int flag[6] = { 0,0,1,1,1,1 };
+	int flag[6] = { 0,1,1,1,1,1 };
 	glTranslated(0, 28, 0);
 
 
@@ -2233,29 +2251,43 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 
 #pragma region feet place
 
-	int textures[6] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2 };
+	int textures[8] = { 0,FOOT3,FOOT2,FOOT1,FOOT2,FOOT2,0,0 };
 	pshm;
 	int flag[6] = { 0,1,1,1,1,1 };
 	white;
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
 	feet.drawOutside(Constraints(3, 10, 3), textures, flag);
+	
+	pshm;
+	glTranslated(1.5, 10.1, 1.5);
+	glRotated(45, 0, 1, 0);
+	glRotated(90, 1, 0, 0);
+	textures[2] = textures[3] = textures[4] = textures[5] = DOME3;
+	textures[6] = textures[7] = FOOT6;
+	drawPipe(2, 2.3, 0.35, 4,textures,false);
+	ppm;
+
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FOOT4);
-	Cylinder top = Cylinder(1.2, 1.2, 1.5, 8, 1, false, 2, false, true);
+	Cylinder top = Cylinder(1.1, 1.1, 1.5, 8, 1, false, 2, false, true);
 	pshm;
 	cull;
 	glTranslated(1.5, 10.8, 1.5);
+	glDisable(GL_LIGHTING);
 	top.draw();
+	glEnable(GL_LIGHTING);
 	glTranslated(0, 0.96, 0);
 	glBindTexture(GL_TEXTURE_2D, FOOT5);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.24, Color(255, 255, 255), 8, false, false, false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.225, Color(255, 255, 255), 8, false, false, false);
 	nocull;
 	ppm;
 	distxt;
 	ppm;
 
 #pragma endregion
+
+#pragma region woodenFence
 
 	textures[0] = 0;
 	db texturesCntS[6]; db texturesCntT[6] = { 1,1,1,1,1,1 };
@@ -2267,7 +2299,8 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	///marble fence
 
 	textures[1] = textures[4] = textures[5] = ARCH5;
-	textures[2] = textures[3] = MARBLE_FENCE;
+	textures[3] = MARBLE_FENCE;
+	textures[2] = ARCH5;
 
 	pshm;
 	texturesCntS[2] = texturesCntS[3] = 3;
@@ -2358,6 +2391,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	ppm;
 	glDisable(GL_BLEND);
 	ppm;
+#pragma endregion
 
 
 #pragma endregion
@@ -2380,7 +2414,7 @@ void DomeOfTheRock::drawDomes() {
 	cull;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 18, true, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 18, true, false,true,false);
 	distxt;
 	nocull;
 	ppm;
@@ -2887,7 +2921,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 	cull;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.51, Color(255, 255, 255), 25, false, false, false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.51, Color(255, 255, 255), 25, false, false, false,false);
 	entxt;
 	nocull;
 	ppm;
@@ -2923,10 +2957,9 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, KHALILI2);
-	mosqueDrawer.drawDome(Point(4.5, 4.9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true);
+	mosqueDrawer.drawDome(Point(4.5, 4.9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true,false);
 	distxt;
 }
-
 
 
 void DomeOfTheRock::drawDomeOfSouls1() {
