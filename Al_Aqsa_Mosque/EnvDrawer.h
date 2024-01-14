@@ -378,6 +378,7 @@ private:
 	float sunTime = MINUTE_PER_SECOND;
 	std::chrono::high_resolution_clock::time_point lastUpdateTime;
 
+	bool drawBirds = true;
 
 	int envDisplayList;
 
@@ -418,7 +419,7 @@ private:
 	 */
 	void drawSkyBox(const Point& position, const Constraints& constraints);
 
-
+	int sectorsCount = 18;
 };
 
 #endif // ENV_DRAWER_H

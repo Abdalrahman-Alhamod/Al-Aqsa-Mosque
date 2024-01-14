@@ -530,12 +530,12 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	float hight = 10;
 	glPushMatrix();
 	glScalef(size, size, size);
-	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4, 9, 9);
+	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4, sectorsCount, sectorsCount);
 
 	cull;
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Cylinder cyl = Cylinder(2.5, 2.5, 0.1, 9);
+	Cylinder cyl = Cylinder(2.5, 2.5, 0.1, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	glTranslated(0, 0, -6.6);
@@ -545,7 +545,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Cylinder cyl2 = Cylinder(2, 2, 0.1, 9);
+	Cylinder cyl2 = Cylinder(2, 2, 0.1, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	glTranslated(0, 0, -5.2);
@@ -573,7 +573,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	glTranslated(0, hight - 3.6, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[12]);
-	cyl = Cylinder(0.7, 0.9, 2.5, 5);
+	cyl = Cylinder(0.7, 0.9, 2.5, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
 	cyl.drawSide();
@@ -583,7 +583,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	glTranslated(0, 1.5, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Sphere sphere = Sphere(0.75, 10, 18, true, 2, true, 2);
+	Sphere sphere = Sphere(0.75, sectorsCount, sectorsCount, true, 2, true, 2);
 	sphere.draw();
 	glDisable(GL_TEXTURE_2D);
 	nocull;
@@ -727,7 +727,7 @@ void EnvDrawer::drawWallWithDoor(const float length, const float wallHeight, con
 
 	glPushMatrix();
 	glTranslated(1.25, -1, 0);
-	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5, 2, 1), 5, texture);
+	EnvDrawer::drawHalfCylinderInRectangularPrism(1, Constraints(2.5, 2, 1), sectorsCount, texture);
 	glPopMatrix();
 
 
@@ -1180,6 +1180,7 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	if (sunAngle >= PI * 1.5 || sunAngle <= PI * 0.5) {
 		glEnable(GL_LIGHT0);
+		drawBirds = true;
 		for (int i = 1; i <= 7; i++) {
 			glDisable(GL_LIGHT0 + i);
 		}
@@ -1193,6 +1194,7 @@ void EnvDrawer::simulateSun(const float rotatioRadius, const float sunRadius, co
 	}
 	else {
 		glDisable(GL_LIGHT0);
+		drawBirds = false;
 		for (int i = 1; i <= 6; i++) {
 			glEnable(GL_LIGHT0 + i);
 		}
@@ -1239,13 +1241,15 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 
 	glPushMatrix();
 	glTranslatef(position.x, position.y - pillarHeight / 2, position.z);
-	Cylinder pillar = Cylinder(0.1 * size, 0.1 * size, pillarHeight, 5);
+	Cylinder pillar = Cylinder(0.1 * size, 0.1 * size, pillarHeight, sectorsCount);
 	pillar.setUpAxis(2);
 	glBindTexture(GL_TEXTURE_2D, wall);
 	pillar.draw();
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
+
+	glDisable(GL_LIGHTING);
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -1260,6 +1264,8 @@ void EnvDrawer::drawLightingPillar(const Point& position, const int lightIndex, 
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_LIGHTING);
 
 }
 
@@ -1372,42 +1378,50 @@ void EnvDrawer::handleSounds(const Point& cameraPosition) {
 float birdAngle = 0;
 
 void EnvDrawer::drawPigeons() {
+	if (drawBirds) {
 
-	pshm;
+		sounds[13].Play(true);
 
-	glRotatef(birdAngle -= 1, 0, 1, 0);
-	glTranslatef(20, 0, 0);
+		pshm;
+
+		glRotatef(birdAngle -= 1, 0, 1, 0);
+		glTranslatef(20, 0, 0);
 
 
-	soundsData[13][0] = 20 * cosf(birdAngle * PIdiv180);	 // x
-	soundsData[13][2] = 20 * sinf(-birdAngle * PIdiv180);	// z
-	const int numRows = 3;
-	const GLfloat triangleLength = 2.0 * sqrt(3.0) / 2.0;
-	const GLfloat xOffset = 2.0;
-	const GLfloat zOffset = triangleLength;
+		soundsData[13][0] = 20 * cosf(birdAngle * PIdiv180);	 // x
+		soundsData[13][2] = 20 * sinf(-birdAngle * PIdiv180);	// z
+		const int numRows = 3;
+		const GLfloat triangleLength = 2.0 * sqrt(3.0) / 2.0;
+		const GLfloat xOffset = 2.0;
+		const GLfloat zOffset = triangleLength;
 
-	for (int i = 0; i < numRows; ++i) {
-		for (int j = 0; j < (i + 1) * 2; ++j) {
-			GLfloat x = 1 * (j - i) + xOffset * 2;
-			GLfloat z = -i * zOffset;
-			GLfloat y = 0.0;
-			GLfloat scale = 1.0;
+		for (int i = 0; i < numRows; ++i) {
+			for (int j = 0; j < (i + 1) * 2; ++j) {
+				GLfloat x = 1 * (j - i) + xOffset * 2;
+				GLfloat z = -i * zOffset;
+				GLfloat y = 0.0;
+				GLfloat scale = 1.0;
 
-			glPushMatrix();
-			glTranslatef(x, y, z);
-			glRotatef(45, 0, 0, 1);
-			drawBird(Point(x, y, z), 1);
-			glPopMatrix();
+				glPushMatrix();
+				glTranslatef(x, y, z);
+				glRotatef(45, 0, 0, 1);
+				drawBird(Point(x, y, z), 1);
+				glPopMatrix();
+			}
 		}
+
+		glPushMatrix();
+		glTranslatef(4.5, 0, 2);
+		glRotatef(45, 0, 0, 1);
+		drawBird(Point(4.5, 0, 2), 0.8);
+		glPopMatrix();
+
+		ppm;
+
 	}
-
-	glPushMatrix();
-	glTranslatef(4.5, 0, 2);
-	glRotatef(45, 0, 0, 1);
-	drawBird(Point(4.5, 0, 2), 0.8);
-	glPopMatrix();
-
-	ppm;
+	else {
+		sounds[13].Stop();
+	}
 
 }
 
@@ -1712,13 +1726,11 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	drawStairs(Constraints(5, 0.05, 0.1), 14);
 	ppm;
 
-	int pillarSectors = 5, innerSector = 5;
-
 	pshm;
 	glTranslatef(-5, -7.72, 10.75);
 	drawArchway(0.4, 1.5, 4,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1731,8 +1743,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	pshm;
 	glTranslatef(11.7, -7.72, 10.75);
 	drawArchway(0.4, 1.5, 3,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1749,8 +1761,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(-4.4, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 4,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1766,8 +1778,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(-25.8, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 4,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1782,8 +1794,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(6.1, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 3,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1798,8 +1810,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(5.65, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1814,8 +1826,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(-8.35, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1830,8 +1842,8 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(90, 0, 1, 0);
 	glTranslatef(0.7, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 5,
-		1, pillarSectors, pillarSectors
-		, innerSector
+		1, sectorsCount, sectorsCount
+		, sectorsCount
 	);
 	ppm;
 
@@ -1846,8 +1858,6 @@ void EnvDrawer::drawConst() {
 		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
 
 	drawTiledLand(tiledLandPoints, 20);
-
-	drawAllGardens();
 
 	float road1Length = 83, road1Width = 8;
 
@@ -2126,7 +2136,7 @@ void EnvDrawer::drawDynamic(bool* keys) {
 		controlLightSourcePosition(keys);
 		pshm;
 		glTranslatef(LightPos[0], LightPos[1], LightPos[2]);
-		Sphere(1, 5, 5).draw();
+		Sphere(1, sectorsCount, sectorsCount).draw();
 		ppm;
 	}
 
