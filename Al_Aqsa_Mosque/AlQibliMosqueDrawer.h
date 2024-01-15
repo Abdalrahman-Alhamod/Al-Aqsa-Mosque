@@ -16,17 +16,17 @@
 #include "EnvDrawer.h";
 class AlQibliMosqueDrawer
 {
-public :
+public:
 	AlQibliMosqueDrawer();
 	float size = 1;
 	void drawAlQibliMosque();
-private :
-	int side[30],block[10],roof[10],carpet;
+private:
+	int side[30], block[10], roof[10], carpet;
 	void drawSideUnit(int type);
-	void drawNormalWall(const Constraints& constraints, float textureCount=1);
+	void drawNormalWall(const Constraints& constraints, float textureCount = 1);
 	void drawLeftNormalWall(const Constraints& constraints, float textureCount);
 	void drawRightWall();
-	void drawRoof(const Constraints& constraints, float textureCount=1);
+	void drawRoof(const Constraints& constraints, float textureCount = 1);
 	void drawLineOfCylinders(int count, GLuint texture);
 	void drawSmallColumnSideUnit(int count);
 	void drawFront();

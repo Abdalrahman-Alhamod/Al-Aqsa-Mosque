@@ -45,6 +45,7 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 	block[1] = LoadTexture((char*)"assets/materials/AlQibli/block1.bmp", 255);
 	block[2] = LoadTexture((char*)"assets/materials/AlQibli/block2.bmp", 255);
 	block[3] = LoadTexture((char*)"assets/materials/AlQibli/block3.bmp", 255);
+	block[4] = LoadTexture((char*)"assets/materials/stones2.bmp", 255);
 
 	roof[0] = LoadTexture((char*)"assets/materials/AlQibli/roof0.bmp", 255);
 
@@ -300,19 +301,17 @@ void AlQibliMosqueDrawer::drawRightWall() {
 	ppm;
 
 
-	drawMultiHalfCylinders(7);
+	drawMultiHalfCylinders(12);
 
 	pshm;
 	tr(20, -0.2, 29.79);
-	drawMultiHallway(7);
+	drawMultiHallway(13);
 	ppm;
 
 	pshm;
 	tr(18.33, -0.2, 29.79);
-	drawMultiHallway(7);
+	drawMultiHallway(13);
 	ppm;
-
-
 
 
 }
@@ -1011,6 +1010,7 @@ void AlQibliMosqueDrawer::drawDome() {
 	drawRoof(Constraints(4, 0.2, 0.31));
 	ppm;
 }
+
 void AlQibliMosqueDrawer::drawMihrab() {
 	pshm;
 	tr(16.4, -0.1, -20.19);
@@ -1073,7 +1073,26 @@ void AlQibliMosqueDrawer::drawMihrab() {
 	nocull;
 	ppm;
 }
+
 void AlQibliMosqueDrawer::drawInner() {
+
+	double sCount[6] = { 10,10,10,10,10,10 }, tCount[6] = { 1,1,1,1,1,1 };
+	pshm;
+	tr(19.91, 2.75, -13.65);
+	boxDrawer.drawOutside(Constraints(0.7, 0.15, 19)
+		, side[25], sCount, tCount);
+	tr(-4.35, 0, 0);
+	boxDrawer.drawOutside(Constraints(0.7, 0.15, 19)
+		, side[25], sCount, tCount);
+	tr(-1.45, 0, 0);
+	boxDrawer.drawOutside(Constraints(0.7, 0.15, 19)
+		, side[25], sCount, tCount);
+	tr(-1.55, 0, 0);
+	boxDrawer.drawOutside(Constraints(0.7, 0.15, 19)
+		, side[25], sCount, tCount);
+	ppm;
+
+
 	pshm;
 	tr(18, 3.3, -19);
 	envDrawer.drawArchway(1, 3.2, 1, 10, sectorsCount, sectorsCount, sectorsCount);
@@ -1117,32 +1136,66 @@ void AlQibliMosqueDrawer::drawInner() {
 	ppm;
 
 	pshm;
-	tr(20.25, 4.35, 5);
+	tr(20.25, 4.7, 5.08);
 	rt(90, 0, 1, 0);
-	envDrawer.drawHallway(0.3, 0.4, 25, 0.5, 10, sectorsCount);
-	tr(0, 0, -4.45);
-	envDrawer.drawHallway(0.3, 0.4, 25, 0.5, 10, sectorsCount);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	tr(0, 0, -4.35);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	tr(0, 0, -1.45);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	tr(0, 0, -1.55);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
 	ppm;
 
 	pshm;
-	tr(20.25, 3.02, 4.3);
+	tr(20.25, 4.175, 5);
 	rt(90, 0, 1, 0);
-	envDrawer.drawArchway(0.615, 2.9, 10, 10, sectorsCount, sectorsCount, sectorsCount);
-	tr(0, 0, -4.45);
-	envDrawer.drawArchway(0.615, 2.9, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	tr(0, 0, -4.35);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	tr(0, 0, -1.45);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	tr(0, 0, -1.55);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	ppm;
+
+	pshm;
+	tr(20.25, 2.9, 4.15);
+	rt(90, 0, 1, 0);
+	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	tr(0, 0, -4.35);
+	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	tr(0, 0, -1.45);
+	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	tr(0, 0, -1.55);
+	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	drawQuraans();
 }
+
 void AlQibliMosqueDrawer::drawQuraans() {
 	envDrawer.drawQuraan(Point(17.9, 0, -18.5), 1);
-	for (int i = 0; i < 3; i++) {
-		envDrawer.drawQuraan(Point(23, 0, -17 + 3 * i), 1);
+	for (int i = 0; i < 8; i++) {
+		envDrawer.drawQuraan(Point(21.2, 0, -17 + 3 * i), 1);
 	}
 	for (int i = 0; i < 8; i++) {
-		envDrawer.drawQuraan(Point(13, 0, -17 + 3 * i), 1);
+		envDrawer.drawQuraan(Point(23.2, 0, -17 + 3 * i), 1);
+	}
+	for (int i = 0; i < 8; i++) {
+		envDrawer.drawQuraan(Point(24.8, 0, -17 + 3 * i), 1);
+	}
+	for (int i = 0; i < 8; i++) {
+		envDrawer.drawQuraan(Point(12, 0, -17 + 3 * i), 1);
+	}
+	for (int i = 0; i < 8; i++) {
+		envDrawer.drawQuraan(Point(13.75, 0, -17 + 3 * i), 1);
+	}
+	for (int i = 0; i < 8; i++) {
+		envDrawer.drawQuraan(Point(15.25, 0, -17 + 3 * i), 1);
 	}
 }
+
 void AlQibliMosqueDrawer::drawAdditionalSide() {
 	pshm;
 	tr(26, 0, -20.2);
@@ -1174,6 +1227,7 @@ void AlQibliMosqueDrawer::drawAlQibliMosque() {
 	glScalef(size, size, size);
 
 	glCallList(alQibliDisplayList);
+
 
 	ppm;
 }

@@ -197,7 +197,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 
 	// Initialize Camera
-	Camera::cameraInit();
+	Camera::cameraInit(hWnd);
 	Camera::changeMode();
 
 	// Initialize Console

@@ -84,7 +84,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	DRUM5 = LoadTexture((char*)"assets/domeOfTheRock/drum5.bmp");
 
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
-	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
+	//DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
 	DOME3 = LoadTexture((char*)"assets/domeOfTheRock/dome3.bmp");
 
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
@@ -2407,14 +2407,14 @@ void DomeOfTheRock::drawDomes() {
 	db p = a / srt, p2 = b / srt;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, DOME2);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255), 18, false, false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 67.3, -p - a / 2.0), 7.5, Color(255, 255, 255), 36, false, false);
 
 	pshm;
 	entxt;
 	cull;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 18, true, false,true,false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 36, true, false,true,false);
 	distxt;
 	nocull;
 	ppm;
@@ -2423,7 +2423,7 @@ void DomeOfTheRock::drawDomes() {
 	glTranslated(p + a / 2.0, 57, -p - a / 2.0);
 	glRotated(90, 1, 0, 0);
 	textures[2] = textures[3] = textures[4] = textures[4] = textures[5] = textures[6] = textures[7] = DOME3;
-	drawPipe(35.5, 38, 1, 18, textures, false);
+	drawPipe(35.5, 38, 1, 36, textures, false);
 	ppm;
 }
 
