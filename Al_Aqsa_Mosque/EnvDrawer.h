@@ -144,7 +144,7 @@ public:
 	 * @param points An array of points representing the land.
 	 * @param count The number of points in the array.
 	 */
-	void drawPassage(const Point points[4], const int count);
+	void drawPassage(const Point points[4], const int sCount, const int tCount);
 
 	/**
 	 * @brief Draw a asphalted street using the specified points and count.

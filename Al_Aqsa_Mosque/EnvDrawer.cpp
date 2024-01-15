@@ -397,8 +397,27 @@ void EnvDrawer::drawGrassLand(const Point points[4], const int count) {
 	drawLand(points, count, grass);
 }
 
-void EnvDrawer::drawPassage(const Point points[4], const int count) {
-	drawLand(points, count, passage);
+void EnvDrawer::drawPassage(const Point points[4], const int sCount , const int tCount ) {
+	glPushMatrix();
+	cull;
+	Front;
+	glEnable(GL_TEXTURE_2D);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glColor3f(1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, passage);
+	glNormal3f(0, 1, 0);
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex3f(points[0].x, points[0].y, points[0].z);
+	glTexCoord2f(sCount, 0); glVertex3f(points[1].x, points[1].y, points[1].z);
+	glTexCoord2f(sCount, tCount); glVertex3f(points[2].x, points[2].y, points[2].z);
+	glTexCoord2f(0, tCount); glVertex3f(points[3].x, points[3].y, points[3].z);
+	glEnd();
+	Back;
+	nocull;
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
 
 void EnvDrawer::drawStreet(const Point points[4], const int count) {
@@ -1497,7 +1516,7 @@ void EnvDrawer::drawAllGardens() {
 				Point(-14 + i * 10 , -9.98, 12) ,
 				Point(-14 + i * 10 , -9.98, 20) ,
 				Point(-16 + i * 10, -9.98, 20) };
-		drawPassage(passagePoints1, 5);
+		drawPassage(passagePoints1, 5,10);
 		ppm;
 	}
 
@@ -1508,7 +1527,7 @@ void EnvDrawer::drawAllGardens() {
 				Point(-14 + i * 10 , -9.98, -43) ,
 				Point(-14 + i * 10 , -9.98, -35) ,
 				Point(-16 + i * 10, -9.98, -35) };
-		drawPassage(passagePoints1, 5);
+		drawPassage(passagePoints1, 5, 10);
 		ppm;
 	}
 
@@ -1517,7 +1536,7 @@ void EnvDrawer::drawAllGardens() {
 			Point(16  , -9.98, 10) ,
 			Point(16  , -9.98, 12) ,
 			Point(-16 , -9.98, 12) };
-	drawPassage(passagePoints1, 4);
+	drawPassage(passagePoints1, 35, 5);
 	ppm;
 
 	pshm;
@@ -1525,7 +1544,7 @@ void EnvDrawer::drawAllGardens() {
 			Point(16  , -9.98, -35) ,
 			Point(16  , -9.98, -33) ,
 			Point(-16 , -9.98, -33) };
-	drawPassage(passagePoints2, 4);
+	drawPassage(passagePoints2, 35, 5);
 	ppm;
 
 	ppm;
@@ -1713,10 +1732,12 @@ void EnvDrawer::drawBenchesGroub() {
 float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
 
 void EnvDrawer::drawDomeOfTheRockSquare() {
+
+	double sCount[6] = { 30,30,50,50,60,60 }, tCount[6] = { 30,30,2,2,2,2 };
 	pshm;
 	glTranslatef(-17, -10, -27);
 	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
-		stonesTexture[14], 30.0f);
+		stonesTexture[14],sCount,tCount);
 
 	ppm;
 
@@ -1857,7 +1878,7 @@ void EnvDrawer::drawConst() {
 		Point(tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2),
 		Point(-tiledLandWidth / 2,-skyboxHeight / 10,tiledLandLength / 2), };
 
-	drawTiledLand(tiledLandPoints, 20);
+	drawTiledLand(tiledLandPoints, 70);
 
 	float road1Length = 83, road1Width = 8;
 
@@ -2049,7 +2070,7 @@ void EnvDrawer::drawConst() {
 				Point(-35   , -9.98,42 - i * 7) ,
 				Point(-35   , -9.98, 44 - i * 7) ,
 				Point(-40 , -9.98, 44 - i * 7) };
-		drawPassage(passagePoints3, 3);
+		drawPassage(passagePoints3, 3, 3);
 		ppm;
 	}
 
@@ -2069,7 +2090,7 @@ void EnvDrawer::drawConst() {
 				Point(-35   , -9.98,42 - i * 7) ,
 				Point(-35   , -9.98, 44 - i * 7) ,
 				Point(-40 , -9.98, 44 - i * 7) };
-		drawPassage(passagePoints3, 3);
+		drawPassage(passagePoints3, 3, 3);
 		ppm;
 	}
 	ppm;
@@ -2088,7 +2109,7 @@ void EnvDrawer::drawConst() {
 				Point(-49  , -9.98,27 - i * 7) ,
 				Point(-49   , -9.98, 29 - i * 7) ,
 				Point(-54, -9.98, 29 - i * 7) };
-		drawPassage(passagePoints3, 3);
+		drawPassage(passagePoints3, 3, 3);
 		ppm;
 	}
 	ppm;
@@ -2108,7 +2129,7 @@ void EnvDrawer::drawConst() {
 				Point(-49  , -9.98,27 - i * 7) ,
 				Point(-49   , -9.98, 29 - i * 7) ,
 				Point(-54, -9.98, 29 - i * 7) };
-		drawPassage(passagePoints3, 3);
+		drawPassage(passagePoints3, 3, 3);
 		ppm;
 	}
 	ppm;
@@ -2159,11 +2180,11 @@ void EnvDrawer::drawDynamic(bool* keys) {
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(12, -5, 38), 5, 1, 4);
+	drawLightingPillar(Point(12, -6.15, 38), 5, 1, 4);
 	ppm;
 
 	pshm;
-	drawLightingPillar(Point(-18, -6, 32), 6, 1, 4);
+	drawLightingPillar(Point(-18, -6.15, 32), 6, 1, 4);
 	ppm;
 
 	drawPigeons();
