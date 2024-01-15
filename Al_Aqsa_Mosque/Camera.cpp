@@ -21,6 +21,7 @@ bool Camera::pos[701][1001] = {};
 
 Camera* Camera::camera[] = {};
 
+
 Vector3dStruct Vector3dCreate(GLfloat x, GLfloat y, GLfloat z)
 {
 	Vector3dStruct tmp;
@@ -257,7 +258,7 @@ Camera* Camera::getInstance()
 	return Camera::camera[Camera::cameraMode];
 }
 
-void Camera::cameraInit()
+void Camera::cameraInit(HWND hWnd)
 {
 	Camera::posInit();
 
@@ -271,7 +272,10 @@ void Camera::cameraInit()
 		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
 
 		camera[i]->RotatedX = camera[i]->RotatedY = camera[i]->RotatedZ = 0.0;
+		camera[i]->SoundManager.Initialize(hWnd);
+		camera[i]->SoundManager.CreateSound((char*)"assets/sounds/footsteps.wav", Camera::camera[i]->soundBuffer);
 	}
+	
 }
 
 void Camera::Move(Vector3dStruct Direction)
@@ -370,20 +374,43 @@ void Camera::SetRotateX(GLfloat Angle)
 
 void Camera::decodeKeyboard(bool* keys, float speed)
 {
-
+	bool playSound = false;
 	// Translation controls
-	if (keys['W'])
+	if (keys['W']) {
 		Camera::MoveForward(1 * speed); // Move camera forward
-	if (keys['S'])
+		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+			playSound = true;
+		}
+	}
+	if (keys['S']) {
 		Camera::MoveForward(-1 * speed); // Move camera backward
-	if (keys['D'])
+		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+			playSound = true;
+		}
+	}
+	if (keys['D']) {
 		Camera::MoveRight(1 * speed); // Move camera to the right
-	if (keys['A'])
+		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+			playSound = true;
+		}
+	}
+	if (keys['A']) {
 		Camera::MoveRight(-1 * speed); // Move camera to the left
+		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+			playSound = true;
+		}
+	}
 	if (keys['E'])
 		Camera::MoveUpward(1 * speed); // Move camera upward
 	if (keys['Q'])
 		Camera::MoveUpward(-1 * speed); // Move camera downward
+
+	if (playSound) {
+		soundBuffer.Play(true);
+	}
+	else {
+		soundBuffer.Stop();
+	}
 
 	// Camera orientation adjustment using arrow keys
 	if (keys[VK_DOWN])

@@ -6,6 +6,7 @@
 
 #include <gl\glut.h>		
 #include "Constants.h"
+#include "Sound.h"
 #include "Point.h"
 
 /////////////////////////////////
@@ -72,10 +73,12 @@ private:
     static int nz(int);
     static void posInit();
 
+     DirectSoundBuffer soundBuffer;
+     DirectSoundManager SoundManager;
 
 public:
     static bool pos[701][1001];
-    static void cameraInit();
+    static void cameraInit(HWND hWnd);
     static Camera* getInstance();
 
     /**
@@ -159,6 +162,8 @@ public:
     float getRotatedY();
 
     int getMode();
+    
+       
 };
 
 #endif 
