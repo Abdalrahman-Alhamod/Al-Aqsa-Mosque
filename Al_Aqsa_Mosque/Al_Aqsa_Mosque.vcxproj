@@ -163,59 +163,59 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="3DTexture.cpp" />
-    <ClCompile Include="AlQibliMosqueDrawer.cpp" />
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Console.cpp" />
-    <ClCompile Include="Constraints.cpp" />
-    <ClCompile Include="Cylinder.cpp" />
-    <ClCompile Include="DomeOfTheRock.cpp" />
-    <ClCompile Include="EnvDrawer.cpp" />
-    <ClCompile Include="math3d.cpp" />
-    <ClCompile Include="Model_3DS.cpp" />
-    <ClCompile Include="MosqueDrawer.cpp" />
-    <ClCompile Include="PersonDrawer.cpp" />
-    <ClCompile Include="Point.cpp" />
-    <ClCompile Include="PrimitiveDrawer.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="StdAfx.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Wave.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="3DTexture.h" />
-    <ClInclude Include="AlQibliMosqueDrawer.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Console.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="Constraints.h" />
-    <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="DomeOfTheRock.h" />
-    <ClInclude Include="EnvDrawer.h" />
-    <ClInclude Include="math3d.h" />
-    <ClInclude Include="Model_3DS.h" />
-    <ClInclude Include="MosqueDrawer.h" />
-    <ClInclude Include="PersonDrawer.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="PrimitiveDrawer.h" />
+    <ClInclude Include="include\3DTexture.h" />
+    <ClInclude Include="include\AlQibliMosqueDrawer.h" />
+    <ClInclude Include="include\Box.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Color.h" />
+    <ClInclude Include="include\Console.h" />
+    <ClInclude Include="include\Constants.h" />
+    <ClInclude Include="include\Constraints.h" />
+    <ClInclude Include="include\Cylinder.h" />
+    <ClInclude Include="include\DomeOfTheRock.h" />
+    <ClInclude Include="include\EnvDrawer.h" />
+    <ClInclude Include="include\math3d.h" />
+    <ClInclude Include="include\Model_3DS.h" />
+    <ClInclude Include="include\MosqueDrawer.h" />
+    <ClInclude Include="include\PersonDrawer.h" />
+    <ClInclude Include="include\Point.h" />
+    <ClInclude Include="include\PrimitiveDrawer.h" />
+    <ClInclude Include="include\Sound.h" />
+    <ClInclude Include="include\Sphere.h" />
+    <ClInclude Include="include\StdAfx.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\Wave.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Wave.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Al_Aqsa_Mosque.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\materials\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\3DTexture.cpp" />
+    <ClCompile Include="src\AlQibliMosqueDrawer.cpp" />
+    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\Console.cpp" />
+    <ClCompile Include="src\Constraints.cpp" />
+    <ClCompile Include="src\Cylinder.cpp" />
+    <ClCompile Include="src\DomeOfTheRock.cpp" />
+    <ClCompile Include="src\EnvDrawer.cpp" />
+    <ClCompile Include="src\math3d.cpp" />
+    <ClCompile Include="src\Model_3DS.cpp" />
+    <ClCompile Include="src\MosqueDrawer.cpp" />
+    <ClCompile Include="src\PersonDrawer.cpp" />
+    <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\PrimitiveDrawer.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\Sphere.cpp" />
+    <ClCompile Include="src\StdAfx.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Wave.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
