@@ -84,7 +84,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	DRUM5 = LoadTexture((char*)"assets/domeOfTheRock/drum5.bmp");
 
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
-	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
+	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome02.bmp");
 	DOME3 = LoadTexture((char*)"assets/domeOfTheRock/dome3.bmp");
 
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
