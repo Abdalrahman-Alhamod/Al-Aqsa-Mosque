@@ -15,32 +15,9 @@
 const db srt = 1.414213562373095;
 const db pi = 3.141592653589793238462643383279502884197;
 
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library
-#include <gl\glaux.h>		// Header File For The Glaux Library
-#include <gl\glut.h>		// Header File For The Glut Library
-#include <iostream>
-#include <math.h>
-#include "Point.h"
-#include "Color.h"
-#include "Constants.h"
-#include "PrimitiveDrawer.h"
-#include "Texture.h"
-#include "Camera.h"
-#include "Console.h"
-#include "Model_3DS.h"
-#include "3DTexture.h"
-#include "Constraints.h"
-#include "math3d.h"
-#include "Cylinder.h"
-#include "Sphere.h"
-#include "MosqueDrawer.h"
-#include "EnvDrawer.h"
-#include "PersonDrawer.h"
-#include "Box.h"
-#include "DomeOfTheRock.h"
 
+#include "DomeOfTheRock.h"
+#include "Texture.h"
 
 DomeOfTheRock::DomeOfTheRock() {
 

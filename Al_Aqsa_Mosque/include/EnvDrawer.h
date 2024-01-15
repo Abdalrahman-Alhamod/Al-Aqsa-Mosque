@@ -11,6 +11,16 @@
 #include "Box.h"
 #include <chrono>
 #include <thread>
+#include <GL/glut.h>  
+#include <random>
+#include "Constants.h"
+#include "Cylinder.h"
+#include "Sphere.h"
+#include "PrimitiveDrawer.h"
+#include <windows.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 #define MINUTE_PER_SECOND (1.f/24.f)*(1.f/60.f)
 #define QUARTER_HOUR_PER_SECOND (1.f/24.f)/4
 #define HALF_HOUR_PER_SECOND (1.f/24.f)/2

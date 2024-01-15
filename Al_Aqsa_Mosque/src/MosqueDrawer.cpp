@@ -1,10 +1,5 @@
 #include "MosqueDrawer.h"
-#include <GL/glut.h>  // Assuming the necessary OpenGL headers are included
-#include "Point.h"
-#include "Color.h"
-#include "Constants.h"
 #include "Texture.h"
-#include "Model_3DS.h"
 
 Model_3DS* MosqueDrawer::crescentModel = new Model_3DS();  // Initialize crescentModel
 

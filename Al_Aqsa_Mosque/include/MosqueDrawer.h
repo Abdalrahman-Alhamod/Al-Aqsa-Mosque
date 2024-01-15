@@ -6,6 +6,11 @@
 #include "Sphere.h"
 #include "Cylinder.h"
 #include "Model_3DS.h"
+#include <GL/glut.h>  // Assuming the necessary OpenGL headers are included
+#include "Point.h"
+#include "Color.h"
+#include "Constants.h"
+#include "Model_3DS.h"
 #define GOLDEN_DOME Color(1.0f, 0.84f, 0.0f)
 #define SILVER_DOME Color(0.5f, 0.5f, 0.5f)
 #define DOME_SHADOW Color(0.0f, 0.0f, 0.0f)

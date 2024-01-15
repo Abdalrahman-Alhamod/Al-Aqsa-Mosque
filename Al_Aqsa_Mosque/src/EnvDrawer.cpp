@@ -5,20 +5,7 @@
 #define pshm glPushMatrix()
 #define ppm glPopMatrix()
 #include "EnvDrawer.h"
-#include <GL/glut.h>  
-#include <random>
-#include "Point.h"
-#include "Color.h"
-#include "Constants.h"
 #include "Texture.h"
-#include "Model_3DS.h"
-#include "Cylinder.h"
-#include "Sphere.h"
-#include "PrimitiveDrawer.h"
-#include <windows.h>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
 using namespace std;
 Model_3DS* EnvDrawer::tree1Model = new Model_3DS();
 Model_3DS* EnvDrawer::tree2Model = new Model_3DS();

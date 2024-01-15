@@ -1,6 +1,15 @@
 #pragma once
 #include "math3d.h"
 #include "Constraints.h"
+#include "Point.h"
+#include <windows.h>		// Header File For Windows
+#include <gl/gl.h>			// Header File For The OpenGL32 Library
+#include <gl/glu.h>			// Header File For The GLu32 Library
+#include <gl/glaux.h>		// Header File For The Glaux Library
+#include <gl/glut.h>		// Header File For The Glut Library
+#include <cmath>
+#include "math3d.h"
+
 #define db double 
 
 class Box {

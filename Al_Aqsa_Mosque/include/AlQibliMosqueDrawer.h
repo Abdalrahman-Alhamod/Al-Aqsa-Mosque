@@ -13,7 +13,8 @@
 #include "Box.h"
 #include "Constraints.h"
 #include "Constants.h"
-#include "EnvDrawer.h";
+#include "EnvDrawer.h"
+
 class AlQibliMosqueDrawer
 {
 public:

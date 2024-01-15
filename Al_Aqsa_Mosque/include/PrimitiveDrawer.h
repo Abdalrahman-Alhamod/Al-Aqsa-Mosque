@@ -2,6 +2,9 @@
 
 #include "Color.h"
 #include "Point.h"
+#include "Constants.h";
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 /**
  * @class PrimitiveDrawer

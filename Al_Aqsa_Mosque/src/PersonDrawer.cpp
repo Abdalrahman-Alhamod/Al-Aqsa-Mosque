@@ -1,10 +1,5 @@
 #include "PersonDrawer.h"
-#include <GL/glut.h>  
-#include "Point.h"
-#include "Color.h"
-#include "Constants.h"
 #include "Texture.h"
-#include "Model_3DS.h"
 
 Model_3DS* PersonDrawer::personModel = new Model_3DS();
 

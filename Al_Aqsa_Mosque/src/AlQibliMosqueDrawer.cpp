@@ -4,13 +4,7 @@
 #define Back glCullFace(GL_BACK)
 
 #include "AlQibliMosqueDrawer.h"
-#include "Point.h"
-#include "Color.h"
-#include "Sphere.h"
-#include "Cylinder.h"
-#include "Model_3DS.h"
 #include "Texture.h"
-#include "Box.h"
 
 AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 	side[0] = LoadTexture((char*)"assets/materials/AlQibli/side0.bmp", 255);

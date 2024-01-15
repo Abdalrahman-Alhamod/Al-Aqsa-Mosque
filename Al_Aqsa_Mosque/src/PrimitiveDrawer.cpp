@@ -1,7 +1,5 @@
 #include "PrimitiveDrawer.h"
-#include "Constants.h";
-#include <GL/gl.h>
-#include <GL/glu.h>
+
 
 void PrimitiveDrawer::drawPoint(const Point& point) {
 	glColor3f(point.getColor().getRedFloat(), point.getColor().getGreenFloat(), point.getColor().getBlueFloat());

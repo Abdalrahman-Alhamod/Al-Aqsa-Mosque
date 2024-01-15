@@ -1,6 +1,5 @@
 #include "console.h"
-#include <windows.h>
-#include <iostream>
+
 // Explicit instantiation for the char[16] type
 template void Console::print<char[16]>(const char(&message)[16]);
 

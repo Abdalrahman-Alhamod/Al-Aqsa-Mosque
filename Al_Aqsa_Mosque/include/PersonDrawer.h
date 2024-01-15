@@ -6,6 +6,9 @@
 #include "Color.h"
 #include "Model_3DS.h"
 #include "Camera.h"
+#include <GL/glut.h>  
+#include "Constants.h"
+#include "Model_3DS.h"
 
 /**
  * @class PersonDrawer
