@@ -313,10 +313,11 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	}
 
-	envDrawer.handleSounds(camera->getPosition());
+	//envDrawer.handleSounds(camera->getPosition());
 
 	envDrawer.draw(keys);
 
+	
 	pshm;
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(-5, -9.98, -29.3);
