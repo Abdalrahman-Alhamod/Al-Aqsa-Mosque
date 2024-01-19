@@ -81,7 +81,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 
 	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
 	grass = LoadTexture((char*)"assets/materials/grass.bmp", 255);
-	//stone = LoadTexture((char*)"assets/materials/stone1.bmp", 255);
+	stone = LoadTexture((char*)"assets/materials/stone1.bmp", 255);
 	wall = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 	passage = LoadTexture((char*)"assets/materials/street2.bmp", 255);
 	street = LoadTexture((char*)"assets/materials/road1.bmp", 255);

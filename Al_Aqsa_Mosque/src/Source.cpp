@@ -1,5 +1,3 @@
-// A56
-// Names 
 /*
 Abdalrahman Alhamod
 Mohammad Obada Almasri
@@ -313,7 +311,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	}
 
-	//envDrawer.handleSounds(camera->getPosition());
+	envDrawer.handleSounds(camera->getPosition());
 
 	envDrawer.draw(keys);
 
