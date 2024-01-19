@@ -628,9 +628,12 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	glPushMatrix();
 
 	glScalef(size, size, size);
+	// body
 	glPushMatrix();
 	glTranslated(-1.5, -height / 2, -1.5);
 	Box().drawOutside(Constraints(3, height + 2.5, 3), minarate[0]);
+
+	// edges arround body
 	glPushMatrix();
 	glTranslated(1.5, 0, 1.5);
 	for (int i = 0; i < 4; ++i)
@@ -653,7 +656,9 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	glColor3ub(255, 255, 255);
 	glPopMatrix();
 	glPopMatrix();
+
 	glTranslated(0, 2.8, 0);
+	// roof
 	glPushMatrix();
 	glTranslated(-2, 7, -2);
 	envBoxDrawer.drawOutside(Constraints(4, 0.1, 4), stonesTexture[13]);
@@ -662,11 +667,13 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	glPushMatrix();
 	glTranslated(0, 5.6, 0);
 
+	// room
 	glPushMatrix();
 	glTranslated(-1.25, -1, -1.25);
 	Box().drawOutside(Constraints(2.5, 2.4, 2.5), minarate[3]);
 	glPopMatrix();
 
+	// pillars
 	glPushMatrix();
 	for (int i = 0; i < 4; ++i)
 	{
@@ -678,6 +685,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	}
 	glPopMatrix();
 
+	// wall arround roof
 	glScaled(0.1, 0.1, 0.1);
 	for (int i = 0; i < 4; ++i)
 	{
@@ -689,6 +697,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	}
 	glPopMatrix();
 
+	// top roof
 	glTranslated(0, -5.9, 0);
 	for (int i = 0; i < 4; ++i)
 	{
@@ -708,7 +717,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glDisable(GL_TEXTURE_2D);
 	}
 
-
+	// top body
 	for (int i = 0; i < 8; ++i)
 	{
 		glRotated(360 / 8, 0, 1, 0);
@@ -728,6 +737,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	}
 
 	glColor3ub(150, 140, 130);
+	// tiny roof above top side
 	glBegin(GL_POLYGON);
 	glVertex3d(.5, height + 5.6, -1.2);
 	glVertex3d(-.5, height + 5.6, -1.2);
@@ -741,17 +751,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 
 	glColor3ub(255, 255, 255);
 
-	glColor3ub(100, 0, 0);
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 8; ++i)
-	{
-		glRotated(360 / 8, 0, 1, 0);
-		glVertex3d(4, height + 8, 4);
-	}
-	glEnd();
-
-	glColor3ub(255, 255, 255);
-
+	// sub-top body
 	for (int i = 0; i < 8; ++i)
 	{
 		glRotated(360 / 8, 0, 1, 0);
@@ -776,6 +776,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 
 	cull;
 
+	// Dom
 	glTranslated(0, 1.35, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, minarate[5]);
