@@ -373,6 +373,7 @@ private:
 	Box envBoxDrawer;
 
 	int buildingTexture[6];
+	int minarate[6];
 	int skyBoxTextures[3][6];
 	int currentSkyBoxIndex = 0;
 

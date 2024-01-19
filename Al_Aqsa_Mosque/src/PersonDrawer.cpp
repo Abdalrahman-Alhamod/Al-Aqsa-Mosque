@@ -9,7 +9,7 @@ PersonDrawer::PersonDrawer()
 {
 	personModel->Load((char*)"assets/models/MAN .3DS");
 	personModel->Materials[0].tex.LoadBMP((char*)"assets/materials/Body1.bmp");
-	personModel->Materials[1].tex.LoadBMP((char*)"assets/materials/Head1.bmp");
+	//personModel->Materials[1].tex.LoadBMP((char*)"assets/materials/Head1.bmp");
 	personModel->Materials[2].tex.LoadBMP((char*)"assets/materials/Ghutra1.bmp");
 }
 

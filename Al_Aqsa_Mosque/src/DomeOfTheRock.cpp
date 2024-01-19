@@ -20,7 +20,7 @@ const db pi = 3.141592653589793238462643383279502884197;
 #include "Texture.h"
 
 DomeOfTheRock::DomeOfTheRock() {
-
+	/*
 	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
 	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
 	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof03.bmp");
@@ -61,7 +61,8 @@ DomeOfTheRock::DomeOfTheRock() {
 	DRUM5 = LoadTexture((char*)"assets/domeOfTheRock/drum5.bmp");
 
 	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
-	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
+	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome02.bmp");
+	//DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
 	DOME3 = LoadTexture((char*)"assets/domeOfTheRock/dome3.bmp");
 
 	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
@@ -107,7 +108,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	KHALILI3 = LoadTexture((char*)"assets/domeOfTheRock/khalili3.bmp");
 	KHALILI4 = LoadTexture((char*)"assets/domeOfTheRock/khalili4.bmp");
 
-
+	*/
 
 	mosqueDrawer = MosqueDrawer();
 
