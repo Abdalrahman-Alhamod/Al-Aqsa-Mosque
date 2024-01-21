@@ -478,13 +478,16 @@ void Cylinder::buildVerticesFlat()
             x = unitCircleVertices[k];
             y = unitCircleVertices[k + 1];
             s = (float)j / sectorCount;
-
             Vertex vertex;
+
             vertex.x = x * radius;
             vertex.y = y * radius;
             vertex.z = z;
             vertex.s = s;
             vertex.t = t;
+            if (onSectorTexture) {
+                vertex.s *= sectorCount;
+            }
             tmpVertices.push_back(vertex);
         }
     }

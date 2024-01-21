@@ -41,7 +41,7 @@ public:
 
 	void drawPipe(db innerR, db outerR, db height, int sectorCnt, int textures[], bool isHalf, bool isArch);
 
-	void drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt = sectorCntForColumns, bool bracelets = true);
+	void drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt = sectorCntForColumns, bool bracelets = true, int gold = -1);
 
 	void drawEntrancePillar(db pillarRadius, db pillarHeight, db basesWidth, int texture);
 
@@ -121,6 +121,7 @@ private:
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
 		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
+		ASCENTION,
 		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
 
 

@@ -32,13 +32,14 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 	//sphere.draw();
 	glPopMatrix();
 	
-	if(crescent)
+	if(crescent && !inside)
 	{
+		glPushMatrix();
 		//Top Cone
 		glPushMatrix();
-		glTranslatef(position.x, position.y + 5.5 * size, position.z);
+		glTranslatef(position.x, position.y + 5.7 * size, position.z);
 		glDisable(GL_TEXTURE_2D);
-		Cylinder domeTop = Cylinder(0.1 * size, 0.001 * size, 1 * size, 5);
+		Cylinder domeTop = Cylinder( 0.15 * size, 0.025 * size, 1.5 * size, 5);
 		domeTop.setUpAxis(2);
 		if (!color.equal(DOME_SHADOW)) {
 			glColor3f(162.0f / 255.0f, 162.0f / 255.0f, 162.0f / 255.0f);
@@ -46,26 +47,25 @@ void MosqueDrawer::drawDome(const Point& position, const float size, const Color
 		else {
 			glColor3f(color.redf, color.greenf, color.bluef);
 		}
-
 		domeTop.draw();
 		glPopMatrix();
 
 		//Top Spheres
-		for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
+		for (float yOffset = 0.3; yOffset <= 0.92; yOffset += 0.3) {
 			glPushMatrix();
 			glTranslatef(position.x, position.y + (5 + yOffset) * size, position.z);
-			Sphere topSphere = Sphere((0.12 - (yOffset * 0.1) + 0.02) * size, 5, 5); // Adjust size based on yOffset
+			Sphere topSphere = Sphere((0.2 - (yOffset * 0.1) + 0.02) * size,20, 20); // Adjust size based on yOffset
 			topSphere.draw();
 			glPopMatrix();
 		}
 		glColor4f(1, 1, 1, 1);
-		// Drawing crescentModel
+		 //Drawing crescentModel
 		/*crescentModel->pos.x = position.x;
 		crescentModel->pos.y = position.y + 5.8 * size;
 		crescentModel->pos.z = position.z;
 		crescentModel->scale = 0.01 * size;
-		if(!inside) crescentModel->Draw();*/
-		//crescentModel->Draw();
+		crescentModel->Draw();*/
+		glPopMatrix();
 	}
 }
 

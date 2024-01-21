@@ -118,6 +118,8 @@ DomeOfTheRock::DomeOfTheRock() {
 	CHAIN7 = LoadTexture((char*)"assets/domeOfTheRock/chain7.bmp");
 	CHAIN8 = LoadTexture((char*)"assets/domeOfTheRock/chain8.bmp");
 
+	ASCENTION = LoadTexture((char*)"assets/domeOfTheRock/ascention.bmp");
+
 	mosqueDrawer = MosqueDrawer();
 
 	domeOfTheRockDisplayList = glGenLists(1);
@@ -889,7 +891,7 @@ void DomeOfTheRock::drawPipe(db innerR, db outerR, db height, int sectorCnt, int
 	}
 }
 
-void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt, bool bracelets) {
+void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt, bool bracelets,int golden) {
 	cull;
 	entxt;
 #pragma region main body
@@ -913,11 +915,13 @@ void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture, in
 		glBindTexture(GL_TEXTURE_2D, PILLAR2);
 		bracelet.drawSide();
 		ppm;
-
+		int t;
 		pshm;
 		glTranslated(0, pillarHeight / 2.0 - 0.25, 0);
 		bracelet.setUpAxis(2);
-		glBindTexture(GL_TEXTURE_2D, PILLAR1);
+		if (golden == -1) { t = PILLAR1; }
+		else { t = golden; }
+		glBindTexture(GL_TEXTURE_2D, t);
 		bracelet.drawSide();
 		ppm;
 		distxt;
@@ -2256,7 +2260,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FOOT4);
-	Cylinder top = Cylinder(1.1, 1.1, 1.5, 8, 1, false, 2, false, true);
+	Cylinder top = Cylinder(1.1, 1.1, 1.5, 8, 1, false, 2, false,false);
 	pshm;
 	cull;
 	glTranslated(1.5, 10.8, 1.5);
@@ -2593,7 +2597,7 @@ void DomeOfTheRock::drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, 
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
 #pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10);
+	drawColumn(pillarRadius, pillarHeight, texture, 10,true,PILLAR2);
 #pragma endregion
 
 #pragma region base
@@ -2633,7 +2637,7 @@ void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius,
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
 #pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10);
+	drawColumn(pillarRadius, pillarHeight, texture, 10,true,PILLAR2);
 #pragma endregion
 
 #pragma region base
@@ -3064,10 +3068,10 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 	cull;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LEAD);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.38, Color(255, 255, 255), 16, false, false, false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.38, Color(255, 255, 255), 16, false,false, false);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LIME_STONE1);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.371, Color(255, 255, 255), 8, true, false, true);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.371, Color(255, 255, 255), 8,true, false, true);
 	distxt;
 	nocull;
 	ppm;
@@ -3086,13 +3090,13 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		pshm;
 		glRotated(angle, 0, 1, 0);
 		pshm;
-		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 0.15);
+		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 0.2);
 		drawDomeOfAscentionPillar(pillarHieght, 0.1, 0.6, LIME_STONE1);
 		ppm;
 
 		pshm;
-		glTranslated(0, pillarHieght / 2.0 + 0.6, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.04);
-		drawColumn(0.08, pillarHieght, LIME_STONE2, 12);
+		glTranslated(0, pillarHieght / 2.0 + 0.6, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.02);
+		drawColumn(0.08, pillarHieght, LIME_STONE2, 12,true,PILLAR2);
 		ppm;
 		ppm;
 	}
@@ -3129,7 +3133,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -1.2 * cos(360.0 / (2 * PolygonRank)) + 2.7 - 1.2 - 0.1);
-		drawArch(1.3 * 0.665, 1.3 * 0.765, 0.2, textures,28);
+		drawArch(1.1 * 0.665, 1.3 * 0.765, 0.2, textures,28);
 		ppm;
 
 		ppm;
@@ -3141,11 +3145,11 @@ void DomeOfTheRock::drawDomeOfAscention() {
 	pshm;
 	white;
 	glRotated(22.5, 0, 1, 0);
-	glTranslated(0, pillarHieght + 2, 0);
+	glTranslated(0, pillarHieght + 2.45, 0);
 	cull;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.51, Color(255, 255, 255), 25, false, false, false,false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.55, Color(255, 255, 255), 25, false, false,false,true);
 	entxt;
 	nocull;
 	ppm;
@@ -3154,12 +3158,20 @@ void DomeOfTheRock::drawDomeOfAscention() {
 #pragma region body
 	pshm;
 	glRotated(22.5, 0, 1, 0);
-	glTranslated(0, pillarHieght / 2.0, 0);
+	glTranslated(0, (pillarHieght +2.3)/ 2.0, 0);
 	entxt;
 	white;
-	glBindTexture(GL_TEXTURE_2D, LIME_STONE3);
-	Cylinder body = Cylinder(2.7, 2.7, pillarHieght + 3, 8, 1, false, 2, false, true);
+	glBindTexture(GL_TEXTURE_2D, ASCENTION);
+	Cylinder body = Cylinder(2.58, 2.58, pillarHieght + 2.3, 8, 1, false, 2, false,true);
 	body.drawSide();
+	ppm;
+
+	pshm;
+	glRotated(22.5, 0, 1, 0);
+	//glTranslated(0, (pillarHieght + 2.3) / 2.0, 0);
+	glBindTexture(GL_TEXTURE_2D, LIME_STONE1);
+	body.set(2.7, 2.7, 1.2, 8, 1, false, 2, false, true);
+	body.draw();
 	distxt;
 	ppm;
 #pragma endregion
