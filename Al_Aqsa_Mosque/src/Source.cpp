@@ -207,7 +207,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	personDrawer = PersonDrawer();
 
-	//alQibliMosqueDrawer = AlQibliMosqueDrawer();
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK

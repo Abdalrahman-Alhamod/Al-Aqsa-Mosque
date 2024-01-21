@@ -78,12 +78,13 @@ public:
 
 	void drawDomeOfSouls();
 
-	//dome of the prophet
+	//other domes
 
 	void drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
 
 	void drawDomeOfTheProphet();
 
+	void drawDomeOfTheChainPillar(int texture, db pillarHeight = 15, db pillarRadius = 0.5);
 
 	void drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
 
@@ -91,6 +92,7 @@ public:
 
 	void drawDomeOfKhalili();
 
+	void drawDomeOfTheChain();
 
 	void drawDomeOfSouls1();
 
@@ -106,19 +108,21 @@ private:
 	int
 		ROOF1, ROOF2, ROOF3, ROOF4,
 		BRIDGE1, BRIDGE2,
-		ROCK0,ROCK1,ROCK2,ROCK3,ROCK4,
-		FENCE,FENCE1, MARBLE_FENCE,
+		ROCK0, ROCK1, ROCK2, ROCK3, ROCK4,
+		FENCE, FENCE1, MARBLE_FENCE,
 		FOOT1, FOOT2, FOOT3, FOOT4, FOOT5, FOOT6,
 		ARCH1, ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7, ARCH8, LEAD, ARCH10,
 		DRUM1, DRUM2, DRUM3, DRUM4, DRUM5,
 		DOME1, DOME3, DOME2,
 		PILLAR1, PILLAR2,
 		MARBLE1, MARBLE2, MARBLE3, MARBLE4, MARBLE5, MARBLE6, MARBLE7, MARBLE8,
-		LIME_STONE1, LIME_STONE2, LIME_STONE3,WHITE_STONE, WOOD,
+		LIME_STONE1, LIME_STONE2, LIME_STONE3, WHITE_STONE, WOOD,
 		TIER1, TIER2, TIER3, TIER4,
 		WALL1, WALL2, WALL3, WALL4, WALL5, WALL6,
 		DOOR1, DOOR2, DOOR3,
-		CARPET,KHALILI1, KHALILI2, KHALILI3, KHALILI4;
+		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
+		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
+
 
 	static const int sectorCntForColumns = 6;
 	static const int sectorCntForArchs = 16; //actual sectors drawn are 8 'cause it's half cylinder

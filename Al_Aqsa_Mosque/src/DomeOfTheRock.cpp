@@ -108,7 +108,15 @@ DomeOfTheRock::DomeOfTheRock() {
 	KHALILI3 = LoadTexture((char*)"assets/domeOfTheRock/khalili3.bmp");
 	KHALILI4 = LoadTexture((char*)"assets/domeOfTheRock/khalili4.bmp");
 
-	
+
+	CHAIN1 = LoadTexture((char*)"assets/domeOfTheRock/chain1.bmp");
+	CHAIN2 = LoadTexture((char*)"assets/domeOfTheRock/chain2.bmp");
+	CHAIN3 = LoadTexture((char*)"assets/domeOfTheRock/chain3.bmp");
+	CHAIN4 = LoadTexture((char*)"assets/domeOfTheRock/chain4.bmp");
+	CHAIN5 = LoadTexture((char*)"assets/domeOfTheRock/chain5.bmp");
+	CHAIN6 = LoadTexture((char*)"assets/domeOfTheRock/chain6.bmp");
+	CHAIN7 = LoadTexture((char*)"assets/domeOfTheRock/chain7.bmp");
+	CHAIN8 = LoadTexture((char*)"assets/domeOfTheRock/chain8.bmp");
 
 	mosqueDrawer = MosqueDrawer();
 
@@ -2664,6 +2672,244 @@ void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius,
 
 #pragma endregion
 	ppm;
+}
+
+void DomeOfTheRock::drawDomeOfTheChainPillar(int texture, db pillarHeight, db pillarRadius) {
+	//0.5, 15.4, 1.6, MARBLE1
+	pshm;
+#pragma region body
+	glTranslated(-10, pillarHeight / 2.0 + 0.7, 0);
+	drawColumn(pillarRadius, pillarHeight, texture, 12, 1);
+#pragma endregion
+
+#pragma region top
+	pshm;
+	glTranslated(0, pillarHeight / 2.0, 0);
+	glRotated(45, 0, 1, 0);
+	entxt;
+	Cylinder top = Cylinder(pillarRadius - 0.1, 1.6 - 0.5, 1.4, 6);
+	top.setUpAxis(2);
+	cull;
+	glBindTexture(GL_TEXTURE_2D, PILLAR1);
+	top.drawSide();
+	ppm;
+
+#pragma endregion
+
+#pragma region base
+	pshm;
+
+	glTranslated(0, -pillarHeight / 2.0 - 0.3, 0);
+	Cylinder base = Cylinder(0.8, 0.5, 0.7, 12, 1, true, 2, false);
+	glBindTexture(GL_TEXTURE_2D, PILLAR2);
+	base.drawSide();
+	nocull;
+	distxt;
+	ppm;
+#pragma endregion
+
+	ppm;
+}
+
+
+void DomeOfTheRock::drawDomeOfTheChain() {
+
+	db pillarHieght = 15, innerR = 19.5, PolygonRank = 11, outerR = 22.5; int texture;
+	int i = 0; int textures[8] = { 0,0,0,0,0,0,0,0 };
+
+
+#pragma region roof
+	pshm;
+	glTranslated(0, pillarHieght + 8.45, 0);
+	glRotated(-8, 0, 1, 0);
+	entxt;
+	glTranslated(0, 0.1, 0);
+	Cylinder roof = Cylinder(outerR + 1, 7.9, 0.7, 11, 1, 0, 2, 0, 1);
+	glBindTexture(GL_TEXTURE_2D, LEAD);
+	roof.drawSide();
+	glTranslated(0, -0.2, 0);
+	cull;
+	roof.setBaseRadius(innerR - 0.4);
+	roof.reverseNormals();
+	roof.drawSide();
+	nocull;
+	distxt;
+	ppm;
+#pragma endregion
+
+#pragma region outerArcade
+
+#pragma region pillars
+	for (db angle = 12.5; angle < 360; angle += 32.72727) {
+		i++;
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR);
+		if (i % 3 == 0) texture = MARBLE3;
+		else texture = MARBLE2;
+		drawDomeOfTheChainPillar(texture);
+		ppm;
+	}
+#pragma endregion
+
+#pragma region archs
+
+	pshm;
+	glTranslated(0, pillarHieght + 1.9, 0);
+	pshm;
+	//glTranslated(0, 16, 0);
+	glRotated(-8, 0, 1, 0);
+	glRotated(90, 1, 0, 0);
+	textures[6] = LIME_STONE1;
+	textures[7] = LIME_STONE1;
+	textures[2] = textures[3] = LEAD;
+	textures[4] = textures[5] = LIME_STONE1;
+	drawPipe(innerR - 0.5, outerR, 1, 11, textures, false, false);
+	ppm;
+	for (db angle = 0; angle < 360; angle += 32.72727) {
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		textures[0] = CHAIN4;
+		textures[1] = CHAIN1;
+		textures[7] = CHAIN7;
+		textures[2] = ARCH6; textures[3] = ARCH5;
+		textures[4] = ARCH6; textures[5] = ARCH5;
+		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 1.4);
+		drawArch(4.8, 6.3, 3, textures,36 );
+		ppm;
+	}
+	ppm;
+#pragma endregion
+
+#pragma endregion
+
+#pragma region innerArcade
+
+	PolygonRank = 6; outerR = 9; innerR = 7; pillarHieght += 1.85; i = 0;
+
+#pragma region pillars
+	for (db angle = 11; angle < 360; angle += 60) {
+		i++;
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		glTranslated(2.5, 0, -(outerR)*cos(360.0 / (2 * PolygonRank)));
+		if (i % 2 == 0) texture = MARBLE3;
+		else texture = MARBLE5;
+		drawDomeOfTheChainPillar(texture, pillarHieght);
+		ppm;
+	}
+#pragma endregion
+
+#pragma region archs
+
+	pshm;
+	glTranslated(0, pillarHieght + 1.9, 0);
+	pshm;
+	glRotated(90, 1, 0, 0);
+	textures[6] = LIME_STONE1;
+	textures[7] = LIME_STONE1;
+	textures[2] = textures[3] = LEAD;
+	textures[4] = textures[5] = LIME_STONE1;
+	drawPipe(innerR - 0.5, outerR, 1, 6, textures, false, false);
+	ppm;
+	for (db angle = 0; angle < 360; angle += 60) {
+		pshm;
+		glRotated(angle, 0, 1, 0);
+		textures[0] = CHAIN1;
+		textures[1] = CHAIN1;
+		textures[7] = CHAIN7;
+		textures[2] = ARCH6; textures[3] = ARCH5;
+		textures[4] = ARCH6; textures[5] = ARCH5;
+		glTranslated(0, 0.5, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 5.85);
+		drawArch(2.8, 4.5, 2, textures,36);
+		ppm;
+	}
+	ppm;
+#pragma endregion
+
+#pragma endregion
+
+#pragma region drum
+	pshm;
+	entxt;
+	glTranslated(0, pillarHieght + 9.2, 0);
+	roof.set(outerR, outerR, 5, 6, 1, false, 2, false, true);
+	glBindTexture(GL_TEXTURE_2D, CHAIN3);
+	roof.drawSide();
+	roof.setBaseRadius(innerR - 0.35);
+	roof.setTopRadius(innerR - 0.35);
+	roof.setSmooth(true);
+	roof.reverseNormals();
+	glBindTexture(GL_TEXTURE_2D, CHAIN5);
+	roof.drawSide();
+	distxt;
+	ppm;
+#pragma endregion
+
+#pragma region domes
+	pshm;
+	glTranslated(0, pillarHieght + 11.3, 0);
+	glRotated(90, 1, 0, 0);
+	textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = textures[7] = LEAD;
+	drawPipe(outerR - 0.5, outerR + 2, 0.8, 6, textures, false);
+	ppm;
+
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, LEAD);
+	mosqueDrawer.drawDome(Point(0, pillarHieght + 13.6, 0), 1.68, Color(255, 255, 255), 18, false, false, true);
+	distxt;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, CHAIN6);
+	mosqueDrawer.drawDome(Point(0, pillarHieght + 13.6, 0), 1.4, Color(255, 255, 255), 18, true, false, true);
+	distxt;
+
+#pragma endregion
+
+#pragma region carpet
+
+	pshm;
+	glRotated(-8, 0, 1, 0);
+	glRotated(90, 1, 0, 0);
+	textures[6] = LIME_STONE1;
+	textures[7] = LIME_STONE1;
+	textures[2] = textures[3] = LIME_STONE1;
+	textures[4] = textures[5] = LIME_STONE1;
+	drawPipe(22.5, 23, 0.5, 11, textures, false, false);
+	ppm;
+
+	pshm;
+	glNormal3f(0, 2, 0);
+	glRotated(-8, 0, 1, 0);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, CHAIN8);
+	beg(GL_POLYGON);
+	txt(0.50 + 0.5, 0.00 + 0.5);
+	glVertex3d(22.5, 0.1, 0);
+	txt(0.42 + 0.5, 0.34 + 0.5);
+	glVertex3d(18.93, 0.1, 12.16);
+	txt(0.21 + 0.5, 0.47 + 0.5);
+	glVertex3d(9.35, 0.1, 20.47);
+	txt(-0.07 + 0.5, 0.50 + 0.5);
+	glVertex3d(-3.2, 0.1, 22.27);
+	txt(-0.33 + 0.5, 0.41 + 0.5);
+	glVertex3d(-14.73, 0.1, 17);
+	txt(-0.48 + 0.5, 0.23 + 0.5);
+	glVertex3d(-21.59, 0.1, 6.34);
+	txt(-0.48 + 0.5, -0.23 + 0.5);
+	glVertex3d(-21.59, 0.1, -6.34);
+	txt(-0.33 + 0.5, -0.41 + 0.5);
+	glVertex3d(-14.73, 0.1, -17);
+	txt(-0.07 + 0.5, -0.50 + 0.5);
+	glVertex3d(-3.2, 0.1, -22.27);
+	txt(0.21 + 0.5, -0.47 + 0.5);
+	glVertex3d(9.35, 0.1, -20.47);
+	txt(0.42 + 0.5, -0.34 + 0.5);
+	glVertex3d(18.93, 0.1, -12.16);
+	endf;
+	ppm;
+
+#pragma endregion
+
 }
 
 void DomeOfTheRock::drawDomeOfSouls() {

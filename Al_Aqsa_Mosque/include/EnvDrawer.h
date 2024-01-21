@@ -371,7 +371,7 @@ private:
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;
 	Box envBoxDrawer;
-
+	MosqueDrawer dome;
 	int buildingTexture[6];
 	int minarate[6];
 	int skyBoxTextures[3][6];

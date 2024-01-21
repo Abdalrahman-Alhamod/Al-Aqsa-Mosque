@@ -74,6 +74,7 @@ EnvDrawer::EnvDrawer() {
 EnvDrawer::EnvDrawer(HWND hWnd) {
 
 	envBoxDrawer = Box();
+	dome = MosqueDrawer();
 
 	pos[0][0] = 0;
 
@@ -703,15 +704,16 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	{
 		glRotated(90, 0, 1, 0);
 		glEnable(GL_TEXTURE_2D);
+		glNormal3f(0, 0.536875, -0.843661);
 		glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
 		glBegin(GL_QUADS);
-		glTexCoord2f(0, 0);
+		glTexCoord2f(0,0.5 );
 		glVertex3d(-.5, height + 3.5, -.5);
-		glTexCoord2f(1, 0);
+		glTexCoord2f(0.5,0.5 );
 		glVertex3d(.5, height + 3.5, -.5);
-		glTexCoord2f(1, 1);
+		glTexCoord2f(1,0 );
 		glVertex3d(2, height + 3, -2);
-		glTexCoord2f(0, 1);
+		glTexCoord2f(0,0 );
 		glVertex3d(-2, height + 3, -2);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
@@ -723,6 +725,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glRotated(360 / 8, 0, 1, 0);
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, minarate[4]);
+		glNormal3f(0, 0, -1);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
 		glVertex3d(-.5, height + 3.2, -1.2);
@@ -758,6 +761,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, minarate[5]);
+		glNormal3f(0, 0, -1);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
 		glVertex3d(-.42, height + 5.5, -1);
@@ -776,36 +780,18 @@ void EnvDrawer::drawCubedMinaret(const float size)
 
 	cull;
 
-	// Dom
+	// Dom(e) // pay attention to the e @obada 
 	glTranslated(0, 1.35, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, minarate[5]);
-	Sphere sphere = Sphere(1.13, 8, 18, true, 2, true);
+	//Sphere sphere = Sphere(1.13,8, 18, true, 2, true);
 	glPushMatrix();
 	glRotated(23, 0, 1, 0);
-	sphere.draw();
+	//sphere.draw();
+	dome.drawDome(Point(0, 0, 0),1.13/5.0,Color(255,255,255),8,false,false,true,true);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	nocull;
-
-	// Top Cone
-	glPushMatrix();
-	cull;
-	glTranslatef(0, 1.3, 0);
-	glColor3b(74, 74, 74);
-	Cylinder(0.07, 0.01, 0.7, 3, 1, true, 2).drawSide();
-	glPopMatrix();
-
-	// Top Spheres
-	for (float yOffset = 0.2; yOffset <= 0.62; yOffset += 0.2) {
-		glPushMatrix();
-		glTranslatef(0, 1 + yOffset, 0);
-		Sphere((0.1 - (yOffset * 0.1) + 0.02), 3, 3).draw();
-		glPopMatrix();
-	}
-	nocull;
-	glColor4f(1, 1, 1, 1);
-
 	glPopMatrix();
 }
 
