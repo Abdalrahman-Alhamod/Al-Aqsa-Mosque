@@ -323,6 +323,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//testReflection();
 
 	pshm;
+	glTranslatef(4.5, -9.3, -2.15);
+	glScalef(0.065, 0.065, 0.065);
+	glRotated(11.25, 0, 1, 0);
+	domeOfTheRock.drawDomeOfTheChain1();
+	ppm;
+
+	pshm;
 	glTranslatef(-9, -9.3, 3);
 	glScalef(0.07, 0.07, 0.07);
 	domeOfTheRock.draw();
@@ -351,6 +358,14 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfKhalili1();
 	ppm;
+
+	pshm;
+	//glScaled(0.05, 0.05, 0.05);
+	glTranslated(0, -9.3, 0);
+	int textures[6] = { 0,0,0,0,0,0 };
+	//Box().drawOutside(Constraints(1, 1, 1), textures);
+	ppm;
+	
 
 	glFlush();											// Done Drawing The Quad
 

@@ -52,6 +52,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	ARCH7 = LoadTexture((char*)"assets/domeOfTheRock/arch7.bmp");
 	ARCH8 = LoadTexture((char*)"assets/domeOfTheRock/arch8.bmp");
 	LEAD = LoadTexture((char*)"assets/domeOfTheRock/arch9.bmp");
+	LEAD1 = LoadTexture((char*)"assets/domeOfTheRock/arch09.bmp");
 	ARCH10 = LoadTexture((char*)"assets/domeOfTheRock/arch10.bmp");
 
 	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
@@ -145,6 +146,11 @@ DomeOfTheRock::DomeOfTheRock() {
 	dome4DisplayList = glGenLists(1);
 	glNewList(dome4DisplayList, GL_COMPILE);
 	drawDomeOfTheProphet();
+	glEndList();
+
+	dome5DisplayList = glGenLists(1);
+	glNewList(dome5DisplayList, GL_COMPILE);
+	drawDomeOfTheChain();
 	glEndList();
 
 
@@ -2854,12 +2860,12 @@ void DomeOfTheRock::drawDomeOfTheChain() {
 	pshm;
 	glTranslated(0, pillarHieght + 11.3, 0);
 	glRotated(90, 1, 0, 0);
-	textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = textures[7] = LEAD;
+	textures[2] = textures[3] = textures[4] = textures[5] = textures[6] = textures[7] = LEAD1;
 	drawPipe(outerR - 0.5, outerR + 2, 0.8, 6, textures, false);
 	ppm;
 
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, LEAD);
+	glBindTexture(GL_TEXTURE_2D, LEAD1);
 	mosqueDrawer.drawDome(Point(0, pillarHieght + 13.6, 0), 1.68, Color(255, 255, 255), 18, false, false, true);
 	distxt;
 	entxt;
@@ -3214,4 +3220,8 @@ void DomeOfTheRock::drawDomeOfKhalili1() {
 
 void DomeOfTheRock::drawDomeOfTheProphet1() {
 	glCallList(dome4DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfTheChain1() {
+	glCallList(dome5DisplayList);
 }

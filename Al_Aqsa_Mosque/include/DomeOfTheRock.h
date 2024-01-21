@@ -94,6 +94,8 @@ public:
 
 	void drawDomeOfTheChain();
 
+	void drawDomeOfTheChain1();
+
 	void drawDomeOfSouls1();
 
 	void drawDomeOfTheProphet1();
@@ -111,7 +113,7 @@ private:
 		ROCK0, ROCK1, ROCK2, ROCK3, ROCK4,
 		FENCE, FENCE1, MARBLE_FENCE,
 		FOOT1, FOOT2, FOOT3, FOOT4, FOOT5, FOOT6,
-		ARCH1, ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7, ARCH8, LEAD, ARCH10,
+		ARCH1, ARCH2, ARCH3, ARCH4, ARCH5, ARCH6, ARCH7, ARCH8, LEAD, LEAD1, ARCH10,
 		DRUM1, DRUM2, DRUM3, DRUM4, DRUM5,
 		DOME1, DOME3, DOME2,
 		PILLAR1, PILLAR2,
@@ -131,7 +133,7 @@ private:
 	MosqueDrawer mosqueDrawer;
 
 	int domeOfTheRockDisplayList;
-	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList;
+	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, dome5DisplayList;
 
 };
 
