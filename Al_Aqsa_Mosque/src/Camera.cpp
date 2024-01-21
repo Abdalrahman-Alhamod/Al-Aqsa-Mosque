@@ -41,14 +41,9 @@ Vector3dStruct NormalizeVector3d(Vector3dStruct v)
 Vector3dStruct operator- (Vector3dStruct v, Vector3dStruct u)
 {
 	Vector3dStruct res = v;
-	int nx = min(max((v.x - u.x) * 10 + 350, 0), 701);
-	int nz = min(max((v.z - u.z) * 10 + 500, 0), 1001);
-	if (!Camera::pos[nx][nz])
-	{
-		res.x = v.x - u.x;
-		res.z = v.z - u.z;
-		res.y = v.y - u.y;
-	}
+	res.x = v.x - u.x;
+	res.z = v.z - u.z;
+	res.y = v.y - u.y;
 	return res;
 }
 
@@ -77,15 +72,9 @@ Vector3dStruct operator* (Vector3dStruct v, float r)
 Vector3dStruct CrossProduct(Vector3dStruct* u, Vector3dStruct* v)
 {
 	Vector3dStruct resVector = *u;
-
-	int nx = min(max((u->y * v->z - u->z * v->y) * 10 + 350, 0), 701);
-	int nz = min(max((u->x * v->y - u->y * v->x) * 10 + 500, 0), 1001);
-	if (!Camera::pos[nx][nz])
-	{
-		resVector.x = u->y * v->z - u->z * v->y;
-		resVector.z = u->x * v->y - u->y * v->x;
-		resVector.y = u->z * v->x - u->x * v->z;
-	}
+	resVector.x = u->y * v->z - u->z * v->y;
+	resVector.z = u->x * v->y - u->y * v->x;
+	resVector.y = u->z * v->x - u->x * v->z;
 
 	return resVector;
 }
@@ -233,11 +222,44 @@ void Camera::posInit()
 			Camera::pos[i + 350][j + 500] = 0;
 
 	//Dom of rock
+	/*
+	for (int i = -90; i < -55; ++i)
+		for (int j = -135 - i; j < 95 + i; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = -20; i < 15; ++i)
+		for (int j = -55 + i; j < 15 - i; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = -55; i < -20; ++i)
+		for (int j = -80; j < 40; ++j)
+			Camera::pos[i + 350][j + 500] = 1;
+
+	for (int i = -85; i < -55; ++i)
+		for (int j = -130 - i; j < 90 + i; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -20; i < 10; ++i)
+		for (int j = -50 + i; j < 10 - i; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -55; i < -20; ++i)
+		for (int j = -75; j < 35; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -45; i < -30; ++i)
+		for (int j = -90; j < 50; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+
+	for (int i = -100; i < 20; ++i)
+		for (int j = -27; j < -12; ++j)
+			Camera::pos[i + 350][j + 500] = 0;
+	*/
 }
 
 int Camera::nx(int v) {
 
-	return max(min(v * 10 + 350,701),0);
+	return max(min(v * 10 + 350, 701), 0);
 }
 
 int Camera::nz(int v) {
@@ -266,7 +288,7 @@ void Camera::cameraInit(HWND hWnd)
 		camera[i]->SoundManager.Initialize(hWnd);
 		camera[i]->SoundManager.CreateSound((char*)"assets/sounds/footsteps.wav", Camera::camera[i]->soundBuffer);
 	}
-	
+
 }
 
 void Camera::Move(Vector3dStruct Direction)
@@ -369,25 +391,25 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 	// Translation controls
 	if (keys['W']) {
 		Camera::MoveForward(1 * speed); // Move camera forward
-		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+		if (Camera::getInstance()->getMode() != FREE_CAMERA) {
 			playSound = true;
 		}
 	}
 	if (keys['S']) {
 		Camera::MoveForward(-1 * speed); // Move camera backward
-		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+		if (Camera::getInstance()->getMode() != FREE_CAMERA) {
 			playSound = true;
 		}
 	}
 	if (keys['D']) {
 		Camera::MoveRight(1 * speed); // Move camera to the right
-		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+		if (Camera::getInstance()->getMode() != FREE_CAMERA) {
 			playSound = true;
 		}
 	}
 	if (keys['A']) {
 		Camera::MoveRight(-1 * speed); // Move camera to the left
-		if (Camera::getInstance()->getMode() == THIRD_PERSON_CAMERA || Camera::getInstance()->getMode() == FIRST_PERSON_CAMERA) {
+		if (Camera::getInstance()->getMode() != FREE_CAMERA) {
 			playSound = true;
 		}
 	}

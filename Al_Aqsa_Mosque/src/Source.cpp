@@ -151,7 +151,7 @@ void testReflection() {
 	glTranslatef(-9, -9.3, 3);
 	glScalef(0.08, 0.08, 0.08);
 	domeOfTheRock.draw();
-	ppm;          
+	ppm;
 
 
 	glPopMatrix();
@@ -207,7 +207,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	personDrawer = PersonDrawer();
 
-	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+	//alQibliMosqueDrawer = AlQibliMosqueDrawer();
 	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK
@@ -218,13 +218,13 @@ void draw(float x, float z, bool det)
 	//x -= 0.2;
 	//z -= 1;
 	PrimitiveDrawer d;
-	Point p = Point(x, -8.8, z, 3, 1, Color(det * 255, (!det) * 255, 0));
+	Point p = Point(x, -4, z, 2, 1, Color(det * 255, (!det) * 255, 0));
 	d.drawPoint(p);
 }
 
 db openTheDoor = 0;
 
-float hight = 9.3, modelHight = 9.3,walking = 0;
+float hight = 9.3, modelHight = 9.3, walking = 0;
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -302,8 +302,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		p.z += r * cos(angel * PIdiv180);
 		p.y = -0.1 * 0.04 * cos(20 * walking) - modelHight;
 		walking += keys['W'];
-		//console.print(int(sqrt(pow(p.x - c.x, 2) + pow(p.z - c.z, 2))));
-		//console.print(personDrawer.v());
 		personDrawer.drawPerson(p, angel, 2);
 	}
 	else {
@@ -315,7 +313,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	envDrawer.draw(keys);
 
-	
 	pshm;
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(-5, -9.98, -29.3);
