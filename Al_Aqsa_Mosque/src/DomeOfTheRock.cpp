@@ -12,114 +12,114 @@
 #define entxt 	glEnable(GL_TEXTURE_2D)
 #define distxt glDisable(GL_TEXTURE_2D)
 #define white glColor3f(1,1,1)
-const db srt = 1.414213562373095;
-const db pi = 3.141592653589793238462643383279502884197;
-
-
 #include "DomeOfTheRock.h"
 #include "Texture.h"
+const db srt = 1.414213562373095;
+const db pi = 3.141592653589793238462643383279502884197;
+const std::string LowQuality = "LQ";
+const std::string HighQuality = "HQ";
+
 
 DomeOfTheRock::DomeOfTheRock() {
-	
-	ROOF1 = LoadTexture((char*)"assets/domeOfTheRock/roof1.bmp");
-	ROOF2 = LoadTexture((char*)"assets/domeOfTheRock/roof2.bmp");
-	ROOF3 = LoadTexture((char*)"assets/domeOfTheRock/roof03.bmp");
-	ROOF4 = LoadTexture((char*)"assets/domeOfTheRock/roof4.bmp");
+	std::string texturesQuality = HighQuality;
+	ROOF1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof1.bmp").c_str());
+	ROOF2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof2.bmp").c_str());
+	ROOF3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof03.bmp").c_str());
+	ROOF4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof4.bmp").c_str());
 
-	BRIDGE1 = LoadTexture((char*)"assets/domeOfTheRock/bridge1.bmp");
-	BRIDGE2 = LoadTexture((char*)"assets/domeOfTheRock/bridge2.bmp");
+	BRIDGE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/bridge1.bmp").c_str());
+	BRIDGE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/bridge2.bmp").c_str());
 
-	ROCK1 = LoadTexture((char*)"assets/domeOfTheRock/rock3.bmp");
-	ROCK2 = LoadTexture((char*)"assets/domeOfTheRock/rock4.bmp");
+	ROCK1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/rock3.bmp").c_str());
+	ROCK2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/rock4.bmp").c_str());
 
-	FENCE = LoadTexture((char*)"assets/domeOfTheRock/fence.bmp");
-	FENCE1 = LoadTexture((char*)"assets/domeOfTheRock/fence1.bmp");
-	MARBLE_FENCE = LoadTexture((char*)"assets/domeOfTheRock/marbleFence.bmp");
+	FENCE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/fence.bmp").c_str());
+	FENCE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/fence1.bmp").c_str());
+	MARBLE_FENCE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marbleFence.bmp").c_str());
 
-	FOOT1 = LoadTexture((char*)"assets/domeOfTheRock/footprint1.bmp");
-	FOOT2 = LoadTexture((char*)"assets/domeOfTheRock/footprint2.bmp");
-	FOOT3 = LoadTexture((char*)"assets/domeOfTheRock/footprint3.bmp");
-	FOOT4 = LoadTexture((char*)"assets/domeOfTheRock/footprint4.bmp");
-	FOOT5 = LoadTexture((char*)"assets/domeOfTheRock/footprint5.bmp");
-	FOOT6 = LoadTexture((char*)"assets/domeOfTheRock/footprint6.bmp");
+	FOOT1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint1.bmp").c_str());
+	FOOT2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint2.bmp").c_str());
+	FOOT3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint3.bmp").c_str());
+	FOOT4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint4.bmp").c_str());
+	FOOT5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint5.bmp").c_str());
+	FOOT6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint6.bmp").c_str());
 
-	ARCH1 = LoadTexture((char*)"assets/domeOfTheRock/arch01.bmp");
-	ARCH2 = LoadTexture((char*)"assets/domeOfTheRock/arch2.bmp");
-	ARCH3 = LoadTexture((char*)"assets/domeOfTheRock/arch3.bmp");
-	ARCH4 = LoadTexture((char*)"assets/domeOfTheRock/arch4.bmp");
-	ARCH5 = LoadTexture((char*)"assets/domeOfTheRock/arch5.bmp");
-	ARCH6 = LoadTexture((char*)"assets/domeOfTheRock/arch6.bmp");
-	ARCH7 = LoadTexture((char*)"assets/domeOfTheRock/arch7.bmp");
-	ARCH8 = LoadTexture((char*)"assets/domeOfTheRock/arch8.bmp");
-	LEAD = LoadTexture((char*)"assets/domeOfTheRock/arch9.bmp");
-	LEAD1 = LoadTexture((char*)"assets/domeOfTheRock/arch09.bmp");
-	ARCH10 = LoadTexture((char*)"assets/domeOfTheRock/arch10.bmp");
+	ARCH1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch01.bmp").c_str());
+	ARCH2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch2.bmp").c_str());
+	ARCH3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch3.bmp").c_str());
+	ARCH4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch4.bmp").c_str());
+	ARCH5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch5.bmp").c_str());
+	ARCH6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch6.bmp").c_str());
+	ARCH7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch7.bmp").c_str());
+	ARCH8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch8.bmp").c_str());
+	LEAD = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch9.bmp").c_str());
+	LEAD1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch09.bmp").c_str());
+	ARCH10 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch10.bmp").c_str());
 
-	DRUM1 = LoadTexture((char*)"assets/domeOfTheRock/drum1.bmp");
-	DRUM2 = LoadTexture((char*)"assets/domeOfTheRock/drum002.bmp");
-	DRUM3 = LoadTexture((char*)"assets/domeOfTheRock/drum3.bmp");
-	DRUM4 = LoadTexture((char*)"assets/domeOfTheRock/drum4.bmp");
-	DRUM5 = LoadTexture((char*)"assets/domeOfTheRock/drum5.bmp");
+	DRUM1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum1.bmp").c_str());
+	DRUM2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum002.bmp").c_str());
+	DRUM3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum3.bmp").c_str());
+	DRUM4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum4.bmp").c_str());
+	DRUM5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum5.bmp").c_str());
 
-	DOME1 = LoadTexture((char*)"assets/domeOfTheRock/dome01.bmp");
-	DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome02.bmp");
-	//DOME2 = LoadTexture((char*)"assets/domeOfTheRock/dome2.bmp");
-	DOME3 = LoadTexture((char*)"assets/domeOfTheRock/dome3.bmp");
+	DOME1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome01.bmp").c_str());
+	DOME2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome2.bmp").c_str());
+	DOME3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome3.bmp").c_str());
 
-	PILLAR1 = LoadTexture((char*)"assets/domeOfTheRock/pillar1.bmp");
-	PILLAR2 = LoadTexture((char*)"assets/domeOfTheRock/pillar2.bmp");
+	PILLAR1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/pillar1.bmp").c_str());
+	PILLAR2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/pillar2.bmp").c_str());
 
-	MARBLE1 = LoadTexture((char*)"assets/domeOfTheRock/marble1.bmp");
-	MARBLE2 = LoadTexture((char*)"assets/domeOfTheRock/marble2.bmp");
-	MARBLE3 = LoadTexture((char*)"assets/domeOfTheRock/marble3.bmp");
-	MARBLE4 = LoadTexture((char*)"assets/domeOfTheRock/marble4.bmp");
-	MARBLE5 = LoadTexture((char*)"assets/domeOfTheRock/marble5.bmp");
-	MARBLE6 = LoadTexture((char*)"assets/domeOfTheRock/marble6.bmp");
-	MARBLE7 = LoadTexture((char*)"assets/domeOfTheRock/marble7.bmp");
-	MARBLE8 = LoadTexture((char*)"assets/domeOfTheRock/marble8.bmp");
+	MARBLE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble1.bmp").c_str());
+	MARBLE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble2.bmp").c_str());
+	MARBLE3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble3.bmp").c_str());
+	MARBLE4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble4.bmp").c_str());
+	MARBLE5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble5.bmp").c_str());
+	MARBLE6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble6.bmp").c_str());
+	MARBLE7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble7.bmp").c_str());
+	MARBLE8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble8.bmp").c_str());
 
-	LIME_STONE1 = LoadTexture((char*)"assets/domeOfTheRock/limestone1.bmp");
-	LIME_STONE2 = LoadTexture((char*)"assets/domeOfTheRock/limestone2.bmp");
-	LIME_STONE3 = LoadTexture((char*)"assets/domeOfTheRock/limestone3.bmp");
+	LIME_STONE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone1.bmp").c_str());
+	LIME_STONE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone2.bmp").c_str());
+	LIME_STONE3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone3.bmp").c_str());
 
-	WHITE_STONE = LoadTexture((char*)"assets/domeOfTheRock/whiteStone.bmp");
+	WHITE_STONE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/whiteStone.bmp").c_str());
 
-	WOOD = LoadTexture((char*)"assets/domeOfTheRock/wood.bmp");
+	WOOD = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wood.bmp").c_str());
 
-	TIER1 = LoadTexture((char*)"assets/domeOfTheRock/tier01.bmp");
-	TIER2 = LoadTexture((char*)"assets/domeOfTheRock/tier02.bmp");
-	TIER3 = LoadTexture((char*)"assets/domeOfTheRock/tier3.bmp");
-	TIER4 = LoadTexture((char*)"assets/domeOfTheRock/tier4.bmp");
+	TIER1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier01.bmp").c_str());
+	TIER2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier02.bmp").c_str());
+	TIER3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier3.bmp").c_str());
+	TIER4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier4.bmp").c_str());
 
-	WALL1 = LoadTexture((char*)"assets/domeOfTheRock/wall1.bmp");
-	WALL2 = LoadTexture((char*)"assets/domeOfTheRock/wall2.bmp");
-	WALL3 = LoadTexture((char*)"assets/domeOfTheRock/wall3.bmp");
-	WALL4 = LoadTexture((char*)"assets/domeOfTheRock/wall4.bmp");
-	WALL5 = LoadTexture((char*)"assets/domeOfTheRock/wall5.bmp");
-	WALL6 = LoadTexture((char*)"assets/domeOfTheRock/wall6.bmp");
+	WALL1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall1.bmp").c_str());
+	WALL2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall2.bmp").c_str());
+	WALL3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall3.bmp").c_str());
+	WALL4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall4.bmp").c_str());
+	WALL5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall5.bmp").c_str());
+	WALL6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall6.bmp").c_str());
 
-	DOOR1 = LoadTexture((char*)"assets/domeOfTheRock/door1.bmp");
-	DOOR2 = LoadTexture((char*)"assets/domeOfTheRock/door2.bmp");
-	DOOR3 = LoadTexture((char*)"assets/domeOfTheRock/door3.bmp");
+	DOOR1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door1.bmp").c_str());
+	DOOR2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door2.bmp").c_str());
+	DOOR3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door3.bmp").c_str());
 
-	CARPET = LoadTexture((char*)"assets/domeOfTheRock/carpet.bmp");
+	CARPET = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/carpet.bmp").c_str());
 
-	KHALILI1 = LoadTexture((char*)"assets/domeOfTheRock/khalili1.bmp");
-	KHALILI2 = LoadTexture((char*)"assets/domeOfTheRock/khalili2.bmp");
-	KHALILI3 = LoadTexture((char*)"assets/domeOfTheRock/khalili3.bmp");
-	KHALILI4 = LoadTexture((char*)"assets/domeOfTheRock/khalili4.bmp");
+	KHALILI1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili1.bmp").c_str());
+	KHALILI2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili2.bmp").c_str());
+	KHALILI3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili3.bmp").c_str());
+	KHALILI4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili4.bmp").c_str());
 
 
-	CHAIN1 = LoadTexture((char*)"assets/domeOfTheRock/chain1.bmp");
-	CHAIN2 = LoadTexture((char*)"assets/domeOfTheRock/chain2.bmp");
-	CHAIN3 = LoadTexture((char*)"assets/domeOfTheRock/chain3.bmp");
-	CHAIN4 = LoadTexture((char*)"assets/domeOfTheRock/chain4.bmp");
-	CHAIN5 = LoadTexture((char*)"assets/domeOfTheRock/chain5.bmp");
-	CHAIN6 = LoadTexture((char*)"assets/domeOfTheRock/chain6.bmp");
-	CHAIN7 = LoadTexture((char*)"assets/domeOfTheRock/chain7.bmp");
-	CHAIN8 = LoadTexture((char*)"assets/domeOfTheRock/chain8.bmp");
+	CHAIN1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain1.bmp").c_str());
+	CHAIN2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain2.bmp").c_str());
+	CHAIN3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain3.bmp").c_str());
+	CHAIN4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain4.bmp").c_str());
+	CHAIN5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain5.bmp").c_str());
+	CHAIN6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain6.bmp").c_str());
+	CHAIN7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain7.bmp").c_str());
+	CHAIN8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain8.bmp").c_str());
 
-	ASCENTION = LoadTexture((char*)"assets/domeOfTheRock/ascention.bmp");
+	ASCENTION = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/ascention.bmp").c_str());
 
 	mosqueDrawer = MosqueDrawer();
 
@@ -186,7 +186,7 @@ void DomeOfTheRock::arch(db sectorCount, db radius, db thickness) {
 	ppm;
 }
 
-void DomeOfTheRock::drawArch(db innerR, db outerR, db height,int textures[], int sectorCnt) {
+void DomeOfTheRock::drawArch(db innerR, db outerR, db height, int textures[], int sectorCnt) {
 	white;
 	entxt;
 	pshm;
@@ -897,7 +897,7 @@ void DomeOfTheRock::drawPipe(db innerR, db outerR, db height, int sectorCnt, int
 	}
 }
 
-void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt, bool bracelets,int golden) {
+void DomeOfTheRock::drawColumn(db pillarRadius, db pillarHeight, int texture, int sectorCnt, bool bracelets, int golden) {
 	cull;
 	entxt;
 #pragma region main body
@@ -945,7 +945,7 @@ void DomeOfTheRock::drawEntrancePillar(db pillarRadius, db pillarHeight, db base
 
 #pragma region base
 	pshm;
-	int flag[6] = { 0,1,1,1,1,1};
+	int flag[6] = { 0,1,1,1,1,1 };
 	Box base;
 
 	glTranslated(-3 * pillarRadius / 2.0, -pillarHeight / 2.0 - 0.2, -3 * pillarRadius / 2.0);
@@ -1647,17 +1647,17 @@ void DomeOfTheRock::drawArcadeSide() {
 	db sectorCnt = sectorCntForArchs;
 	pshm;
 	glTranslated(24, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3,textures,sectorCnt);
+	drawArch(6.5, 8, 3, textures, sectorCnt);
 	ppm;
 	/////////////////////////////////////////////////
 	pshm;
 	glTranslated(8, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3,textures, sectorCnt);
+	drawArch(6.5, 8, 3, textures, sectorCnt);
 	ppm;
 	/////////////////////////////////////////////
 	pshm;
 	glTranslated(40, 1.5 + pillarH, 1.5);
-	drawArch(6.5, 8, 3,textures, sectorCnt);
+	drawArch(6.5, 8, 3, textures, sectorCnt);
 	ppm;
 #pragma endregion
 
@@ -2254,19 +2254,19 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	Box feet;
 	glTranslated(-18.5, 0, 18.5);
 	feet.drawOutside(Constraints(3, 10, 3), textures, flag);
-	
+
 	pshm;
 	glTranslated(1.5, 10.1, 1.5);
 	glRotated(45, 0, 1, 0);
 	glRotated(90, 1, 0, 0);
 	textures[2] = textures[3] = textures[4] = textures[5] = DOME3;
 	textures[6] = textures[7] = FOOT6;
-	drawPipe(2, 2.3, 0.35, 4,textures,false);
+	drawPipe(2, 2.3, 0.35, 4, textures, false);
 	ppm;
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, FOOT4);
-	Cylinder top = Cylinder(1.1, 1.1, 1.5, 8, 1, false, 2, false,false);
+	Cylinder top = Cylinder(1.1, 1.1, 1.5, 8, 1, false, 2, false, false);
 	pshm;
 	cull;
 	glTranslated(1.5, 10.8, 1.5);
@@ -2307,13 +2307,13 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 
 	///wood
 
-	textures[1] =textures[4] = textures[5] = FENCE1;
+	textures[1] = textures[4] = textures[5] = FENCE1;
 	textures[2] = textures[3] = FENCE;
 	pshm;
-	texturesCntS[2] = texturesCntS[3] =8;
+	texturesCntS[2] = texturesCntS[3] = 8;
 	glTranslated(-14, 0, -24);
 	glRotated(-93.9, 0, 1, 0);
-	fence.drawOutside(Constraints(44, heightOfWall, 0.5),textures,texturesCntS,texturesCntT);
+	fence.drawOutside(Constraints(44, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
 	ppm;
 
 	pshm;
@@ -2324,7 +2324,7 @@ void DomeOfTheRock::drawFence(db heightOfWall) {
 	ppm;
 
 	pshm;
-	texturesCntS[2] = texturesCntS[3]  = 1;
+	texturesCntS[2] = texturesCntS[3] = 1;
 	glTranslated(-5, 0, 26.5);
 	fence.drawOutside(Constraints(5, heightOfWall, 0.5), textures, texturesCntS, texturesCntT);
 	ppm;
@@ -2410,7 +2410,7 @@ void DomeOfTheRock::drawDomes() {
 	cull;
 	glTranslated(0, -0.32, 0);
 	glBindTexture(GL_TEXTURE_2D, DOME1);
-	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 36, true, false,true,false);
+	mosqueDrawer.drawDome(Point(p + a / 2.0, 68.3, -p - a / 2.0), 7.1, Color(255, 255, 255), 36, true, false, true, false);
 	distxt;
 	nocull;
 	ppm;
@@ -2603,7 +2603,7 @@ void DomeOfTheRock::drawDomeOfAscentionPillar(db pillarHeight, db pillarRadius, 
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
 #pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10,true,PILLAR2);
+	drawColumn(pillarRadius, pillarHeight, texture, 10, true, PILLAR2);
 #pragma endregion
 
 #pragma region base
@@ -2643,7 +2643,7 @@ void DomeOfTheRock::drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius,
 	pshm;
 	glTranslated(0, pillarHeight / 2.0 + 0.1 + 0.3, 0);
 #pragma region column
-	drawColumn(pillarRadius, pillarHeight, texture, 10,true,PILLAR2);
+	drawColumn(pillarRadius, pillarHeight, texture, 10, true, PILLAR2);
 #pragma endregion
 
 #pragma region base
@@ -2785,7 +2785,7 @@ void DomeOfTheRock::drawDomeOfTheChain() {
 		textures[2] = ARCH6; textures[3] = ARCH5;
 		textures[4] = ARCH6; textures[5] = ARCH5;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 1.4);
-		drawArch(4.8, 6.3, 3, textures,36 );
+		drawArch(4.8, 6.3, 3, textures, 36);
 		ppm;
 	}
 	ppm;
@@ -2831,7 +2831,7 @@ void DomeOfTheRock::drawDomeOfTheChain() {
 		textures[2] = ARCH6; textures[3] = ARCH5;
 		textures[4] = ARCH6; textures[5] = ARCH5;
 		glTranslated(0, 0.5, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR + 5.85);
-		drawArch(2.8, 4.5, 2, textures,36);
+		drawArch(2.8, 4.5, 2, textures, 36);
 		ppm;
 	}
 	ppm;
@@ -2869,8 +2869,10 @@ void DomeOfTheRock::drawDomeOfTheChain() {
 	mosqueDrawer.drawDome(Point(0, pillarHieght + 13.6, 0), 1.68, Color(255, 255, 255), 18, false, false, true);
 	distxt;
 	entxt;
+	cull;
 	glBindTexture(GL_TEXTURE_2D, CHAIN6);
 	mosqueDrawer.drawDome(Point(0, pillarHieght + 13.6, 0), 1.4, Color(255, 255, 255), 18, true, false, true);
+	nocull;
 	distxt;
 
 #pragma endregion
@@ -2958,7 +2960,7 @@ void DomeOfTheRock::drawDomeOfSouls() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(0.665, 0.765, 0.2, textures,28);
+		drawArch(0.665, 0.765, 0.2, textures, 28);
 		ppm;
 	}
 	ppm;
@@ -3061,7 +3063,7 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(0.665, 0.765, 0.2, textures,28);
+		drawArch(0.665, 0.765, 0.2, textures, 28);
 		ppm;
 	}
 	ppm;
@@ -3074,10 +3076,10 @@ void DomeOfTheRock::drawDomeOfTheProphet() {
 	cull;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LEAD);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.38, Color(255, 255, 255), 16, false,false, false);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.38, Color(255, 255, 255), 16, false, false, false);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LIME_STONE1);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.371, Color(255, 255, 255), 8,true, false, true);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.371, Color(255, 255, 255), 8, true, false, true);
 	distxt;
 	nocull;
 	ppm;
@@ -3102,7 +3104,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 
 		pshm;
 		glTranslated(0, pillarHieght / 2.0 + 0.6, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.02);
-		drawColumn(0.08, pillarHieght, LIME_STONE2, 12,true,PILLAR2);
+		drawColumn(0.08, pillarHieght, LIME_STONE2, 12, true, PILLAR2);
 		ppm;
 		ppm;
 	}
@@ -3129,7 +3131,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		textures[4] = textures[5] = LIME_STONE3;
 		pshm;
 		glTranslated(0, 0, -innerR * cos(360.0 / (2 * PolygonRank)) + outerR - innerR - 0.1);
-		drawArch(1.5 * 0.665, 1.5 * 0.765, 0.2, textures,28);
+		drawArch(1.5 * 0.665, 1.5 * 0.765, 0.2, textures, 28);
 		ppm;
 
 		pshm;
@@ -3139,7 +3141,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 		textures[2] = textures[3] = LIME_STONE2;
 		textures[4] = textures[5] = LIME_STONE2;
 		glTranslated(0, 0, -1.2 * cos(360.0 / (2 * PolygonRank)) + 2.7 - 1.2 - 0.1);
-		drawArch(1.1 * 0.665, 1.3 * 0.765, 0.2, textures,28);
+		drawArch(1.1 * 0.665, 1.3 * 0.765, 0.2, textures, 28);
 		ppm;
 
 		ppm;
@@ -3155,7 +3157,7 @@ void DomeOfTheRock::drawDomeOfAscention() {
 	cull;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LIME_STONE2);
-	mosqueDrawer.drawDome(Point(0, 0, 0), 0.55, Color(255, 255, 255), 25, false, false,false,true);
+	mosqueDrawer.drawDome(Point(0, 0, 0), 0.55, Color(255, 255, 255), 25, false, false, false, true);
 	entxt;
 	nocull;
 	ppm;
@@ -3164,11 +3166,11 @@ void DomeOfTheRock::drawDomeOfAscention() {
 #pragma region body
 	pshm;
 	glRotated(22.5, 0, 1, 0);
-	glTranslated(0, (pillarHieght +2.3)/ 2.0, 0);
+	glTranslated(0, (pillarHieght + 2.3) / 2.0, 0);
 	entxt;
 	white;
 	glBindTexture(GL_TEXTURE_2D, ASCENTION);
-	Cylinder body = Cylinder(2.58, 2.58, pillarHieght + 2.3, 8, 1, false, 2, false,true);
+	Cylinder body = Cylinder(2.58, 2.58, pillarHieght + 2.3, 8, 1, false, 2, false, true);
 	body.drawSide();
 	ppm;
 
@@ -3199,7 +3201,7 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, KHALILI2);
-	mosqueDrawer.drawDome(Point(4.5, 4.9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true,false);
+	mosqueDrawer.drawDome(Point(4.5, 4.9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
 	distxt;
 }
 
@@ -3215,7 +3217,7 @@ void DomeOfTheRock::drawDomeOfAscention1() {
 void DomeOfTheRock::drawDomeOfKhalili1() {
 	glCallList(dome3DisplayList);
 
-	
+
 }
 
 void DomeOfTheRock::drawDomeOfTheProphet1() {
