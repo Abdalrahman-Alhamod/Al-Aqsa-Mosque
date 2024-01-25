@@ -10,7 +10,7 @@
 #include "Color.h"
 #include "Constants.h"
 #include "PrimitiveDrawer.h"
-
+#include "string"
 #include "Camera.h"
 #include "Console.h"
 #include "Model_3DS.h"
@@ -23,6 +23,7 @@
 #include "EnvDrawer.h"
 #include "PersonDrawer.h"
 #include "Box.h"
+using namespace std;
 class DomeOfTheRock
 {
 
