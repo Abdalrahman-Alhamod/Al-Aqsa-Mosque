@@ -89,12 +89,12 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	sunTexture = LoadTexture((char*)"assets/materials/sun.bmp", 255);
 	lightTexture = LoadTexture((char*)"assets/materials/yellowLight.bmp", 255);
 
-	minarate[0] = LoadTexture((char*)"assets/materials/minarate/side1.bmp", 255);
-	minarate[1] = LoadTexture((char*)"assets/materials/minarate/buttomCorner1.bmp", 255);
-	minarate[2] = LoadTexture((char*)"assets/materials/minarate/wallSide1.bmp", 255);
-	minarate[3] = LoadTexture((char*)"assets/materials/minarate/inside1.bmp", 255);
-	minarate[4] = LoadTexture((char*)"assets/materials/minarate/topSide1.bmp", 255);
-	minarate[5] = LoadTexture((char*)"assets/materials/minarate/texture1.bmp", 255);
+	minaret[0] = LoadTexture((char*)"assets/materials/minaret/side1.bmp", 255);
+	minaret[1] = LoadTexture((char*)"assets/materials/minaret/buttomCorner1.bmp", 255);
+	minaret[2] = LoadTexture((char*)"assets/materials/minaret/wallSide1.bmp", 255);
+	minaret[3] = LoadTexture((char*)"assets/materials/minaret/inside1.bmp", 255);
+	minaret[4] = LoadTexture((char*)"assets/materials/minaret/topSide1.bmp", 255);
+	minaret[5] = LoadTexture((char*)"assets/materials/minaret/texture1.bmp", 255);
 
 	stonesTexture[0] = LoadTexture((char*)"assets/materials/stones1.bmp", 255);
 	stonesTexture[1] = LoadTexture((char*)"assets/materials/stones2.bmp", 255);
@@ -190,10 +190,6 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	quraanModel->Materials[1].tex.LoadBMP((char*)"assets/materials/quraanPage2.bmp");
 	quraanModel->Materials[2].tex.LoadBMP((char*)"assets/materials/quraanPage1.bmp");
 	quraanModel->Materials[3].tex.LoadBMP((char*)"assets/materials/quraanWood.bmp");
-	/*quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
-	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
-	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");
-	quraanModel->Materials[0].tex.LoadBMP((char*)"assets/materials/bird.bmp");*/
 
 	// Lighting Variables Initializing
 	glEnable(GL_LIGHT0);
@@ -391,7 +387,7 @@ void EnvDrawer::drawGrassLand(const Point points[4], const int count) {
 	drawLand(points, count, grass);
 }
 
-void EnvDrawer::drawPassage(const Point points[4], const int sCount , const int tCount ) {
+void EnvDrawer::drawPassage(const Point points[4], const int sCount, const int tCount) {
 	glPushMatrix();
 	cull;
 	Front;
@@ -445,6 +441,7 @@ void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints
 	x = x - width / 2;
 	y = y - height / 2;
 	z = z - length / 2;
+	glDisable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 	cull;
 
@@ -520,6 +517,7 @@ void EnvDrawer::drawSkyBox(const Point& position, const Constraints& constraints
 
 	nocull;
 	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 
 }
 
@@ -632,7 +630,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	// body
 	glPushMatrix();
 	glTranslated(-1.5, -height / 2, -1.5);
-	Box().drawOutside(Constraints(3, height + 2.5, 3), minarate[0]);
+	Box().drawOutside(Constraints(3, height + 2.5, 3), minaret[0]);
 
 	// edges arround body
 	glPushMatrix();
@@ -641,7 +639,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	{
 		glRotated(90, 0, 1, 0);
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, minarate[1]);
+		glBindTexture(GL_TEXTURE_2D, minaret[1]);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
 		glVertex3d(-1.5, height + 2.5, -1.5);
@@ -671,7 +669,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	// room
 	glPushMatrix();
 	glTranslated(-1.25, -1, -1.25);
-	Box().drawOutside(Constraints(2.5, 2.4, 2.5), minarate[3]);
+	Box().drawOutside(Constraints(2.5, 2.4, 2.5), minaret[3]);
 	glPopMatrix();
 
 	// pillars
@@ -693,7 +691,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glRotated(90, 0, 1, 0);
 		glPushMatrix();
 		glTranslated(-.7, 0, -19.5);
-		drawWall(39, 4, minarate[2]);
+		drawWall(39, 4, minaret[2]);
 		glPopMatrix();
 	}
 	glPopMatrix();
@@ -707,13 +705,13 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glNormal3f(0, 0.536875, -0.843661);
 		glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
 		glBegin(GL_QUADS);
-		glTexCoord2f(0,0.5 );
+		glTexCoord2f(0, 0.5);
 		glVertex3d(-.5, height + 3.5, -.5);
-		glTexCoord2f(0.5,0.5 );
+		glTexCoord2f(0.5, 0.5);
 		glVertex3d(.5, height + 3.5, -.5);
-		glTexCoord2f(1,0 );
+		glTexCoord2f(1, 0);
 		glVertex3d(2, height + 3, -2);
-		glTexCoord2f(0,0 );
+		glTexCoord2f(0, 0);
 		glVertex3d(-2, height + 3, -2);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
@@ -724,7 +722,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	{
 		glRotated(360 / 8, 0, 1, 0);
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, minarate[4]);
+		glBindTexture(GL_TEXTURE_2D, minaret[4]);
 		glNormal3f(0, 0, -1);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -760,7 +758,7 @@ void EnvDrawer::drawCubedMinaret(const float size)
 		glRotated(360 / 8, 0, 1, 0);
 
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, minarate[5]);
+		glBindTexture(GL_TEXTURE_2D, minaret[5]);
 		glNormal3f(0, 0, -1);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -783,12 +781,12 @@ void EnvDrawer::drawCubedMinaret(const float size)
 	// Dom(e) // pay attention to the e @obada 
 	glTranslated(0, 1.35, 0);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, minarate[5]);
+	glBindTexture(GL_TEXTURE_2D, minaret[5]);
 	//Sphere sphere = Sphere(1.13,8, 18, true, 2, true);
 	glPushMatrix();
 	glRotated(23, 0, 1, 0);
 	//sphere.draw();
-	dome.drawDome(Point(0, 0, 0),1.13/5.0,Color(255,255,255),8,false,false,true,true);
+	dome.drawDome(Point(0, 0, 0), 1.13 / 5.0, Color(255, 255, 255), 8, false, false, true, true);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	nocull;
@@ -1139,7 +1137,13 @@ void EnvDrawer::drawHalfCylinderInRectangularPrism(const float radius, const Con
 }
 
 void EnvDrawer::drawArchway(const float size, const float pillarHeight, const int count, const int textureIndex, const int pillarCylinderSector, const int pillarBaseSector, const int innerSectorCount) {
-	int texture = stonesTexture[textureIndex];
+	int texture;
+	if (stonesTexture[textureIndex] > 0) {
+		texture = stonesTexture[textureIndex];
+	}
+	else {
+		texture = textureIndex;
+	}
 
 	glPushMatrix();
 	glTranslatef(-size * 2, 0, -size * 0.5);
@@ -1174,7 +1178,14 @@ void EnvDrawer::drawArchway(const float size, const float pillarHeight, const in
 }
 
 void EnvDrawer::drawHallway(const float size, const float wallHeight, const int count, const float length, const int textureIndex, const int sectorCount) {
-	int texture = stonesTexture[textureIndex];
+	int texture;
+	if (stonesTexture[textureIndex] > 0) {
+		texture = stonesTexture[textureIndex];
+	}
+	else {
+		texture = textureIndex;
+	}
+
 	glPushMatrix();
 	glTranslatef(-size * 1.75, -wallHeight, -length * 0.5);
 	envBoxDrawer.drawOutside(Constraints(size * 0.5, wallHeight + (size) * 1.5, length), texture);
@@ -1606,7 +1617,7 @@ void EnvDrawer::drawAllGardens() {
 				Point(-14 + i * 10 , -9.98, 12) ,
 				Point(-14 + i * 10 , -9.98, 20) ,
 				Point(-16 + i * 10, -9.98, 20) };
-		drawPassage(passagePoints1, 5,10);
+		drawPassage(passagePoints1, 5, 10);
 		ppm;
 	}
 
@@ -1827,7 +1838,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	pshm;
 	glTranslatef(-17, -10, -27);
 	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
-		stonesTexture[14],sCount,tCount);
+		stonesTexture[14], sCount, tCount);
 
 	ppm;
 

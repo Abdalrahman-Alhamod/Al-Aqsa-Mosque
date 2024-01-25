@@ -373,7 +373,7 @@ private:
 	Box envBoxDrawer;
 	MosqueDrawer dome;
 	int buildingTexture[6];
-	int minarate[6];
+	int minaret[6];
 	int skyBoxTextures[3][6];
 	int currentSkyBoxIndex = 0;
 
