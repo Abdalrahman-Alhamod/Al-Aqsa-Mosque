@@ -200,7 +200,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Console
 	//console.init();
-
+	
 	// Initialize Objects
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer(hWnd);
@@ -365,7 +365,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	int textures[6] = { 0,0,0,0,0,0 };
 	//Box().drawOutside(Constraints(1, 1, 1), textures);
 	ppm;
-	
+
 
 	glFlush();											// Done Drawing The Quad
 
