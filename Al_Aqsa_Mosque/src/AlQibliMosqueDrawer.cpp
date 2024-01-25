@@ -46,7 +46,6 @@ AlQibliMosqueDrawer::AlQibliMosqueDrawer() {
 	carpet = LoadTexture((char*)"assets/materials/AlQibli/carpet.bmp", 255);
 
 	HWND		hWnd = NULL;		// Holds Our Window Handle
-	envDrawer = EnvDrawer(hWnd);
 	boxDrawer = Box();
 
 
@@ -212,7 +211,7 @@ void AlQibliMosqueDrawer::drawMultiHallway(int count) {
 		rt(90, 0, 1, 0);
 		tr(24.8 + 2 * i, 2.2, (3.99));
 		envDrawer.drawHallway(0.66,
-			2.2, 1, 0.4, 10, sectorsCount);
+			2.2, 1, 0.4, block[0], sectorsCount);
 		ppm;
 
 	}
@@ -467,13 +466,13 @@ void AlQibliMosqueDrawer::drawFront() {
 	// front right inter
 	pshm;
 	tr(21.1, 2, 8.5);
-	envDrawer.drawHallway(0.65, 2.05, 3, 1, 10, sectorsCount);
+	envDrawer.drawHallway(0.65, 2.05, 3, 1, block[0], sectorsCount);
 	ppm;
 
 	// back right inter
 	pshm;
 	tr(21.1, 2.25, 6);
-	envDrawer.drawHallway(0.65, 2.35, 3, 0.5, 11, sectorsCount);
+	envDrawer.drawHallway(0.65, 2.35, 3, 0.5, block[1], sectorsCount);
 	ppm;
 
 
@@ -496,7 +495,7 @@ void AlQibliMosqueDrawer::drawFront() {
 	// front left inter
 	pshm;
 	tr(12.04, 2, 8.5);
-	envDrawer.drawHallway(0.65, 2.05, 3, 1, 10, sectorsCount);
+	envDrawer.drawHallway(0.65, 2.05, 3, 1, block[0], sectorsCount);
 	ppm;
 
 	// front left back
@@ -504,7 +503,7 @@ void AlQibliMosqueDrawer::drawFront() {
 	tr(12.04, 2.25, 6);
 	envDrawer.drawHallway(0.65
 		, 2.35, 3,
-		0.5, 11, sectorsCount);
+		0.5, block[1], sectorsCount);
 	ppm;
 
 	// draw font left doors
@@ -526,13 +525,13 @@ void AlQibliMosqueDrawer::drawFront() {
 	// fron middle inter
 	pshm;
 	tr(18.2, 2, 8.5);
-	envDrawer.drawHallway(1.2, 2.05, 1, 1, 10, sectorsCount);
+	envDrawer.drawHallway(1.2, 2.05, 1, 1, block[0], sectorsCount);
 	ppm;
 
 	// back middle inter
 	pshm;
 	tr(18.2, 1.88, 6);
-	envDrawer.drawHallway(1.2, 1.98, 1, 0.5, 11, sectorsCount);
+	envDrawer.drawHallway(1.2, 1.98, 1, 0.5, block[1], sectorsCount);
 	ppm;
 
 	// draw fron main door
@@ -1089,24 +1088,24 @@ void AlQibliMosqueDrawer::drawInner() {
 
 	pshm;
 	tr(18, 3.3, -19);
-	envDrawer.drawArchway(1, 3.2, 1, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(1, 3.2, 1, block[0], sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	pshm;
 	tr(20.5, 3.3, -16.5);
 	rt(90, 0, 1, 0);
-	envDrawer.drawArchway(1, 3.2, 1, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(1, 3.2, 1, block[0], sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	pshm;
 	tr(15.5, 3.3, -16.5);
 	rt(90, 0, 1, 0);
-	envDrawer.drawArchway(1, 3.2, 1, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(1, 3.2, 1, block[0], sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	pshm;
 	tr(18, 3.3, -14);
-	envDrawer.drawArchway(1, 3.2, 1, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(1, 3.2, 1, block[0], sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	pshm;
@@ -1132,37 +1131,37 @@ void AlQibliMosqueDrawer::drawInner() {
 	pshm;
 	tr(20.25, 4.7, 5.08);
 	rt(90, 0, 1, 0);
-	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, block[0], sectorsCount);
 	tr(0, 0, -4.35);
-	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, block[0], sectorsCount);
 	tr(0, 0, -1.45);
-	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, block[0], sectorsCount);
 	tr(0, 0, -1.55);
-	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.1, 0.3, 75, 0.6, block[0], sectorsCount);
 	ppm;
 
 	pshm;
 	tr(20.25, 4.175, 5);
 	rt(90, 0, 1, 0);
-	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, block[0], sectorsCount);
 	tr(0, 0, -4.35);
-	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, block[0], sectorsCount);
 	tr(0, 0, -1.45);
-	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, block[0], sectorsCount);
 	tr(0, 0, -1.55);
-	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, 10, sectorsCount);
+	envDrawer.drawHallway(0.15, 0.4, 50, 0.6, block[0], sectorsCount);
 	ppm;
 
 	pshm;
 	tr(20.25, 2.9, 4.15);
 	rt(90, 0, 1, 0);
-	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(0.615, 2.85, 10, block[0], sectorsCount, sectorsCount, sectorsCount);
 	tr(0, 0, -4.35);
-	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(0.615, 2.85, 10, block[0], sectorsCount, sectorsCount, sectorsCount);
 	tr(0, 0, -1.45);
-	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(0.615, 2.85, 10, block[0], sectorsCount, sectorsCount, sectorsCount);
 	tr(0, 0, -1.55);
-	envDrawer.drawArchway(0.615, 2.85, 10, 10, sectorsCount, sectorsCount, sectorsCount);
+	envDrawer.drawArchway(0.615, 2.85, 10, block[0], sectorsCount, sectorsCount, sectorsCount);
 	ppm;
 
 	drawQuraans();
@@ -1221,7 +1220,6 @@ void AlQibliMosqueDrawer::drawAlQibliMosque() {
 	glScalef(size, size, size);
 
 	glCallList(alQibliDisplayList);
-
 
 	ppm;
 }
