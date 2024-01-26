@@ -17,6 +17,7 @@
 #include "Cylinder.h"
 #include "Sphere.h"
 #include "PrimitiveDrawer.h"
+#include "DomeOfTheRock.h"
 #include <windows.h>
 #include <iostream>
 #include <sstream>
@@ -228,6 +229,7 @@ public:
 	 * @param keys An array indicating the state of keys, where true means a key is pressed.
 	 */
 	void decodeKeyboard(bool* keys);
+	void drawBaekah();
 
 	/**
 	* @brief Draws a cylindric minaret with the specified size and texture.

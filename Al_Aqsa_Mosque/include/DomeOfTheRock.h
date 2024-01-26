@@ -25,9 +25,8 @@
 #include "Box.h"
 class DomeOfTheRock
 {
-
-
 public:
+	static int RockTex;
 
 	DomeOfTheRock();
 
@@ -104,9 +103,7 @@ public:
 
 	void drawDomeOfKhalili1();
 
-
 private:
-
 	int
 		ROOF1, ROOF2, ROOF3, ROOF4,
 		BRIDGE1, BRIDGE2,

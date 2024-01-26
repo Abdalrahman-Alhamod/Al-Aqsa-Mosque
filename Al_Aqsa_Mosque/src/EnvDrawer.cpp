@@ -538,10 +538,15 @@ void EnvDrawer::changeSkyBoxTexture() {
 void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 {
 	//TODO: fix hight parameter
-	float hight = 10;
+	float hight = 11;
 	glPushMatrix();
 	glScalef(size, size, size);
-	EnvDrawer::drawPillar(0.7, hight, stonesTexture[10], 0.4, sectorsCount, sectorsCount);
+	glPushMatrix();
+	glRotated(180, 1, 0, 0);
+	glRotated(-120, 0, 1, 0);
+	glTranslated(0, -1.5, 0);
+	EnvDrawer::drawPillar(1.2, hight-2, stonesTexture[10], 0.4, sectorsCount, 6);
+	glPopMatrix();
 
 	cull;
 	glEnable(GL_TEXTURE_2D);
@@ -549,18 +554,18 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	Cylinder cyl = Cylinder(2.5, 2.5, 0.1, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
-	glTranslated(0, 0, -6.6);
+	glTranslated(0, 0, -7.6);
 	cyl.draw();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stonesTexture[13]);
-	Cylinder cyl2 = Cylinder(2, 2, 0.1, sectorsCount);
+	cyl = Cylinder(2.5,2.5, 0.1, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
-	glTranslated(0, 0, -5.2);
-	cyl2.draw();
+	glTranslated(0, 0, -6.2);
+	cyl.draw();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	nocull;
@@ -583,7 +588,7 @@ void EnvDrawer::drawCylindricMinaret(const float size, const int texture)
 	cull;
 	glTranslated(0, hight - 3.6, 0);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, stonesTexture[12]);
+	glBindTexture(GL_TEXTURE_2D, stonesTexture[10]);
 	cyl = Cylinder(0.7, 0.9, 2.5, sectorsCount);
 	glPushMatrix();
 	glRotated(90, 1, 0, 0);
@@ -1460,6 +1465,55 @@ void EnvDrawer::decodeKeyboard(bool* keys) {
 	}
 }
 
+void EnvDrawer::drawBaekah()
+{
+	int tex[6];
+	for(int i=0;i<6;++i)
+		tex[i] = stonesTexture[14];
+	//tex[i] = DomeOfTheRock::RockTex;
+	//wall
+	pshm;
+	glTranslatef(-26.9, -8.4, 25.2);
+	glScalef(1, 0.4, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWallWithDoor(5, 7.4, tex[0]);
+	ppm;
+
+	pshm;
+	glTranslatef(-27.4, -10, -6.4);
+	//glScalef(1, 0.4, 0.5);
+	//glRotatef(90, 0, 1, 0);
+	Box().drawOutside(Constraints(1, 3.36, 29.72),tex , 1, 1, 10);
+	//envDrawer.drawWall(60, 4, 14);
+	ppm;
+
+	pshm;
+	glTranslatef(-26.9, -8.4, -7);
+	glScalef(1, 0.4, 0.5);
+	glRotatef(90, 0, 1, 0);
+	drawWallWithDoor(5, 7.4, tex[0]);
+	ppm;
+
+	pshm;
+	glTranslatef(-27.4, -10, -40.09);
+	Box().drawOutside(Constraints(1, 3.36, 31.23),tex , 1, 1, 10);
+	ppm;
+
+	// Baekeh itself
+	pshm;
+	glTranslated(-26.4, -7.04, -41);
+	// roof 
+	Box().drawOutside(Constraints(1.7, 0.4, 67.2), tex, 1, 1, 10);
+	glTranslatef(+1.9, -.65, +66.0);
+	glRotatef(90, 0, 1, 0);
+	// doors
+	drawHallway(0.7, 2.3, 38, 0.5, DomeOfTheRock::RockTex, 9);
+	glTranslated(-1.2, -2.3, -2);
+	// left side
+	Box().drawOutside(Constraints(.5, 3.35, 1.75), tex, 10, 1, 1);
+	ppm;
+}
+
 void EnvDrawer::handleSounds(const Point& cameraPosition) {
 	if (enableSounds) {
 		for (int i = 0; i < 14; i++) {
@@ -1552,7 +1606,7 @@ void EnvDrawer::drawAllGardens() {
 	glTranslatef(0, 0, 3);
 
 	pshm;
-	drawGarden(Point(-16, -9.98, 10), 10, 10,
+	drawGarden(Point(-16, -9.98, 10), 7, 10,
 		10, treeSize, isTreeSmall);
 	ppm;
 
@@ -1562,7 +1616,7 @@ void EnvDrawer::drawAllGardens() {
 	ppm;
 
 	pshm;
-	drawGarden(Point(-16, -9.98, -43), 10, 10,
+	drawGarden(Point(-16, -9.98, -43), 7, 10,
 		10, treeSize, isTreeSmall);
 	ppm;
 
@@ -1571,15 +1625,15 @@ void EnvDrawer::drawAllGardens() {
 		10, treeSize, isTreeSmall);
 	ppm;
 
+	/*
 	pshm;
-	drawGarden(Point(-24, -9.98, -33), 2, 20,
-		10, treeSize, isTreeSmall);
+	drawGarden(Point(-24, -9.98, -33), 2, 20,10, treeSize, isTreeSmall);
 	ppm;
 
 	pshm;
-	drawGarden(Point(-24, -9.98, -8.5), 2, 19,
-		10, treeSize, isTreeSmall);
-	ppm;
+	drawGarden(Point(-24, -9.98, -8.5), 2, 19,10, treeSize, isTreeSmall);
+	ppm; 
+	*/
 
 	pshm;
 	drawGarden(Point(26, -9.98, -33), 2, 20.5,
@@ -1842,7 +1896,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 
 	ppm;
 
-	// font middle
+	// front middle
 	pshm;
 	glTranslatef(-5.7, -9.35, 11);
 	drawStairs(Constraints(5, 0.05, 0.1), 14);
@@ -2041,10 +2095,10 @@ void EnvDrawer::drawConst() {
 	pshm;
 	glTranslatef(15, -8, -41.2);
 	glScalef(1, 1.2, 1);
-	drawCylindricMinaret(0.4, stonesTexture[14]);
+	drawCylindricMinaret(0.6, stonesTexture[14]);
 	ppm;
 
-
+	/*
 	pshm;
 	glTranslatef(-26.9, -8, 25.2);
 	glScalef(1, 0.5, 0.5);
@@ -2072,6 +2126,9 @@ void EnvDrawer::drawConst() {
 	glRotatef(90, 0, 1, 0);
 	drawWall(65, 4, stonesTexture[14]);
 	ppm;
+	*/
+
+	drawBaekah();
 
 	pshm;
 	glTranslatef(-1, -8, -41.2);

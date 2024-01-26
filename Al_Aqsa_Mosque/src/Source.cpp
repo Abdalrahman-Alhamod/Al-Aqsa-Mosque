@@ -202,13 +202,14 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	//console.init();
 	
 	// Initialize Objects
+
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+	domeOfTheRock = DomeOfTheRock();
+
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer(hWnd);
 
 	personDrawer = PersonDrawer();
-
-	alQibliMosqueDrawer = AlQibliMosqueDrawer();
-	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -326,7 +327,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslatef(4.5, -9.3, -2.15);
 	glScalef(0.065, 0.065, 0.065);
 	glRotated(11.25, 0, 1, 0);
-	domeOfTheRock.drawDomeOfTheChain1();
+	domeOfTheRock.drawDomeOfTheChain();
 	ppm;
 
 	pshm;
