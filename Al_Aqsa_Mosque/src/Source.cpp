@@ -343,8 +343,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	ppm;
 
 	pshm;
-	glTranslatef(-11, -9.3, -11);
-	glScalef(0.16, 0.16, 0.16);
+	glTranslatef(-11, -9.3, -10);
+	glScalef(0.2, 0.2, 0.2);
 	domeOfTheRock.drawDomeOfAscentionDisplayList();
 	ppm;
 
@@ -356,7 +356,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	pshm;
 	glTranslatef(-13, -9.3, -15);
-	glScalef(0.13, 0.13, 0.13);
+	glScalef(0.16, 0.16, 0.16);
 	domeOfTheRock.drawDomeOfKhaliliDisplayList();
 	ppm;
 

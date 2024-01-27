@@ -357,7 +357,7 @@ public:
 	*/
 	void draw(bool* keys);
 
-	int stonesTexture[16];
+	int stonesTexture[20];
 
 	bool drawSun = true, enableSounds = true;
 

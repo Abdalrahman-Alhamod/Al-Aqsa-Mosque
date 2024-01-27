@@ -103,7 +103,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	stonesTexture[4] = LoadTexture((char*)"assets/materials/stones5.bmp", 255);
 	stonesTexture[5] = LoadTexture((char*)"assets/materials/stones6.bmp", 255);
 	stonesTexture[6] = LoadTexture((char*)"assets/materials/stones7.bmp", 255);
-	stonesTexture[7] = LoadTexture((char*)"assets/materials/stones8.bmp", 255);
+	stonesTexture[7] = LoadTexture((char*)"assets/materials/stairs.bmp", 255);
 	stonesTexture[8] = LoadTexture((char*)"assets/materials/stone3.bmp", 255);
 	stonesTexture[9] = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 	stonesTexture[10] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
@@ -112,6 +112,11 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	stonesTexture[13] = LoadTexture((char*)"assets/materials/AlQibli/roof0.bmp", 255);
 	stonesTexture[14] = LoadTexture((char*)"assets/materials/stones9.bmp", 255);
 	stonesTexture[15] = LoadTexture((char*)"assets/materials/door1.bmp", 255);
+	stonesTexture[16] = LoadTexture((char*)"assets/materials/stone8.bmp", 255);
+	stonesTexture[17] = LoadTexture((char*)"assets/materials/stone9.bmp", 255);
+	stonesTexture[18] = LoadTexture((char*)"assets/materials/stone10.bmp", 255);
+	stonesTexture[19] = LoadTexture((char*)"assets/materials/ground1.bmp", 255);
+
 
 	buildingTexture[0] = LoadTexture((char*)"assets/materials/building1.bmp", 255);
 	buildingTexture[1] = LoadTexture((char*)"assets/materials/building2.bmp", 255);
@@ -1752,15 +1757,24 @@ void EnvDrawer::drawBench() {
 }
 
 void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture) {
+	
+	db cntS[6] = { 10,10,10,10,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
+	glColor3f(1, 1, 1);
 	for (int i = 0; i < count; i++) {
-		for (int j = 0; j < i + 1; j++) {
+		for (int j = 0; j < i +1; j++) {
 			pshm;
 			glTranslatef(0, -i * unitConstraints.height,
-				j * unitConstraints.length);
-			envBoxDrawer.drawOutside(unitConstraints, texture);
+				j * unitConstraints.length + 0.1);
+
+			pshm;
+			glRotated(180, 1, 0, 0);
+			envBoxDrawer.drawOutside(unitConstraints, texture, cntS, cntT);
+			ppm;
 			ppm;
 		}
 	}
+
+
 }
 
 void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count) {
@@ -1888,11 +1902,11 @@ float skyBoxLength = 113, skyboxWidth = 85, skyboxHeight = 100;
 
 void EnvDrawer::drawDomeOfTheRockSquare() {
 
-	double sCount[6] = { 30,30,50,50,60,60 }, tCount[6] = { 30,30,2,2,2,2 };
+	double sCount[6] = { 1,30,50,50,60,60 }, tCount[6] = { 1,30,1,1,1,1 };
 	pshm;
 	glTranslatef(-17, -10, -27);
 	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
-		stonesTexture[14], sCount, tCount);
+		stonesTexture[19], sCount, tCount);
 
 	ppm;
 
@@ -1905,7 +1919,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	pshm;
 	glTranslatef(-5, -7.72, 10.75);
 	drawArchway(0.4, 1.5, 4,
-		1, sectorsCount, sectorsCount
+		16, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -1919,7 +1933,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	pshm;
 	glTranslatef(11.7, -7.72, 10.75);
 	drawArchway(0.4, 1.5, 3,
-		1, sectorsCount, sectorsCount
+		17, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -1937,7 +1951,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(-4.4, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 4,
-		1, sectorsCount, sectorsCount
+		18, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -1954,7 +1968,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(-25.8, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 4,
-		1, sectorsCount, sectorsCount
+		16, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -1970,7 +1984,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(6.1, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 3,
-		1, sectorsCount, sectorsCount
+		17, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -1986,7 +2000,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(5.65, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
-		1, sectorsCount, sectorsCount
+		18, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -2002,7 +2016,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(180, 0, 1, 0);
 	glTranslatef(-8.35, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
-		1, sectorsCount, sectorsCount
+		16, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
@@ -2018,7 +2032,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	glRotatef(90, 0, 1, 0);
 	glTranslatef(0.7, -7.72, 16.75);
 	drawArchway(0.4, 1.5, 5,
-		1, sectorsCount, sectorsCount
+		17, sectorsCount, sectorsCount
 		, sectorsCount
 	);
 	ppm;
