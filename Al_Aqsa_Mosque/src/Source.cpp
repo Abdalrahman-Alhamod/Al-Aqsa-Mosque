@@ -1,6 +1,6 @@
 /*
 Abdalrahman Alhamod
-Mohammad Obada Almasri
+Mohammad Obadaa Almasri
 Mohammad Yassen
 */
 
@@ -327,7 +327,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslatef(4.5, -9.3, -2.15);
 	glScalef(0.065, 0.065, 0.065);
 	glRotated(11.25, 0, 1, 0);
-	domeOfTheRock.drawDomeOfTheChain();
+	domeOfTheRock.drawDomeOfTheChainDisplayList();
 	ppm;
 
 	pshm;
@@ -339,25 +339,25 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslatef(10, -9.3, 3);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfTheProphet1();
+	domeOfTheRock.drawDomeOfTheProphetDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(-7, -9.3, -18);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfAscention1();
+	domeOfTheRock.drawDomeOfAscentionDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(4, -9.3, -8);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfSouls1();
+	domeOfTheRock.drawDomeOfSoulsDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(4, -9.3, 4);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfKhalili1();
+	domeOfTheRock.drawDomeOfKhaliliDisplayList();
 	ppm;
 
 	pshm;

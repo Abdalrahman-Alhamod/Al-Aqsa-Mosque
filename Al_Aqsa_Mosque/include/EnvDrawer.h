@@ -229,7 +229,7 @@ public:
 	 * @param keys An array indicating the state of keys, where true means a key is pressed.
 	 */
 	void decodeKeyboard(bool* keys);
-	void drawBaekah();
+	void drawPassageWay();
 
 	/**
 	* @brief Draws a cylindric minaret with the specified size and texture.

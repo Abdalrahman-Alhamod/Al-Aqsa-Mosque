@@ -1465,7 +1465,7 @@ void EnvDrawer::decodeKeyboard(bool* keys) {
 	}
 }
 
-void EnvDrawer::drawBaekah()
+void EnvDrawer::drawPassageWay()
 {
 	int tex[6];
 	for(int i=0;i<6;++i)
@@ -2128,7 +2128,7 @@ void EnvDrawer::drawConst() {
 	ppm;
 	*/
 
-	drawBaekah();
+	drawPassageWay();
 
 	pshm;
 	glTranslatef(-1, -8, -41.2);

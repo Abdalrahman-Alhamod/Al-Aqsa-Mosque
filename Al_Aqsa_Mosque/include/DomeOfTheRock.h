@@ -93,15 +93,15 @@ public:
 
 	void drawDomeOfTheChain();
 
-	void drawDomeOfTheChain1();
+	void drawDomeOfTheChainDisplayList();
 
-	void drawDomeOfSouls1();
+	void drawDomeOfSoulsDisplayList();
 
-	void drawDomeOfTheProphet1();
+	void drawDomeOfTheProphetDisplayList();
 
-	void drawDomeOfAscention1();
+	void drawDomeOfAscentionDisplayList();
 
-	void drawDomeOfKhalili1();
+	void drawDomeOfKhaliliDisplayList();
 
 private:
 	int

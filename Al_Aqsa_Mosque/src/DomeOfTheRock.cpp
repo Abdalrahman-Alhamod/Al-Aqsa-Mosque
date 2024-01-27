@@ -3209,24 +3209,24 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 }
 
 
-void DomeOfTheRock::drawDomeOfSouls1() {
+void DomeOfTheRock::drawDomeOfSoulsDisplayList() {
 	glCallList(dome1DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfAscention1() {
+void DomeOfTheRock::drawDomeOfAscentionDisplayList() {
 	glCallList(dome2DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfKhalili1() {
+void DomeOfTheRock::drawDomeOfKhaliliDisplayList() {
 	glCallList(dome3DisplayList);
 
 
 }
 
-void DomeOfTheRock::drawDomeOfTheProphet1() {
+void DomeOfTheRock::drawDomeOfTheProphetDisplayList() {
 	glCallList(dome4DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfTheChain1() {
+void DomeOfTheRock::drawDomeOfTheChainDisplayList() {
 	glCallList(dome5DisplayList);
 }
