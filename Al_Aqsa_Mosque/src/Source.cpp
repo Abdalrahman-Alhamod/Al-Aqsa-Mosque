@@ -1,6 +1,6 @@
 /*
 Abdalrahman Alhamod
-Mohammad Obada Almasri
+Mohammad Obadaa Almasri
 Mohammad Yassen
 */
 
@@ -202,13 +202,14 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	//console.init();
 	
 	// Initialize Objects
+
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+	domeOfTheRock = DomeOfTheRock();
+
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer(hWnd);
 
 	personDrawer = PersonDrawer();
-
-	alQibliMosqueDrawer = AlQibliMosqueDrawer();
-	domeOfTheRock = DomeOfTheRock();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -326,7 +327,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glTranslatef(4.5, -9.3, -2.15);
 	glScalef(0.07, 0.07, 0.07);
 	glRotated(11.25, 0, 1, 0);
-	domeOfTheRock.drawDomeOfTheChain1();
+	domeOfTheRock.drawDomeOfTheChainDisplayList();
 	ppm;
 
 	pshm;
@@ -338,25 +339,25 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslatef(-8, -9.3, -6.8);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfTheProphet1();
+	domeOfTheRock.drawDomeOfTheProphetDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(-11, -9.3, -11);
 	glScalef(0.16, 0.16, 0.16);
-	domeOfTheRock.drawDomeOfAscention1();
+	domeOfTheRock.drawDomeOfAscentionDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(-10, -9.3, -23);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfSouls1();
+	domeOfTheRock.drawDomeOfSoulsDisplayList();
 	ppm;
 
 	pshm;
 	glTranslatef(-13, -9.3, -15);
 	glScalef(0.13, 0.13, 0.13);
-	domeOfTheRock.drawDomeOfKhalili1();
+	domeOfTheRock.drawDomeOfKhaliliDisplayList();
 	ppm;
 
 	pshm;

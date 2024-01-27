@@ -19,107 +19,110 @@ const db pi = 3.141592653589793238462643383279502884197;
 const std::string LowQuality = "LQ";
 const std::string HighQuality = "HQ";
 
+int DomeOfTheRock::RockTex = 0;
 
 DomeOfTheRock::DomeOfTheRock() {
 	std::string texturesQuality = HighQuality;
-	ROOF1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof1.bmp").c_str());
-	ROOF2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof2.bmp").c_str());
-	ROOF3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof03.bmp").c_str());
-	ROOF4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/roof4.bmp").c_str());
+	std::string pathPrefix = "assets/domeOfTheRock/" + texturesQuality;
+	ROOF1 = LoadTexture((char*)(pathPrefix + "/roof1.bmp").c_str());
+	ROOF2 = LoadTexture((char*)(pathPrefix + "/roof2.bmp").c_str());
+	ROOF3 = LoadTexture((char*)(pathPrefix + "/roof03.bmp").c_str());
+	ROOF4 = LoadTexture((char*)(pathPrefix + "/roof4.bmp").c_str());
 
-	BRIDGE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/bridge1.bmp").c_str());
-	BRIDGE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/bridge2.bmp").c_str());
+	BRIDGE1 = LoadTexture((char*)(pathPrefix + "/bridge1.bmp").c_str());
+	BRIDGE2 = LoadTexture((char*)(pathPrefix + "/bridge2.bmp").c_str());
 
-	ROCK1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/rock3.bmp").c_str());
-	ROCK2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/rock4.bmp").c_str());
+	ROCK1 = LoadTexture((char*)(pathPrefix + "/rock3.bmp").c_str());
+	ROCK2 = LoadTexture((char*)(pathPrefix + "/rock4.bmp").c_str());
 
-	FENCE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/fence.bmp").c_str());
-	FENCE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/fence1.bmp").c_str());
-	MARBLE_FENCE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marbleFence.bmp").c_str());
+	FENCE = LoadTexture((char*)(pathPrefix + "/fence.bmp").c_str());
+	FENCE1 = LoadTexture((char*)(pathPrefix + "/fence1.bmp").c_str());
+	MARBLE_FENCE = LoadTexture((char*)(pathPrefix + "/marbleFence.bmp").c_str());
 
-	FOOT1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint1.bmp").c_str());
-	FOOT2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint2.bmp").c_str());
-	FOOT3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint3.bmp").c_str());
-	FOOT4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint4.bmp").c_str());
-	FOOT5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint5.bmp").c_str());
-	FOOT6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/footprint6.bmp").c_str());
+	FOOT1 = LoadTexture((char*)(pathPrefix + "/footprint1.bmp").c_str());
+	FOOT2 = LoadTexture((char*)(pathPrefix + "/footprint2.bmp").c_str());
+	FOOT3 = LoadTexture((char*)(pathPrefix + "/footprint3.bmp").c_str());
+	FOOT4 = LoadTexture((char*)(pathPrefix + "/footprint4.bmp").c_str());
+	FOOT5 = LoadTexture((char*)(pathPrefix + "/footprint5.bmp").c_str());
+	FOOT6 = LoadTexture((char*)(pathPrefix + "/footprint6.bmp").c_str());
 
-	ARCH1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch01.bmp").c_str());
-	ARCH2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch2.bmp").c_str());
-	ARCH3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch3.bmp").c_str());
-	ARCH4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch4.bmp").c_str());
-	ARCH5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch5.bmp").c_str());
-	ARCH6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch6.bmp").c_str());
-	ARCH7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch7.bmp").c_str());
-	ARCH8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch8.bmp").c_str());
-	LEAD = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch9.bmp").c_str());
-	LEAD1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch09.bmp").c_str());
-	ARCH10 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/arch10.bmp").c_str());
+	ARCH1 = LoadTexture((char*)(pathPrefix + "/arch01.bmp").c_str());
+	ARCH2 = LoadTexture((char*)(pathPrefix + "/arch2.bmp").c_str());
+	ARCH3 = LoadTexture((char*)(pathPrefix + "/arch3.bmp").c_str());
+	ARCH4 = LoadTexture((char*)(pathPrefix + "/arch4.bmp").c_str());
+	ARCH5 = LoadTexture((char*)(pathPrefix + "/arch5.bmp").c_str());
+	ARCH6 = LoadTexture((char*)(pathPrefix + "/arch6.bmp").c_str());
+	ARCH7 = LoadTexture((char*)(pathPrefix + "/arch7.bmp").c_str());
+	ARCH8 = LoadTexture((char*)(pathPrefix + "/arch8.bmp").c_str());
+	LEAD = LoadTexture((char*)(pathPrefix + "/arch9.bmp").c_str());
+	LEAD1 = LoadTexture((char*)(pathPrefix + "/arch09.bmp").c_str());
+	ARCH10 = LoadTexture((char*)(pathPrefix + "/arch10.bmp").c_str());
 
-	DRUM1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum1.bmp").c_str());
-	DRUM2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum002.bmp").c_str());
-	DRUM3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum3.bmp").c_str());
-	DRUM4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum4.bmp").c_str());
-	DRUM5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/drum5.bmp").c_str());
+	DRUM1 = LoadTexture((char*)(pathPrefix + "/drum1.bmp").c_str());
+	DRUM2 = LoadTexture((char*)(pathPrefix + "/drum002.bmp").c_str());
+	DRUM3 = LoadTexture((char*)(pathPrefix + "/drum3.bmp").c_str());
+	DRUM4 = LoadTexture((char*)(pathPrefix + "/drum4.bmp").c_str());
+	DRUM5 = LoadTexture((char*)(pathPrefix + "/drum5.bmp").c_str());
 
-	DOME1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome01.bmp").c_str());
-	DOME2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome2.bmp").c_str());
-	DOME3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/dome3.bmp").c_str());
+	DOME1 = LoadTexture((char*)(pathPrefix + "/dome01.bmp").c_str());
+	DOME2 = LoadTexture((char*)(pathPrefix + "/dome2.bmp").c_str());
+	DOME3 = LoadTexture((char*)(pathPrefix + "/dome3.bmp").c_str());
 
-	PILLAR1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/pillar1.bmp").c_str());
-	PILLAR2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/pillar2.bmp").c_str());
+	PILLAR1 = LoadTexture((char*)(pathPrefix + "/pillar1.bmp").c_str());
+	PILLAR2 = LoadTexture((char*)(pathPrefix + "/pillar2.bmp").c_str());
 
-	MARBLE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble1.bmp").c_str());
-	MARBLE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble2.bmp").c_str());
-	MARBLE3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble3.bmp").c_str());
-	MARBLE4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble4.bmp").c_str());
-	MARBLE5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble5.bmp").c_str());
-	MARBLE6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble6.bmp").c_str());
-	MARBLE7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble7.bmp").c_str());
-	MARBLE8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/marble8.bmp").c_str());
+	MARBLE1 = LoadTexture((char*)(pathPrefix + "/marble1.bmp").c_str());
+	MARBLE2 = LoadTexture((char*)(pathPrefix + "/marble2.bmp").c_str());
+	MARBLE3 = LoadTexture((char*)(pathPrefix + "/marble3.bmp").c_str());
+	MARBLE4 = LoadTexture((char*)(pathPrefix + "/marble4.bmp").c_str());
+	MARBLE5 = LoadTexture((char*)(pathPrefix + "/marble5.bmp").c_str());
+	MARBLE6 = LoadTexture((char*)(pathPrefix + "/marble6.bmp").c_str());
+	MARBLE7 = LoadTexture((char*)(pathPrefix + "/marble7.bmp").c_str());
+	MARBLE8 = LoadTexture((char*)(pathPrefix + "/marble8.bmp").c_str());
 
-	LIME_STONE1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone1.bmp").c_str());
-	LIME_STONE2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone2.bmp").c_str());
-	LIME_STONE3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/limestone3.bmp").c_str());
+	LIME_STONE1 = LoadTexture((char*)(pathPrefix + "/limestone1.bmp").c_str());
+	LIME_STONE2 = LoadTexture((char*)(pathPrefix + "/limestone2.bmp").c_str());
+	LIME_STONE3 = LoadTexture((char*)(pathPrefix + "/limestone3.bmp").c_str());
+	RockTex = 4;
 
-	WHITE_STONE = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/whiteStone.bmp").c_str());
+	WHITE_STONE = LoadTexture((char*)(pathPrefix + "/whiteStone.bmp").c_str());
 
-	WOOD = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wood.bmp").c_str());
+	WOOD = LoadTexture((char*)(pathPrefix + "/wood.bmp").c_str());
 
-	TIER1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier01.bmp").c_str());
-	TIER2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier02.bmp").c_str());
-	TIER3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier3.bmp").c_str());
-	TIER4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/tier4.bmp").c_str());
+	TIER1 = LoadTexture((char*)(pathPrefix + "/tier01.bmp").c_str());
+	TIER2 = LoadTexture((char*)(pathPrefix + "/tier02.bmp").c_str());
+	TIER3 = LoadTexture((char*)(pathPrefix + "/tier3.bmp").c_str());
+	TIER4 = LoadTexture((char*)(pathPrefix + "/tier4.bmp").c_str());
 
-	WALL1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall1.bmp").c_str());
-	WALL2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall2.bmp").c_str());
-	WALL3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall3.bmp").c_str());
-	WALL4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall4.bmp").c_str());
-	WALL5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall5.bmp").c_str());
-	WALL6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/wall6.bmp").c_str());
+	WALL1 = LoadTexture((char*)(pathPrefix + "/wall1.bmp").c_str());
+	WALL2 = LoadTexture((char*)(pathPrefix + "/wall2.bmp").c_str());
+	WALL3 = LoadTexture((char*)(pathPrefix + "/wall3.bmp").c_str());
+	WALL4 = LoadTexture((char*)(pathPrefix + "/wall4.bmp").c_str());
+	WALL5 = LoadTexture((char*)(pathPrefix + "/wall5.bmp").c_str());
+	WALL6 = LoadTexture((char*)(pathPrefix + "/wall6.bmp").c_str());
 
-	DOOR1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door1.bmp").c_str());
-	DOOR2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door2.bmp").c_str());
-	DOOR3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/door3.bmp").c_str());
+	DOOR1 = LoadTexture((char*)(pathPrefix + "/door1.bmp").c_str());
+	DOOR2 = LoadTexture((char*)(pathPrefix + "/door2.bmp").c_str());
+	DOOR3 = LoadTexture((char*)(pathPrefix + "/door3.bmp").c_str());
 
-	CARPET = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/carpet.bmp").c_str());
+	CARPET = LoadTexture((char*)(pathPrefix + "/carpet.bmp").c_str());
 
-	KHALILI1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili1.bmp").c_str());
-	KHALILI2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili2.bmp").c_str());
-	KHALILI3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili3.bmp").c_str());
-	KHALILI4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/khalili4.bmp").c_str());
+	KHALILI1 = LoadTexture((char*)(pathPrefix + "/khalili1.bmp").c_str());
+	KHALILI2 = LoadTexture((char*)(pathPrefix + "/khalili2.bmp").c_str());
+	KHALILI3 = LoadTexture((char*)(pathPrefix + "/khalili3.bmp").c_str());
+	KHALILI4 = LoadTexture((char*)(pathPrefix + "/khalili4.bmp").c_str());
 
 
-	CHAIN1 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain1.bmp").c_str());
-	CHAIN2 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain2.bmp").c_str());
-	CHAIN3 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain3.bmp").c_str());
-	CHAIN4 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain4.bmp").c_str());
-	CHAIN5 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain5.bmp").c_str());
-	CHAIN6 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain6.bmp").c_str());
-	CHAIN7 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain7.bmp").c_str());
-	CHAIN8 = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/chain8.bmp").c_str());
+	CHAIN1 = LoadTexture((char*)(pathPrefix + "/chain1.bmp").c_str());
+	CHAIN2 = LoadTexture((char*)(pathPrefix + "/chain2.bmp").c_str());
+	CHAIN3 = LoadTexture((char*)(pathPrefix + "/chain3.bmp").c_str());
+	CHAIN4 = LoadTexture((char*)(pathPrefix + "/chain4.bmp").c_str());
+	CHAIN5 = LoadTexture((char*)(pathPrefix + "/chain5.bmp").c_str());
+	CHAIN6 = LoadTexture((char*)(pathPrefix + "/chain6.bmp").c_str());
+	CHAIN7 = LoadTexture((char*)(pathPrefix + "/chain7.bmp").c_str());
+	CHAIN8 = LoadTexture((char*)(pathPrefix + "/chain8.bmp").c_str());
 
-	ASCENTION = LoadTexture((char*)("assets/domeOfTheRock/" + texturesQuality + "/ascention.bmp").c_str());
+	ASCENTION = LoadTexture((char*)(pathPrefix + "/ascention.bmp").c_str());
 
 	mosqueDrawer = MosqueDrawer();
 
@@ -3206,24 +3209,24 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 }
 
 
-void DomeOfTheRock::drawDomeOfSouls1() {
+void DomeOfTheRock::drawDomeOfSoulsDisplayList() {
 	glCallList(dome1DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfAscention1() {
+void DomeOfTheRock::drawDomeOfAscentionDisplayList() {
 	glCallList(dome2DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfKhalili1() {
+void DomeOfTheRock::drawDomeOfKhaliliDisplayList() {
 	glCallList(dome3DisplayList);
 
 
 }
 
-void DomeOfTheRock::drawDomeOfTheProphet1() {
+void DomeOfTheRock::drawDomeOfTheProphetDisplayList() {
 	glCallList(dome4DisplayList);
 }
 
-void DomeOfTheRock::drawDomeOfTheChain1() {
+void DomeOfTheRock::drawDomeOfTheChainDisplayList() {
 	glCallList(dome5DisplayList);
 }

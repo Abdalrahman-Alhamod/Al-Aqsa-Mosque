@@ -23,11 +23,10 @@
 #include "EnvDrawer.h"
 #include "PersonDrawer.h"
 #include "Box.h"
-class DomeOfTheRock
-{
-
+class DomeOfTheRock {
 
 public:
+	static int RockTex;
 
 	DomeOfTheRock();
 
@@ -51,7 +50,7 @@ public:
 
 	void drawEntrance(db doorWidth, db doorHeight);
 
-	void drawArch(db innerR, db outerR, db height,int textures[], int sectorCnt = sectorCntForArchs);
+	void drawArch(db innerR, db outerR, db height, int textures[], int sectorCnt = sectorCntForArchs);
 
 	void drawWalls(db openTheDoor);
 
@@ -94,19 +93,17 @@ public:
 
 	void drawDomeOfTheChain();
 
-	void drawDomeOfTheChain1();
+	void drawDomeOfTheChainDisplayList();
 
-	void drawDomeOfSouls1();
+	void drawDomeOfSoulsDisplayList();
 
-	void drawDomeOfTheProphet1();
+	void drawDomeOfTheProphetDisplayList();
 
-	void drawDomeOfAscention1();
+	void drawDomeOfAscentionDisplayList();
 
-	void drawDomeOfKhalili1();
-
+	void drawDomeOfKhaliliDisplayList();
 
 private:
-
 	int
 		ROOF1, ROOF2, ROOF3, ROOF4,
 		BRIDGE1, BRIDGE2,
@@ -135,5 +132,5 @@ private:
 	int domeOfTheRockDisplayList;
 	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, dome5DisplayList;
 
-};
 
+};
