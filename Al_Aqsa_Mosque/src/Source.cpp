@@ -324,7 +324,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	pshm;
 	glTranslatef(4.5, -9.3, -2.15);
-	glScalef(0.065, 0.065, 0.065);
+	glScalef(0.07, 0.07, 0.07);
 	glRotated(11.25, 0, 1, 0);
 	domeOfTheRock.drawDomeOfTheChain1();
 	ppm;
@@ -336,26 +336,26 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	ppm;
 
 	pshm;
-	glTranslatef(10, -9.3, 3);
+	glTranslatef(-8, -9.3, -6.8);
 	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfTheProphet1();
 	ppm;
 
 	pshm;
-	glTranslatef(-7, -9.3, -18);
-	glScalef(0.12, 0.12, 0.12);
+	glTranslatef(-11, -9.3, -11);
+	glScalef(0.16, 0.16, 0.16);
 	domeOfTheRock.drawDomeOfAscention1();
 	ppm;
 
 	pshm;
-	glTranslatef(4, -9.3, -8);
+	glTranslatef(-10, -9.3, -23);
 	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawDomeOfSouls1();
 	ppm;
 
 	pshm;
-	glTranslatef(4, -9.3, 4);
-	glScalef(0.12, 0.12, 0.12);
+	glTranslatef(-13, -9.3, -15);
+	glScalef(0.13, 0.13, 0.13);
 	domeOfTheRock.drawDomeOfKhalili1();
 	ppm;
 
