@@ -103,7 +103,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	stonesTexture[4] = LoadTexture((char*)"assets/materials/stones5.bmp", 255);
 	stonesTexture[5] = LoadTexture((char*)"assets/materials/stones6.bmp", 255);
 	stonesTexture[6] = LoadTexture((char*)"assets/materials/stones7.bmp", 255);
-	stonesTexture[7] = LoadTexture((char*)"assets/materials/stairs.bmp", 255);
+	stonesTexture[7] = LoadTexture((char*)"assets/materials/stairs0.bmp", 255);
 	stonesTexture[8] = LoadTexture((char*)"assets/materials/stone3.bmp", 255);
 	stonesTexture[9] = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
 	stonesTexture[10] = LoadTexture((char*)"assets/materials/AlQibli/block0.bmp", 255);
@@ -1758,7 +1758,7 @@ void EnvDrawer::drawBench() {
 
 void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture) {
 	
-	db cntS[6] = { 10,10,10,10,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
+	db cntS[6] = { 5,5,5,5,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
 	glColor3f(1, 1, 1);
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < i +1; j++) {
@@ -1906,7 +1906,7 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	pshm;
 	glTranslatef(-17, -10, -27);
 	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
-		stonesTexture[19], sCount, tCount);
+		ground, sCount, tCount);
 
 	ppm;
 
@@ -1992,13 +1992,13 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	// back right
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(0, -9.35, 27);
+	glTranslatef(0.5, -9.35, 27);
 	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
 	ppm;
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(0, -7.72, 26.75);
+	glTranslatef(1, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
 		18, sectorsCount, sectorsCount
 		, sectorsCount
@@ -2008,13 +2008,13 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	// back left
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(-9, -9.35, 27);
+	glTranslatef(-10.5, -9.35, 27);
 	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
 	ppm;
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(-8.35, -7.72, 26.75);
+	glTranslatef(-9.85, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
 		16, sectorsCount, sectorsCount
 		, sectorsCount

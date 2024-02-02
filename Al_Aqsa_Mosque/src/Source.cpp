@@ -325,7 +325,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	pshm;
 	glTranslatef(-16.25, -9.3, -27);
-	glScalef(0.13, 0.13, 0.13);
+	glScalef(0.12, 0.12, 0.12);
 	domeOfTheRock.drawRooms();
 	ppm;
 

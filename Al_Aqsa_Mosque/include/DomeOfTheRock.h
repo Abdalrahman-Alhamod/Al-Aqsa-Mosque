@@ -93,7 +93,7 @@ public:
 
 	void drawDomeOfTheChain();
 
-	void drawRooms();
+	void drawNorthernDomes();
 
 	void drawDomeOfTheChainDisplayList();
 
@@ -123,11 +123,11 @@ private:
 		DOOR1, DOOR2, DOOR3,
 		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
 		NAHAWYA1,NAHAWYA2,NAHAWYA3,
-		ROOM1, ROOM2, ROOM3, ROOM4, ROOM5, ROOM6, ROOM7, ROOM8, ROOM9, ROOM10, ROOM11, ROOM12,
+		ROOM1, ROOM2,ROOM02, ROOM3, ROOM4, ROOM5, ROOM6, ROOM7, ROOM8, ROOM9, ROOM10, ROOM11, ROOM12,
 		ROOM13, ROOM14, ROOM15, ROOM16, ROOM17, ROOM18, ROOM19, ROOM20, ROOM21, ROOM23,ROOM22,
-		ASCENTION,
+		ASCENTION,STONEARCH,
 		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
-
+		
 
 	static const int sectorCntForColumns = 6;
 	static const int sectorCntForArchs = 16; //actual sectors drawn are 8 'cause it's half cylinder
