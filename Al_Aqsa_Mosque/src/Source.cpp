@@ -324,6 +324,13 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	//testReflection();
 
 	pshm;
+	glTranslatef(-16.25, -9.3, -27);
+	glScalef(0.13, 0.13, 0.13);
+	domeOfTheRock.drawRooms();
+	ppm;
+
+
+	pshm;
 	glTranslatef(4.5, -9.3, -2.15);
 	glScalef(0.07, 0.07, 0.07);
 	glRotated(11.25, 0, 1, 0);

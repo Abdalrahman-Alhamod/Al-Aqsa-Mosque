@@ -1992,13 +1992,13 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	// back right
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(5, -9.35, 27);
+	glTranslatef(0, -9.35, 27);
 	drawStairs(Constraints(3.75, 0.05, 0.1), 14);
 	ppm;
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
-	glTranslatef(5.65, -7.72, 26.75);
+	glTranslatef(0, -7.72, 26.75);
 	drawArchway(0.4, 1.5, 3,
 		18, sectorsCount, sectorsCount
 		, sectorsCount
