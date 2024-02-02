@@ -122,6 +122,36 @@ DomeOfTheRock::DomeOfTheRock() {
 	CHAIN7 = LoadTexture((char*)(pathPrefix + "/chain7.bmp").c_str());
 	CHAIN8 = LoadTexture((char*)(pathPrefix + "/chain8.bmp").c_str());
 
+	NAHAWYA1 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/nahawya1.bmp");
+	NAHAWYA2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/nahawya2.bmp");
+	NAHAWYA3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/nahawya3.bmp");
+
+
+	ROOM1 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room1.bmp");
+	ROOM2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room2.bmp");
+	ROOM3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room3.bmp");
+	ROOM4 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room4.bmp");
+	ROOM5 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room5.bmp");
+	ROOM6 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room6.bmp");
+	ROOM7 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room7.bmp");
+	ROOM8 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room8.bmp");
+	ROOM9 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room9.bmp");
+	ROOM10 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room10.bmp");
+	ROOM11 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room11.bmp");
+	ROOM12 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room12.bmp");
+	ROOM13 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room13.bmp");
+	ROOM14 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room14.bmp");
+	ROOM15 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room15.bmp");
+	ROOM16 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room16.bmp");
+	ROOM17 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room17.bmp");
+	ROOM18 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room18.bmp");
+	ROOM19 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room19.bmp");
+	ROOM20 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room20.bmp");
+	ROOM21 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room21.bmp");
+	ROOM22 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room22.bmp");
+	ROOM23 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room23.bmp");
+
+
 	ASCENTION = LoadTexture((char*)(pathPrefix + "/ascention.bmp").c_str());
 
 	mosqueDrawer = MosqueDrawer();
@@ -3208,6 +3238,10 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 	distxt;
 }
 
+
+void DomeOfTheRock::drawRooms() {
+
+}
 
 void DomeOfTheRock::drawDomeOfSoulsDisplayList() {
 	glCallList(dome1DisplayList);
