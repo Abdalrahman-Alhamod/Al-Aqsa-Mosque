@@ -95,6 +95,8 @@ public:
 
 	void drawNorthernDomes();
 
+	void drawDomeOfTheGrammar();
+
 	void drawDomeOfTheChainDisplayList();
 
 	void drawDomeOfSoulsDisplayList();
@@ -104,6 +106,8 @@ public:
 	void drawDomeOfAscentionDisplayList();
 
 	void drawDomeOfKhaliliDisplayList();
+
+	void drawNorthernDomesDisplayList();
 
 private:
 	int
@@ -135,7 +139,7 @@ private:
 	MosqueDrawer mosqueDrawer;
 
 	int domeOfTheRockDisplayList;
-	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, dome5DisplayList;
+	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, dome5DisplayList, dome6DisplayList;
 
 
 };

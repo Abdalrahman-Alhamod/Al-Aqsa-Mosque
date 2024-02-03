@@ -188,6 +188,12 @@ DomeOfTheRock::DomeOfTheRock() {
 	drawDomeOfTheChain();
 	glEndList();
 
+	dome6DisplayList = glGenLists(1);
+	glNewList(dome6DisplayList, GL_COMPILE);
+	drawNorthernDomes();
+	glEndList();
+
+
 
 }
 
@@ -3240,7 +3246,6 @@ void DomeOfTheRock::drawDomeOfKhalili() {
 	distxt;
 }
 
-
 void DomeOfTheRock::drawNorthernDomes() {
 	Box room;
 	int textures[8] = { 0,0,0,0,0,0,0,0};
@@ -3256,7 +3261,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(9, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256),16, false, false, true, false);
 	distxt;
 
 
@@ -3300,8 +3305,8 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(15, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
-	mosqueDrawer.drawDome(Point(11, 6, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(11, 6, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3318,7 +3323,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(10, 9, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(5, 8, 5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(5, 8, 5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3335,7 +3340,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(15, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(4.5, 5.5, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4.5, 5.5, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3352,7 +3357,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(14, 12, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(7, 10.5, 4.5), 0.9, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(7, 10.5, 4.5), 0.9, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 	textures[2] = ROOM4;
@@ -3392,8 +3397,8 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM02);
-	mosqueDrawer.drawDome(Point(4, 11.4, 2.75), 0.5, Color(256, 256, 256), 20, false, false, true, false);
-	mosqueDrawer.drawDome(Point(10, 11.4, 2.75), 0.5, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4, 11.4, 2.75), 0.5, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(10, 11.4, 2.75), 0.5, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 
@@ -3440,7 +3445,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(7, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(3.5, 6, 4.5), 0.65, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(3.5, 6, 4.5), 0.65, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3457,7 +3462,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(12, 11, 9.7), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(6, 10.5, 4.5), 0.9, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(6, 10.5, 4.5), 0.9, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 	textures[2] = ROOM4;
@@ -3545,8 +3550,8 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(17, 10, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(4.5, 9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
-	mosqueDrawer.drawDome(Point(12, 9, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4.5, 9, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(12, 9, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 
@@ -3572,7 +3577,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(21, 12, 10.1), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(10.5, 11.5, 4.9), 1, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(10.5, 11.5, 4.9), 1, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 	
@@ -3619,9 +3624,9 @@ void DomeOfTheRock::drawNorthernDomes() {
 	ppm;
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM02);
-	mosqueDrawer.drawDome(Point(4, 11.6, 4), 0.6, Color(256, 256, 256), 20, false, false, true, false);
-	mosqueDrawer.drawDome(Point(10.5, 11.6, 4), 0.6, Color(256, 256, 256), 20, false, false, true, false);
-	mosqueDrawer.drawDome(Point(17, 11.6, 4), 0.6, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4, 11.6, 4), 0.6, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(10.5, 11.6, 4), 0.6, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(17, 11.6, 4), 0.6, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 
@@ -3669,7 +3674,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(7, 11.5, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(3.5, 11.5, 4.5), 0.55, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(3.5, 11.5, 4.5), 0.55, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3686,7 +3691,7 @@ void DomeOfTheRock::drawNorthernDomes() {
 	room.drawOutside(Constraints(10, 9, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM2);
-	mosqueDrawer.drawDome(Point(5, 8.5, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
+	mosqueDrawer.drawDome(Point(5, 8.5, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
@@ -3710,6 +3715,56 @@ void DomeOfTheRock::drawNorthernDomes() {
 	
 }
 
+void DomeOfTheRock::drawDomeOfTheGrammar() {
+
+	Box room;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
+
+
+	textures[0] = 0;
+	textures[1] = NAHAWYA3;
+	textures[2] = NAHAWYA1;
+	textures[3] = ROOM15;
+	textures[4] = ROOM4;
+	textures[5] = ROOM4;
+	room.drawOutside(Constraints(40, 12, 12), textures);
+	
+	Cylinder drum = Cylinder(5.5, 5.5, 5, 16, 1, true, 2);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, LEAD);
+	mosqueDrawer.drawDome(Point(8, 14.5, 6), 1.1, Color(256, 256, 256), 8,false,false,false,true);
+	distxt;
+	pshm;
+	glTranslated(8, 11, 6);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	drum.drawSide();
+	glTranslated(0,2.5,0);
+	glBindTexture(GL_TEXTURE_2D, ROOM02);
+	drum.set(6, 6, 0.4, 16, 1, true, 2);
+	drum.draw();
+	distxt;
+	ppm;
+
+	pshm;
+	textures[1] = ROOM4;
+	textures[2] = NAHAWYA2;
+	textures[3] = ROOM4;
+	textures[4] = ROOM4;
+	textures[5] = ROOM4;
+	glTranslated(40, 0, 0);
+	room.drawOutside(Constraints(11, 11, 12), textures);
+
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, ROOM02);
+	mosqueDrawer.drawDome(Point(5.5, 10.5, 6), 0.8, Color(256, 256, 256), 16, false, false, true, false);
+	distxt;
+
+	ppm;
+
+}
+
+
 void DomeOfTheRock::drawDomeOfSoulsDisplayList() {
 	glCallList(dome1DisplayList);
 }
@@ -3730,4 +3785,9 @@ void DomeOfTheRock::drawDomeOfTheProphetDisplayList() {
 
 void DomeOfTheRock::drawDomeOfTheChainDisplayList() {
 	glCallList(dome5DisplayList);
+}
+
+void DomeOfTheRock::drawNorthernDomesDisplayList() {
+	glCallList(dome6DisplayList);
+
 }
