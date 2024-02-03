@@ -127,30 +127,38 @@ DomeOfTheRock::DomeOfTheRock() {
 	NAHAWYA3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/nahawya3.bmp");
 
 
-	ROOM1 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room1.bmp");
-	ROOM2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room2.bmp");
+	ROOM[1] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room1.bmp");
+	ROOM[2] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room2.bmp");
 	ROOM02 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room02.bmp");
-	ROOM3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room3.bmp");
-	ROOM4 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room4.bmp");
-	ROOM5 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room5.bmp");
-	ROOM6 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room6.bmp");
-	ROOM7 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room7.bmp");
-	ROOM8 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room8.bmp");
-	ROOM9 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room9.bmp");
-	ROOM10 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room10.bmp");
-	ROOM11 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room11.bmp");
-	ROOM12 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room12.bmp");
-	ROOM13 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room13.bmp");
-	ROOM14 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room14.bmp");
-	ROOM15 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room15.bmp");
-	ROOM16 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room16.bmp");
-	ROOM17 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room17.bmp");
-	ROOM18 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room18.bmp");
-	ROOM19 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room19.bmp");
-	ROOM20 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room20.bmp");
-	ROOM21 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room21.bmp");
-	ROOM22 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room22.bmp");
-	ROOM23 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room23.bmp");
+	ROOM[3] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room3.bmp");
+	ROOM[4] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room4.bmp");
+	ROOM[5] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room5.bmp");
+	ROOM[6] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room6.bmp");
+	ROOM[7] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room7.bmp");
+	ROOM[8] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room8.bmp");
+	ROOM[9] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room9.bmp");
+	ROOM[10] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room10.bmp");
+	ROOM[11] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room11.bmp");
+	ROOM[12] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room12.bmp");
+	ROOM[13] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room13.bmp");
+	ROOM[14] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room14.bmp");
+	ROOM[15] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room15.bmp");
+	ROOM[16] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room16.bmp");
+	ROOM[17] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room17.bmp");
+	ROOM[18] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room18.bmp");
+	ROOM[19] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room19.bmp");
+	ROOM[20] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room20.bmp");
+	ROOM[21] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room21.bmp");
+	ROOM[22] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room22.bmp");
+	ROOM[23] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room23.bmp");
+	ROOM[24] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room24.bmp");
+	ROOM[25] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room25.bmp");
+	ROOM[26] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room26.bmp");
+	ROOM[27] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room27.bmp");
+	ROOM[28] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room28.bmp");
+	ROOM[29] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room29.bmp");
+	ROOM[30] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room30.bmp");
+	ROOM[31] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room31.bmp");
 
 	STONEARCH = LoadTexture((char*)"assets/domeOfTheRock/domesAround/stonearch.bmp");
 
@@ -3253,41 +3261,41 @@ void DomeOfTheRock::drawNorthernDomes() {
 #pragma region first room
 
 	textures[0] = 0;
-	textures[1] = ROOM4;
-	textures[2] = ROOM4;
-	textures[3] = ROOM3;
-	textures[4] = ROOM4;
-	textures[5] = ROOM7;
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[3];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[7];
 	room.drawOutside(Constraints(9, 7, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256),16, false, false, true, false);
 	distxt;
 
 
-	textures[0] = ROOM9;
-	textures[1] = ROOM4;
-	textures[2] = ROOM4;
-	textures[3] = ROOM4;
+	textures[0] = ROOM[9];
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[4];
 	textures[4] = 0;
 	textures[5] = 0;
 
 
 	pshm;
-	textures[0] = ROOM4;
-	textures[1] = ROOM4;
-	textures[3] = ROOM2;
+	textures[0] = ROOM[4];
+	textures[1] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(9, 0, 0);
 	room.drawOutside(Constraints(9, 0.6, 9), textures);
 	
-	textures[2] = ROOM4;
-	textures[3] = ROOM8;
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[8];
 	glTranslated(0, 0.6, 0);
 	room.drawOutside(Constraints(9, 5.8, 1), textures);
 
-	textures[0] = ROOM9;
-	textures[1] = ROOM4;
-	textures[3] = ROOM2;
+	textures[0] = ROOM[9];
+	textures[1] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(0, 5.8, 0);
 	room.drawOutside(Constraints(9, 0.6, 9), textures);
 	ppm;
@@ -3295,16 +3303,16 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region second room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM5;
-	textures[4] = ROOM9;
-	textures[5] = ROOM3;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[5];
+	textures[4] = ROOM[9];
+	textures[5] = ROOM[3];
 	pshm;
 	glTranslated(18, 0, 0);
 	room.drawOutside(Constraints(15, 7, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	mosqueDrawer.drawDome(Point(11, 6, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
@@ -3313,16 +3321,16 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region third room
 	textures[0] = 0;
-	textures[1] = ROOM4;
-	textures[2] = ROOM11;
-	textures[3] = ROOM10;
-	textures[4] = ROOM11;
-	textures[5] = ROOM11;
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[11];
+	textures[3] = ROOM[10];
+	textures[4] = ROOM[11];
+	textures[5] = ROOM[11];
 	pshm;
 	glTranslated(40, 0, 0);
 	room.drawOutside(Constraints(10, 9, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(5, 8, 5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
@@ -3330,42 +3338,43 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region fourth room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM12;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[12];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(50.5, 0, 0);
 	room.drawOutside(Constraints(15, 7, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(4.5, 5.5, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
 #pragma endregion
 
+
 #pragma region fifth room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM15;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[15];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(85, 0, 0);
 	room.drawOutside(Constraints(14, 12, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(7, 10.5, 4.5), 0.9, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
-	textures[2] = ROOM4;
-	textures[3] = ROOM2;
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(0,0 , 9);
 	room.drawOutside(Constraints(14, 0.6, 7.15), textures);
 
-	textures[0] = ROOM9;
+	textures[0] = ROOM[9];
 	glTranslated(0, 10.5, 0);
 	room.drawOutside(Constraints(14, 1.4, 6.85), textures);
 	ppm;
@@ -3404,10 +3413,10 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 	pshm;
 	glTranslated(3.5, 7.1, 6.6);
-	textures[0] = ROOM2;
-	textures[1] = ROOM9;
-	textures[2] = ROOM9;
-	textures[3] = ROOM9;
+	textures[0] = ROOM[2];
+	textures[1] = ROOM[9];
+	textures[2] = ROOM[9];
+	textures[3] = ROOM[9];
 	textures[4] = STONEARCH;
 	textures[5] = STONEARCH;
 	textures[7] = STONEARCH;
@@ -3435,16 +3444,16 @@ void DomeOfTheRock::drawNorthernDomes() {
 #pragma region sixth room
 
 	textures[0] = 0;
-	textures[1] = ROOM4;
-	textures[2] = ROOM4;
-	textures[3] = ROOM16;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[16];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(78, 0, 0);
 	room.drawOutside(Constraints(7, 7, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(3.5, 6, 4.5), 0.65, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
@@ -3452,25 +3461,25 @@ void DomeOfTheRock::drawNorthernDomes() {
 	
 #pragma region seventh room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM13;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[13];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(66, 0, 0);
 	room.drawOutside(Constraints(12, 11, 9.7), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(6, 10.5, 4.5), 0.9, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
-	textures[2] = ROOM4;
-	textures[3] = ROOM2;
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(-0.25, 0, 9);
 	room.drawOutside(Constraints(12.5, 0.6, 6.5), textures);
 
-	textures[0] = ROOM9;
+	textures[0] = ROOM[9];
 	glTranslated(0.25, 9.6, 0);
 	room.drawOutside(Constraints(12, 1.2, 6.5), textures);
 	ppm;
@@ -3508,10 +3517,10 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 	pshm;
 	glTranslated(3, 7.1, 6.3);
-	textures[0] = ROOM2;
-	textures[1] = ROOM9;
-	textures[2] = ROOM9;
-	textures[3] = ROOM9;
+	textures[0] = ROOM[2];
+	textures[1] = ROOM[9];
+	textures[2] = ROOM[9];
+	textures[3] = ROOM[9];
 	textures[4] = STONEARCH;
 	textures[5] = STONEARCH;
 	textures[7] = STONEARCH;
@@ -3540,24 +3549,24 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region eighth room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM17;
-	textures[4] = ROOM11;
-	textures[5] = ROOM11;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[17];
+	textures[4] = ROOM[11];
+	textures[5] = ROOM[11];
 	pshm;
 	glTranslated(134, 0, 0);
 	room.drawOutside(Constraints(17, 10, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(4.5, 9, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	mosqueDrawer.drawDome(Point(12, 9, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 
 
-	textures[2] = ROOM4;
-	textures[3] = ROOM2;
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(0, 0, 9);
 	room.drawOutside(Constraints(17, 0.8, 5.5), textures);
 
@@ -3567,26 +3576,26 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region ninth room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM15;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[15];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(167, 0, 0);
 	room.drawOutside(Constraints(21, 12, 10.1), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(10.5, 11.5, 4.9), 1, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 
 	
-	textures[2] = ROOM4;
-	textures[3] = ROOM2;
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[2];
 	glTranslated(-7, 0, 9);
 	room.drawOutside(Constraints(28, 0.6, 8), textures);
 
-	textures[0] = ROOM9;
+	textures[0] = ROOM[9];
 	glTranslated(7, 10.5, 0);
 	room.drawOutside(Constraints(21, 1.4, 8), textures);
 	ppm;
@@ -3632,10 +3641,10 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 	pshm;
 	glTranslated(3.5, 7.1, 7.75);
-	textures[0] = ROOM2;
-	textures[1] = ROOM9;
-	textures[2] = ROOM9;
-	textures[3] = ROOM9;
+	textures[0] = ROOM[2];
+	textures[1] = ROOM[9];
+	textures[2] = ROOM[9];
+	textures[3] = ROOM[9];
 	textures[4] = STONEARCH;
 	textures[5] = STONEARCH;
 	textures[7] = STONEARCH;
@@ -3664,16 +3673,16 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region tenth room
 	textures[0] = 0;
-	textures[1] = ROOM4;
-	textures[2] = ROOM4;
-	textures[3] = ROOM18;
-	textures[4] = ROOM15;
-	textures[5] = ROOM7;
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[4];
+	textures[3] = ROOM[18];
+	textures[4] = ROOM[15];
+	textures[5] = ROOM[7];
 	pshm;
 	glTranslated(160, 0, 0);
 	room.drawOutside(Constraints(7, 11.5, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(3.5, 11.5, 4.5), 0.55, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
@@ -3681,16 +3690,16 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region eleventh room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM20;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[20];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(225, 0, 0);
 	room.drawOutside(Constraints(10, 9, 9), textures);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	mosqueDrawer.drawDome(Point(5, 8.5, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
 	distxt;
 	ppm;
@@ -3698,11 +3707,11 @@ void DomeOfTheRock::drawNorthernDomes() {
 
 #pragma region twelveth room
 	textures[0] = 0;
-	textures[1] = ROOM14;
-	textures[2] = ROOM14;
-	textures[3] = ROOM18;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[18];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	pshm;
 	glTranslated(235, 0, 0);
 	room.drawOutside(Constraints(7, 7.5, 9), textures);
@@ -3710,7 +3719,24 @@ void DomeOfTheRock::drawNorthernDomes() {
 	ppm;
 #pragma endregion
 
-	
+#pragma region thirteenth room
+	textures[0] = 0;
+	textures[1] = ROOM[14];
+	textures[2] = ROOM[14];
+	textures[3] = ROOM[21];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
+	pshm;
+	glTranslated(277, 0, 100);
+	glRotated(-90, 0, 1, 0);
+	room.drawOutside(Constraints(15, 9, 9), textures);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
+	mosqueDrawer.drawDome(Point(10, 8.5, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, false);
+	distxt;
+	ppm;
+#pragma endregion
+
 
 	
 }
@@ -3724,9 +3750,9 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 	textures[0] = 0;
 	textures[1] = NAHAWYA3;
 	textures[2] = NAHAWYA1;
-	textures[3] = ROOM15;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[3] = ROOM[15];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	room.drawOutside(Constraints(40, 12, 12), textures);
 	
 	Cylinder drum = Cylinder(5.5, 5.5, 5, 16, 1, true, 2);
@@ -3737,7 +3763,7 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 	pshm;
 	glTranslated(8, 11, 6);
 	entxt;
-	glBindTexture(GL_TEXTURE_2D, ROOM2);
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
 	drum.drawSide();
 	glTranslated(0,2.5,0);
 	glBindTexture(GL_TEXTURE_2D, ROOM02);
@@ -3747,11 +3773,11 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 	ppm;
 
 	pshm;
-	textures[1] = ROOM4;
+	textures[1] = ROOM[4];
 	textures[2] = NAHAWYA2;
-	textures[3] = ROOM4;
-	textures[4] = ROOM4;
-	textures[5] = ROOM4;
+	textures[3] = ROOM[4];
+	textures[4] = ROOM[4];
+	textures[5] = ROOM[4];
 	glTranslated(40, 0, 0);
 	room.drawOutside(Constraints(11, 11, 12), textures);
 
@@ -3761,6 +3787,11 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 	distxt;
 
 	ppm;
+
+}
+
+
+void DomeOfTheRock::drawEasternDomes() {
 
 }
 
