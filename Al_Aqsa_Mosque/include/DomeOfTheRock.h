@@ -97,7 +97,7 @@ public:
 
 	void drawDomeOfTheGrammar();
 
-	void drawEasternDomes();
+	void drawWesternDomes();
 
 
 
@@ -115,7 +115,7 @@ public:
 
 	void drawNorthernDomesDisplayList();
 
-	void drawEasternDomesDisplayList();
+	void drawWesternDomesDisplayList();
 
 	void drawDomeOfTheGrammarDisplayList();
 

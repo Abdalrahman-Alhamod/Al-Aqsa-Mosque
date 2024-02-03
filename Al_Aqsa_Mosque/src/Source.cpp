@@ -334,7 +334,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslatef(-16.9, -9.3, 5);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawEasternDomesDisplayList();
+	domeOfTheRock.drawWesternDomesDisplayList();
 	ppm;
 
 	pshm;
