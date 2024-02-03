@@ -210,7 +210,7 @@ DomeOfTheRock::DomeOfTheRock() {
 
 	dome8DisplayList = glGenLists(1);
 	glNewList(dome8DisplayList, GL_COMPILE);
-	drawEasternDomes();
+	drawWesternDomes();
 	glEndList();
 
 }
@@ -3858,7 +3858,7 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 
 }
 
-void DomeOfTheRock::drawEasternDomes() {
+void DomeOfTheRock::drawWesternDomes() {
 
 	Box room;
 	int textures[8] = { 0,0,0,0,0,0,0,0 };
@@ -4071,6 +4071,6 @@ void DomeOfTheRock::drawDomeOfTheGrammarDisplayList() {
 	glCallList(dome7DisplayList);
 }
 
-void DomeOfTheRock::drawEasternDomesDisplayList() {
+void DomeOfTheRock::drawWesternDomesDisplayList() {
 	glCallList(dome8DisplayList);
 }
