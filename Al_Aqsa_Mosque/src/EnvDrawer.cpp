@@ -1632,12 +1632,12 @@ void EnvDrawer::drawAllGardens() {
 
 	/*
 	pshm;
-	drawGarden(Point(-24, -9.98, -33), 2, 20,10, treeSize, isTreeSmall);
+	drawGarden(Point(-21, -9.98, -33), 2, 20,10, treeSize, isTreeSmall);
 	ppm;
 
 	pshm;
-	drawGarden(Point(-24, -9.98, -8.5), 2, 19,10, treeSize, isTreeSmall);
-	ppm; 
+	drawGarden(Point(-21, -9.98, -8.5), 2, 19,10, treeSize, isTreeSmall);
+	ppm;
 	*/
 
 	pshm;
