@@ -203,11 +203,12 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	
 	// Initialize Objects
 
-	alQibliMosqueDrawer = AlQibliMosqueDrawer();
+	
 	domeOfTheRock = DomeOfTheRock();
 
 	mosqueDrawer = MosqueDrawer();
 	envDrawer = EnvDrawer(hWnd);
+	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
 	personDrawer = PersonDrawer();
 
@@ -358,7 +359,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	pshm;
 	glTranslatef(-11, -9.3, -10);
-	glScalef(0.2, 0.2, 0.2);
+	glScalef(0.25, 0.25, 0.25);
 	domeOfTheRock.drawDomeOfAscentionDisplayList();
 	ppm;
 
@@ -374,12 +375,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawDomeOfKhaliliDisplayList();
 	ppm;
 
-	pshm;
-	//glScaled(0.05, 0.05, 0.05);
-	glTranslated(0, -9.3, 0);
-	int textures[6] = { 0,0,0,0,0,0 };
-	//Box().drawOutside(Constraints(1, 1, 1), textures);
-	ppm;
+	//pshm;
+	////glScaled(0.05, 0.05, 0.05);
+	//glTranslated(0, -9.3, 0);
+	//int textures[6] = { 0,0,0,0,0,0 };
+	////Box().drawOutside(Constraints(1, 1, 1), textures);
+	//ppm;
 
 
 	glFlush();											// Done Drawing The Quad

@@ -367,7 +367,7 @@ void EnvDrawer::drawLand(const Point points[4], const int count, const int textu
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glNormal3f(0, 1, 0);
+	glNormal3f(0, 0.7, 0);
 	cull;
 	Front;
 
