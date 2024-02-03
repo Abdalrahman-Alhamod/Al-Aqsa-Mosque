@@ -332,6 +332,12 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 
 	pshm;
+	glTranslatef(-16.9, -9.3, 5);
+	glScalef(0.12, 0.12, 0.12);
+	domeOfTheRock.drawEasternDomesDisplayList();
+	ppm;
+
+	pshm;
 	glTranslatef(4.5, -9.3, -2.15);
 	glScalef(0.07, 0.07, 0.07);
 	glRotated(11.25, 0, 1, 0);
@@ -342,7 +348,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	pshm;
 	glTranslatef(-16.9, -9.3, 9.5);
 	glScalef(0.12, 0.12, 0.12);
-	domeOfTheRock.drawDomeOfTheGrammar();
+	domeOfTheRock.drawDomeOfTheGrammarDisplayList();
 	ppm;
 
 	pshm;

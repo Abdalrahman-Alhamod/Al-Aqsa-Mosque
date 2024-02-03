@@ -77,6 +77,8 @@ public:
 
 	void drawDomeOfSouls();
 
+	void drawDomeOfKhader();
+
 	void drawDomeOfThePorphetPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture);
 
 	void drawDomeOfTheProphet();
@@ -98,6 +100,7 @@ public:
 	void drawEasternDomes();
 
 
+
 	//display lists
 
 	void drawDomeOfTheChainDisplayList();
@@ -111,6 +114,12 @@ public:
 	void drawDomeOfKhaliliDisplayList();
 
 	void drawNorthernDomesDisplayList();
+
+	void drawEasternDomesDisplayList();
+
+	void drawDomeOfTheGrammarDisplayList();
+
+
 
 private:
 	int
@@ -130,18 +139,20 @@ private:
 		DOOR1, DOOR2, DOOR3,
 		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
 		NAHAWYA1,NAHAWYA2,NAHAWYA3,
-		ROOM[31],ROOM02,
+		SUBDOME,
 		ASCENTION,STONEARCH,
 		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
 		
+	int ROOM[34];
 
 	static const int sectorCntForColumns = 6;
 	static const int sectorCntForArchs = 16; //actual sectors drawn are 8 'cause it's half cylinder
 
 	MosqueDrawer mosqueDrawer;
 
-	int domeOfTheRockDisplayList;
-	int dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, dome5DisplayList, dome6DisplayList;
+	int domeOfTheRockDisplayList,
+		dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, 
+		dome5DisplayList, dome6DisplayList, dome7DisplayList , dome8DisplayList;
 
 
 };
