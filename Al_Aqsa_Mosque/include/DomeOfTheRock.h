@@ -99,6 +99,8 @@ public:
 
 	void drawWesternDomes();
 
+	void drawDomeOfYusuf();
+
 
 
 	//display lists
@@ -118,6 +120,8 @@ public:
 	void drawWesternDomesDisplayList();
 
 	void drawDomeOfTheGrammarDisplayList();
+
+	void drawDomeOfYusufDisplayList();
 
 
 
@@ -140,6 +144,7 @@ private:
 		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
 		NAHAWYA1,NAHAWYA2,NAHAWYA3,
 		SUBDOME,
+		YUSUF1,YUSUF2,YUSUF3,YUSUF4,
 		ASCENTION,STONEARCH,
 		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
 		
@@ -151,8 +156,9 @@ private:
 	MosqueDrawer mosqueDrawer;
 
 	int domeOfTheRockDisplayList,
-		dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList, 
-		dome5DisplayList, dome6DisplayList, dome7DisplayList , dome8DisplayList;
+		dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList,
+		dome5DisplayList, dome6DisplayList, dome7DisplayList, dome8DisplayList,
+		dome9DisplayList;
 
 
 };

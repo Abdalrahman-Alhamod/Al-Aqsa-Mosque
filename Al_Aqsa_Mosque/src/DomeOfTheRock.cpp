@@ -162,6 +162,12 @@ DomeOfTheRock::DomeOfTheRock() {
 	ROOM[32] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room32.bmp");
 	ROOM[33] = LoadTexture((char*)"assets/domeOfTheRock/domesAround/room33.bmp");
 
+	YUSUF1 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf1.bmp");
+	YUSUF2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf2.bmp");
+	YUSUF3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf3.bmp");
+	YUSUF4 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf4.bmp");
+
+
 	STONEARCH = LoadTexture((char*)"assets/domeOfTheRock/domesAround/stonearch.bmp");
 
 	ASCENTION = LoadTexture((char*)(pathPrefix + "/ascention.bmp").c_str());
@@ -211,6 +217,11 @@ DomeOfTheRock::DomeOfTheRock() {
 	dome8DisplayList = glGenLists(1);
 	glNewList(dome8DisplayList, GL_COMPILE);
 	drawWesternDomes();
+	glEndList();
+
+	dome9DisplayList = glGenLists(1);
+	glNewList(dome9DisplayList, GL_COMPILE);
+	drawDomeOfYusuf();
 	glEndList();
 
 }
@@ -3826,7 +3837,7 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 	Cylinder drum = Cylinder(5.5, 5.5, 5, 16, 1, true, 2);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, LEAD);
-	mosqueDrawer.drawDome(Point(8, 14.5, 6), 1.1, Color(256, 256, 256), 8,false,false,false,true);
+	mosqueDrawer.drawDome(Point(8, 14.5, 6), 1.1, Color(256, 256, 256), 20,false,false,false,true);
 	distxt;
 	pshm;
 	glTranslated(8, 11, 6);
@@ -3851,7 +3862,7 @@ void DomeOfTheRock::drawDomeOfTheGrammar() {
 
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, SUBDOME);
-	mosqueDrawer.drawDome(Point(5.5, 10.5, 6), 0.8, Color(256, 256, 256), 16, false, false, true, false);
+	mosqueDrawer.drawDome(Point(5.5, 10.5, 6), 0.8, Color(256, 256, 256), 20, false, false, true, false);
 	distxt;
 
 	ppm;
@@ -3893,7 +3904,7 @@ void DomeOfTheRock::drawWesternDomes() {
 	room.drawOutside(Constraints(5, 5, 3.5), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM[33]);
-	mosqueDrawer.drawDome(Point(2.5, 5, 2), 0.3, Color(256, 256, 256), 8, false, false, true, false);
+	mosqueDrawer.drawDome(Point(2.5, 5, 2), 0.3, Color(256, 256, 256), 20, false, false, true, false);
 	distxt;
 	ppm;
 	textures[3] = ROOM[25];
@@ -3901,7 +3912,7 @@ void DomeOfTheRock::drawWesternDomes() {
 	room.drawOutside(Constraints(10, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM[33]);
-	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 16, false, false, true, true);
+	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, true);
 	distxt;
 #pragma endregion
 
@@ -3916,7 +3927,7 @@ void DomeOfTheRock::drawWesternDomes() {
 	room.drawOutside(Constraints(9, 7, 9), textures);
 	entxt;
 	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
-	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 8, false, false, true, false);
+	mosqueDrawer.drawDome(Point(4.5, 6, 4.5), 0.7, Color(256, 256, 256), 20, false, false, true, false);
 	distxt;
 #pragma endregion
 
@@ -4039,6 +4050,89 @@ void DomeOfTheRock::drawWesternDomes() {
 
 }
 
+void DomeOfTheRock::drawDomeOfYusuf() {
+
+	Box room;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
+
+	glRotated(-180, 0, 1, 0);
+
+	textures[0] = 0;
+	textures[1] = LEAD;
+	textures[2] = YUSUF1;
+	textures[3] = YUSUF2;
+	textures[4] = YUSUF3;
+	textures[5] = YUSUF3;
+	pshm;
+	room.drawOutside(Constraints(5, 7, 1), textures);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, LEAD1);
+	mosqueDrawer.drawDome(Point(2.7, 7.2, 2.7), 0.4, Color(256, 256, 256), 8, false,false, false, true);
+	distxt;
+
+	textures[0] = 0;
+	textures[1] = ROOM[4];
+	textures[2] = YUSUF4;
+	textures[3] = YUSUF4;
+	textures[4] = YUSUF4;
+	textures[5] = YUSUF4;
+	glTranslated(-0.1, 0, 1);
+	room.drawOutside(Constraints(5.2, 0.2, 5.15), textures);
+
+	textures[1] = LEAD;
+	textures[0] = ROOM[9];
+	glTranslated(0.1, 6.5, 0);
+	room.drawOutside(Constraints(5, 0.5, 4.85), textures);
+	ppm;
+
+	pshm;
+	glTranslated(0, 0, 1);
+
+	pshm;
+	glTranslated(0.25, 0.2, 4.6);
+
+	pshm;
+	glRotated(45, 0, 1, 0);
+	drawDomeOfThePorphetPillar(3.1, 0.12, 0.6, LIME_STONE1);
+	ppm;
+
+	glTranslated(4.5, 0, 0);
+	pshm;
+	glRotated(45, 0, 1, 0);
+	drawDomeOfThePorphetPillar(3.1, 0.12, 0.7, LIME_STONE1);
+	ppm;
+
+	ppm;
+
+	pshm;
+	glTranslated(3.5, 4, 6.6);
+	textures[0] = ROOM[4];
+	textures[1] = ROOM[9];
+	textures[2] = ROOM[9];
+	textures[3] = ROOM[9];
+	textures[4] = STONEARCH;
+	textures[5] = STONEARCH;
+	textures[7] = STONEARCH;
+
+	pshm;
+	glTranslated(-1, 0, -2);
+	drawArch(2, 2.5, 0.5, textures,20);
+	ppm;
+
+	pshm;
+	glTranslated(1.2, 0, -4.25);
+	glRotated(90, 0, 1, 0);
+	drawArch(2, 2.5, 0.5, textures,20);
+
+	glRotated(180, 0, 1, 0);
+	glTranslated(0, 0, 4.45);
+	drawArch(2, 2.5, 0.5, textures,20);
+	ppm;
+
+	ppm;
+	ppm;
+}
+
 
 
 //display lists
@@ -4073,4 +4167,8 @@ void DomeOfTheRock::drawDomeOfTheGrammarDisplayList() {
 
 void DomeOfTheRock::drawWesternDomesDisplayList() {
 	glCallList(dome8DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfYusufDisplayList() {
+	glCallList(dome9DisplayList);
 }
