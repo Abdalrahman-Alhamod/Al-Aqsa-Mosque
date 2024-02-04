@@ -346,8 +346,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 
 	pshm;
-	glTranslatef(-16.9, -9.3, 9.5);
-	glScalef(0.12, 0.12, 0.12);
+	glTranslatef(-17, -9.3, 9.75);
+	glScalef(0.10, 0.10, 0.10);
 	domeOfTheRock.drawDomeOfTheGrammarDisplayList();
 	ppm;
 

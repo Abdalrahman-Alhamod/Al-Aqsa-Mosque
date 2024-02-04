@@ -293,7 +293,7 @@ public:
 	 * @param unitConstraints The constraints for each step (width, height, length).
 	 * @param count The number of steps in the staircase.
 	 */
-	void drawStairs(const Constraints& unitConstraints, const int count);
+	void drawStairs(const Constraints& unitConstraints, const int count,int flag=0);
 
 	/**
 	 * @brief Draw a textured staircase in the 3D environment with a specified number of steps.
@@ -301,7 +301,7 @@ public:
 	 * @param count The number of steps in the staircase.
 	 * @param texture The texture index for the steps.
 	 */
-	void drawStairs(const Constraints& unitConstraints, const int count, const int texture);
+	void drawStairs(const Constraints& unitConstraints, const int count, const int texture,int flag);
 
 	/**
 	* @brief Draws a group of benches in the 3D environment.

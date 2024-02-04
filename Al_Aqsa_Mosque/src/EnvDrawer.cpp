@@ -1756,9 +1756,12 @@ void EnvDrawer::drawBench() {
 	ppm;
 }
 
-void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture) {
+void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture,int flag) {
 	
-	db cntS[6] = { 5,5,5,5,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
+	db cntS[6] = { 3,5,5,5,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
+	if (flag == 1) {
+		cntT[0] = 2;
+	}
 	glColor3f(1, 1, 1);
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < i +1; j++) {
@@ -1777,8 +1780,8 @@ void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, 
 
 }
 
-void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count) {
-	drawStairs(unitConstraints, count, stonesTexture[7]);
+void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count,int flag) {
+	drawStairs(unitConstraints, count, stonesTexture[7],flag);
 }
 
 void EnvDrawer::drawBenchesGroub() {
@@ -1904,9 +1907,30 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 
 	double sCount[6] = { 1,30,50,50,60,60 }, tCount[6] = { 1,30,1,1,1,1 };
 	pshm;
-	glTranslatef(-17, -10, -27);
-	envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
+	glTranslatef(-14, -10, -27);
+	/*envBoxDrawer.drawOutside(Constraints(34, 0.7, 38),
+		ground, sCount, tCount);*/
+	tCount[1] = 27;
+	envBoxDrawer.drawOutside(Constraints(31, 0.7, 38),
 		ground, sCount, tCount);
+
+	sCount[2] = sCount[3] = 10;
+	pshm;
+	glTranslated(-3, 0, 26.5);
+	sCount[1] = 9;
+	tCount[1] = 3;
+	envBoxDrawer.drawOutside(Constraints(3, 0.7, 11.5),
+		ground, sCount, tCount);
+	ppm;
+
+	pshm;
+	glTranslated(-3, 0,0);
+	sCount[1] = 17.75;
+	tCount[1] = 3;
+	envBoxDrawer.drawOutside(Constraints(3, 0.7, 22.5),
+		ground, sCount, tCount);
+	ppm;
+
 
 	ppm;
 
@@ -1943,13 +1967,13 @@ void EnvDrawer::drawDomeOfTheRockSquare() {
 	// left middle
 	pshm;
 	glRotatef(-90, 0, 1, 0);
-	glTranslatef(-5, -9.35, 17);
-	drawStairs(Constraints(5, 0.05, 0.1), 14);
+	glTranslatef(-5, -9.3, 14);
+	drawStairs(Constraints(5, 0.05, 0.2), 14,1);
 	ppm;
 
 	pshm;
 	glRotatef(-90, 0, 1, 0);
-	glTranslatef(-4.4, -7.72, 16.75);
+	glTranslatef(-4.3, -7.72, 13.75);
 	drawArchway(0.4, 1.5, 4,
 		18, sectorsCount, sectorsCount
 		, sectorsCount
@@ -2395,4 +2419,5 @@ void EnvDrawer::draw(bool* keys) {
 	glCallList(envDisplayList);
 	drawAllGardens();
 	drawDynamic(keys);
+
 }
