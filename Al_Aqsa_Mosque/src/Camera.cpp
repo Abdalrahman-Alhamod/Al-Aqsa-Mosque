@@ -279,7 +279,7 @@ void Camera::cameraInit(HWND hWnd)
 	{
 		camera[i] = new Camera();
 
-		camera[i]->Position = Vector3dCreate(0.0, -9, 0.0);
+		camera[i]->Position = Vector3dCreate(-4, -9, +9);
 		camera[i]->View = Vector3dCreate(0.0, 0.0, -1.0);
 		camera[i]->RightVector = Vector3dCreate(1.0, 0.0, 0.0);
 		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
@@ -287,6 +287,9 @@ void Camera::cameraInit(HWND hWnd)
 		camera[i]->RotatedX = camera[i]->RotatedY = camera[i]->RotatedZ = 0.0;
 		camera[i]->SoundManager.Initialize(hWnd);
 		camera[i]->SoundManager.CreateSound((char*)"assets/sounds/footsteps.wav", Camera::camera[i]->soundBuffer);
+
+		camera[i]->RotateX(20);
+		camera[i]->RotateY(-6);
 	}
 
 }
@@ -388,6 +391,7 @@ void Camera::SetRotateX(GLfloat Angle)
 void Camera::decodeKeyboard(bool* keys, float speed)
 {
 	bool playSound = false;
+	const float arrowMovementSpeed = speed + 3;
 	// Translation controls
 	if (keys['W']) {
 		Camera::MoveForward(1 * speed); // Move camera forward
@@ -427,17 +431,17 @@ void Camera::decodeKeyboard(bool* keys, float speed)
 
 	// Camera orientation adjustment using arrow keys
 	if (keys[VK_DOWN])
-		Camera::RotateX(-1 * (speed + 5)); // Rotate camera around X-axis (look up)
+		Camera::RotateX(-1 * arrowMovementSpeed); // Rotate camera around X-axis (look up)
 	if (keys[VK_UP])
-		Camera::RotateX(1 * (speed + 5)); // Rotate camera around X-axis (look down)
+		Camera::RotateX(1 * arrowMovementSpeed); // Rotate camera around X-axis (look down)
 	if (keys[VK_LEFT])
-		Camera::RotateY(1 * (speed + 5)); // Rotate camera around Y-axis (look left)
+		Camera::RotateY(1 * arrowMovementSpeed); // Rotate camera around Y-axis (look left)
 	if (keys[VK_RIGHT])
-		Camera::RotateY(-1 * (speed + 5)); // Rotate camera around Y-axis (look right)
+		Camera::RotateY(-1 * arrowMovementSpeed); // Rotate camera around Y-axis (look right)
 	if (keys['Z'])
-		Camera::RotateZ(1 * (speed + 5));  // Rotate camera around Z-axis (roll clockwise)
+		Camera::RotateZ(1 * arrowMovementSpeed);  // Rotate camera around Z-axis (roll clockwise)
 	if (keys['X'])
-		Camera::RotateZ(-1 * (speed + 5)); // Rotate camera around Z-axis (roll counterclockwise)
+		Camera::RotateZ(-1 * arrowMovementSpeed); // Rotate camera around Z-axis (roll counterclockwise)
 }
 
 

@@ -1232,7 +1232,7 @@ void EnvDrawer::drawBuidling(const float size, const int buildingTextureIndex) {
 }
 
 void EnvDrawer::drawBuidling(const float size, const float hight, const int buildingTextureIndex) {
-	envBoxDrawer.drawOutside(Constraints(10 * size, 10 + hight, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
+	envBoxDrawer.drawOutside(Constraints(10 * size, 7 + hight, 10 * size), buildingTexture[buildingTextureIndex], stonesTexture[buildingTextureIndex]);
 }
 
 void EnvDrawer::controlLightSourcePosition(bool* keys) {

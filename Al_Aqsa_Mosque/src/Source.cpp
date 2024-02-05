@@ -226,7 +226,9 @@ void draw(float x, float z, bool det)
 
 db openTheDoor = 0;
 
-float hight = 9.3, modelHight = 9.3, walking = 0;
+float hight = 9.3, modelHight = 9.3, walking = 0,
+FMCameraSpeed = 0.15, // Free Mode Camera Speed
+PMCameraSpeed = 0.01; // Person Mode Camera Speed
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
@@ -291,25 +293,21 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 	if (camera->getMode() == THIRD_PERSON_CAMERA)
 	{
-		if (keys[VK_SHIFT]) {
-			camera->decodeKeyboard(keys, 0.05);
-		}
-		else {
-			camera->decodeKeyboard(keys, 0.01);
-		}
+		camera->decodeKeyboard(keys, PMCameraSpeed + (keys[VK_SHIFT] * 0.04));
+
 		Point p = camera->getPosition();
 		float angel = 180 + camera->getRotatedY(), r = 0.25;
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
 		p.y = -0.1 * 0.04 * cos(20 * walking) - modelHight;
-		walking += keys['W'];
+
+		walking += keys['W'] | keys['A'] | keys['S'] | keys['D'];
+
 		personDrawer.drawPerson(p, angel, 2);
 	}
-	else {
-		camera->decodeKeyboard(keys, 0.2 + keys[VK_SHIFT]);
-
-	}
+	else
+		camera->decodeKeyboard(keys, FMCameraSpeed + keys[VK_SHIFT]);
 
 	envDrawer.handleSounds(camera->getPosition());
 
