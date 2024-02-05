@@ -368,7 +368,7 @@ private:
 	static Model_3DS* fountainModel;
 	static Model_3DS* birdModel;
 	static Model_3DS* quraanModel;
-	int ground, grass, stone, wall, passage, street, sunTexture, lightTexture;
+	int ground,ground2, grass, stone, wall, passage, street, sunTexture, lightTexture;
 	int SKYFRONT, SKYBACK, SKYLEFT, SKYRIGHT, SKYUP, SKYDOWN;
 	int CitySKYFRONT, CitySKYBACK, CitySKYLEFT, CitySKYRIGHT, CitySKYUP, CitySKYDOWN;
 	int CloudsSKYFRONT, CloudsSKYBACK, CloudsSKYLEFT, CloudsSKYRIGHT, CloudsSKYUP, CloudsSKYDOWN;

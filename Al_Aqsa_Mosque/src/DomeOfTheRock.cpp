@@ -166,6 +166,15 @@ DomeOfTheRock::DomeOfTheRock() {
 	YUSUF2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf2.bmp");
 	YUSUF3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf3.bmp");
 	YUSUF4 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf4.bmp");
+	YUSUF5 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/yusuf5.bmp");
+	
+	MOSES1 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/moses1.bmp");
+	MOSES2 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/moses2.bmp");
+	MOSES3 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/moses3.bmp");
+	MOSES4 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/moses4.bmp");
+	MOSES5 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/moses5.bmp");
+	MOSES6 = LoadTexture((char*)"assets/domeOfTheRock/domesAround/pebbles.bmp");
+
 
 
 	STONEARCH = LoadTexture((char*)"assets/domeOfTheRock/domesAround/stonearch.bmp");
@@ -177,6 +186,7 @@ DomeOfTheRock::DomeOfTheRock() {
 	domeOfTheRockDisplayList = glGenLists(1);
 	glNewList(domeOfTheRockDisplayList, GL_COMPILE);
 	draw(90);
+	drawWhiteFence();
 	glEndList();
 
 	dome1DisplayList = glGenLists(1);
@@ -224,7 +234,20 @@ DomeOfTheRock::DomeOfTheRock() {
 	drawDomeOfYusuf();
 	glEndList();
 
+	dome10DisplayList = glGenLists(1);
+	glNewList(dome10DisplayList, GL_COMPILE);
+	drawDomeOfYusufAgha();
+	glEndList();
+
+	dome11DisplayList = glGenLists(1);
+	glNewList(dome11DisplayList, GL_COMPILE);
+	drawDomeOfMoses();
+	glEndList();
+
 }
+
+
+///dome of the rock functions
 
 void DomeOfTheRock::arch(db sectorCount, db radius, db thickness) {
 
@@ -2619,7 +2642,7 @@ void DomeOfTheRock::draw() {
 }
 
 
-//other domes
+///other domes
 
 void DomeOfTheRock::drawDomeOfSoulsPillar(db pillarHeight, db pillarRadius, db basesWidth, int texture) {
 
@@ -4133,7 +4156,287 @@ void DomeOfTheRock::drawDomeOfYusuf() {
 	ppm;
 }
 
+void DomeOfTheRock::drawDomeOfMoses() {
+	Box room;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
 
+#pragma region room
+
+	textures[0] = 0;
+	textures[1] = ROOM[4];
+	textures[2] = MOSES1;
+	textures[3] = MOSES1;
+	textures[4] = MOSES1;
+	textures[5] = MOSES1;
+	room.drawOutside(Constraints(15, 10, 15), textures);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D,MOSES6);
+	mosqueDrawer.drawDome(Point(7.5, 14, 7.5), 1.15, Color(256, 256, 256), 16, false, false, true, false);
+	pshm;
+#pragma endregion
+
+#pragma region top
+
+	glBindTexture(GL_TEXTURE_2D, MOSES4);
+	glTranslatef(7.2, 3, 15);
+	Cylinder cyl = Cylinder(2, 2, 6, 20, 1, true, 2);
+	cyl.draw();
+
+	cyl.set(5, 11, 10, 4, 1, false, 2, false, true);
+	glTranslated(0.3, 2.1, -7.5);
+	glRotated(45, 0, 1, 0);
+	glBindTexture(GL_TEXTURE_2D, MOSES4);
+	cyl.draw();
+
+	glTranslated(0, 6, 0);
+	glBindTexture(GL_TEXTURE_2D, MOSES3);
+	glRotated(180, 0, 0, 1);
+	cyl.set(6, 6, 3, 8, 1, true, 2, false, true);
+	cyl.draw();
+
+	glTranslated(0, -1.5, 0);
+	glBindTexture(GL_TEXTURE_2D, STONEARCH);
+	glRotated(180, 0, 0, 1);
+	cyl.set(6.2, 6.2, 0.5, 20, 1, true, 2, false, true);
+	cyl.draw();
+
+	ppm;
+
+	distxt;
+#pragma endregion
+
+#pragma region platform
+
+	textures[0] = 0;
+	textures[1] = MOSES5;
+	textures[2] = MOSES5;
+	textures[3] = MOSES5;
+	textures[4] = MOSES5;
+	textures[5] = MOSES5;
+	glTranslated(-2.5, 0, -7.5);
+	room.drawOutside(Constraints(20, 0.5, 30), textures);
+
+#pragma endregion	
+
+}
+
+void DomeOfTheRock::drawDomeOfYusufAgha() {
+	Box room;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
+
+	textures[0] = 0;
+	textures[1] = ROOM[4];
+	textures[2] = ROOM[23];
+	textures[3] = ROOM[23];
+	textures[4] = ROOM[23];
+	textures[5] = ROOM[23];
+	glTranslated(-0.5, 0, 0);
+	room.drawOutside(Constraints(9, 7.5, 8), textures);
+	glTranslated(0.5, 0, 0);
+
+	textures[5] = YUSUF5;
+	textures[4] = YUSUF5;
+	pshm;
+	glTranslated(0.5, 0, -1);
+	room.drawOutside(Constraints(7, 7.5, 1), textures);
+	glTranslated(0, 0, 9);
+	room.drawOutside(Constraints(7, 7.5, 1), textures);
+	ppm;
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, ROOM[2]);
+	mosqueDrawer.drawDome(Point(4, 7, 4), 0.7, Color(256, 256, 256), 16, false, false, true, false);
+	distxt;
+
+}
+
+void DomeOfTheRock::drawWhiteFence(db length) {
+	Box room;
+	int textures[8] = { 0,0,0,0,0,0,0,0 };
+	pshm;
+
+	glScaled(0.12, 0.12, 0.12);
+	textures[0] = 0;
+	textures[1] = LIME_STONE1;
+	textures[2] = LIME_STONE1;
+	textures[3] = LIME_STONE1;
+	textures[4] = LIME_STONE1;
+	textures[5] = LIME_STONE1;
+	room.drawOutside(Constraints(length, 0.6, 0.5), textures);
+
+	pshm;
+	glTranslated(length/2.0, 0.6, 0.25);
+	entxt;
+	glBindTexture(GL_TEXTURE_2D, LIME_STONE1);
+	Cylinder cyl = Cylinder(0.3, 0.3, length - 0.01 ,20,1,1,1);
+	cyl.draw();
+	distxt;
+	ppm;
+
+	ppm;
+}
+
+void DomeOfTheRock::drawWhiteFence() {
+
+#pragma region southern fence
+
+	pshm;
+	glTranslatef(0, -9.3, 10.94);
+
+	pshm;
+	glTranslatef(-11.9, 0, 0);
+	drawWhiteFence(27.5);
+	ppm;
+
+	pshm;
+	glTranslatef(-8, 0, 0);
+	drawWhiteFence(18);
+	ppm;
+
+	pshm;
+	glTranslatef(-0.5, 0, 0);
+	drawWhiteFence(30);
+	ppm;
+
+	pshm;
+	glTranslatef(3.1, 0, 0);
+	drawWhiteFence(30);
+	ppm;
+
+	pshm;
+	glTranslatef(6.7, 0, 0);
+	drawWhiteFence(35);
+	ppm;
+
+	pshm;
+	glTranslatef(14.9, 0, 0);
+	drawWhiteFence(17);
+	ppm;
+
+	ppm;
+
+#pragma endregion
+
+#pragma region eastern fence
+
+	pshm;
+	glTranslatef(16.93, -9.3, 11);
+	glRotated(90, 0, 1, 0);
+
+	drawWhiteFence(25);
+
+	pshm;
+	glTranslatef(3, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslatef(6, 0, 0);
+	drawWhiteFence(41);
+	ppm;
+
+	pshm;
+	glTranslatef(17.3, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslatef(20.3, 0, 0);
+	drawWhiteFence(32.5);
+	ppm;
+
+	pshm;
+	glTranslatef(26, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslatef(29, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslatef(32, 0, 0);
+	drawWhiteFence(50);
+	ppm;
+
+	ppm;
+
+#pragma endregion
+
+#pragma region northern fence
+
+
+	pshm;
+	glTranslatef(17, -9.3, -27);
+
+	glRotated(180, 0, 1, 0);
+
+	pshm;
+	drawWhiteFence(35);
+	ppm;
+
+	pshm;
+	glTranslated(14, 0, 0);
+	drawWhiteFence(10);
+	ppm;
+
+	pshm;
+	glTranslated(28.4, 0, 0);
+	drawWhiteFence(8);
+	ppm;
+
+	pshm;
+	glTranslated(31, 0, -22.5);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslated(31, 0, -26.5);
+	drawWhiteFence(25);
+	ppm;
+
+	ppm;
+#pragma endregion
+
+#pragma region western fence
+	pshm;
+	glTranslatef(-17, -9.3, 5.3);
+
+	glRotated(90, 0, 1, 0);
+
+	pshm;
+	drawWhiteFence(48.5);
+	ppm;
+
+	pshm;
+	glTranslated(9.8, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslated(12.8, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslated(15.8, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslated(18.8, 0, 0);
+	drawWhiteFence(25);
+	ppm;
+
+	pshm;
+	glTranslated(21.8, 0, 0);
+	drawWhiteFence(40);
+	ppm;
+
+	ppm;
+#pragma endregion
+
+}
 
 //display lists
 
@@ -4171,4 +4474,12 @@ void DomeOfTheRock::drawWesternDomesDisplayList() {
 
 void DomeOfTheRock::drawDomeOfYusufDisplayList() {
 	glCallList(dome9DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfMosesDisplayList() {
+	glCallList(dome11DisplayList);
+}
+
+void DomeOfTheRock::drawDomeOfYusufAghaDisplayList() {
+	glCallList(dome10DisplayList);
 }

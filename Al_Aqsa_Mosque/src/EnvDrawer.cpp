@@ -81,6 +81,7 @@ EnvDrawer::EnvDrawer(HWND hWnd) {
 	glEnable(GL_TEXTURE_2D);
 
 	ground = LoadTexture((char*)"assets/materials/ground.bmp", 255);
+	ground2 = LoadTexture((char*)"assets/materials/ground2.bmp", 255);
 	grass = LoadTexture((char*)"assets/materials/grass.bmp", 255);
 	stone = LoadTexture((char*)"assets/materials/stone1.bmp", 255);
 	wall = LoadTexture((char*)"assets/materials/wall1.bmp", 255);
@@ -1758,10 +1759,57 @@ void EnvDrawer::drawBench() {
 
 void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, const int texture,int flag) {
 	
+	
+	int textures[6];
+	pshm;
 	db cntS[6] = { 3,5,5,5,1,1 }; db cntT[6] = { 1,1,1,1,1,1 };
 	if (flag == 1) {
 		cntT[0] = 2;
 	}
+
+	if (flag != 1)
+	{
+
+		cntT[4] = cntT[5] = 2;
+		cntS[4] = cntS[5] = 2;
+
+		cntS[0] = cntS[1] = 1;
+		cntT[0] = cntT[1] = 2;
+
+		cntS[2] = cntS[3] = 0.5;
+		cntT[2] = cntT[3] = 2;
+
+
+		textures[0] = ground2;
+		textures[1] = textures[2] = textures[3] = ground2;
+		textures[4] = textures[5] = ground;
+
+		pshm;
+		glTranslated(0, 0.05, 0);
+		pshm;
+		glRotated(180, 0, 0, 1);
+		envBoxDrawer.drawOutside(Constraints(0.1, 0.05 + unitConstraints.height * count, unitConstraints.length * count), ground,cntS,cntT);
+		ppm;
+		glTranslated(unitConstraints.width + 0.1, 0, 0);
+		pshm;
+		glRotated(180, 0, 0, 1);
+		envBoxDrawer.drawOutside(Constraints(0.1, 0.05 + unitConstraints.height * count, unitConstraints.length * count), ground, cntS,cntT);
+		ppm;
+		ppm;
+
+	glTranslated(0, 0.05, 0);
+	}
+
+	cntT[4] = cntT[5] = 1;
+	cntS[4] = cntS[5] = 1;
+
+	cntS[2] = cntS[3] = 5;
+	cntT[2] = cntT[3] = 1;
+
+	cntS[0] = 3; cntS[1] = 5;
+	cntT[0] = cntT[1] = 1;
+
+
 	glColor3f(1, 1, 1);
 	for (int i = 0; i < count; i++) {
 		for (int j = 0; j < i +1; j++) {
@@ -1776,7 +1824,7 @@ void EnvDrawer::drawStairs(const Constraints& unitConstraints, const int count, 
 			ppm;
 		}
 	}
-
+	ppm;
 
 }
 

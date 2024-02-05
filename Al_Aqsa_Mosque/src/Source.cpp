@@ -357,6 +357,20 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawDomeOfYusufDisplayList();
 	ppm;
 
+	domeOfTheRock.drawWhiteFence();
+
+	pshm;
+	glTranslatef(-22, -10, 3);
+	glScalef(0.09, 0.09, 0.09);
+	domeOfTheRock.drawDomeOfMosesDisplayList();
+	ppm;
+
+	pshm;
+	glTranslatef(-18.5, -10, 30);
+	glScalef(0.15, 0.15, 0.15);
+	domeOfTheRock.drawDomeOfYusufAghaDisplayList();
+	ppm;
+
 	pshm;
 	glTranslatef(-9, -9.3, 3);
 	glScalef(0.07, 0.07, 0.07);

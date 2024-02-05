@@ -101,6 +101,14 @@ public:
 
 	void drawDomeOfYusuf();
 
+	void drawDomeOfYusufAgha();
+
+	void drawDomeOfMoses();
+
+	void drawWhiteFence(db length);
+
+	void drawWhiteFence();
+
 
 
 	//display lists
@@ -123,6 +131,10 @@ public:
 
 	void drawDomeOfYusufDisplayList();
 
+	void drawDomeOfYusufAghaDisplayList();
+
+	void drawDomeOfMosesDisplayList();
+
 
 
 private:
@@ -144,7 +156,8 @@ private:
 		CARPET, KHALILI1, KHALILI2, KHALILI3, KHALILI4,
 		NAHAWYA1,NAHAWYA2,NAHAWYA3,
 		SUBDOME,
-		YUSUF1,YUSUF2,YUSUF3,YUSUF4,
+		YUSUF1,YUSUF2,YUSUF3,YUSUF4,YUSUF5,
+		MOSES1,MOSES2,MOSES3,MOSES4,MOSES5,MOSES6,
 		ASCENTION,STONEARCH,
 		CHAIN1, CHAIN2, CHAIN3, CHAIN4, CHAIN5, CHAIN6, CHAIN7, CHAIN8;
 		
@@ -158,7 +171,7 @@ private:
 	int domeOfTheRockDisplayList,
 		dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList,
 		dome5DisplayList, dome6DisplayList, dome7DisplayList, dome8DisplayList,
-		dome9DisplayList;
+		dome9DisplayList, dome10DisplayList, dome11DisplayList;
 
 
 };
