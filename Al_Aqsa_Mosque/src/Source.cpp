@@ -360,7 +360,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawWhiteFenceDisplayList();
 
 	pshm;
-	glTranslatef(-22, -10, 3);
+	glTranslatef(-20.8, -10, 3);
 	glScalef(0.09, 0.09, 0.09);
 	domeOfTheRock.drawDomeOfMosesDisplayList();
 	ppm;
