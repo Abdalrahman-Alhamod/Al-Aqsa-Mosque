@@ -186,7 +186,6 @@ DomeOfTheRock::DomeOfTheRock() {
 	domeOfTheRockDisplayList = glGenLists(1);
 	glNewList(domeOfTheRockDisplayList, GL_COMPILE);
 	draw(90);
-	drawWhiteFence();
 	glEndList();
 
 	dome1DisplayList = glGenLists(1);
@@ -242,6 +241,11 @@ DomeOfTheRock::DomeOfTheRock() {
 	dome11DisplayList = glGenLists(1);
 	glNewList(dome11DisplayList, GL_COMPILE);
 	drawDomeOfMoses();
+	glEndList();
+
+	fence = glGenLists(1);
+	glNewList(fence, GL_COMPILE);
+	drawWhiteFence();
 	glEndList();
 
 }
@@ -4482,4 +4486,8 @@ void DomeOfTheRock::drawDomeOfMosesDisplayList() {
 
 void DomeOfTheRock::drawDomeOfYusufAghaDisplayList() {
 	glCallList(dome10DisplayList);
+}
+
+void DomeOfTheRock::drawWhiteFenceDisplayList() {
+	glCallList(fence);
 }

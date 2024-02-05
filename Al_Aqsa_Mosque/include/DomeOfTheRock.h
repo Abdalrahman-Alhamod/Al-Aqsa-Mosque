@@ -135,6 +135,8 @@ public:
 
 	void drawDomeOfMosesDisplayList();
 
+	void drawWhiteFenceDisplayList();
+
 
 
 private:
@@ -171,7 +173,7 @@ private:
 	int domeOfTheRockDisplayList,
 		dome1DisplayList, dome2DisplayList, dome3DisplayList, dome4DisplayList,
 		dome5DisplayList, dome6DisplayList, dome7DisplayList, dome8DisplayList,
-		dome9DisplayList, dome10DisplayList, dome11DisplayList;
+		dome9DisplayList, dome10DisplayList, dome11DisplayList, fence;
 
 
 };

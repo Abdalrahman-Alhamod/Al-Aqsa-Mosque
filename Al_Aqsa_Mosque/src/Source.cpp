@@ -344,7 +344,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawDomeOfTheChainDisplayList();
 	ppm;
 
-
 	pshm;
 	glTranslatef(-17, -9.3, 9.75);
 	glScalef(0.10, 0.10, 0.10);
@@ -357,7 +356,8 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawDomeOfYusufDisplayList();
 	ppm;
 
-	domeOfTheRock.drawWhiteFence();
+
+	domeOfTheRock.drawWhiteFenceDisplayList();
 
 	pshm;
 	glTranslatef(-22, -10, 3);
