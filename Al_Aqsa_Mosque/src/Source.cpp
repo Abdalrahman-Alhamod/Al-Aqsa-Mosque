@@ -200,10 +200,10 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	// Initialize Console
 	//console.init();
-	
+
 	// Initialize Objects
 
-	
+
 	domeOfTheRock = DomeOfTheRock();
 
 	mosqueDrawer = MosqueDrawer();
@@ -211,6 +211,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
 	personDrawer = PersonDrawer();
+
+	ToggleFullscreen();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -272,9 +274,16 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 		}
 
 		//-16.9,9.18 -> -18.33,5.62
-		if (x >= -18.73 && x <= -17.3 && ((z >= 5.63 && z <= 9.18) || (z >= -4.9 && z <= -0.1) || (z >= -26.4 && z <= -21.57)))
+		if (x >= -18.73 && x <= -17.3 && ((z >= 5.63 && z <= 9.18) || (z >= -26.4 && z <= -21.57)))
 		{
 			hight = 4 / 13.0 * (-18.73 - x) + 9.5;
+			if (camera->getMode() == THIRD_PERSON_CAMERA)
+				modelHight = hight;
+		}
+
+		if (x >= -17.1 && x <= -14.8 && (z >= -4.9 && z <= -0.1))
+		{
+			hight = 5 / 13.0 * (-17.1 - x) + 10;
 			if (camera->getMode() == THIRD_PERSON_CAMERA)
 				modelHight = hight;
 		}
@@ -287,7 +296,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 				modelHight = hight;
 		}
 
-		camera->setY(-hight + 0.3);
+		camera->setY(-hight + 0.24);
 		//console.print(to_string(hight));
 	}
 
@@ -300,9 +309,9 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		p.x += r * sin(angel * PIdiv180);
 		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.1 * 0.04 * cos(20 * walking) - modelHight;
+		p.y = -0.1 * 0.04 * cos(walking) - modelHight;
 
-		walking += keys['W'] | keys['A'] | keys['S'] | keys['D'];
+		walking += (keys['W'] | keys['A'] | keys['S'] | keys['D']) * (0.8 + keys[VK_SHIFT] * 0.5);
 
 		personDrawer.drawPerson(p, angel, 2);
 	}
