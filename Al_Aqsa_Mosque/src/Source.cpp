@@ -181,6 +181,50 @@ void testReflection() {
 
 }
 
+MSG msg;
+void preventNotResponding() {
+	while (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+}
+
+std::vector<std::wstring> loadingImages = {
+		L"assets/loading/loading_0.bmp",
+		L"assets/loading/loading_1.bmp",
+		L"assets/loading/loading_2.bmp",
+		L"assets/loading/loading_3.bmp",
+		L"assets/loading/loading_4.bmp",
+		L"assets/loading/loading_5.bmp",
+		L"assets/loading/loading_6.bmp"
+};
+
+void showLoading(int index) {
+	// Ensure the index is within the range of loadingImages
+	if (index < 0 || index >= loadingImages.size()) {
+		// Handle invalid index
+		return;
+	}
+
+	const auto& imagePath = loadingImages[index];
+
+	// Load and display the current loading image
+	HBITMAP hBitmap = (HBITMAP)LoadImageW(NULL, reinterpret_cast<LPCWSTR>(imagePath.c_str()), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	if (hBitmap != NULL) {
+		HDC hdc = GetDC(hWnd);
+		HDC hdcMem = CreateCompatibleDC(hdc);
+		HBITMAP hBitmapOld = (HBITMAP)SelectObject(hdcMem, hBitmap);
+		BitBlt(hdc, 0, 0, 1920, 1080, hdcMem, 0, 0, SRCCOPY);
+		SelectObject(hdcMem, hBitmapOld);
+		DeleteDC(hdcMem);
+		ReleaseDC(hWnd, hdc);
+
+		// Simulate loading time for each image
+		Sleep(1000); // Example: 1 second delay
+	}
+}
+
+
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -191,12 +235,17 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
+	SetForegroundWindow(hWnd);
+	SetFocus(hWnd);
 
-
+	showLoading(0);
 
 	// Initialize Camera
 	Camera::cameraInit(hWnd);
 	Camera::changeMode();
+
+	preventNotResponding();
+	showLoading(1);
 
 	// Initialize Console
 	//console.init();
@@ -206,11 +255,27 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	domeOfTheRock = DomeOfTheRock();
 
+	preventNotResponding();
+	showLoading(2);
+
 	mosqueDrawer = MosqueDrawer();
+
+	preventNotResponding();
+	showLoading(3);
+
 	envDrawer = EnvDrawer(hWnd);
+
+	preventNotResponding();
+	showLoading(4);
+
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
+	preventNotResponding();
+	showLoading(5);
+
 	personDrawer = PersonDrawer();
+
+	showLoading(6);
 
 	ToggleFullscreen();
 
