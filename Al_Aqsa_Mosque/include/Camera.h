@@ -170,8 +170,6 @@ public:
     float getRotatedY();
 
     int getMode();
-    
-       
 };
 
 #endif 

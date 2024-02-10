@@ -153,7 +153,7 @@ void Camera::posInit()
 		for (int j = 270; j <= 395; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
-	//sahn
+	// Dom square
 	for (int i = -172; i <= 176; ++i)
 		for (int j = -272; j <= 116; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
@@ -179,7 +179,7 @@ void Camera::posInit()
 	for (int i = 52; i <= 90; ++i)
 		for (int j = -287; j <= -274; ++j)
 			Camera::pos[i + 350][j + 500] = 1;
-	for (int i = -80; i <= -56; ++i)
+	for (int i = -43; i <= -5; ++i)
 		for (int j = -300; j <= -260; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 	for (int i = 62; i <= 80; ++i)
@@ -203,7 +203,7 @@ void Camera::posInit()
 		for (int j = 65; j <= 85; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
-		for (int j = -40; j <= -10; ++j)
+		for (int j = -75; j <= 0; ++j)
 			Camera::pos[i + 350][j + 500] = 0;
 
 		for (int j = -254; j <= -226; ++j)
@@ -279,7 +279,7 @@ void Camera::cameraInit(HWND hWnd)
 	{
 		camera[i] = new Camera();
 
-		camera[i]->Position = Vector3dCreate(-4, -9, +9);
+		camera[i]->Position = Vector3dCreate(-4, -8.95, +9);
 		camera[i]->View = Vector3dCreate(0.0, 0.0, -1.0);
 		camera[i]->RightVector = Vector3dCreate(1.0, 0.0, 0.0);
 		camera[i]->Up = Vector3dCreate(0.0, 1.0, 0.0);
@@ -478,12 +478,11 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 		Camera::SetRotateX(0.0f);
 
 		// Optionally, you can also reset other camera properties like position
-		Position = Vector3dCreate(0.0, 0.0, 0.0);
+		Position = Vector3dCreate(-4, -8.95, +9);
 		View = Vector3dCreate(0.0, 0.0, -1.0);
 		RightVector = Vector3dCreate(1.0, 0.0, 0.0);
 		Up = Vector3dCreate(0.0, 1.0, 0.0);
 		RotatedX = RotatedY = RotatedZ = 0.0;
-
 	}
 }
 

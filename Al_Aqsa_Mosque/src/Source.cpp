@@ -237,6 +237,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	SetForegroundWindow(hWnd);
 	SetFocus(hWnd);
+	ToggleFullscreen();
 
 	showLoading(0);
 
@@ -251,7 +252,6 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	//console.init();
 
 	// Initialize Objects
-
 
 	domeOfTheRock = DomeOfTheRock();
 
@@ -274,10 +274,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	showLoading(5);
 
 	personDrawer = PersonDrawer();
-
 	showLoading(6);
-
-	ToggleFullscreen();
 
 	return TRUE;										// Initialization Went OK
 }
@@ -293,13 +290,12 @@ void draw(float x, float z, bool det)
 
 db openTheDoor = 0;
 
-float hight = 9.3, modelHight = 9.3, walking = 0,
+float hight = 9.3, walking = 0, speed = 0.15, delt = 0,
 FMCameraSpeed = 0.15, // Free Mode Camera Speed
 PMCameraSpeed = 0.01; // Person Mode Camera Speed
 
 void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 	glClearStencil(0);
@@ -317,75 +313,91 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera->Render();
 	camera->decodeMouse(mouseX, mouseY, isClicked, isRClicked);
 
+
 	if (camera->getMode() != FREE_CAMERA)
 	{
-		float x = camera->getPosition().x, z = camera->getPosition().z;
+		float x = camera->getPosition().x, z = camera->getPosition().z, angel = 180 + camera->getRotatedY(), r = 0.25;
+
+		x += r * sin(angel * PIdiv180);
+		z += r * cos(angel * PIdiv180);
 
 		//console.print(to_string(x) + '+' + to_string(z));
 		// -0.75, 11 ->  -5.8 , 12.1
-		if (z >= 11.4 && z <= 12.7 && ((x >= -5.8 && x <= -0.69) || (x >= 10.9 && x <= 14.6)))
+		if (z >= 11 && z <= 12.4 && ((x >= -5.8 && x <= -0.69) || (x >= 10.9 && x <= 14.6)))
 		{
-			hight = 4 / 13.0 * (z - 11.4) + 9.3;
-			if (camera->getMode() == THIRD_PERSON_CAMERA)
-				modelHight = hight;
+			hight = 3 / 6.0 * (z - 11) + 9.1;
+			camera->setY(-hight + .15);
 		}
 
+
 		//-8.69,-28.69 -> -5.0-27.39
-		if (z >= -28.7 && z <= -27.4 && ((x >= -8.7 && x <= -5) || (x >= 5.2 && x <= 9)))
+		if (z >= -28.4 && z <= -26.9 && ((x >= -4.3 && x <= -0.5) || (x >= 5.2 && x <= 10.5)))
 		{
-			hight = 4 / 13.0 * (-28.7 - z) + 9.5;
-			if (camera->getMode() == THIRD_PERSON_CAMERA)
-				modelHight = hight;
+			hight = 3 / 6.0 * (-28.4 - z) + 9.82;
+			camera->setY(-hight + .15);
 		}
 
 		//-16.9,9.18 -> -18.33,5.62
-		if (x >= -18.73 && x <= -17.3 && ((z >= 5.63 && z <= 9.18) || (z >= -26.4 && z <= -21.57)))
+		if (x >= -18.4 && x <= -17.1 && ((z >= 5.63 && z <= 9.18) || (z >= -26.4 && z <= -21.57)))
 		{
-			hight = 4 / 13.0 * (-18.73 - x) + 9.5;
-			if (camera->getMode() == THIRD_PERSON_CAMERA)
-				modelHight = hight;
+			hight = 3 / 5.5 * (-18.4 - x) + 9.82;
+			camera->setY(-hight + .15);
 		}
 
-		if (x >= -17.1 && x <= -14.8 && (z >= -4.9 && z <= -0.1))
+		if (x >= -16.7 && x <= -14.1 && z >= -4.9 && z <= -0.1)
 		{
-			hight = 5 / 13.0 * (-17.1 - x) + 10;
-			if (camera->getMode() == THIRD_PERSON_CAMERA)
-				modelHight = hight;
+			hight = 4 / 15.0 * (-16.7 - x) + 9.8;
+			camera->setY(-hight + .15);
 		}
+
 
 		//18.7,-6.25 -> 17.5,-0.06
-		if (x >= 17.5 && x <= 18.7 && z >= -6.25 && z <= -0.06)
+		if (x >= 17.1 && x <= 18.5 && z >= -6.25 && z <= -0.06)
 		{
-			hight = 4 / 13.0 * (x - 17.5) + 9.3;
-			if (camera->getMode() == THIRD_PERSON_CAMERA)
-				modelHight = hight;
+			hight = 3 / 6.0 * (x - 17.1) + 9.1;
+			camera->setY(-hight + .15);
 		}
 
-		camera->setY(-hight + 0.24);
+		//camera->setY(-hight + 0.15);
 		//console.print(to_string(hight));
 	}
 
-	if (camera->getMode() == THIRD_PERSON_CAMERA)
+	if (camera->getMode() != FREE_CAMERA)
 	{
-		camera->decodeKeyboard(keys, PMCameraSpeed + (keys[VK_SHIFT] * 0.04));
+		speed = PMCameraSpeed + (keys[VK_SHIFT] * 0.07);
 
 		Point p = camera->getPosition();
-		float angel = 180 + camera->getRotatedY(), r = 0.25;
 
-		p.x += r * sin(angel * PIdiv180);
-		p.z += r * cos(angel * PIdiv180);
-		p.y = -0.1 * 0.04 * cos(walking) - modelHight;
+		if (keys['W'] || keys['A'] || keys['S'] || keys['D'])
+		{
+			walking += (0.8 + keys[VK_SHIFT] * 0.5);
+			delt = 0.004 * cos(walking);
+		}
+		else
+			delt = 0;
 
-		walking += (keys['W'] | keys['A'] | keys['S'] | keys['D']) * (0.8 + keys[VK_SHIFT] * 0.5);
+		if (camera->getMode() == THIRD_PERSON_CAMERA)
+		{
+			float angel = 180 + camera->getRotatedY(), r = 0.25;
 
-		personDrawer.drawPerson(p, angel, 2);
+			p.x += r * sin(angel * PIdiv180);
+			p.z += r * cos(angel * PIdiv180);
+			p.y += -.35 + 0.004 * cos(walking);
+
+			personDrawer.drawPerson(p, angel, 2);
+		}
+		else
+			camera->setY(p.y + delt);
 	}
 	else
-		camera->decodeKeyboard(keys, FMCameraSpeed + keys[VK_SHIFT]);
+		speed = FMCameraSpeed + keys[VK_SHIFT];
+
+	camera->decodeKeyboard(keys, speed);
 
 	envDrawer.handleSounds(camera->getPosition());
 
 	envDrawer.draw(keys);
+
 
 	pshm;
 	glRotatef(180, 0, 1, 0);
