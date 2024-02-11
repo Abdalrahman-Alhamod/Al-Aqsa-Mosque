@@ -1,6 +1,9 @@
 
 
 #include "Camera.h"
+#include <Windows.h>
+#include <string>
+#include "Console.h"
 
 
 #define SQR(x) (x*x)
@@ -459,17 +462,25 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 	prevMouseY = mouseY;
 
 	// Adjust sensitivity for better control
-	float sensitivity = 0.1f;
+	float sensitivity = 0.35f;
 
-	// If the left mouse button is pressed, adjust camera orientation
-	if (isLeftClicked)
+	/*
+	if (abs(mouseX - 982) > 10 || abs(mouseY - 509) > 10)
+	this values is normal window (not fullscreen) .. you can figure it out by use console and output mouse* values
+	*/
+
+	// If the mouse is not moving to its initial pos , adjust camera orientation
+	if (abs(mouseX - 990) > 10 || abs(mouseY - 540) > 10)
 	{
 		// Rotate around Y-axis based on horizontal mouse movement
-		Camera::RotateY(deltaX * sensitivity);
+		Camera::RotateY(-deltaX * sensitivity);
 
 		// Rotate around X-axis based on vertical mouse movement
-		Camera::RotateX(deltaY * sensitivity);
+		Camera::RotateX(-deltaY * sensitivity);
 	}
+
+	if(!deltaX && !deltaY) // if there is no change , return the cursor to the middle of the screen 
+		SetCursorPos(990, 540); // the middle of 1920*1080 screen
 
 	// If the right mouse button is pressed, reset camera orientation
 	if (isRightClicked)

@@ -237,6 +237,8 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 
 	SetForegroundWindow(hWnd);
 	SetFocus(hWnd);
+
+	SetCursorPos(990, 540);
 	ToggleFullscreen();
 
 	showLoading(0);
@@ -924,6 +926,12 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		if (keys['C'])
 		{
 			Camera::changeMode();
+		}
+
+		if (keys[VK_ESCAPE])
+		{
+			PostQuitMessage(0);						// Send A Quit Message
+			return 0;								// Jump Back
 		}
 
 		if (keys[VK_CONTROL] && keys['S']) {
