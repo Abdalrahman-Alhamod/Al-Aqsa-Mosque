@@ -470,7 +470,7 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 	*/
 
 	// If the mouse is not moving to its initial pos , adjust camera orientation
-	if (abs(mouseX - 990) > 10 || abs(mouseY - 540) > 10)
+	if (abs(mouseX - 990) > 7 || abs(mouseY - 540) > 7)
 	{
 		// Rotate around Y-axis based on horizontal mouse movement
 		Camera::RotateY(-deltaX * sensitivity);
