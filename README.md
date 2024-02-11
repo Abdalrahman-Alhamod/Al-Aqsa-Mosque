@@ -59,6 +59,7 @@ Build and run using your preferred C++ compiler
 - Mouse Movement: Rotate the Camera 🐭
 - Right Mouse Button: Reset Position 🔄
 - Mouse Wheel: Zoom in and out. 🔄🔍🔎
+- ESC button: Exit the programme 🔚❌
   
 
 ## License 📜
