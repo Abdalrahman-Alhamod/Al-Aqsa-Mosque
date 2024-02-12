@@ -1,7 +1,8 @@
-/*
-Abdalrahman Alhamod
-Mohammad Obadaa Almasri
-Mohammad Yassen
+/**
+* @authors
+* Abdalrahman Alhamod
+* Mohammad Obadaa Almasri
+* Mohammad Yassen
 */
 
 #define ZOOM_INCREASE true
@@ -218,15 +219,15 @@ void showLoading(int index) {
 		SelectObject(hdcMem, hBitmapOld);
 		DeleteDC(hdcMem);
 		ReleaseDC(hWnd, hdc);
-
-		// Simulate loading time for each image
-		Sleep(1000); // Example: 1 second delay
 	}
 }
 
 
 int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 {
+	ToggleFullscreen();
+	SetCursorPos(990, 540);
+
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
@@ -235,62 +236,40 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
-	SetForegroundWindow(hWnd);
-	SetFocus(hWnd);
-
-	SetCursorPos(990, 540);
-	ToggleFullscreen();
-
+	
 	showLoading(0);
 
 	// Initialize Camera
 	Camera::cameraInit(hWnd);
 	Camera::changeMode();
 
-	preventNotResponding();
 	showLoading(1);
 
 	// Initialize Console
 	//console.init();
 
-	// Initialize Objects
-
 	domeOfTheRock = DomeOfTheRock();
 
-	preventNotResponding();
 	showLoading(2);
 
 	mosqueDrawer = MosqueDrawer();
 
-	preventNotResponding();
 	showLoading(3);
 
 	envDrawer = EnvDrawer(hWnd);
 
-	preventNotResponding();
 	showLoading(4);
 
 	alQibliMosqueDrawer = AlQibliMosqueDrawer();
 
-	preventNotResponding();
 	showLoading(5);
 
 	personDrawer = PersonDrawer();
+
 	showLoading(6);
 
 	return TRUE;										// Initialization Went OK
 }
-
-void draw(float x, float z, bool det)
-{
-	//x -= 0.2;
-	//z -= 1;
-	PrimitiveDrawer d;
-	Point p = Point(x, -4, z, 2, 1, Color(det * 255, (!det) * 255, 0));
-	d.drawPoint(p);
-}
-
-db openTheDoor = 0;
 
 float hight = 9.3, walking = 0, speed = 0.15, delt = 0,
 FMCameraSpeed = 0.15, // Free Mode Camera Speed
@@ -487,14 +466,6 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	domeOfTheRock.drawDomeOfKhaliliDisplayList();
 	ppm;
 
-	//pshm;
-	////glScaled(0.05, 0.05, 0.05);
-	//glTranslated(0, -9.3, 0);
-	//int textures[6] = { 0,0,0,0,0,0 };
-	////Box().drawOutside(Constraints(1, 1, 1), textures);
-	//ppm;
-
-
 	glFlush();											// Done Drawing The Quad
 
 	//DO NOT REMOVE THIS
@@ -610,6 +581,8 @@ bool SwitchToFullScreen()
 		SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW);
 
 		// Show the window maximized
+		SetForegroundWindow(hWnd);
+		SetFocus(hWnd);
 		ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 
 		return true;
@@ -918,10 +891,10 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		keys[wParam] = TRUE;					// If So, Mark It As TRUE
 
 		// Check if the 'F' key is pressed to toggle full-screen mode
-		if (keys['F'])
+		/*if (keys['F'])
 		{
 			ToggleFullscreen();
-		}
+		}*/
 
 		if (keys['C'])
 		{

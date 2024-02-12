@@ -52,7 +52,6 @@ Build and run using your preferred C++ compiler
 - 'CTRL' + 'Num 0': Disable/Enable Sun Movement ☀️
 - 'CTRL' + 'Num 1' -> 'Num6': Adjust Time Speed ⏰
 - '1' -> '6': Disable/Enable Lighting in light pillars when sun movement is disabled 💡
-- 'F': Switch between windowed and fullscreen mode 🖥️
 - 'C': Switch between camera modes ( Free - FPS - TPS ) 🎥
 - 'M': Mute/Unmute Sounds 🔇🔊
 - '+' and '-' Keys: Zoom in and out. 🔍🔎
