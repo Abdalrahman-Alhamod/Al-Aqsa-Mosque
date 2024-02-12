@@ -461,6 +461,8 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 	prevMouseX = mouseX;
 	prevMouseY = mouseY;
 
+	HWND activeWindow = GetActiveWindow();
+
 	// Adjust sensitivity for better control
 	float sensitivity = 0.35f;
 
@@ -479,7 +481,8 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 		Camera::RotateX(-deltaY * sensitivity);
 	}
 
-	if(!deltaX && !deltaY) // if there is no change , return the cursor to the middle of the screen 
+	// if there is no change and its the focused window, reset the cursor position to the middle of the screen 
+	if(!deltaX && !deltaY && activeWindow == GetForegroundWindow()) 
 		SetCursorPos(990, 540); // the middle of 1920*1080 screen
 
 	// If the right mouse button is pressed, reset camera orientation
