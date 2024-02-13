@@ -464,15 +464,10 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 	HWND activeWindow = GetActiveWindow();
 
 	// Adjust sensitivity for better control
-	float sensitivity = 0.35f;
+	float sensitivity = 0.25f;
 
-	/*
-	if (abs(mouseX - 982) > 10 || abs(mouseY - 509) > 10)
-	this values is normal window (not fullscreen) .. you can figure it out by use console and output mouse* values
-	*/
-
-	// If the mouse is not moving to its initial pos , adjust camera orientation
-	if (abs(mouseX - 990) > 7 || abs(mouseY - 540) > 7)
+	// make the camera move with mouse movement if and only if the left mouse click is clicked
+	if (isLeftClicked)
 	{
 		// Rotate around Y-axis based on horizontal mouse movement
 		Camera::RotateY(-deltaX * sensitivity);
@@ -480,10 +475,6 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 		// Rotate around X-axis based on vertical mouse movement
 		Camera::RotateX(-deltaY * sensitivity);
 	}
-
-	// if there is no change and its the focused window, reset the cursor position to the middle of the screen 
-	if(!deltaX && !deltaY && activeWindow == GetForegroundWindow()) 
-		SetCursorPos(990, 540); // the middle of 1920*1080 screen
 
 	// If the right mouse button is pressed, reset camera orientation
 	if (isRightClicked)

@@ -55,7 +55,7 @@ Build and run using your preferred C++ compiler
 - 'C': Switch between camera modes ( Free - FPS - TPS ) 🎥
 - 'M': Mute/Unmute Sounds 🔇🔊
 - '+' and '-' Keys: Zoom in and out. 🔍🔎
-- Mouse Movement: Rotate the Camera 🐭
+- Mouse Movement while pressing the left mouse button: Rotate the Camera 🐭
 - Right Mouse Button: Reset Position 🔄
 - Mouse Wheel: Zoom in and out. 🔄🔍🔎
 - ESC button: Exit the programme 🔚❌

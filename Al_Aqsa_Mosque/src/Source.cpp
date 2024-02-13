@@ -351,7 +351,7 @@ void DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 
 		if (keys['W'] || keys['A'] || keys['S'] || keys['D'])
 		{
-			walking += (0.8 + keys[VK_SHIFT] * 0.5);
+			walking += (1.2 + keys[VK_SHIFT] * 0.5);
 			delt = 0.004 * cos(walking);
 		}
 		else
