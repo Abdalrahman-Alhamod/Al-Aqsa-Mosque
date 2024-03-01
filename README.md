@@ -26,23 +26,7 @@ Explore a variety of features that make this project stand out:
 - **Crashes and Obstacles Physics**: Experience realistic physics for crashes and obstacles in the environment. 🚧
 
 ## Gallery 📷
-- Explore the **[Screenshots](https://github.com/Abdalrahman-Alhamod/Al-Aqsa-Mosque/tree/main/Screenshots)** directory and dive into the immersive world of the Al Aqsa Mosque Project through a collection of captivating images showcasing various aspects.
-
-## Requirements 🛠️
-
-Before diving into the project, ensure you have the following:
-
-- **Windows OS**: The project is designed to run on Windows. 🖥️
-- **C++ Compiler**: Choose your preferred C++ compiler for building the project. 🖱️
-
-## Getting Started 🚀
-
-Clone the repository and get started with these simple steps:
-
-```bash
-git clone https://github.com/Abdalrahman-Alhamod/Al-Aqsa-Mosque.git
-```
-Build and run using your preferred C++ compiler
+- Explore the **[Screenshots](./Screenshots)** directory and dive into the immersive world of the Al Aqsa Mosque Project through a collection of captivating images showcasing various aspects.
 
 ## Controls 🎮
 
@@ -60,7 +44,31 @@ Build and run using your preferred C++ compiler
 - Right Mouse Button: Reset Position 🔄
 - Mouse Wheel: Zoom in and out. 🔄🔍🔎
 - ESC button: Exit the programme 🔚❌
-  
+
+## Easter Eggs 🥚
+- Discover hidden surprises and symbolic elements within the Al Aqsa Mosque OpenGL Project: [Read More](./Easter_Eggs.md)
+
+## To-Do List 📝
+- For the list of planned tasks and features, see [TODO.md](./TODO.md).
+
+## Installer 🛠️
+- Install the Al Aqsa Mosque OpenGL Project on your Windows system using the provided installer: [Download Installer](https://testlink.org/)
+
+## Requirements 🛠️
+
+Before diving into the project, ensure you have the following:
+
+- **Windows OS**: The project is designed to run on Windows. 🖥️
+- **C++ Compiler**: Choose your preferred C++ compiler for building the project. 🖱️
+
+## Getting Started 🚀
+
+Clone the repository and get started with these simple steps:
+
+```bash
+git clone https://github.com/Abdalrahman-Alhamod/Al-Aqsa-Mosque.git
+```
+Build and run using your preferred C++ compiler
 
 ## License 📜
 This project is licensed under the MIT License - see the LICENSE file for details. 🌐
