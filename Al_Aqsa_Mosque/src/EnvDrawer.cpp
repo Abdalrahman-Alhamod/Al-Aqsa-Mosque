@@ -357,7 +357,7 @@ void EnvDrawer::drawBird(const Point& position, const float size) {
 }
 
 void EnvDrawer::drawQuraan(const Point& position, const float size) {
-	drawModel(quraanModel, position, size, 0.01);
+	drawModel(quraanModel, position, size, 0.005);
 }
 
 void EnvDrawer::drawLand(const Point points[4], const int count, const int textureID) {

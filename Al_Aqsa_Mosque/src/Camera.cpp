@@ -470,10 +470,10 @@ void Camera::decodeMouse(int mouseX, int mouseY, bool isLeftClicked, bool isRigh
 	if (isLeftClicked)
 	{
 		// Rotate around Y-axis based on horizontal mouse movement
-		Camera::RotateY(-deltaX * sensitivity);
+		Camera::RotateY(deltaX * sensitivity);
 
 		// Rotate around X-axis based on vertical mouse movement
-		Camera::RotateX(-deltaY * sensitivity);
+		Camera::RotateX(deltaY * sensitivity);
 	}
 
 	// If the right mouse button is pressed, reset camera orientation

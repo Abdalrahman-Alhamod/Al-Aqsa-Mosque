@@ -85,7 +85,7 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize Th
 	glLoadIdentity();									// Reset The Projection Matrix
 
 	// Calculate The Aspect Ratio Of The Window
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 10000.0f);
+	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
@@ -574,7 +574,7 @@ bool SwitchToFullScreen()
 	if (ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL)
 	{
 		// Hide the cursor
-		ShowCursor(FALSE);
+		// ShowCursor(FALSE);
 
 		// Set window styles for full-screen mode
 		SetWindowLong(hWnd, GWL_STYLE, WS_POPUP);
@@ -891,10 +891,10 @@ LRESULT CALLBACK WndProc(HWND	hWnd,			// Handle For This Window
 		keys[wParam] = TRUE;					// If So, Mark It As TRUE
 
 		// Check if the 'F' key is pressed to toggle full-screen mode
-		/*if (keys['F'])
+		if (keys['F'])
 		{
 			ToggleFullscreen();
-		}*/
+		}
 
 		if (keys['C'])
 		{
