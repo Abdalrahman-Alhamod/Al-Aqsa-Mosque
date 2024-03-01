@@ -46,7 +46,7 @@ Explore a variety of features that make this project stand out:
 - ESC button: Exit the programme 🔚❌
 
 ## Easter Eggs 🥚
-- Discover hidden surprises and symbolic elements within the Al Aqsa Mosque OpenGL Project: [Read More](./Easter_Eggs.md)
+- Discover hidden surprises and symbolic elements within the Al Aqsa Mosque OpenGL Project: [Read More](./EASTER_EGGS.md)
 
 ## To-Do List 📝
 - For the list of planned tasks and features, see [TODO.md](./TODO.md).
