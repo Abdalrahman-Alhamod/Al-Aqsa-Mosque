@@ -25,9 +25,6 @@ Explore a variety of features that make this project stand out:
 - **Physical Movement (Sun, Birds)**: Witness dynamic movement of the sun and birds for added realism. 🌅🦅
 - **Crashes and Obstacles Physics**: Experience realistic physics for crashes and obstacles in the environment. 🚧
 
-## Gallery 📷
-- Explore the **[Screenshots](./Screenshots)** directory and dive into the immersive world of the Al Aqsa Mosque Project through a collection of captivating images showcasing various aspects.
-
 ## Controls 🎮
 
 - 'W', 'S', 'A', 'D': Move around the scene 🚶‍♂️
@@ -45,6 +42,12 @@ Explore a variety of features that make this project stand out:
 - Mouse Wheel: Zoom in and out. 🔄🔍🔎
 - ESC button: Exit the programme 🔚❌
 
+## Gallery 📷
+- Explore the **[Screenshots](./Screenshots)** directory and dive into the immersive world of the Al Aqsa Mosque Project through a collection of captivating images showcasing various aspects.
+
+## Historical Sites Content 🕌
+- Explore the rich heritage and historical significance of the following sites and places depicted in the project: [Read More](./Historical_Sites_Content.md)
+
 ## Easter Eggs 🥚
 - Discover hidden surprises and symbolic elements within the Al Aqsa Mosque OpenGL Project: [Read More](./EASTER_EGGS.md)
 
@@ -52,7 +55,7 @@ Explore a variety of features that make this project stand out:
 - For the list of planned tasks and features, see [TODO.md](./TODO.md).
 
 ## Installer 🛠️
-- Install the Al Aqsa Mosque OpenGL Project on your Windows system using the provided installer: [Download Installer](https://testlink.org/)
+- Install the Al Aqsa Mosque OpenGL Project on your Windows system using the provided installer: [Download Installer](https://github.com/Abdalrahman-Alhamod/Al-Aqsa-Mosque/releases/download/v1.0/Al.Aqsa.Mosque.Setup.exe)
 
 ## Requirements 🛠️
 

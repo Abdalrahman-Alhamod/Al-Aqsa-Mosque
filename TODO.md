@@ -32,5 +32,11 @@ Here's a list of tasks and features planned for future updates:
 - [ ] Draw the interior design of Al-Qibli mosque in detail
 - [ ] Correct the textures of the minarets
 - [ ] Redraw the minaret of Al-Asbat entrance
+- [ ] Add obstacles physics to dome of the rock walls
+- [ ] Fix crashes and obstacles physics
+- [ ] Fix camera third person model movement
+- [ ] Fix third person model hands
+- [ ] Fix garden benches size
+- [ ] Add running sound when pressing shift button
 
 Feel free to contribute by tackling any of these tasks or suggesting new ideas!
