@@ -63,7 +63,7 @@ Linked to the story of the Prophet Joseph, serving as a symbol of faith and heri
 
 Represents the story of the Prophet Moses (Musa) in Islamic tradition.
 
-### Dome Khalili 🕋
+### Dome of Khalili 🕋
 
 Contributes to the architectural splendor of the Al-Aqsa Mosque compound.
 
@@ -78,34 +78,6 @@ Symbolizes spiritual beliefs, adding to the sacred ambiance of the Al-Aqsa Mosqu
 ### Dome of Solomon 🕋
 
 Named after the biblical figure King Solomon, this dome is steeped in historical and religious significance.
-
-### Golden Dome 🕋
-
-Known for its stunning architecture and golden exterior.
-
-### Lead Dome 🕋
-
-Showcases intricate design and craftsmanship.
-
-### Al-Buraq Wall 🕌
-
-Believed to be the site where the Prophet Muhammad tethered the Buraq during his night journey.
-
-### Al-Marwani Mosque 🕌
-
-An integral part of the compound's religious complex.
-
-### Al-Sakhrah Mosque 🕌
-
-Holds historical significance and architectural beauty.
-
-### Temple Mount 🕌
-
-A site of immense religious significance for Jews, Christians, and Muslims.
-
-### Sanctum 🕌
-
-The innermost sanctified area of the Al-Aqsa Mosque, reserved for prayer and worship.
 
 ### Archways and Arches 🕌
 
